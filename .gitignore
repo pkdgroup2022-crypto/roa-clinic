@@ -1,0 +1,4 @@
+# 임시 세션 파일 (저장 불필요)
+sessions/
+session-env/
+shell-snapshots/
