@@ -1,0 +1,8 @@
+# 임시 세션 파일
+sessions/
+session-env/
+shell-snapshots/
+
+# 대화 기록 (용량 크고 불필요)
+projects/**/*.jsonl
+projects/**/tool-results/
