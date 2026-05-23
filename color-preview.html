@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>컬러 스타일 선택</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;700;900&display=swap" rel="stylesheet">
+<style>
+* { margin:0; padding:0; box-sizing:border-box; }
+body {
+  font-family: 'Noto Sans KR', sans-serif;
+  background: #F0F0F0;
+  padding: 2rem 1.2rem;
+}
+h1 {
+  text-align: center;
+  font-size: 1.1rem;
+  color: #333;
+  margin-bottom: 0.4rem;
+  font-weight: 700;
+}
+.subtitle {
+  text-align: center;
+  font-size: 0.82rem;
+  color: #888;
+  margin-bottom: 2rem;
+}
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 1.5rem;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+/* ── 카드 래퍼 ── */
+.theme-card {
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: 0 4px 24px rgba(0,0,0,0.13);
+  background: #fff;
+  cursor: pointer;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.theme-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 12px 40px rgba(0,0,0,0.18);
+}
+.theme-label {
+  position: absolute;
+  top: 0.8rem; right: 0.8rem;
+  font-size: 0.7rem; font-weight: 700;
+  padding: 0.25rem 0.7rem;
+  border-radius: 12px;
+  letter-spacing: 0.05em;
+}
+
+/* ── 미니 히어로 ── */
+.mini-hero {
+  padding: 2rem 1.5rem 1.6rem;
+  position: relative;
+  text-align: left;
+}
+.mini-badge {
+  display: inline-block;
+  font-size: 0.62rem; font-weight: 700;
+  letter-spacing: 0.15em;
+  padding: 0.2rem 0.7rem;
+  border-radius: 10px;
+  margin-bottom: 0.7rem;
+}
+.mini-h1 { font-size: 1.25rem; font-weight: 900; line-height: 1.25; margin-bottom: 0.4rem; }
+.mini-p  { font-size: 0.75rem; line-height: 1.6; opacity: 0.8; margin-bottom: 1rem; }
+.mini-btn {
+  display: inline-block;
+  font-size: 0.72rem; font-weight: 700;
+  padding: 0.45rem 1rem; border-radius: 20px;
+}
+
+/* ── 미니 이벤트 카드 ── */
+.mini-event {
+  margin: 1rem;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+}
+.mini-event-top {
+  padding: 0.9rem 1rem;
+  font-size: 0.8rem; font-weight: 700;
+  color: white;
+}
+.mini-event-top span {
+  display: block;
+  font-size: 0.65rem; font-weight: 400; opacity: 0.8; margin-bottom: 0.2rem;
+}
+.mini-event-bot {
+  padding: 0.85rem 1rem;
+  background: white;
+}
+.mini-event-desc { font-size: 0.72rem; color: #777; margin-bottom: 0.6rem; line-height: 1.5; }
+.mini-price-row { display: flex; justify-content: space-between; align-items: center; }
+.mini-orig { font-size: 0.68rem; color: #aaa; text-decoration: line-through; }
+.mini-sale { font-size: 1rem; font-weight: 900; }
+.mini-off  { font-size: 0.65rem; font-weight: 700; padding: 0.15rem 0.4rem; border-radius: 6px; }
+
+/* ── 미니 푸터 ── */
+.mini-footer {
+  margin: 0 1rem 1rem;
+  border-radius: 10px;
+  padding: 0.75rem 1rem;
+  font-size: 0.7rem;
+  display: flex; gap: 0.8rem; flex-wrap: wrap;
+}
+
+/* ──────────────────────────────────────
+   THEME A — 딥 네이비 + 골드 (현재)
+────────────────────────────────────── */
+.a .mini-hero   { background: linear-gradient(135deg,#1E3660,#2B4C7E,#3D6098); }
+.a .mini-badge  { background: #C9A96E; color: white; }
+.a .mini-h1     { color: white; }
+.a .mini-p      { color: rgba(255,255,255,0.8); }
+.a .mini-btn    { background: #03C75A; color: white; }
+.a .theme-label { background: #2B4C7E; color: white; }
+.a .mini-event-top { background: linear-gradient(135deg,#1E3660,#3D6098); }
+.a .mini-sale   { color: #2B4C7E; }
+.a .mini-off    { background:#DDEAFF; color:#2B4C7E; }
+.a .mini-footer { background:#F5F6FA; color:#5C6480; }
+
+/* ──────────────────────────────────────
+   THEME B — 블랙 + 로즈골드
+────────────────────────────────────── */
+.b .mini-hero   { background: linear-gradient(135deg,#111111,#222222,#333333); }
+.b .mini-badge  { background: #C4956A; color: white; }
+.b .mini-h1     { color: white; }
+.b .mini-p      { color: rgba(255,255,255,0.72); }
+.b .mini-btn    { background: #C4956A; color: white; }
+.b .theme-label { background: #1A1A1A; color: #C4956A; }
+.b .mini-event-top { background: linear-gradient(135deg,#111,#333); }
+.b .mini-sale   { color: #C4956A; }
+.b .mini-off    { background:#FDF0E6; color:#C4956A; }
+.b .mini-footer { background:#F7F7F7; color:#666; }
+
+/* ──────────────────────────────────────
+   THEME C — 딥 버건디 + 크림
+────────────────────────────────────── */
+.c .mini-hero   { background: linear-gradient(135deg,#4A1428,#6B1F3A,#8B3055); }
+.c .mini-badge  { background: #D4A86A; color: white; }
+.c .mini-h1     { color: white; }
+.c .mini-p      { color: rgba(255,255,255,0.8); }
+.c .mini-btn    { background: #03C75A; color: white; }
+.c .theme-label { background: #6B1F3A; color: white; }
+.c .mini-event-top { background: linear-gradient(135deg,#4A1428,#7B2D52); }
+.c .mini-sale   { color: #6B1F3A; }
+.c .mini-off    { background:#FFE8EE; color:#6B1F3A; }
+.c .mini-footer { background:#FDF5F0; color:#7A5060; }
+
+/* ──────────────────────────────────────
+   THEME D — 다크 세이지 + 아이보리
+────────────────────────────────────── */
+.d .mini-hero   { background: linear-gradient(135deg,#243D32,#2C5446,#3D6B5E); }
+.d .mini-badge  { background: #C9A96E; color: white; }
+.d .mini-h1     { color: white; }
+.d .mini-p      { color: rgba(255,255,255,0.8); }
+.d .mini-btn    { background: #03C75A; color: white; }
+.d .theme-label { background: #2C5446; color: white; }
+.d .mini-event-top { background: linear-gradient(135deg,#243D32,#3D6B5E); }
+.d .mini-sale   { color: #2C5446; }
+.d .mini-off    { background:#E6F5F0; color:#2C5446; }
+.d .mini-footer { background:#F4F7F5; color:#567060; }
+
+.swatches {
+  display: flex; gap: 6px; padding: 0.9rem 1rem;
+  border-top: 1px solid #f0f0f0;
+}
+.swatch {
+  width: 28px; height: 28px; border-radius: 50%;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.15);
+}
+.theme-name {
+  padding: 0.9rem 1rem 0;
+  font-size: 0.88rem; font-weight: 700; color: #222;
+}
+.theme-desc {
+  padding: 0.2rem 1rem 0.8rem;
+  font-size: 0.75rem; color: #999;
+}
+</style>
+</head>
+<body>
+
+<h1>컬러 스타일 선택</h1>
+<p class="subtitle">마음에 드는 스타일을 알려주시면 적용해 드릴게요</p>
+
+<div class="grid">
+
+  <!-- A: 딥 네이비 + 골드 -->
+  <div class="theme-card a">
+    <div class="mini-hero">
+      <span class="theme-label">현재 적용 중</span>
+      <div class="mini-badge">BEAUTY · HEALTH · CARE</div>
+      <div class="mini-h1">로아한의원<br>부천점</div>
+      <div class="mini-p">리프팅에 진심인,<br>리프팅 잘하는 로아한의원입니다.</div>
+      <div class="mini-btn">📅 네이버 예약하기</div>
+    </div>
+    <div class="mini-event">
+      <div class="mini-event-top">
+        <span>이달의 이벤트</span>
+        피부 재생 에너지 침 패키지
+      </div>
+      <div class="mini-event-bot">
+        <div class="mini-event-desc">한방 성분으로 피부 탄력을 케어하는 프리미엄 시술</div>
+        <div class="mini-price-row">
+          <span class="mini-orig">300,000원</span>
+          <span class="mini-sale">180,000원</span>
+          <span class="mini-off">40% OFF</span>
+        </div>
+      </div>
+    </div>
+    <div class="mini-footer">📍 부천시 상동로 83&nbsp;&nbsp;📞 032-324-1118</div>
+    <div class="swatches">
+      <div class="swatch" style="background:#1E3660"></div>
+      <div class="swatch" style="background:#2B4C7E"></div>
+      <div class="swatch" style="background:#C9A96E"></div>
+      <div class="swatch" style="background:#03C75A"></div>
+      <div class="swatch" style="background:#F5F6FA"></div>
+    </div>
+    <div class="theme-name">A — 딥 네이비 + 골드</div>
+    <div class="theme-desc">신뢰감 · 전문적 · 고급스러운 의료 클리닉 느낌</div>
+  </div>
+
+  <!-- B: 블랙 + 로즈골드 -->
+  <div class="theme-card b">
+    <div class="mini-hero">
+      <div class="mini-badge">BEAUTY · HEALTH · CARE</div>
+      <div class="mini-h1">로아한의원<br>부천점</div>
+      <div class="mini-p">리프팅에 진심인,<br>리프팅 잘하는 로아한의원입니다.</div>
+      <div class="mini-btn">📅 네이버 예약하기</div>
+    </div>
+    <div class="mini-event">
+      <div class="mini-event-top">
+        <span>이달의 이벤트</span>
+        피부 재생 에너지 침 패키지
+      </div>
+      <div class="mini-event-bot">
+        <div class="mini-event-desc">한방 성분으로 피부 탄력을 케어하는 프리미엄 시술</div>
+        <div class="mini-price-row">
+          <span class="mini-orig">300,000원</span>
+          <span class="mini-sale">180,000원</span>
+          <span class="mini-off">40% OFF</span>
+        </div>
+      </div>
+    </div>
+    <div class="mini-footer">📍 부천시 상동로 83&nbsp;&nbsp;📞 032-324-1118</div>
+    <div class="swatches">
+      <div class="swatch" style="background:#111111"></div>
+      <div class="swatch" style="background:#333333"></div>
+      <div class="swatch" style="background:#C4956A"></div>
+      <div class="swatch" style="background:#03C75A"></div>
+      <div class="swatch" style="background:#F7F7F7"></div>
+    </div>
+    <div class="theme-name">B — 블랙 + 로즈골드</div>
+    <div class="theme-desc">세련됨 · 럭셔리 · 모던 프리미엄 뷰티 느낌</div>
+  </div>
+
+  <!-- C: 딥 버건디 -->
+  <div class="theme-card c">
+    <div class="mini-hero">
+      <div class="mini-badge">BEAUTY · HEALTH · CARE</div>
+      <div class="mini-h1">로아한의원<br>부천점</div>
+      <div class="mini-p">리프팅에 진심인,<br>리프팅 잘하는 로아한의원입니다.</div>
+      <div class="mini-btn">📅 네이버 예약하기</div>
+    </div>
+    <div class="mini-event">
+      <div class="mini-event-top">
+        <span>이달의 이벤트</span>
+        피부 재생 에너지 침 패키지
+      </div>
+      <div class="mini-event-bot">
+        <div class="mini-event-desc">한방 성분으로 피부 탄력을 케어하는 프리미엄 시술</div>
+        <div class="mini-price-row">
+          <span class="mini-orig">300,000원</span>
+          <span class="mini-sale">180,000원</span>
+          <span class="mini-off">40% OFF</span>
+        </div>
+      </div>
+    </div>
+    <div class="mini-footer">📍 부천시 상동로 83&nbsp;&nbsp;📞 032-324-1118</div>
+    <div class="swatches">
+      <div class="swatch" style="background:#4A1428"></div>
+      <div class="swatch" style="background:#6B1F3A"></div>
+      <div class="swatch" style="background:#D4A86A"></div>
+      <div class="swatch" style="background:#03C75A"></div>
+      <div class="swatch" style="background:#FDF5F0"></div>
+    </div>
+    <div class="theme-name">C — 딥 버건디 + 샴페인</div>
+    <div class="theme-desc">우아함 · 여성스러움 · 고급 뷰티 한의원 느낌</div>
+  </div>
+
+  <!-- D: 다크 세이지 -->
+  <div class="theme-card d">
+    <div class="mini-hero">
+      <div class="mini-badge">BEAUTY · HEALTH · CARE</div>
+      <div class="mini-h1">로아한의원<br>부천점</div>
+      <div class="mini-p">리프팅에 진심인,<br>리프팅 잘하는 로아한의원입니다.</div>
+      <div class="mini-btn">📅 네이버 예약하기</div>
+    </div>
+    <div class="mini-event">
+      <div class="mini-event-top">
+        <span>이달의 이벤트</span>
+        피부 재생 에너지 침 패키지
+      </div>
+      <div class="mini-event-bot">
+        <div class="mini-event-desc">한방 성분으로 피부 탄력을 케어하는 프리미엄 시술</div>
+        <div class="mini-price-row">
+          <span class="mini-orig">300,000원</span>
+          <span class="mini-sale">180,000원</span>
+          <span class="mini-off">40% OFF</span>
+        </div>
+      </div>
+    </div>
+    <div class="mini-footer">📍 부천시 상동로 83&nbsp;&nbsp;📞 032-324-1118</div>
+    <div class="swatches">
+      <div class="swatch" style="background:#243D32"></div>
+      <div class="swatch" style="background:#3D6B5E"></div>
+      <div class="swatch" style="background:#C9A96E"></div>
+      <div class="swatch" style="background:#03C75A"></div>
+      <div class="swatch" style="background:#F4F7F5"></div>
+    </div>
+    <div class="theme-name">D — 다크 세이지 + 골드</div>
+    <div class="theme-desc">자연스러움 · 건강미 · 한의원 본연의 느낌</div>
+  </div>
+
+</div>
+</body>
+</html>

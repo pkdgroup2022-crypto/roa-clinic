@@ -1,0 +1,1547 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title id="page-title">로아한의원 부천점</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@300;400;500;600;700&family=Noto+Sans+KR:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        :root {
+            --dark:     #0E0E0E;
+            --mid:      #3C3C3C;
+            --muted:    #888888;
+            --silver:   #C8C0B4;
+            --cream:    #F4EFE6;
+            --warm:     #FAF7F2;
+            --white:    #FFFFFF;
+            --gold:     #B09060;
+            --gold-l:   #CDB08A;
+            --naver:    #03C75A;
+            --naver-d:  #02a84a;
+        }
+
+        html { scroll-behavior: smooth; scroll-padding-top: 80px; }
+        body {
+            font-family: 'Noto Sans KR', sans-serif;
+            background: var(--white);
+            color: var(--dark);
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* ═══════════════════════════════
+           NAV
+        ═══════════════════════════════ */
+        nav {
+            position: fixed; top: 0; left: 0; right: 0; z-index: 300;
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 0 3rem; height: 72px;
+            transition: background 0.35s ease, border-color 0.35s ease;
+        }
+        nav.nav-solid {
+            background: rgba(255,255,255,0.97);
+            backdrop-filter: blur(14px);
+            border-bottom: 1px solid rgba(0,0,0,0.08);
+        }
+        .nav-logo {
+            font-family: 'Noto Serif KR', serif;
+            font-size: 1.15rem; font-weight: 600;
+            letter-spacing: 0.06em; white-space: nowrap;
+            color: white; transition: color 0.35s;
+        }
+        nav.nav-solid .nav-logo { color: var(--dark); }
+
+        .nav-center { display: flex; gap: 2.8rem; list-style: none; }
+        .nav-center a {
+            text-decoration: none; font-size: 0.75rem; font-weight: 500;
+            letter-spacing: 0.14em; text-transform: uppercase;
+            color: rgba(255,255,255,0.78); transition: color 0.2s;
+        }
+        nav.nav-solid .nav-center a { color: var(--mid); }
+        .nav-center a:hover { color: var(--gold) !important; }
+
+        .nav-right { display: flex; align-items: center; gap: 1rem; }
+        .btn-naver-nav {
+            background: var(--naver); color: white;
+            padding: 0.52rem 1.1rem; border-radius: 3px;
+            font-size: 0.76rem; font-weight: 700;
+            text-decoration: none; white-space: nowrap;
+            letter-spacing: 0.04em; transition: all 0.2s;
+        }
+        .btn-naver-nav:hover { background: var(--naver-d); transform: translateY(-1px); }
+
+        .hamburger {
+            display: none; flex-direction: column; gap: 5px;
+            cursor: pointer; background: none; border: none; padding: 4px;
+        }
+        .hamburger span {
+            display: block; width: 22px; height: 1.5px;
+            background: white; border-radius: 1px; transition: all 0.3s;
+        }
+        nav.nav-solid .hamburger span { background: var(--dark); }
+
+        .mobile-menu {
+            display: none; position: fixed;
+            top: 72px; left: 0; right: 0; z-index: 299;
+            background: var(--white); border-bottom: 1px solid rgba(0,0,0,0.07);
+            padding: 1.5rem 2rem 2rem; flex-direction: column;
+        }
+        .mobile-menu.open { display: flex; }
+        .mobile-menu a {
+            text-decoration: none; color: var(--mid);
+            font-size: 0.85rem; font-weight: 500;
+            letter-spacing: 0.12em; text-transform: uppercase;
+            padding: 1rem 0; border-bottom: 1px solid rgba(0,0,0,0.06);
+        }
+        .mobile-menu a:last-child { border-bottom: none; }
+
+        /* ═══════════════════════════════
+           HERO
+        ═══════════════════════════════ */
+        .hero {
+            position: relative;
+            height: 100vh; min-height: 700px;
+            display: flex; align-items: center; justify-content: center;
+            overflow: hidden;
+        }
+        .hero-bg {
+            position: absolute; inset: 0;
+            background-image: url('https://images.unsplash.com/photo-1616394584738-fc6e612e71b9?w=1920&h=1080&fit=crop&q=85');
+            background-size: cover; background-position: center 25%;
+            transform: scale(1.04);
+            transition: transform 8s ease;
+        }
+        .hero.loaded .hero-bg { transform: scale(1); }
+        .hero-overlay {
+            position: absolute; inset: 0;
+            background: linear-gradient(
+                160deg,
+                rgba(8,8,8,0.55) 0%,
+                rgba(8,8,8,0.42) 45%,
+                rgba(8,8,8,0.68) 100%
+            );
+        }
+        .hero-content {
+            position: relative; z-index: 10;
+            text-align: center; padding: 0 2rem; max-width: 860px;
+        }
+        .hero-eyebrow {
+            display: inline-block;
+            font-size: 0.68rem; font-weight: 500;
+            letter-spacing: 0.32em; text-transform: uppercase;
+            color: var(--gold-l); margin-bottom: 1.8rem;
+        }
+        .hero h1 {
+            font-family: 'Noto Serif KR', serif;
+            font-size: clamp(3rem, 7vw, 5.5rem);
+            font-weight: 600; color: white;
+            line-height: 1.1; letter-spacing: 0.01em;
+            margin-bottom: 1.6rem;
+        }
+        .hero-tagline {
+            font-size: clamp(0.88rem, 1.6vw, 1.05rem);
+            color: rgba(255,255,255,0.72);
+            line-height: 2.1; margin-bottom: 3rem;
+            font-weight: 300; letter-spacing: 0.02em;
+        }
+        .hero-actions {
+            display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 0.88rem 2rem; border-radius: 3px;
+            font-size: 0.82rem; font-weight: 700;
+            text-decoration: none; display: inline-flex;
+            align-items: center; gap: 0.45rem;
+            letter-spacing: 0.08em; text-transform: uppercase;
+            transition: all 0.22s; cursor: pointer; border: none;
+        }
+        .btn-gold { background: var(--gold); color: white; }
+        .btn-gold:hover { background: #927548; transform: translateY(-2px); }
+        .btn-naver { background: var(--naver); color: white; }
+        .btn-naver:hover { background: var(--naver-d); transform: translateY(-2px); }
+        .btn-outline {
+            background: transparent; color: white;
+            border: 1px solid rgba(255,255,255,0.45);
+        }
+        .btn-outline:hover { background: rgba(255,255,255,0.1); }
+
+        .scroll-indicator {
+            position: absolute; bottom: 2.5rem; left: 50%;
+            transform: translateX(-50%); z-index: 10;
+            display: flex; flex-direction: column; align-items: center; gap: 0.5rem;
+        }
+        .scroll-indicator span {
+            font-size: 0.62rem; letter-spacing: 0.22em; text-transform: uppercase;
+            color: rgba(255,255,255,0.4);
+        }
+        .scroll-line {
+            width: 1px; height: 44px;
+            background: linear-gradient(to bottom, rgba(255,255,255,0.45), transparent);
+            animation: scrollAnim 2.2s ease infinite;
+        }
+        @keyframes scrollAnim {
+            0% { opacity: 0; transform: scaleY(0); transform-origin: top; }
+            50% { opacity: 1; transform: scaleY(1); }
+            100% { opacity: 0; transform: scaleY(1); }
+        }
+
+        /* ═══════════════════════════════
+           SECTION LAYOUT
+        ═══════════════════════════════ */
+        .section { padding: 8rem 2rem; }
+        .section-cream { background: var(--cream); }
+        .section-warm  { background: var(--warm); }
+        .section-white { background: var(--white); }
+        .section-dark  { background: var(--dark); }
+        .section-inner { max-width: 1100px; margin: 0 auto; }
+
+        .section-head { margin-bottom: 4.5rem; }
+        .section-label {
+            font-size: 0.68rem; font-weight: 600;
+            letter-spacing: 0.3em; text-transform: uppercase;
+            color: var(--gold); margin-bottom: 0.9rem;
+        }
+        .section-label.light { color: var(--gold-l); }
+        .section-title {
+            font-family: 'Noto Serif KR', serif;
+            font-size: clamp(2rem, 4vw, 3.2rem);
+            font-weight: 600; color: var(--dark); line-height: 1.15;
+        }
+        .section-title.light { color: white; }
+        .section-rule {
+            width: 40px; height: 1px;
+            background: var(--gold); margin-top: 1.4rem;
+        }
+        .section-rule.light { background: var(--gold-l); }
+
+        /* ═══════════════════════════════
+           EVENTS
+        ═══════════════════════════════ */
+        .events-table {
+            width: 100%;
+            border-top: 1px solid var(--dark);
+        }
+        .event-row {
+            display: flex; align-items: center;
+            justify-content: space-between;
+            padding: 2.2rem 0;
+            border-bottom: 1px solid rgba(0,0,0,0.1);
+            gap: 2rem; transition: all 0.18s;
+            cursor: default;
+        }
+        .event-row:hover {
+            background: var(--cream);
+            padding-left: 1.4rem; padding-right: 1.4rem;
+            margin: 0 -1.4rem;
+        }
+        .event-row-left { flex: 1; min-width: 0; }
+        .event-row-name {
+            font-family: 'Noto Serif KR', serif;
+            font-size: clamp(1.3rem, 2.8vw, 1.9rem);
+            font-weight: 600; color: var(--dark); line-height: 1.25;
+        }
+        .event-row-period {
+            font-size: 0.82rem; font-weight: 700;
+            letter-spacing: 0.08em;
+            color: var(--gold); margin-top: 0.5rem;
+        }
+        .event-row-right {
+            display: flex; align-items: center;
+            gap: 0.9rem; flex-shrink: 0;
+            flex-wrap: wrap; justify-content: flex-end;
+        }
+        .price-original {
+            font-size: 0.88rem; color: var(--silver);
+            text-decoration: line-through;
+        }
+        .price-arrow { color: var(--silver); font-size: 0.85rem; letter-spacing: 0.05em; }
+        .price-event {
+            font-family: 'Noto Serif KR', serif;
+            font-size: clamp(1.6rem, 2.8vw, 2.2rem);
+            font-weight: 700; color: #D93025; letter-spacing: -0.01em;
+        }
+        .price-badge {
+            background: #D93025; color: white;
+            font-size: 0.72rem; font-weight: 700;
+            padding: 0.3rem 0.7rem; border-radius: 2px;
+            letter-spacing: 0.04em;
+        }
+        .vat-note {
+            font-size: 0.72rem; color: var(--muted);
+            margin-top: 2.2rem; text-align: right;
+        }
+        .no-data { text-align: center; color: var(--muted); padding: 4rem; }
+
+        /* ═══════════════════════════════
+           TREATMENT CARDS
+        ═══════════════════════════════ */
+        .treatment-grid {
+            display: grid;
+            gap: 1.5px;
+            background: var(--silver);
+        }
+        .treatment-grid.cols-3 { grid-template-columns: repeat(3, 1fr); }
+        .treatment-grid.cols-4 { grid-template-columns: repeat(4, 1fr); }
+        .treatment-card {
+            background: var(--white);
+            padding: 0 0 2.2rem;
+            transition: background 0.2s;
+            display: flex; flex-direction: column;
+        }
+        .treatment-card:hover { background: var(--warm); }
+        .treatment-card:hover .treatment-img-wrap { opacity: 0.9; }
+
+        /* 커스텀 리프팅 — 사진/이미지 헤더 */
+        .treatment-img-wrap {
+            width: 100%; height: 280px;
+            overflow: hidden; background: #1a1a1a;
+            transition: opacity 0.2s;
+        }
+        .treatment-img-wrap .treatment-svg-bg {
+            width: 100%; height: 100%;
+            display: flex; align-items: center; justify-content: center;
+            background: linear-gradient(135deg, #1a1208 0%, #2d1f0a 100%);
+        }
+        .treatment-img-wrap .treatment-svg-bg svg {
+            width: 62%; height: 62%;
+        }
+        /* 실제 기기/시술 사진 카드 */
+        .treatment-img-wrap.device-photo {
+            background: #ffffff;
+        }
+        .treatment-img-wrap.device-photo img {
+            width: 100%; height: 100%;
+            object-fit: contain; display: block;
+            padding: 0.8rem;
+            /* 투명 PNG는 그대로, 흰 배경 사진은 배경 녹임 */
+            mix-blend-mode: multiply;
+        }
+        .treatment-card-body {
+            padding: 1.8rem 2rem 0;
+        }
+
+        /* 시그니처 — 아이콘 */
+        .sig-icon {
+            margin-top: 0.6rem;       /* 이름 바로 아래 가깝게 */
+            margin-left: -0.8rem;     /* 왼쪽으로 살짝 더 */
+            width: 280px; height: 280px;
+            background: #fff;
+            border-radius: 4px;
+        }
+        .sig-icon svg { width: 100%; height: 100%; }
+        .sig-icon img {
+            width: 100%; height: 100%;
+            object-fit: contain;
+            display: block;
+            mix-blend-mode: multiply;
+        }
+
+        .treatment-num {
+            font-size: 0.65rem; font-weight: 700;
+            letter-spacing: 0.25em; color: var(--gold);
+            margin-bottom: 1.2rem;
+        }
+        .treatment-name {
+            font-family: 'Noto Serif KR', serif;
+            font-size: 1.55rem; font-weight: 700; color: var(--dark);
+            margin-bottom: 0.85rem; line-height: 1.25;
+        }
+        .treatment-desc {
+            font-size: 0.85rem; color: var(--muted); line-height: 1.8;
+        }
+        .treatment-sub {
+            font-size: 0.72rem; color: var(--muted); margin-top: 0.2rem; margin-bottom: 1.4rem;
+            letter-spacing: 0.02em;
+        }
+        .treatment-slogan {
+            font-family: 'Noto Serif KR', serif;
+            font-size: 0.92rem; font-style: italic;
+            color: var(--gold); line-height: 1.65; margin-bottom: 1rem;
+        }
+        .treatment-message {
+            font-size: 0.8rem; color: var(--mid); line-height: 1.85;
+            margin-bottom: 1.3rem; padding-bottom: 1.3rem;
+            border-bottom: 1px solid rgba(0,0,0,0.1);
+        }
+        .treatment-points { list-style: none; display: flex; flex-direction: column; gap: 0.8rem; }
+        .treatment-points li {
+            font-size: 0.78rem; color: var(--muted); line-height: 1.7;
+            padding-left: 1.1rem; position: relative;
+        }
+        .treatment-points li::before { content: '—'; color: var(--gold); position: absolute; left: 0; }
+        .treatment-points li strong { display: block; color: var(--dark); font-weight: 700; margin-bottom: 0.1rem; }
+
+        /* ═══════════════════════════════
+           SIGNATURE 에디토리얼 레이아웃
+        ═══════════════════════════════ */
+        .sig-list { display: flex; flex-direction: column; border-top: 1px solid var(--dark); }
+        .sig-item {
+            display: grid;
+            grid-template-columns: 260px 1fr;
+            gap: 4rem;
+            padding: 3.5rem 0;
+            border-bottom: 1px solid rgba(0,0,0,0.1);
+            align-items: start;   /* 왼쪽 이미지가 이름 바로 아래 붙도록 */
+        }
+        .sig-left { padding-top: 0.2rem; }
+        .sig-num {
+            font-size: 0.62rem; font-weight: 700; letter-spacing: 0.28em;
+            color: var(--gold); margin-bottom: 1rem;
+        }
+        .sig-name {
+            font-family: 'Noto Serif KR', serif;
+            font-size: 1.6rem; font-weight: 800; color: var(--dark);
+            line-height: 1.25; margin-bottom: 0.5rem;
+        }
+        .sig-sub {
+            font-size: 0.88rem; font-weight: 500; color: var(--mid); line-height: 1.6;
+        }
+        .sig-right { display: flex; flex-direction: column; gap: 1.2rem; }
+        .sig-slogan {
+            font-family: 'Noto Serif KR', serif;
+            font-size: 1.12rem; font-style: italic; font-weight: 700;
+            color: var(--gold); line-height: 1.7;
+            padding-bottom: 1.2rem;
+            border-bottom: 1px solid rgba(0,0,0,0.1);
+        }
+        .sig-message {
+            font-size: 0.98rem; color: var(--mid);
+            line-height: 2; font-weight: 400;
+        }
+        .sig-points { display: flex; flex-direction: column; gap: 1.1rem; margin-top: 0.4rem; }
+        .sig-point { display: flex; gap: 1rem; }
+        .sig-point-bar {
+            flex-shrink: 0; width: 1.5px; background: var(--gold-l);
+            margin: 0.2rem 0;
+        }
+        .sig-point-text {}
+        .sig-point-title {
+            font-size: 0.92rem; font-weight: 700; color: var(--dark);
+            margin-bottom: 0.3rem;
+        }
+        .sig-point-body { font-size: 0.88rem; color: var(--muted); line-height: 1.8; }
+        @media (max-width: 760px) {
+            .sig-item { grid-template-columns: 1fr; gap: 1.5rem; padding: 2.5rem 0; }
+            .sig-left { display: flex; flex-direction: column; align-items: center; text-align: center; }
+            .sig-icon {
+                margin-left: auto; margin-right: auto;
+                width: 200px; height: 200px;
+            }
+            .sig-num { align-self: flex-start; }
+            .sig-name { align-self: flex-start; }
+            .sig-sub  { align-self: flex-start; }
+            .treatment-grid.cols-3 { grid-template-columns: repeat(2, 1fr); }
+            .treatment-grid.cols-4 { grid-template-columns: repeat(2, 1fr); }
+        }
+        @media (max-width: 420px) {
+            .treatment-grid.cols-3,
+            .treatment-grid.cols-4 { grid-template-columns: 1fr; }
+        }
+
+        /* ═══════════════════════════════
+           CAROUSEL
+        ═══════════════════════════════ */
+        .review-carousel-wrap {
+            position: relative; overflow: hidden;
+            user-select: none; border-radius: 0;
+        }
+        .carousel-track {
+            display: flex;
+            transition: transform 0.5s cubic-bezier(0.4,0,0.2,1);
+            will-change: transform;
+        }
+        .review-slide { flex: 0 0 100%; width: 100%; min-width: 0; background: #111; }
+
+        .slide-header {
+            padding: 2rem 2.5rem 1.6rem;
+            border-bottom: 1px solid rgba(255,255,255,0.08);
+        }
+        .slide-subtitle {
+            font-size: 0.65rem; letter-spacing: 0.25em; text-transform: uppercase;
+            color: var(--gold-l); margin-bottom: 0.4rem;
+        }
+        .slide-title {
+            font-family: 'Noto Serif KR', serif;
+            font-size: clamp(1.2rem, 2.5vw, 1.7rem);
+            font-weight: 600; color: white; letter-spacing: 0.01em;
+        }
+
+        .slide-photos { display: flex; height: 520px; flex-shrink: 0; }
+        /* 모바일에서 직사각형 비율 유지 — 화면 너비의 75% */
+        @media (max-width: 600px) {
+            .slide-photos { height: auto; aspect-ratio: 4 / 3; }
+        }
+        .slide-photo { flex: 0 0 50%; width: 50%; position: relative; overflow: hidden; }
+        .slide-photo + .slide-photo { border-left: 1px solid rgba(255,255,255,0.12); }
+        .slide-photo img {
+            width: 100%; height: 100%; object-fit: cover; display: block;
+            cursor: zoom-in; transition: transform 0.5s ease;
+        }
+        .slide-photo img:hover { transform: scale(1.03); }
+        .photo-label-wrap {
+            position: absolute; bottom: 0; left: 0; right: 0;
+            padding: 3rem 1.5rem 1.4rem;
+            background: linear-gradient(to top, rgba(0,0,0,0.75) 0%, transparent 100%);
+            display: flex; justify-content: space-between; align-items: flex-end;
+        }
+        .photo-label {
+            font-size: 0.68rem; font-weight: 700;
+            letter-spacing: 0.2em; text-transform: uppercase; color: white;
+        }
+        .photo-label.before { color: rgba(255,255,255,0.6); }
+        .photo-label.after  { color: var(--gold-l); }
+        .photo-date { font-size: 0.68rem; color: rgba(255,255,255,0.45); }
+
+        /* 캐러셀 컨트롤 바 (화살표 + 점) — 사진 아래 배치 */
+        .carousel-controls {
+            display: flex; align-items: center; justify-content: center;
+            gap: 1.4rem; padding: 1.4rem 0 0.6rem;
+        }
+        .carousel-nav {
+            width: 46px; height: 46px;
+            background: var(--dark);
+            border: none;
+            color: white; font-size: 1.6rem;
+            cursor: pointer; z-index: 10; flex-shrink: 0;
+            display: flex; align-items: center; justify-content: center;
+            transition: all 0.2s; border-radius: 2px;
+        }
+        .carousel-nav:hover { background: var(--gold); }
+
+        .carousel-dots {
+            display: flex; justify-content: center; align-items: center; gap: 0.5rem;
+        }
+        .carousel-dot {
+            width: 24px; height: 2px;
+            background: var(--silver); border: none;
+            cursor: pointer; padding: 0; transition: all 0.28s; border-radius: 1px;
+        }
+        .carousel-dot.active { background: var(--dark); width: 44px; }
+
+        /* 시술명 필터 버튼 */
+        .review-filter-btns {
+            display: flex; flex-wrap: wrap; justify-content: center;
+            gap: 0.65rem; padding: 0.2rem 0 2rem;
+        }
+        .review-filter-btn {
+            padding: 0.6rem 1.8rem;
+            border: 1.5px solid var(--silver);
+            background: transparent;
+            color: var(--mid); font-size: 0.96rem; font-weight: 500;
+            cursor: pointer; border-radius: 50px;
+            transition: all 0.22s; letter-spacing: 0.03em;
+            font-family: 'Noto Sans KR', sans-serif;
+        }
+        .review-filter-btn:hover { border-color: var(--gold); color: var(--gold); }
+        .review-filter-btn.active {
+            background: var(--gold); border-color: var(--gold);
+            color: white; font-weight: 700;
+        }
+        @media (max-width: 540px) {
+            .review-filter-btn { padding: 0.5rem 1.2rem; font-size: 0.88rem; }
+        }
+
+        .disclaimer {
+            margin-top: 3rem; padding: 1.5rem 1.5rem 1.5rem 2rem;
+            border-left: 2px solid var(--cream);
+        }
+        .disclaimer p {
+            font-size: 0.72rem; color: var(--muted);
+            line-height: 2.1; margin: 0;
+        }
+
+        /* ═══════════════════════════════
+           CONTACT
+        ═══════════════════════════════ */
+        /* 오시는길 섹션 배경: 따뜻한 짙은 브라운 (순수 블랙보다 부드럽고 골드와 조화) */
+        #contact.section-dark { background: #1d1a13; }
+        #contact .section-label { color: var(--gold-l); }
+        #contact .section-title { color: rgba(255,255,255,0.92); }
+        #contact .section-rule  { background: var(--gold-l); }
+
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            border-top: 1px solid rgba(255,255,255,0.12);
+            border-left: 1px solid rgba(255,255,255,0.12);
+        }
+        .info-card {
+            padding: 3rem;
+            border-right: 1px solid rgba(255,255,255,0.12);
+            border-bottom: 1px solid rgba(255,255,255,0.12);
+        }
+        .info-card-label {
+            font-size: 0.72rem; font-weight: 700;
+            letter-spacing: 0.22em; text-transform: uppercase;
+            color: var(--gold-l); margin-bottom: 1.4rem;
+        }
+        .info-card-main {
+            font-size: 1.2rem; font-weight: 500; color: white;
+            line-height: 1.75; margin-bottom: 0.6rem;
+        }
+        .info-card-sub {
+            font-size: 0.9rem; color: rgba(255,255,255,0.5);
+            line-height: 1.85;
+        }
+        .info-link {
+            display: inline-flex; align-items: center; gap: 0.4rem;
+            margin-top: 1.4rem; color: var(--gold-l);
+            font-size: 0.82rem; font-weight: 600;
+            text-decoration: none; letter-spacing: 0.1em; text-transform: uppercase;
+            transition: opacity 0.2s;
+        }
+        .info-link:hover { opacity: 0.65; }
+
+        .hours-table { width: 100%; border-collapse: collapse; }
+        .hours-table tr { border-bottom: 1px solid rgba(255,255,255,0.08); }
+        .hours-table tr:last-child { border-bottom: none; }
+        .hours-table td {
+            padding: 0.95rem 0;
+            font-size: 0.95rem; color: rgba(255,255,255,0.68);
+            vertical-align: top; line-height: 1.6;
+        }
+        .hours-table td:first-child {
+            font-weight: 600; width: 140px;
+            color: rgba(255,255,255,0.9); white-space: nowrap;
+        }
+        .hours-closed { color: rgba(255,255,255,0.25) !important; }
+        .hours-note {
+            font-size: 0.78rem; color: rgba(255,255,255,0.38);
+            margin-top: 0.2rem; display: block;
+        }
+
+        /* ═══════════════════════════════
+           LIGHTBOX
+        ═══════════════════════════════ */
+        .lightbox {
+            display: none; position: fixed; inset: 0; z-index: 500;
+            background: rgba(0,0,0,0.95);
+            align-items: center; justify-content: center;
+        }
+        .lightbox.open { display: flex; }
+        .lightbox img {
+            max-width: 92vw; max-height: 90vh;
+            object-fit: contain;
+        }
+        .lightbox-close {
+            position: absolute; top: 1.5rem; right: 2rem;
+            color: white; font-size: 1.6rem; cursor: pointer;
+            background: none; border: none; opacity: 0.5;
+            transition: opacity 0.2s; line-height: 1; font-weight: 300;
+        }
+        .lightbox-close:hover { opacity: 1; }
+
+        /* ═══════════════════════════════
+           FLOATING BUTTON
+        ═══════════════════════════════ */
+        .float-reserve {
+            display: none; position: fixed;
+            bottom: 1.5rem; right: 1.5rem; z-index: 400;
+            background: var(--naver); color: white;
+            font-size: 0.82rem; font-weight: 700;
+            padding: 0.88rem 1.4rem; border-radius: 3px;
+            text-decoration: none;
+            box-shadow: 0 8px 32px rgba(3,199,90,0.38);
+            align-items: center; gap: 0.4rem;
+            letter-spacing: 0.04em;
+        }
+
+        /* ═══════════════════════════════
+           FOOTER
+        ═══════════════════════════════ */
+        footer {
+            background: #141108; color: rgba(255,255,255,0.35);
+            padding: 3rem 2rem; text-align: center;
+            border-top: 1px solid rgba(255,255,255,0.07);
+        }
+        .footer-name {
+            font-family: 'Noto Serif KR', serif;
+            font-size: 1.05rem; font-weight: 600;
+            color: rgba(255,255,255,0.65); margin-bottom: 1rem;
+            letter-spacing: 0.06em;
+        }
+        .footer-grid {
+            display: flex; flex-wrap: wrap;
+            justify-content: center; gap: 0.35rem 2rem;
+            font-size: 0.8rem; margin-bottom: 1.5rem;
+        }
+        .footer-item { display: flex; align-items: center; gap: 0.4rem; }
+        .footer-reserve {
+            display: inline-flex; align-items: center; gap: 0.4rem;
+            background: var(--naver); color: white;
+            padding: 0.7rem 1.6rem; border-radius: 3px;
+            text-decoration: none; font-weight: 700; font-size: 0.82rem;
+            transition: background 0.2s; letter-spacing: 0.04em;
+        }
+        .footer-reserve:hover { background: var(--naver-d); }
+        .footer-copy { font-size: 0.68rem; opacity: 0.28; margin-top: 2rem; }
+
+        /* ═══════════════════════════════
+           LOADING
+        ═══════════════════════════════ */
+        .loading { text-align: center; padding: 5rem 2rem; color: var(--muted); font-size: 0.82rem; letter-spacing: 0.08em; }
+        .loading::after {
+            content: ''; display: block; width: 26px; height: 26px;
+            border: 1.5px solid rgba(0,0,0,0.1);
+            border-top-color: var(--gold);
+            border-radius: 50%; margin: 1.2rem auto 0;
+            animation: spin 0.9s linear infinite;
+        }
+        @keyframes spin { to { transform: rotate(360deg); } }
+
+        /* ═══════════════════════════════
+           RESPONSIVE
+        ═══════════════════════════════ */
+        @media (max-width: 900px) {
+            nav { padding: 0 1.4rem; }
+            .nav-center { display: none; }
+            .hamburger { display: flex; }
+            .float-reserve { display: flex; }
+            .section { padding: 5.5rem 1.4rem; }
+            .slide-header { padding: 1.5rem 1.5rem 1.2rem; }
+            .info-grid { grid-template-columns: 1fr; }
+            .info-card { padding: 2rem 1.8rem; }
+        }
+        @media (max-width: 540px) {
+            .hero h1 { font-size: 2.6rem; }
+            .event-row {
+                flex-direction: column; align-items: flex-start; gap: 1rem;
+            }
+            .event-row:hover { padding-left: 0; padding-right: 0; margin: 0; }
+            .event-row-right { justify-content: flex-start; }
+        }
+    </style>
+</head>
+<body>
+
+<!-- ─── Navigation ─── -->
+<nav id="mainNav">
+    <div class="nav-logo" id="navClinicName">로아한의원 부천점</div>
+
+    <ul class="nav-center">
+        <li><a href="#events">이달의 이벤트</a></li>
+        <li><a href="#signature">시그니처</a></li>
+        <li><a href="#custom">커스텀 리프팅</a></li>
+        <li><a href="#reviews">후기 사진</a></li>
+        <li><a href="#contact">오시는 길</a></li>
+    </ul>
+
+    <div class="nav-right">
+        <a id="navReserveBtn" href="#" class="btn-naver-nav" target="_blank" rel="noopener">예약하기</a>
+        <button class="hamburger" id="hamburger" aria-label="메뉴">
+            <span></span><span></span><span></span>
+        </button>
+    </div>
+</nav>
+
+<!-- 모바일 메뉴 -->
+<div class="mobile-menu" id="mobileMenu">
+    <a href="#events"    onclick="closeMobileMenu()">이달의 이벤트</a>
+    <a href="#signature" onclick="closeMobileMenu()">시그니처</a>
+    <a href="#custom"    onclick="closeMobileMenu()">커스텀 리프팅</a>
+    <a href="#reviews"   onclick="closeMobileMenu()">후기 사진</a>
+    <a href="#contact"   onclick="closeMobileMenu()">오시는 길</a>
+</div>
+
+<!-- ─── Hero ─── -->
+<section class="hero" id="heroSection">
+    <div class="hero-bg" id="heroBg"></div>
+    <div class="hero-overlay"></div>
+    <div class="hero-content">
+        <div class="hero-eyebrow" id="heroBadge">Beauty · Lifting · Care</div>
+        <h1 id="heroTitle">로아한의원<br>부천점</h1>
+        <p class="hero-tagline" id="heroDesc">
+            리프팅에 진심인,<br>
+            리프팅 잘하는 로아한의원 부천점입니다.
+        </p>
+        <div class="hero-actions">
+            <a href="#events" class="btn btn-gold">이달의 이벤트</a>
+            <a id="heroReserveBtn" href="#" class="btn btn-naver" target="_blank" rel="noopener">네이버 예약하기</a>
+        </div>
+    </div>
+    <div class="scroll-indicator">
+        <span>Scroll</span>
+        <div class="scroll-line"></div>
+    </div>
+</section>
+
+<!-- ─── Events ─── -->
+<section id="events" class="section section-white">
+    <div class="section-inner">
+        <div class="section-head">
+            <div class="section-label">This Month</div>
+            <h2 class="section-title" id="eventsTitle">이달의 이벤트</h2>
+            <div class="section-rule"></div>
+        </div>
+        <div class="events-table" id="eventsGrid">
+            <div class="loading">로딩 중</div>
+        </div>
+        <p class="vat-note">* 모두 부가세 별도</p>
+    </div>
+</section>
+
+<!-- ─── Signature ─── -->
+<section id="signature" class="section section-white">
+    <div class="section-inner">
+        <div class="section-head">
+            <div class="section-label">Signature</div>
+            <h2 class="section-title">Signature</h2>
+            <div class="section-rule"></div>
+        </div>
+        <div id="signatureContainer">
+            <div class="loading">로딩 중</div>
+        </div>
+    </div>
+</section>
+
+<!-- ─── Custom Lifting ─── -->
+<section id="custom" class="section section-cream">
+    <div class="section-inner">
+        <div class="section-head">
+            <div class="section-label">Custom Lifting</div>
+            <h2 class="section-title">Custom Lifting</h2>
+            <div class="section-rule"></div>
+        </div>
+        <div id="customContainer">
+            <div class="loading">로딩 중</div>
+        </div>
+    </div>
+</section>
+
+<!-- ─── Gallery ─── -->
+<section id="reviews" class="section section-warm">
+    <div class="section-inner">
+        <div class="section-head">
+            <div class="section-label">Reviews</div>
+            <h2 class="section-title" id="reviewsTitle">시술 전후 사진</h2>
+            <div class="section-rule"></div>
+        </div>
+        <div class="review-filter-btns" id="reviewFilterBtns"></div>
+        <div class="review-carousel-wrap" id="reviewCarousel">
+            <div class="carousel-track" id="carouselTrack">
+                <div class="loading" style="min-width:100%;padding:4rem;">로딩 중</div>
+            </div>
+        </div>
+        <div class="carousel-controls">
+            <button class="carousel-nav prev" onclick="carouselMove(-1)">&#8249;</button>
+            <div class="carousel-dots" id="carouselDots"></div>
+            <button class="carousel-nav next" onclick="carouselMove(1)">&#8250;</button>
+        </div>
+        <div class="disclaimer">
+            <p>※ 시술의 효과는 개별적으로 상이할 수 있으며, 특정한 효과를 보장하거나 일반화하지 않습니다.<br>
+            ※ 사진은 보정되지 않은 사진입니다.<br>
+            ※ 시술 후 일시적으로 붓기, 멍, 통증, 염증 등의 부작용이 발생할 수 있습니다.<br>
+            ※ 시술 여부 및 방법은 의료진과의 충분한 상담을 통해 결정되어야 하며, 부작용 가능성에 대해 사전에 설명을 받으시기 바랍니다.</p>
+        </div>
+    </div>
+</section>
+
+<!-- ─── Contact ─── -->
+<section id="contact" class="section section-dark">
+    <div class="section-inner">
+        <div class="section-head">
+            <div class="section-label light">Location &amp; Hours</div>
+            <h2 class="section-title light">오시는 길 &amp; 진료시간</h2>
+            <div class="section-rule light"></div>
+        </div>
+        <div class="info-grid">
+
+            <div class="info-card">
+                <div class="info-card-label">주소</div>
+                <div class="info-card-main">경기 부천시 원미구<br>상동로 83 8층</div>
+                <a href="https://map.naver.com/p/entry/place/1064400953?" class="info-link" target="_blank" rel="noopener">
+                    지도 보기 →
+                </a>
+            </div>
+
+            <div class="info-card">
+                <div class="info-card-label">전화 예약</div>
+                <div class="info-card-main">032-324-1118</div>
+                <div class="info-card-sub">전화 또는 네이버 예약으로<br>간편하게 예약하세요</div>
+                <a id="contactReserveBtn" href="https://booking.naver.com/booking/13/bizes/865921/" class="info-link" target="_blank" rel="noopener">
+                    네이버 예약하기 →
+                </a>
+            </div>
+
+            <div class="info-card">
+                <div class="info-card-label">진료시간</div>
+                <table class="hours-table">
+                    <tr>
+                        <td>월 · 화 · 목 · 금</td>
+                        <td>오전 11:00 — 오후 9:00<span class="hours-note">점심 1:00 — 2:00</span></td>
+                    </tr>
+                    <tr>
+                        <td>토 · 공휴일</td>
+                        <td>오전 10:00 — 오후 3:00<span class="hours-note">점심시간 없음</span></td>
+                    </tr>
+                    <tr>
+                        <td class="hours-closed">수 · 일요일</td>
+                        <td class="hours-closed">휴진</td>
+                    </tr>
+                </table>
+            </div>
+
+        </div>
+    </div>
+</section>
+
+<!-- ─── Lightbox ─── -->
+<div class="lightbox" id="lightbox">
+    <button class="lightbox-close" onclick="closeLightbox()">✕</button>
+    <img id="lightboxImg" src="" alt="">
+</div>
+
+<!-- ─── Floating 예약 버튼 ─── -->
+<a id="floatReserveBtn" href="#" class="float-reserve" target="_blank" rel="noopener">
+    📅 네이버 예약
+</a>
+
+<!-- ─── Footer ─── -->
+<footer>
+    <div class="footer-name" id="footerName">로아한의원 부천점</div>
+    <div class="footer-grid" id="footerGrid">
+        <span class="footer-item">📍 경기 부천시 원미구 상동로 83 8층</span>
+        <span class="footer-item">📞 032-324-1118</span>
+    </div>
+    <a id="footerReserveLink" href="https://booking.naver.com/booking/13/bizes/865921/"
+       class="footer-reserve" target="_blank" rel="noopener">
+        📅 네이버 예약하기
+    </a>
+    <div class="footer-copy" id="footerCopy">© 2026 로아한의원 부천점. All rights reserved.</div>
+</footer>
+
+<script>
+/* ================================================================
+   아이콘 SVG (골드 라인아트)
+================================================================ */
+const ICONS = {
+'수줍은리프팅': `<svg viewBox="0 0 80 80" fill="none" stroke="#B09060" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg">
+  <!-- 얼굴 윤곽 -->
+  <path d="M26 62 Q21 51 21 41 Q21 27 30 21 Q34 18 40 18 Q46 18 50 21 Q59 27 59 41 Q59 51 54 62 Q49 69 40 70 Q31 69 26 62Z"/>
+  <!-- 눈썹 -->
+  <path d="M27.5 36 Q31 33 34.5 34" stroke-width="0.9"/>
+  <path d="M45.5 34 Q49 33 52.5 36" stroke-width="0.9"/>
+  <!-- 눈 (부드럽게 감은) -->
+  <path d="M28.5 39 Q31.5 37 34.5 39"/>
+  <path d="M45.5 39 Q48.5 37 51.5 39"/>
+  <!-- 코 -->
+  <path d="M38 44 Q37 47 37.5 49 Q39 50 40 50 Q41 50 42.5 49 Q43 47 42 44" stroke-width="0.9"/>
+  <!-- 입 -->
+  <path d="M33.5 55.5 Q37 59 40 59 Q43 59 46.5 55.5"/>
+  <!-- 왼쪽 리프팅 실 (점선 + 바브) -->
+  <path d="M24 55 Q16 44 12 27" stroke-dasharray="4,2.5"/>
+  <line x1="21.5" y1="50" x2="18.5" y2="46.5"/>
+  <line x1="18.5" y1="43" x2="15.5" y2="39.5"/>
+  <line x1="15" y1="35" x2="12" y2="31.5"/>
+  <path d="M9.5 30 L12 27 L14.5 30"/>
+  <!-- 오른쪽 리프팅 실 -->
+  <path d="M56 55 Q64 44 68 27" stroke-dasharray="4,2.5"/>
+  <line x1="58.5" y1="50" x2="61.5" y2="46.5"/>
+  <line x1="61.5" y1="43" x2="64.5" y2="39.5"/>
+  <line x1="65" y1="35" x2="68" y2="31.5"/>
+  <path d="M65.5 30 L68 27 L70.5 30"/>
+  <!-- 상단 스파클 (4각별) -->
+  <path d="M40 7 L41.3 11.2 L45.8 12 L41.3 12.8 L40 17 L38.7 12.8 L34.2 12 L38.7 11.2Z"/>
+</svg>`,
+
+'볼륨샷': `<svg viewBox="0 0 80 80" fill="none" stroke="#B09060" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg">
+  <!-- 주사기 손잡이 -->
+  <path d="M34 7 L46 7 L46 11 L34 11 Z"/>
+  <!-- 플런저 로드 -->
+  <line x1="40" y1="11" x2="40" y2="16"/>
+  <!-- 배럴 (실린더) -->
+  <rect x="34" y="16" width="12" height="28" rx="2"/>
+  <!-- 눈금 -->
+  <line x1="34" y1="23" x2="37.5" y2="23"/>
+  <line x1="34" y1="30" x2="37.5" y2="30"/>
+  <line x1="34" y1="37" x2="37.5" y2="37"/>
+  <!-- 약물 수위선 -->
+  <line x1="35" y1="33" x2="45" y2="33" stroke-width="0.8" stroke-dasharray="2.5,1.5"/>
+  <!-- 연결부 -->
+  <path d="M36.5 44 L38 49 L42 49 L43.5 44"/>
+  <!-- 바늘 -->
+  <line x1="40" y1="49" x2="40" y2="61"/>
+  <!-- 피부 표면 곡선 -->
+  <path d="M6 61 Q14 58 22 61 Q30 64 38 61 Q46 58 54 61 Q62 64 70 61 Q76 59 80 61" stroke-width="1.1"/>
+  <!-- 진피층 (점선) -->
+  <path d="M6 70 Q20 67 34 70 Q48 73 62 70 Q72 68 80 70" stroke-width="0.8" stroke-dasharray="3,2"/>
+  <!-- 볼륨 버블 (진피 아래에서 채워지는) -->
+  <circle cx="24" cy="70" r="6"/>
+  <circle cx="39" cy="72" r="5.5"/>
+  <circle cx="54" cy="70" r="6"/>
+  <circle cx="13" cy="69" r="4"/>
+  <!-- 주사 지점 글로우 -->
+  <circle cx="40" cy="62" r="2.5"/>
+</svg>`,
+
+'슬림샷': `<svg viewBox="0 0 80 80" fill="none" stroke="#B09060" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg">
+  <!-- 얼굴 윤곽 (점선: 배경 맥락) -->
+  <path d="M24 52 Q20 43 20 35 Q20 23 28 18 Q33 15 40 15 Q47 15 52 18 Q60 23 60 35 Q60 43 56 52 Q52 63 40 65 Q28 63 24 52Z" stroke-dasharray="3,2.5"/>
+  <!-- 눈 (채운 점) -->
+  <circle cx="31.5" cy="35" r="2.2" fill="#B09060" stroke="none"/>
+  <circle cx="48.5" cy="35" r="2.2" fill="#B09060" stroke="none"/>
+  <!-- 표적 원 (지방 제거 부위) -->
+  <circle cx="40" cy="55" r="11" stroke-dasharray="3,2.5" stroke-width="1.1"/>
+  <!-- 지방 방울 (teardrop) -->
+  <path d="M40 47 Q34.5 51.5 34.5 55.5 Q34.5 61 40 62.5 Q45.5 61 45.5 55.5 Q45.5 51.5 40 47Z"/>
+  <!-- X 표시 (용해/제거) -->
+  <line x1="37" y1="51" x2="43" y2="59" stroke-width="1.4"/>
+  <line x1="43" y1="51" x2="37" y2="59" stroke-width="1.4"/>
+  <!-- 크로스헤어 눈금 -->
+  <line x1="27" y1="55" x2="30.5" y2="55" stroke-width="0.9"/>
+  <line x1="49.5" y1="55" x2="53" y2="55" stroke-width="0.9"/>
+  <!-- 슬리밍 화살표 (양 옆에서 안쪽으로) -->
+  <path d="M8 43 L13 47 M8 47 L13 47 M8 51 L13 47" stroke-width="1.1"/>
+  <path d="M72 43 L67 47 M72 47 L67 47 M72 51 L67 47" stroke-width="1.1"/>
+  <!-- 소형 주사기 (좌상단: 시술 방식 표기) -->
+  <rect x="4" y="3" width="7" height="19" rx="1.5"/>
+  <path d="M3 3 L12 3 L12 6 L3 6 Z"/>
+  <line x1="4" y1="10" x2="6.5" y2="10" stroke-width="0.8"/>
+  <line x1="4" y1="15" x2="6.5" y2="15" stroke-width="0.8"/>
+  <line x1="7.5" y1="22" x2="7.5" y2="28"/>
+  <path d="M5.5 28 L7.5 32 L9.5 28"/>
+</svg>`,
+
+'울쎄라': `<svg viewBox="0 0 80 80" fill="none" stroke="#B09060" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg">
+  <rect x="28" y="8" width="24" height="16" rx="3"/>
+  <line x1="40" y1="24" x2="40" y2="36"/>
+  <circle cx="40" cy="54" r="3"/>
+  <path d="M18 68 Q29 56 40 54 Q51 56 62 68"/>
+  <path d="M23 74 Q31.5 62 40 58 Q48.5 62 57 74"/>
+  <path d="M33 28 Q33 35 40 37 Q47 35 47 28"/>
+  <path d="M29 28 Q28 37 40 41 Q52 37 51 28"/>
+</svg>`,
+
+'온다': `<svg viewBox="0 0 80 80" fill="none" stroke="#B09060" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg">
+  <rect x="28" y="9" width="24" height="18" rx="4"/>
+  <rect x="35" y="27" width="10" height="13" rx="2"/>
+  <path d="M31 22 Q33 19 35 22 Q37 25 39 22 Q41 19 43 22 Q45 25 47 22 Q49 19 51 22" stroke-width="1.3"/>
+  <path d="M25 65 Q32 55 40 50 Q48 55 55 65"/>
+  <path d="M18 72 Q29 57 40 52 Q51 57 62 72"/>
+  <path d="M10 76 Q25 73 40 74 Q55 73 70 76"/>
+  <circle cx="40" cy="50" r="2.5"/>
+</svg>`,
+
+'볼뉴머': `<svg viewBox="0 0 80 80" fill="none" stroke="#B09060" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg">
+  <rect x="27" y="9" width="26" height="16" rx="3"/>
+  <rect x="32" y="25" width="16" height="10" rx="2"/>
+  <circle cx="33" cy="35" r="1.8"/><circle cx="40" cy="35" r="1.8"/><circle cx="47" cy="35" r="1.8"/>
+  <path d="M33 39 L29 48 L35 48 L31 57"/>
+  <path d="M40 39 L38 48 L44 48 L40 57"/>
+  <path d="M47 39 L51 48 L45 48 L49 57"/>
+  <path d="M10 64 Q40 61 70 64"/>
+  <path d="M10 72 L70 72"/>
+  <circle cx="24" cy="68" r="1.5" fill="#B09060" stroke="none"/>
+  <circle cx="36" cy="70" r="1.5" fill="#B09060" stroke="none"/>
+  <circle cx="48" cy="68" r="1.5" fill="#B09060" stroke="none"/>
+  <circle cx="58" cy="70" r="1.5" fill="#B09060" stroke="none"/>
+</svg>`,
+
+'비너스코': `<svg viewBox="0 0 80 80" fill="none" stroke="#B09060" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg">
+  <path d="M42 14 Q39 24 36 35 Q32 47 34 57 Q36 64 40 66 Q44 63 47 57"/>
+  <path d="M34 57 Q37 63 40 65 Q43 62 46 57 Q44 54 40 55 Q36 54 34 57Z"/>
+  <line x1="40" y1="32" x2="40" y2="9" stroke-dasharray="3,2"/>
+  <path d="M37.5 13 L40 9 L42.5 13"/>
+  <circle cx="40" cy="20" r="1.8" fill="#B09060" stroke="none"/>
+  <circle cx="40" cy="30" r="1.8" fill="#B09060" stroke="none"/>
+  <path d="M49 57 L55 49 M52 52 L55 49 L58 51"/>
+  <path d="M53 18 L54.2 21.6 L58 22.5 L54.2 23.4 L53 27 L51.8 23.4 L48 22.5 L51.8 21.6Z" stroke-width="1.2"/>
+</svg>`
+};
+
+/* ================================================================
+   시그니처 섹션 이미지 (SVG 대신 실제 이미지 사용 시)
+================================================================ */
+const SIG_IMAGES = {
+    '수줍은리프팅': 'images/sig-lifting.png',
+    '볼륨샷':       'images/sig-volume.png',
+    '슬림샷':       'images/sig-slim.png'
+};
+
+/* ================================================================
+   설정값
+================================================================ */
+const SCRIPT_URL  = 'YOUR_APPS_SCRIPT_URL_HERE';
+const NAVER_PLACE = 'https://booking.naver.com/booking/13/bizes/865921/';
+const NAVER_MAP   = 'https://map.naver.com/p/entry/place/1064400953?';
+
+/* ──── 데모 데이터 ──── */
+const DEMO = {
+    info: {
+        clinicName:    '로아한의원 부천점',
+        heroTitle:     '로아한의원\n부천점',
+        tagline:       '리프팅에 진심인,\n리프팅 잘하는 로아한의원 부천점입니다.',
+        eventsTitle:   '이달의 이벤트',
+        programsTitle: '리프팅 프로그램',
+        reviewsTitle:  '시술 전후 사진',
+        address: '경기 부천시 원미구 상동로 83 8층',
+        phone:   '032-324-1118',
+        hours:   '월·화·목·금 11:00-21:00 (점심 13:00-14:00)  |  토·공휴일 10:00-15:00  |  수·일 휴진',
+        naverPlace: NAVER_PLACE
+    },
+    events: [
+        { 이벤트명: '울쎄라 300샷',   원가: '690000', 이벤트가격: '590000', 기간: '이달의 체험가', 표시: '예' },
+        { 이벤트명: '온다리프팅 6만줄', 원가: '390000', 이벤트가격: '240000', 기간: '이달의 체험가', 표시: '예' },
+        { 이벤트명: '팔자주름 패키지', 원가: '390000', 이벤트가격: '340000', 기간: '이달의 이벤트 (비너스코 시술 시 팔자볼륨실 2줄+진피재생약침 2cc)', 표시: '예' },
+        { 이벤트명: '볼륨샷 1부위',   원가: '550000', 이벤트가격: '450000', 기간: '이달의 체험가', 표시: '예' }
+    ],
+    programs: [
+        {
+            카테고리: 'Signature', 프로그램명: '수줍은리프팅', 표시: '예',
+            부제: '근본적인 탄력과 처짐 개선',
+            슬로건: '"시간을 되돌리는 가장 섬세하고 자연스러운 리프팅"',
+            핵심: '단순히 강하게 당기는 리프팅이 아닌, 본래의 얼굴 라인을 지키면서 처짐의 근본 원인을 해결합니다.',
+            포인트: [
+                ['자연스러운 결과', '과도한 당김이나 부자연스러운 표정 없이, 원래 내 얼굴처럼 생기 있는 탄력을 완성합니다.'],
+                ['커스텀 디자인', '공장에서 찍어내듯 똑같은 리프팅이 아닌, 개인의 얼굴 근육 움직임과 피부 두께를 고려하여 원장이 직접 설계하는 맞춤형 실리프팅입니다.'],
+                ['디테일의 차이', "'수줍은'이라는 이름처럼 세심한 디자인으로 자연스러움을 추구하는 로아의 철학을 담습니다."]
+            ]
+        },
+        {
+            카테고리: 'Signature', 프로그램명: '볼륨샷', 표시: '예',
+            부제: 'No 필러, 자가 콜라겐으로 완성하는 입체감',
+            슬로건: '"인위적인 필러 대신, 내 피부가 스스로 만드는 입체적 볼륨"',
+            핵심: '피부 깊숙한 곳에서부터 차오르는 자연스러운 볼륨감을 설계합니다.',
+            포인트: [
+                ['No 필러, Yes 콜라겐', '필러로 인한 퍼짐, 이동, 이물감 걱정 없이 본인의 피부 재생 능력을 극대화하여 꺼진 부위를 채웁니다.'],
+                ['자연스러운 동안', '시간이 지날수록 더 자연스럽고 매끄러워지는 얼굴 라인을 경험할 수 있습니다.'],
+                ['입체적 디자인', '얼굴 전체의 조화를 고려한 정밀한 시술로, 단순히 채우는 것을 넘어 얼굴의 입체적인 윤곽을 살립니다.']
+            ]
+        },
+        {
+            카테고리: 'Signature', 프로그램명: '슬림샷', 표시: '예',
+            부제: 'No 스테로이드',
+            슬로건: '"가장 자연스러운 슬림함을 찾다. 자극 없는 비움의 미학"',
+            핵심: '스테로이드나 히알라제 같은 인위적인 성분 없이, 자연 유래 한약 성분으로 안전하게 라인을 정돈합니다.',
+            포인트: [
+                ['No 스테로이드, No 히알라제', '스테로이드 성분으로 부작용 걱정 없도록 안전성에 집중했습니다.'],
+                ['한약 성분 조합', '독자적인 한약재 성분으로 피부 자극은 줄이고, 군살은 효과적으로 정리합니다.'],
+                ['매끄러운 윤곽', '이중턱, 심부볼 등 고민 부위의 지방층을 정밀하게 타겟팅하여, 탄탄하고 슬림한 페이스라인을 완성합니다.']
+            ]
+        },
+        { 카테고리: 'Custom Lifting', 프로그램명: '울쎄라',   설명: 'HIFU 고강도 집속 초음파로 피부 속 깊이 리프팅',             이미지: 'images/ulthera.png',  표시: '예' },
+        { 카테고리: 'Custom Lifting', 프로그램명: '온다',     설명: 'Microwave(마이크로파) 에너지로 심부 피부층까지 정밀 리프팅', 이미지: 'images/onda.png',     표시: '예' },
+        { 카테고리: 'Custom Lifting', 프로그램명: '볼뉴머',   설명: '고주파(RF) 에너지로 콜라겐 재생 & 피부 탄력 개선',         이미지: 'images/volnumer.png', 표시: '예' },
+        { 카테고리: 'Custom Lifting', 프로그램명: '비너스코', 설명: '수술 없이 콧대+코끝을 올리는 코실 리프팅 시술', 이미지: 'images/venusko.png', 표시: '예' }
+    ],
+    photos: [
+        {
+            시술명: '수줍은리프팅',
+            전사진URL: 'https://images.unsplash.com/photo-1519415510236-718bdfcd89c8?w=700&h=900&fit=crop',
+            후사진URL: 'https://images.unsplash.com/photo-1570172619644-dfd03ed5d881?w=700&h=900&fit=crop',
+            시술전날짜: '2026년 1월', 시술후날짜: '2026년 3월', 표시: '예'
+        },
+        {
+            시술명: '울쎄라',
+            전사진URL: 'https://images.unsplash.com/photo-1512290923902-8a9f81dc236c?w=700&h=900&fit=crop',
+            후사진URL: 'https://images.unsplash.com/photo-1540555700478-4be289fbecef?w=700&h=900&fit=crop',
+            시술전날짜: '2026년 2월', 시술후날짜: '2026년 4월', 표시: '예'
+        },
+        {
+            시술명: '온다',
+            전사진URL: 'https://images.unsplash.com/photo-1556909172-54557c7e4fb7?w=700&h=900&fit=crop',
+            후사진URL: 'https://images.unsplash.com/photo-1515377905703-c4788e51af15?w=700&h=900&fit=crop',
+            시술전날짜: '2026년 2월', 시술후날짜: '2026년 4월', 표시: '예'
+        },
+        {
+            시술명: '볼륨샷',
+            전사진URL: 'https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?w=700&h=900&fit=crop',
+            후사진URL: 'https://images.unsplash.com/photo-1598440947619-2c35fc9aa908?w=700&h=900&fit=crop',
+            시술전날짜: '2026년 3월', 시술후날짜: '2026년 5월', 표시: '예'
+        },
+        {
+            시술명: '슬림샷',
+            전사진URL: 'https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?w=700&h=900&fit=crop',
+            후사진URL: 'https://images.unsplash.com/photo-1559599101-f09722fb4948?w=700&h=900&fit=crop',
+            시술전날짜: '2026년 3월', 시술후날짜: '2026년 5월', 표시: '예'
+        },
+        {
+            시술명: '비너스코',
+            전사진URL: 'https://images.unsplash.com/photo-1579783902614-a3fb3927b6a5?w=700&h=900&fit=crop',
+            후사진URL: 'https://images.unsplash.com/photo-1508214751196-bcfd4ca60f91?w=700&h=900&fit=crop',
+            시술전날짜: '2026년 4월', 시술후날짜: '2026년 5월', 표시: '예'
+        }
+    ]
+};
+
+/* ──── 데이터 로드 ──── */
+async function loadData() {
+    if (SCRIPT_URL === 'YOUR_APPS_SCRIPT_URL_HERE') { render(DEMO); return; }
+    try {
+        const res = await fetch(SCRIPT_URL + '?t=' + Date.now());
+        render(await res.json());
+    } catch(e) { render(DEMO); }
+}
+
+function render(data) {
+    renderInfo(data.info     || {});
+    renderEvents(data.events || []);
+    renderTreatmentSection('signatureContainer', 'Signature',      data.programs || []);
+    renderTreatmentSection('customContainer',    'Custom Lifting', data.programs || []);
+    renderGallery(data.photos || []);
+}
+
+/* ──── 기본 정보 ──── */
+function renderInfo(info) {
+    const name = v(info, 'clinicName', '병원명', '로아한의원 부천점');
+    document.title = name;
+    el('navClinicName').textContent = name;
+    el('footerName').textContent    = name;
+    el('footerCopy').textContent    = '© ' + new Date().getFullYear() + ' ' + name + '. All rights reserved.';
+
+    const heroTitle = v(info, 'heroTitle', '한의원명', name);
+    el('heroTitle').innerHTML = heroTitle.replace(/\\n/g,'<br>').replace(/\n/g,'<br>');
+    el('heroDesc').innerHTML  = (v(info, 'tagline', '소개문구', '')).replace(/\\n/g,'<br>').replace(/\n/g,'<br>');
+    el('eventsTitle').textContent  = v(info, 'eventsTitle',  '이벤트제목', '이달의 이벤트');
+    el('reviewsTitle').textContent = v(info, 'reviewsTitle', '후기제목',   '시술 전후 사진');
+
+    const address = v(info, 'address', '주소', '');
+    const phone   = v(info, 'phone',   '전화번호', '');
+    const hours   = v(info, 'hours',   '영업시간', '');
+    el('footerGrid').innerHTML = [
+        address ? `<a class="footer-item" href="${NAVER_MAP}" target="_blank" rel="noopener" style="color:inherit;text-decoration:none;">📍 ${address}</a>` : '',
+        phone   ? `<span class="footer-item">📞 ${phone}</span>` : '',
+        hours   ? `<span class="footer-item">🕐 ${hours}</span>` : ''
+    ].filter(Boolean).join('');
+
+    const naverUrl = v(info, 'naverPlace', '네이버예약', NAVER_PLACE);
+    const isSet = naverUrl && naverUrl !== 'YOUR_NAVER_PLACE_URL_HERE';
+    ['navReserveBtn','heroReserveBtn','floatReserveBtn','footerReserveLink','contactReserveBtn'].forEach(id => {
+        const btn = el(id);
+        if (!btn) return;
+        if (isSet) {
+            btn.href = naverUrl;
+        } else {
+            btn.addEventListener('click', e => {
+                e.preventDefault();
+                alert('네이버 플레이스 링크를 설정해 주세요.\nindex.html 의 NAVER_PLACE 에 링크를 붙여넣으면 됩니다.');
+            });
+        }
+    });
+}
+
+/* ──── 이달의 이벤트 ──── */
+function renderEvents(list) {
+    const visible = list.filter(r => isOn(r['표시'] ?? r.show));
+    if (!visible.length) {
+        el('eventsGrid').innerHTML = '<p class="no-data">현재 진행 중인 이벤트가 없습니다.</p>';
+        return;
+    }
+    el('eventsGrid').innerHTML = visible.map(ev => {
+        const name   = ev['이벤트명']   || ev.name         || '';
+        const orig   = ev['원가']        || ev.originalPrice || '';
+        const sale   = ev['이벤트가격'] || ev.eventPrice    || '';
+        const period = ev['기간']        || ev.period        || '';
+        const pct    = calcDiscount(orig, sale);
+        return `<div class="event-row">
+            <div class="event-row-left">
+                <div class="event-row-name">${name}</div>
+                ${period ? `<div class="event-row-period">${period}</div>` : ''}
+            </div>
+            <div class="event-row-right">
+                ${orig ? `<span class="price-original">${fmt(orig)}</span>` : ''}
+                ${orig ? `<span class="price-arrow">→</span>` : ''}
+                <span class="price-event">${fmt(sale)}</span>
+                ${pct  ? `<span class="price-badge">${pct}</span>` : ''}
+            </div>
+        </div>`;
+    }).join('');
+}
+
+/* ──── 시그니처 / 커스텀 리프팅 ──── */
+function renderTreatmentSection(containerId, category, list) {
+    const items = list.filter(p => {
+        if (!isOn(p['표시'] ?? p.show)) return false;
+        const cat = p['카테고리'] || p.category || '';
+        return cat.toLowerCase() === category.toLowerCase();
+    });
+    if (!items.length) {
+        el(containerId).innerHTML = '<p class="no-data">등록된 프로그램이 없습니다.</p>';
+        return;
+    }
+    const cols = items.length <= 3 ? 'cols-3' : 'cols-4';
+    const isSignature = items.some(p => p['슬로건'] || p['포인트']);
+
+    if (isSignature) {
+        // ── 시그니처: 에디토리얼 세로 나열 레이아웃 ──
+        el(containerId).innerHTML = `<div class="sig-list">` +
+            items.map((p, i) => {
+                const name    = p['프로그램명'] || '';
+                const sub     = p['부제']    || '';
+                const slogan  = p['슬로건'] || '';
+                const message = p['핵심']    || '';
+                const points  = p['포인트'] || [];
+                const num     = String(i + 1).padStart(2, '0');
+                const icon    = ICONS[name] || '';
+                const sigImg  = SIG_IMAGES[name] || '';
+                const iconHtml = sigImg
+                    ? `<div class="sig-icon"><img src="${sigImg}" alt="${name}" loading="lazy"></div>`
+                    : (icon ? `<div class="sig-icon">${icon}</div>` : '');
+                return `<div class="sig-item">
+                    <div class="sig-left">
+                        <div class="sig-num">${num}</div>
+                        <div class="sig-name">${name}</div>
+                        ${sub ? `<div class="sig-sub">${sub}</div>` : ''}
+                        ${iconHtml}
+                    </div>
+                    <div class="sig-right">
+                        ${slogan  ? `<div class="sig-slogan">${slogan}</div>` : ''}
+                        ${message ? `<div class="sig-message">${message}</div>` : ''}
+                        ${points.length ? `<div class="sig-points">${
+                            points.map(([title, body]) => `
+                                <div class="sig-point">
+                                    <div class="sig-point-bar"></div>
+                                    <div class="sig-point-text">
+                                        <div class="sig-point-title">${title}</div>
+                                        <div class="sig-point-body">${body}</div>
+                                    </div>
+                                </div>`).join('')
+                        }</div>` : ''}
+                    </div>
+                </div>`;
+            }).join('') +
+        `</div>`;
+    } else {
+        // ── 커스텀 리프팅: 카드 그리드 (기기사진 or SVG 아이콘) ──
+        el(containerId).innerHTML = `<div class="treatment-grid ${cols}">` +
+            items.map((p, i) => {
+                const name = p['프로그램명'] || '';
+                const desc = p['설명']       || '';
+                const img  = p['이미지']     || p['imageUrl'] || '';
+                const icon = ICONS[name]     || '';
+                const imgHtml = img
+                    ? `<div class="treatment-img-wrap device-photo"><img src="${img}" alt="${name}" loading="lazy"></div>`
+                    : `<div class="treatment-img-wrap"><div class="treatment-svg-bg">${icon}</div></div>`;
+                return `<div class="treatment-card">
+                    ${imgHtml}
+                    <div class="treatment-card-body">
+                        <div class="treatment-num">${String(i + 1).padStart(2, '0')}</div>
+                        <div class="treatment-name">${name}</div>
+                        ${desc ? `<div class="treatment-desc">${desc}</div>` : ''}
+                    </div>
+                </div>`;
+            }).join('') +
+        `</div>`;
+    }
+}
+
+/* ──── 후기 사진 캐러셀 ──── */
+const FILTER_ORDER = ['수줍은리프팅', '울쎄라', '온다', '볼륨샷', '슬림샷', '비너스코'];
+let _allPhotos   = [];
+let _activeFilter = null;
+
+function renderGallery(list) {
+    // localStorage에 저장된 사진 우선 적용
+    const stored = loadLocalPhotos();
+    if (stored.length) list = stored.concat(list.slice(stored.length));
+
+    // 표시 필터 + FILTER_ORDER 순서로 정렬
+    _allPhotos = list
+        .filter(r => isOn(r['표시'] ?? r.show))
+        .sort((a, b) => getPhotoSortKey(a) - getPhotoSortKey(b));
+
+    // 필터 버튼 생성
+    buildFilterButtons();
+
+    // 전체 슬라이드 렌더
+    buildCarousel(_allPhotos);
+
+    // 터치 스와이프 (한 번만 등록)
+    const wrap = el('reviewCarousel');
+    let tx = 0;
+    wrap.addEventListener('touchstart', e => { tx = e.touches[0].clientX; }, {passive:true});
+    wrap.addEventListener('touchend',   e => {
+        const diff = tx - e.changedTouches[0].clientX;
+        if (Math.abs(diff) > 45) carouselMove(diff > 0 ? 1 : -1);
+    });
+}
+
+/* 버튼 순서 기준 정렬 키 */
+function getPhotoSortKey(photo) {
+    const name = photo['시술명'] || photo.title || '';
+    for (let i = 0; i < FILTER_ORDER.length; i++) {
+        if (name.includes(FILTER_ORDER[i])) return i;
+    }
+    return FILTER_ORDER.length;
+}
+
+/* 필터 버튼 DOM 생성 */
+function buildFilterButtons() {
+    const container = el('reviewFilterBtns');
+    if (!container) return;
+    container.innerHTML = FILTER_ORDER.map(name =>
+        `<button class="review-filter-btn" onclick="filterCarousel('${name}')">${name}</button>`
+    ).join('');
+}
+
+/* 필터 클릭 → 해당 시술 슬라이드만 표시 (재클릭 시 전체 복원) */
+function filterCarousel(name) {
+    const btns = document.querySelectorAll('.review-filter-btn');
+    if (_activeFilter === name) {
+        // 같은 버튼 재클릭 → 전체 보기
+        _activeFilter = null;
+        btns.forEach(b => b.classList.remove('active'));
+        buildCarousel(_allPhotos);
+    } else {
+        _activeFilter = name;
+        btns.forEach(b => b.classList.toggle('active', b.textContent === name));
+        const filtered = _allPhotos.filter(p =>
+            (p['시술명'] || p.title || '').includes(name)
+        );
+        if (!filtered.length) {
+            el('carouselTrack').innerHTML =
+                `<div style="min-width:100%;height:320px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:0.8rem;background:#111;color:#888;">
+                    <div style="font-size:2rem;">📷</div>
+                    <div style="font-size:1rem;font-weight:600;color:#aaa;">${name}</div>
+                    <div style="font-size:0.85rem;">전후 사진 준비 중입니다.</div>
+                </div>`;
+            el('carouselDots').innerHTML = '';
+            carouselIdx = 0;
+        } else {
+            buildCarousel(filtered);
+        }
+    }
+}
+
+/* 슬라이드 HTML 빌드 (필터 교체 시에도 재사용) */
+function buildCarousel(list) {
+    if (!list.length) {
+        el('carouselTrack').innerHTML = '<div style="min-width:100%;padding:3rem;text-align:center;">등록된 후기 사진이 없습니다.</div>';
+        el('carouselDots').innerHTML = '';
+        return;
+    }
+    el('carouselTrack').innerHTML = list.map(p => {
+        const title      = p['시술명']     || p.title      || '';
+        const beforeUrl  = p['전사진URL']  || p.beforeUrl  || '';
+        const afterUrl   = p['후사진URL']  || p.afterUrl   || '';
+        const beforeDate = p['시술전날짜'] || p.beforeDate || '';
+        const afterDate  = p['시술후날짜'] || p.afterDate  || '';
+        return `<div class="review-slide">
+            <div class="slide-header">
+                <div class="slide-subtitle">Before &amp; After</div>
+                ${title ? `<div class="slide-title">${title}</div>` : ''}
+            </div>
+            <div class="slide-photos">
+                <div class="slide-photo">
+                    ${beforeUrl
+                        ? `<img src="${beforeUrl}" alt="Before" loading="lazy" onclick="openLightbox('${beforeUrl}')">`
+                        : '<div style="background:#222;width:100%;height:100%;display:flex;align-items:center;justify-content:center;color:#555;font-size:0.8rem;">사진 없음</div>'}
+                    <div class="photo-label-wrap">
+                        <span class="photo-label before">Before</span>
+                        <span class="photo-date">${beforeDate}</span>
+                    </div>
+                </div>
+                <div class="slide-photo">
+                    ${afterUrl
+                        ? `<img src="${afterUrl}" alt="After" loading="lazy" onclick="openLightbox('${afterUrl}')">`
+                        : '<div style="background:#222;width:100%;height:100%;display:flex;align-items:center;justify-content:center;color:#555;font-size:0.8rem;">사진 없음</div>'}
+                    <div class="photo-label-wrap">
+                        <span class="photo-label after">After</span>
+                        <span class="photo-date">${afterDate}</span>
+                    </div>
+                </div>
+            </div>
+        </div>`;
+    }).join('');
+
+    el('carouselDots').innerHTML = list.map((_, i) =>
+        `<button class="carousel-dot ${i === 0 ? 'active' : ''}" onclick="carouselGoTo(${i})"></button>`
+    ).join('');
+
+    carouselIdx = 0;
+    el('carouselTrack').style.transform = 'translateX(0)';
+}
+
+/* ──── localStorage 사진 로드 ──── */
+function loadLocalPhotos() {
+    try {
+        const saved = localStorage.getItem('roa_photos');
+        return saved ? JSON.parse(saved) : [];
+    } catch(e) { return []; }
+}
+
+/* ──── 캐러셀 컨트롤 ──── */
+let carouselIdx = 0;
+function carouselMove(dir) {
+    const slides = document.querySelectorAll('.review-slide');
+    if (!slides.length) return;
+    carouselGoTo(((carouselIdx + dir) % slides.length + slides.length) % slides.length);
+}
+function carouselGoTo(idx) {
+    carouselIdx = idx;
+    const w = el('reviewCarousel').offsetWidth;
+    el('carouselTrack').style.transform = `translateX(-${idx * w}px)`;
+    document.querySelectorAll('.carousel-dot').forEach((d, i) => d.classList.toggle('active', i === idx));
+}
+// 창 크기 변경 시 위치 재계산
+window.addEventListener('resize', () => {
+    if (document.querySelectorAll('.review-slide').length) carouselGoTo(carouselIdx);
+});
+
+/* ──── 라이트박스 ──── */
+function openLightbox(src) {
+    el('lightboxImg').src = src;
+    el('lightbox').classList.add('open');
+    document.body.style.overflow = 'hidden';
+}
+function closeLightbox() {
+    el('lightbox').classList.remove('open');
+    document.body.style.overflow = '';
+}
+el('lightbox').addEventListener('click', function(e) { if (e.target === this) closeLightbox(); });
+
+/* ──── 네비게이션 ──── */
+window.addEventListener('scroll', () => {
+    el('mainNav').classList.toggle('nav-solid', window.scrollY > 60);
+});
+el('mainNav').classList.toggle('nav-solid', window.scrollY > 60);
+
+el('hamburger').addEventListener('click', () => {
+    el('mobileMenu').classList.toggle('open');
+});
+function closeMobileMenu() { el('mobileMenu').classList.remove('open'); }
+
+/* ──── 히어로 Ken Burns 효과 ──── */
+window.addEventListener('load', () => {
+    el('heroSection').classList.add('loaded');
+});
+
+/* ──── 유틸 ──── */
+function el(id) { return document.getElementById(id); }
+
+function v(obj, ...keys) {
+    const fallback = keys.pop();
+    for (const k of keys) { if (obj[k] !== undefined && obj[k] !== '') return obj[k]; }
+    return fallback;
+}
+
+function isOn(val) {
+    if (val === undefined || val === null || val === '') return true;
+    const s = String(val).trim().toLowerCase();
+    return s !== 'false' && s !== 'no' && s !== '아니오' && s !== '숨김' && s !== '0';
+}
+
+function fmt(val) {
+    if (!val && val !== 0) return '';
+    const s = String(val).trim();
+    const n = parseInt(s.replace(/[^0-9]/g, ''));
+    if (isNaN(n) || !s.match(/^[\d,]+$/)) return s;
+    return n.toLocaleString('ko-KR') + '원';
+}
+
+function calcDiscount(orig, sale) {
+    const o = parseInt(String(orig).replace(/[^0-9]/g, ''));
+    const s = parseInt(String(sale).replace(/[^0-9]/g, ''));
+    if (!o || !s || o <= s) return '';
+    const pct = Math.round((1 - s / o) * 100);
+    return pct > 0 ? pct + '% OFF' : '';
+}
+
+loadData();
+</script>
+</body>
+</html>

@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>로아한의원 — 후기 사진 관리</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        :root {
+            --dark: #111; --mid: #444; --muted: #888;
+            --cream: #F4EFE6; --white: #fff;
+            --gold: #B09060; --border: #E0D8CC;
+            --red: #C0392B; --green: #27AE60;
+        }
+        body {
+            font-family: 'Noto Sans KR', sans-serif;
+            background: var(--cream);
+            color: var(--dark); min-height: 100vh;
+        }
+        header {
+            background: var(--dark); color: white;
+            padding: 1.2rem 2rem;
+            display: flex; justify-content: space-between; align-items: center;
+        }
+        header h1 { font-size: 1rem; font-weight: 500; letter-spacing: 0.05em; }
+        header a {
+            color: var(--gold); font-size: 0.8rem; text-decoration: none;
+            letter-spacing: 0.08em;
+        }
+        header a:hover { opacity: 0.75; }
+
+        .container { max-width: 900px; margin: 0 auto; padding: 3rem 1.5rem; }
+
+        .page-title { font-size: 1.5rem; font-weight: 700; margin-bottom: 0.4rem; }
+        .page-desc { font-size: 0.85rem; color: var(--muted); margin-bottom: 2.5rem; line-height: 1.7; }
+
+        .card {
+            background: var(--white); border-radius: 8px;
+            padding: 2rem; margin-bottom: 1.5rem;
+            border: 1px solid var(--border);
+        }
+        .card-header {
+            display: flex; justify-content: space-between; align-items: center;
+            margin-bottom: 1.5rem;
+        }
+        .card-num {
+            display: inline-flex; align-items: center; justify-content: center;
+            width: 28px; height: 28px; background: var(--dark);
+            color: white; border-radius: 50%; font-size: 0.8rem; font-weight: 700;
+            margin-right: 0.6rem; flex-shrink: 0;
+        }
+        .card-title { font-size: 1rem; font-weight: 700; display: flex; align-items: center; }
+        .btn-remove {
+            background: none; border: 1px solid var(--border);
+            color: var(--muted); font-size: 0.75rem; padding: 0.3rem 0.8rem;
+            border-radius: 4px; cursor: pointer; transition: all 0.2s;
+        }
+        .btn-remove:hover { border-color: var(--red); color: var(--red); }
+
+        .field-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1.2rem; margin-bottom: 1.2rem; }
+        .field { display: flex; flex-direction: column; gap: 0.4rem; }
+        .field label { font-size: 0.72rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); }
+        .field input[type="text"] {
+            border: 1px solid var(--border); border-radius: 4px;
+            padding: 0.6rem 0.8rem; font-size: 0.9rem;
+            font-family: inherit; outline: none; transition: border-color 0.2s;
+        }
+        .field input[type="text"]:focus { border-color: var(--gold); }
+
+        .upload-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1.2rem; }
+        .upload-box {
+            border: 2px dashed var(--border); border-radius: 8px;
+            padding: 1.5rem; text-align: center;
+            cursor: pointer; transition: all 0.2s; position: relative;
+            overflow: hidden; min-height: 180px;
+            display: flex; flex-direction: column;
+            align-items: center; justify-content: center; gap: 0.6rem;
+        }
+        .upload-box:hover { border-color: var(--gold); background: #fdfaf5; }
+        .upload-box.has-image { border-style: solid; border-color: var(--green); padding: 0; }
+        .upload-box input[type="file"] {
+            position: absolute; inset: 0; opacity: 0; cursor: pointer; width: 100%; height: 100%;
+        }
+        .upload-box img {
+            width: 100%; height: 180px; object-fit: cover; display: block; border-radius: 6px;
+        }
+        .upload-label {
+            font-size: 0.72rem; font-weight: 700; letter-spacing: 0.12em;
+            text-transform: uppercase; color: var(--muted);
+        }
+        .upload-icon { font-size: 1.8rem; opacity: 0.3; }
+        .upload-hint { font-size: 0.72rem; color: var(--muted); }
+        .upload-clear {
+            position: absolute; top: 0.4rem; right: 0.4rem; z-index: 2;
+            background: rgba(0,0,0,0.55); color: white;
+            border: none; border-radius: 50%; width: 24px; height: 24px;
+            font-size: 0.7rem; cursor: pointer; display: flex;
+            align-items: center; justify-content: center; transition: background 0.2s;
+        }
+        .upload-clear:hover { background: rgba(0,0,0,0.8); }
+
+        .btn-add {
+            width: 100%; padding: 1rem; border-radius: 8px;
+            border: 2px dashed var(--border); background: transparent;
+            font-family: inherit; font-size: 0.88rem; color: var(--mid);
+            cursor: pointer; transition: all 0.2s; margin-bottom: 1.5rem;
+            letter-spacing: 0.05em;
+        }
+        .btn-add:hover { border-color: var(--gold); color: var(--gold); background: #fdfaf5; }
+
+        .actions {
+            display: flex; gap: 1rem; flex-wrap: wrap;
+            justify-content: space-between; align-items: center;
+        }
+        .btn-save {
+            background: var(--dark); color: white;
+            border: none; border-radius: 4px;
+            padding: 0.85rem 2.2rem; font-size: 0.88rem; font-weight: 700;
+            font-family: inherit; cursor: pointer; transition: background 0.2s;
+            letter-spacing: 0.06em;
+        }
+        .btn-save:hover { background: #333; }
+        .btn-clear-all {
+            background: none; border: 1px solid var(--border);
+            color: var(--muted); border-radius: 4px;
+            padding: 0.85rem 1.5rem; font-size: 0.82rem;
+            font-family: inherit; cursor: pointer; transition: all 0.2s;
+        }
+        .btn-clear-all:hover { border-color: var(--red); color: var(--red); }
+
+        .toast {
+            position: fixed; bottom: 2rem; left: 50%; transform: translateX(-50%);
+            background: var(--dark); color: white;
+            padding: 0.85rem 1.8rem; border-radius: 4px;
+            font-size: 0.85rem; font-weight: 500; letter-spacing: 0.04em;
+            opacity: 0; transition: opacity 0.3s; pointer-events: none;
+            white-space: nowrap;
+        }
+        .toast.show { opacity: 1; }
+
+        .notice {
+            background: #FFF8ED; border: 1px solid #F0D799;
+            border-radius: 8px; padding: 1.2rem 1.5rem;
+            font-size: 0.8rem; color: #7A5A00; line-height: 1.8;
+            margin-bottom: 2rem;
+        }
+        .notice strong { font-weight: 700; }
+
+        @media (max-width: 600px) {
+            .field-row { grid-template-columns: 1fr; }
+            .upload-row { grid-template-columns: 1fr; }
+            header { flex-direction: column; gap: 0.5rem; text-align: center; }
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <h1>로아한의원 부천점 — 사진 관리</h1>
+    <a href="index.html">← 홈페이지로 돌아가기</a>
+</header>
+
+<div class="container">
+    <div class="page-title">시술 전후 사진 업로드</div>
+    <p class="page-desc">
+        사진을 업로드하면 이 기기의 브라우저에 저장되어 홈페이지 후기 사진 섹션에 자동으로 표시됩니다.<br>
+        저장 후 홈페이지를 새로고침하면 바로 반영됩니다.
+    </p>
+
+    <div class="notice">
+        <strong>📌 참고사항</strong><br>
+        — 사진은 이 기기(브라우저)에만 저장됩니다. 다른 기기에서 보려면 구글 드라이브 방식을 사용하세요.<br>
+        — 사진 용량이 너무 크면 저장이 안 될 수 있습니다. 각 사진 5MB 이하를 권장합니다.<br>
+        — 저장 후 <a href="index.html" style="color:#B09060;">홈페이지</a>를 새로고침하면 바로 반영됩니다.
+    </div>
+
+    <div id="photoList"></div>
+
+    <button class="btn-add" onclick="addPhoto()">＋ 사진 항목 추가</button>
+
+    <div class="actions">
+        <button class="btn-clear-all" onclick="clearAll()">모두 삭제</button>
+        <button class="btn-save" onclick="saveAll()">저장하고 홈페이지에 적용</button>
+    </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+let photos = [];
+
+function init() {
+    try {
+        const saved = localStorage.getItem('roa_photos');
+        photos = saved ? JSON.parse(saved) : [];
+    } catch(e) { photos = []; }
+
+    if (!photos.length) photos.push(emptyPhoto());
+    renderAll();
+}
+
+function emptyPhoto() {
+    return { 시술명: '', 시술전날짜: '', 시술후날짜: '', 전사진URL: '', 후사진URL: '', 표시: '예' };
+}
+
+function addPhoto() {
+    photos.push(emptyPhoto());
+    renderAll();
+    setTimeout(() => {
+        const cards = document.querySelectorAll('.card');
+        cards[cards.length - 1].scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }, 50);
+}
+
+function removePhoto(idx) {
+    if (photos.length === 1) { photos[0] = emptyPhoto(); renderAll(); return; }
+    photos.splice(idx, 1);
+    renderAll();
+}
+
+function renderAll() {
+    document.getElementById('photoList').innerHTML = photos.map((p, i) => renderCard(p, i)).join('');
+}
+
+function renderCard(p, idx) {
+    const beforePreview = p['전사진URL']
+        ? `<img src="${p['전사진URL']}" alt="Before">
+           <button class="upload-clear" onclick="clearImg(${idx},'before')" title="삭제">✕</button>`
+        : `<div class="upload-icon">📷</div>
+           <div class="upload-label">Before (시술 전)</div>
+           <div class="upload-hint">클릭하거나 사진을 끌어다 놓으세요</div>`;
+
+    const afterPreview = p['후사진URL']
+        ? `<img src="${p['후사진URL']}" alt="After">
+           <button class="upload-clear" onclick="clearImg(${idx},'after')" title="삭제">✕</button>`
+        : `<div class="upload-icon">✨</div>
+           <div class="upload-label">After (시술 후)</div>
+           <div class="upload-hint">클릭하거나 사진을 끌어다 놓으세요</div>`;
+
+    return `<div class="card" id="card-${idx}">
+        <div class="card-header">
+            <div class="card-title">
+                <span class="card-num">${idx + 1}</span>
+                ${p['시술명'] || '사진 ' + (idx + 1)}
+            </div>
+            <button class="btn-remove" onclick="removePhoto(${idx})">삭제</button>
+        </div>
+        <div class="field-row">
+            <div class="field">
+                <label>시술명</label>
+                <input type="text" value="${escHtml(p['시술명'])}" placeholder="예: 울쎄라 리프팅"
+                    oninput="updateField(${idx},'시술명',this.value)">
+            </div>
+            <div class="field">
+                <label>표시 여부</label>
+                <input type="text" value="${escHtml(p['표시'])}" placeholder="예 / 아니오"
+                    oninput="updateField(${idx},'표시',this.value)">
+            </div>
+        </div>
+        <div class="field-row">
+            <div class="field">
+                <label>시술 전 날짜</label>
+                <input type="text" value="${escHtml(p['시술전날짜'])}" placeholder="예: 2026년 1월"
+                    oninput="updateField(${idx},'시술전날짜',this.value)">
+            </div>
+            <div class="field">
+                <label>시술 후 날짜</label>
+                <input type="text" value="${escHtml(p['시술후날짜'])}" placeholder="예: 2026년 3월"
+                    oninput="updateField(${idx},'시술후날짜',this.value)">
+            </div>
+        </div>
+        <div class="upload-row">
+            <div class="upload-box ${p['전사진URL'] ? 'has-image' : ''}" id="before-box-${idx}">
+                <input type="file" accept="image/*"
+                    onchange="handleFile(event,${idx},'before')"
+                    ondragover="this.parentElement.style.borderColor='var(--gold)'"
+                    ondragleave="this.parentElement.style.borderColor=''">
+                ${beforePreview}
+            </div>
+            <div class="upload-box ${p['후사진URL'] ? 'has-image' : ''}" id="after-box-${idx}">
+                <input type="file" accept="image/*"
+                    onchange="handleFile(event,${idx},'after')"
+                    ondragover="this.parentElement.style.borderColor='var(--gold)'"
+                    ondragleave="this.parentElement.style.borderColor=''">
+                ${afterPreview}
+            </div>
+        </div>
+    </div>`;
+}
+
+function updateField(idx, key, val) {
+    photos[idx][key] = val;
+    // 제목만 즉시 갱신
+    const title = document.querySelector(`#card-${idx} .card-title`);
+    if (title) {
+        const num = title.querySelector('.card-num').outerHTML;
+        title.innerHTML = num + ' ' + (photos[idx]['시술명'] || '사진 ' + (idx + 1));
+    }
+}
+
+function handleFile(event, idx, side) {
+    const file = event.target.files[0];
+    if (!file) return;
+
+    if (file.size > 6 * 1024 * 1024) {
+        showToast('파일이 너무 큽니다. 6MB 이하 사진을 사용하세요.');
+        return;
+    }
+
+    const reader = new FileReader();
+    reader.onload = function(e) {
+        const key = side === 'before' ? '전사진URL' : '후사진URL';
+        photos[idx][key] = e.target.result;
+        renderAll();
+    };
+    reader.readAsDataURL(file);
+}
+
+function clearImg(idx, side) {
+    event.stopPropagation();
+    const key = side === 'before' ? '전사진URL' : '후사진URL';
+    photos[idx][key] = '';
+    renderAll();
+}
+
+function saveAll() {
+    try {
+        const toSave = photos.filter(p => p['전사진URL'] || p['후사진URL'] || p['시술명']);
+        localStorage.setItem('roa_photos', JSON.stringify(toSave));
+        showToast('✓ 저장되었습니다. 홈페이지를 새로고침해 주세요.');
+    } catch(e) {
+        if (e.name === 'QuotaExceededError') {
+            showToast('저장 공간이 부족합니다. 사진 수를 줄이거나 파일 크기를 줄여주세요.');
+        } else {
+            showToast('저장 중 오류가 발생했습니다: ' + e.message);
+        }
+    }
+}
+
+function clearAll() {
+    if (!confirm('저장된 사진을 모두 삭제할까요?\n홈페이지의 사진도 함께 사라집니다.')) return;
+    localStorage.removeItem('roa_photos');
+    photos = [emptyPhoto()];
+    renderAll();
+    showToast('삭제되었습니다.');
+}
+
+function showToast(msg) {
+    const t = document.getElementById('toast');
+    t.textContent = msg;
+    t.classList.add('show');
+    setTimeout(() => t.classList.remove('show'), 3000);
+}
+
+function escHtml(s) {
+    if (!s) return '';
+    return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+init();
+</script>
+</body>
+</html>
