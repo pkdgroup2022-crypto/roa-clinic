@@ -99,88 +99,57 @@
         .mobile-menu a:last-child { border-bottom: none; }
 
         /* ═══════════════════════════════
-           HERO — 3-GIF 트리플 패널
+           HERO — 단일 GIF 배경 + 왼쪽 정렬
         ═══════════════════════════════ */
         .hero {
             position: relative;
             height: 100vh; min-height: 700px;
-            display: flex; align-items: center; justify-content: center;
+            display: flex; align-items: center; justify-content: flex-start;
             overflow: hidden;
         }
 
-        /* GIF 3분할 배경 */
-        .hero-gifs {
+        /* 단일 GIF 배경 */
+        .hero-gif-bg {
             position: absolute; inset: 0;
-            display: grid; grid-template-columns: repeat(3, 1fr);
-        }
-        .hero-gif-panel {
-            overflow: hidden; position: relative;
             background: #0d0d0d;
         }
-        .hero-gif-panel:nth-child(1) { background: #120e0e; }
-        .hero-gif-panel:nth-child(2) { background: #0e120e; }
-        .hero-gif-panel:nth-child(3) { background: #0e0e12; }
-        .hero-gif-panel img {
+        .hero-gif-bg img {
             width: 100%; height: 100%; object-fit: cover; display: block;
-            opacity: 0.85;
-        }
-        /* 패널 사이 얇은 구분선 */
-        .hero-gif-panel + .hero-gif-panel::before {
-            content: ''; position: absolute; inset: 0 auto 0 0;
-            width: 1px; background: rgba(255,255,255,0.1); z-index: 2;
-        }
-        /* 각 패널 하단 라벨 */
-        .hero-gif-label {
-            position: absolute; bottom: 1.4rem; left: 0; right: 0;
-            text-align: center; z-index: 3;
-            font-size: 0.6rem; letter-spacing: 0.22em; text-transform: uppercase;
-            color: rgba(255,255,255,0.35); font-weight: 500;
+            opacity: 0.88;
         }
 
         .hero-overlay {
             position: absolute; inset: 0; z-index: 5;
             background: linear-gradient(
-                160deg,
-                rgba(4,4,4,0.62) 0%,
-                rgba(4,4,4,0.44) 45%,
-                rgba(4,4,4,0.72) 100%
+                to right,
+                rgba(4,4,4,0.72) 0%,
+                rgba(4,4,4,0.42) 60%,
+                rgba(4,4,4,0.18) 100%
             );
         }
         .hero-content {
             position: relative; z-index: 10;
-            text-align: center; padding: 0 2rem; max-width: 900px;
-        }
-        .hero-eyebrow {
-            display: inline-block;
-            font-size: 0.68rem; font-weight: 500;
-            letter-spacing: 0.32em; text-transform: uppercase;
-            color: var(--gold-l); margin-bottom: 2rem;
+            text-align: left;
+            padding: 0 2rem 0 5vw;
+            max-width: 760px;
         }
         .hero h1 {
             font-family: 'Noto Serif KR', serif;
-            font-size: clamp(2.4rem, 6vw, 5rem);
+            font-size: clamp(2rem, 4.5vw, 3.8rem);
             font-weight: 700; color: white;
-            line-height: 1.18; letter-spacing: -0.01em;
-            margin-bottom: 1.4rem;
+            line-height: 1.25; letter-spacing: -0.01em;
+            margin-bottom: 1.2rem;
             word-break: keep-all;
         }
         .hero-tagline {
-            font-size: clamp(0.95rem, 1.8vw, 1.15rem);
-            color: rgba(255,255,255,0.65);
-            line-height: 2; margin-bottom: 3rem;
+            font-size: clamp(0.88rem, 1.5vw, 1rem);
+            color: rgba(255,255,255,0.6);
+            line-height: 2; margin-bottom: 0;
             font-weight: 300; letter-spacing: 0.04em;
         }
-        .hero-actions {
-            display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;
-        }
-
-        /* 모바일: GIF 패널 세로로 적층 */
         @media (max-width: 600px) {
-            .hero-gifs { grid-template-columns: 1fr; grid-template-rows: repeat(3, 1fr); }
-            .hero-gif-panel + .hero-gif-panel::before {
-                inset: auto 0 auto 0; width: auto; height: 1px;
-            }
-            .hero-gif-label { display: none; }
+            .hero-content { padding: 0 1.8rem; }
+            .hero h1 { font-size: clamp(1.8rem, 8vw, 2.8rem); }
         }
 
         .btn {
@@ -253,11 +222,11 @@
         /* ═══════════════════════════════
            CLINIC APPEAL (2페이지)
         ═══════════════════════════════ */
-        #clinic { background: #0f0f0f; }
+        #clinic { background: var(--cream); }
         .clinic-headline {
             font-family: 'Noto Serif KR', serif;
             font-size: clamp(1.8rem, 3.5vw, 2.8rem);
-            font-weight: 700; color: white;
+            font-weight: 700; color: var(--dark);
             line-height: 1.4; word-break: keep-all;
             margin-bottom: 4rem; text-align: center;
         }
@@ -266,54 +235,54 @@
             gap: 1.5rem;
         }
         .clinic-card {
-            background: #1a1a1a;
-            border: 1px solid rgba(255,255,255,0.07);
-            border-top: 2px solid var(--gold);
+            background: var(--white);
+            border: 1px solid rgba(0,0,0,0.07);
+            border-top: 3px solid var(--gold);
             padding: 2.8rem 2.2rem 2.4rem;
             border-radius: 2px;
         }
         .clinic-card-tag {
-            font-size: 0.68rem; font-weight: 700;
-            letter-spacing: 0.2em; text-transform: uppercase;
-            color: var(--gold-l); margin-bottom: 2rem;
+            font-size: 0.78rem; font-weight: 800;
+            letter-spacing: 0.06em;
+            color: var(--gold); margin-bottom: 2rem;
         }
-        /* 숫자 카운터 카드 */
-        .clinic-stat-block { margin-bottom: 1.6rem; }
+        /* 숫자 카운터 카드 — 라벨 위에, 숫자 크게 */
+        .clinic-stat-block { margin-bottom: 2rem; }
+        .clinic-stat-label {
+            font-size: 0.78rem; color: var(--muted);
+            font-weight: 500; margin-bottom: 0.4rem;
+            letter-spacing: 0.04em;
+        }
         .clinic-stat-row {
-            display: flex; align-items: baseline; gap: 0.3rem;
-            margin-bottom: 0.3rem;
+            display: flex; align-items: baseline; gap: 0.4rem;
         }
         .clinic-counter {
             font-family: 'Noto Serif KR', serif;
-            font-size: clamp(2.4rem, 4vw, 3.2rem);
-            font-weight: 700; color: white;
+            font-size: clamp(2.8rem, 5vw, 4rem);
+            font-weight: 700; color: var(--dark);
             letter-spacing: -0.02em; line-height: 1;
         }
         .clinic-unit {
-            font-size: 1.1rem; font-weight: 500;
-            color: var(--gold-l);
-        }
-        .clinic-stat-label {
-            font-size: 0.82rem; color: rgba(255,255,255,0.45);
-            font-weight: 400; margin-bottom: 1.4rem;
+            font-size: 1.3rem; font-weight: 600;
+            color: var(--gold);
         }
         .clinic-stat-period {
-            font-size: 0.7rem; color: rgba(255,255,255,0.28);
-            letter-spacing: 0.04em; margin-top: 0.8rem;
-            border-top: 1px solid rgba(255,255,255,0.07);
+            font-size: 0.7rem; color: var(--muted);
+            letter-spacing: 0.04em; margin-top: 1rem;
+            border-top: 1px solid rgba(0,0,0,0.08);
             padding-top: 1rem;
         }
         /* 텍스트 카드 */
         .clinic-card-main {
             font-family: 'Noto Serif KR', serif;
-            font-size: clamp(1.6rem, 3vw, 2.2rem);
-            font-weight: 700; color: white;
-            line-height: 1.3; margin-bottom: 1rem;
+            font-size: clamp(1.7rem, 3vw, 2.4rem);
+            font-weight: 700; color: var(--dark);
+            line-height: 1.35; margin-bottom: 1.2rem;
             word-break: keep-all;
         }
         .clinic-card-sub {
-            font-size: 0.88rem; color: rgba(255,255,255,0.5);
-            line-height: 1.8;
+            font-size: 0.88rem; color: var(--muted);
+            line-height: 1.9;
         }
         @media (max-width: 760px) {
             .clinic-cards { grid-template-columns: 1fr; }
@@ -826,10 +795,10 @@
 
     <ul class="nav-center">
         <li><a href="#clinic">로아한의원</a></li>
+        <li><a href="#reviews">시술 후기</a></li>
         <li><a href="#events">이달의 이벤트</a></li>
         <li><a href="#signature">시그니처</a></li>
         <li><a href="#custom">커스텀 리프팅</a></li>
-        <li><a href="#reviews">후기 사진</a></li>
         <li><a href="#contact">오시는 길</a></li>
     </ul>
 
@@ -844,44 +813,26 @@
 <!-- 모바일 메뉴 -->
 <div class="mobile-menu" id="mobileMenu">
     <a href="#clinic"    onclick="closeMobileMenu()">로아한의원</a>
+    <a href="#reviews"   onclick="closeMobileMenu()">시술 후기</a>
     <a href="#events"    onclick="closeMobileMenu()">이달의 이벤트</a>
     <a href="#signature" onclick="closeMobileMenu()">시그니처</a>
     <a href="#custom"    onclick="closeMobileMenu()">커스텀 리프팅</a>
-    <a href="#reviews"   onclick="closeMobileMenu()">후기 사진</a>
     <a href="#contact"   onclick="closeMobileMenu()">오시는 길</a>
 </div>
 
 <!-- ─── Hero ─── -->
 <section class="hero" id="heroSection">
-    <!-- 3-GIF 트리플 패널 배경 -->
-    <div class="hero-gifs" id="heroGifs">
-        <div class="hero-gif-panel">
-            <img src="images/hero-design.gif" alt="얼굴 디자인" id="heroGif1"
-                 onerror="this.style.display='none'">
-            <div class="hero-gif-label">Design</div>
-        </div>
-        <div class="hero-gif-panel">
-            <img src="images/hero-treatment.gif" alt="시술 모습" id="heroGif2"
-                 onerror="this.style.display='none'">
-            <div class="hero-gif-label">Treatment</div>
-        </div>
-        <div class="hero-gif-panel">
-            <img src="images/hero-consult.gif" alt="상담 모습" id="heroGif3"
-                 onerror="this.style.display='none'">
-            <div class="hero-gif-label">Consult</div>
-        </div>
+    <!-- 단일 GIF 배경 (images/hero.gif 파일 넣으면 자동 표시) -->
+    <div class="hero-gif-bg">
+        <img src="images/hero.gif" alt="로아한의원 시술 영상"
+             onerror="this.style.display='none'">
     </div>
     <div class="hero-overlay"></div>
     <div class="hero-content">
-        <div class="hero-eyebrow" id="heroBadge">Beauty · Lifting · Care</div>
-        <h1 id="heroTitle">리프팅, 아무한테나<br>맡기지 마세요</h1>
+        <h1 id="heroTitle">리프팅,<br>아무나한테<br>맡기지 마세요</h1>
         <p class="hero-tagline" id="heroDesc">
             10년간 경험한 시술 노하우를 담았습니다.
         </p>
-        <div class="hero-actions">
-            <a href="#clinic" class="btn btn-gold">로아한의원 알아보기</a>
-            <a id="heroReserveBtn" href="#" class="btn btn-naver" target="_blank" rel="noopener">네이버 예약하기</a>
-        </div>
     </div>
     <div class="scroll-indicator">
         <span>Scroll</span>
@@ -901,18 +852,18 @@
             <div class="clinic-card">
                 <div class="clinic-card-tag">숫자로 증명하는 실력</div>
                 <div class="clinic-stat-block">
+                    <div class="clinic-stat-label">리프팅 시술 건수</div>
                     <div class="clinic-stat-row">
                         <span class="clinic-counter" id="statTreatments" data-target="4500">0</span>
                         <span class="clinic-unit">건</span>
                     </div>
-                    <div class="clinic-stat-label">리프팅 시술</div>
                 </div>
                 <div class="clinic-stat-block">
+                    <div class="clinic-stat-label">리프팅 실 사용</div>
                     <div class="clinic-stat-row">
                         <span class="clinic-counter" id="statThreads" data-target="101300">0</span>
                         <span class="clinic-unit">줄</span>
                     </div>
-                    <div class="clinic-stat-label">리프팅 실 사용</div>
                 </div>
                 <div class="clinic-stat-period" id="statPeriod">2024년 3월 ~ 2026년 5월 기준</div>
             </div>
@@ -931,6 +882,34 @@
                 <div class="clinic-card-sub">처음 만나는 순간부터 시술 마치는 순간까지<br>의료진이 직접 함께합니다</div>
             </div>
 
+        </div>
+    </div>
+</section>
+
+<!-- ─── 시술 후기 (3페이지) ─── -->
+<section id="reviews" class="section section-warm">
+    <div class="section-inner">
+        <div class="section-head">
+            <div class="section-label">Reviews</div>
+            <h2 class="section-title" id="reviewsTitle">시술 후기</h2>
+            <div class="section-rule"></div>
+        </div>
+        <div class="review-filter-btns" id="reviewFilterBtns"></div>
+        <div class="review-carousel-wrap" id="reviewCarousel">
+            <div class="carousel-track" id="carouselTrack">
+                <div class="loading" style="min-width:100%;padding:4rem;">로딩 중</div>
+            </div>
+        </div>
+        <div class="carousel-controls">
+            <button class="carousel-nav prev" onclick="carouselMove(-1)">&#8249;</button>
+            <div class="carousel-dots" id="carouselDots"></div>
+            <button class="carousel-nav next" onclick="carouselMove(1)">&#8250;</button>
+        </div>
+        <div class="disclaimer">
+            <p>※ 시술의 효과는 개별적으로 상이할 수 있으며, 특정한 효과를 보장하거나 일반화하지 않습니다.<br>
+            ※ 사진은 보정되지 않은 사진입니다.<br>
+            ※ 시술 후 일시적으로 붓기, 멍, 통증, 염증 등의 부작용이 발생할 수 있습니다.<br>
+            ※ 시술 여부 및 방법은 의료진과의 충분한 상담을 통해 결정되어야 하며, 부작용 가능성에 대해 사전에 설명을 받으시기 바랍니다.</p>
         </div>
     </div>
 </section>
@@ -974,34 +953,6 @@
         </div>
         <div id="customContainer">
             <div class="loading">로딩 중</div>
-        </div>
-    </div>
-</section>
-
-<!-- ─── Gallery ─── -->
-<section id="reviews" class="section section-warm">
-    <div class="section-inner">
-        <div class="section-head">
-            <div class="section-label">Reviews</div>
-            <h2 class="section-title" id="reviewsTitle">시술 전후 사진</h2>
-            <div class="section-rule"></div>
-        </div>
-        <div class="review-filter-btns" id="reviewFilterBtns"></div>
-        <div class="review-carousel-wrap" id="reviewCarousel">
-            <div class="carousel-track" id="carouselTrack">
-                <div class="loading" style="min-width:100%;padding:4rem;">로딩 중</div>
-            </div>
-        </div>
-        <div class="carousel-controls">
-            <button class="carousel-nav prev" onclick="carouselMove(-1)">&#8249;</button>
-            <div class="carousel-dots" id="carouselDots"></div>
-            <button class="carousel-nav next" onclick="carouselMove(1)">&#8250;</button>
-        </div>
-        <div class="disclaimer">
-            <p>※ 시술의 효과는 개별적으로 상이할 수 있으며, 특정한 효과를 보장하거나 일반화하지 않습니다.<br>
-            ※ 사진은 보정되지 않은 사진입니다.<br>
-            ※ 시술 후 일시적으로 붓기, 멍, 통증, 염증 등의 부작용이 발생할 수 있습니다.<br>
-            ※ 시술 여부 및 방법은 의료진과의 충분한 상담을 통해 결정되어야 하며, 부작용 가능성에 대해 사전에 설명을 받으시기 바랍니다.</p>
         </div>
     </div>
 </section>
@@ -1243,7 +1194,7 @@ const DEMO = {
         tagline:       '10년간 경험한 시술 노하우를 담았습니다.',
         eventsTitle:   '이달의 이벤트',
         programsTitle: '리프팅 프로그램',
-        reviewsTitle:  '시술 전후 사진',
+        reviewsTitle:  '시술 후기',
         address: '경기 부천시 원미구 상동로 83 8층',
         phone:   '032-324-1118',
         hours:   '월·화·목·금 11:00-21:00 (점심 13:00-14:00)  |  토·공휴일 10:00-15:00  |  수·일 휴진',
