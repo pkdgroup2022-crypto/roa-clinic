@@ -163,7 +163,40 @@
 </header>
 
 <div class="container">
-    <div class="page-title">시술 전후 사진 업로드</div>
+
+    <!-- ── 섹션 1: 클리닉 통계 ── -->
+    <div class="page-title">📊 클리닉 통계 수치 관리</div>
+    <p class="page-desc">
+        홈페이지 2페이지(로아한의원 소개)에 표시되는 시술 건수·실 사용 줄수·기준 기간을 수정할 수 있습니다.<br>
+        저장 버튼을 누르면 즉시 반영됩니다.
+    </p>
+
+    <div class="card" style="margin-bottom:2.5rem;">
+        <div class="card-title" style="margin-bottom:1.5rem;">✏️ 수치 수정</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:1.2rem;margin-bottom:1.2rem;">
+            <div>
+                <label style="font-size:0.8rem;font-weight:700;color:#666;display:block;margin-bottom:0.4rem;">리프팅 시술 건수</label>
+                <input type="number" id="inputTreatments" style="width:100%;padding:0.7rem 1rem;border:1px solid #ddd;border-radius:6px;font-size:1rem;font-family:inherit;" placeholder="4500">
+            </div>
+            <div>
+                <label style="font-size:0.8rem;font-weight:700;color:#666;display:block;margin-bottom:0.4rem;">리프팅 실 사용 줄수</label>
+                <input type="number" id="inputThreads" style="width:100%;padding:0.7rem 1rem;border:1px solid #ddd;border-radius:6px;font-size:1rem;font-family:inherit;" placeholder="101300">
+            </div>
+        </div>
+        <div style="margin-bottom:1.4rem;">
+            <label style="font-size:0.8rem;font-weight:700;color:#666;display:block;margin-bottom:0.4rem;">기준 기간 (예: 2024년 3월 ~ 2026년 5월)</label>
+            <input type="text" id="inputPeriod" style="width:100%;padding:0.7rem 1rem;border:1px solid #ddd;border-radius:6px;font-size:0.95rem;font-family:inherit;" placeholder="2024년 3월 ~ 2026년 5월">
+        </div>
+        <button onclick="saveStats()" style="background:#B09060;color:white;border:none;padding:0.75rem 2rem;border-radius:6px;font-size:0.9rem;font-weight:700;cursor:pointer;font-family:inherit;">
+            💾 통계 수치 저장
+        </button>
+        <span id="statsSaveMsg" style="margin-left:1rem;font-size:0.85rem;color:#27AE60;display:none;">✓ 저장됐습니다!</span>
+    </div>
+
+    <hr style="border:none;border-top:2px solid #e0d8cc;margin:2.5rem 0;">
+
+    <!-- ── 섹션 2: 전후사진 ── -->
+    <div class="page-title">🖼 시술 전후 사진 업로드</div>
     <p class="page-desc">
         사진을 업로드하면 이 기기의 브라우저에 저장되어 홈페이지 후기 사진 섹션에 자동으로 표시됩니다.<br>
         저장 후 홈페이지를 새로고침하면 바로 반영됩니다.
@@ -191,7 +224,36 @@
 <script>
 let photos = [];
 
+/* ── 통계 수치 저장/불러오기 ── */
+function loadStats() {
+    try {
+        const saved = localStorage.getItem('roa_stats');
+        const stats = saved ? JSON.parse(saved) : {};
+        const t = document.getElementById('inputTreatments');
+        const th = document.getElementById('inputThreads');
+        const p  = document.getElementById('inputPeriod');
+        if (t)  t.value  = stats.treatments || 4500;
+        if (th) th.value = stats.threads    || 101300;
+        if (p)  p.value  = stats.period     || '2024년 3월 ~ 2026년 5월';
+    } catch(e) {}
+}
+
+function saveStats() {
+    const stats = {
+        treatments: parseInt(document.getElementById('inputTreatments').value) || 4500,
+        threads:    parseInt(document.getElementById('inputThreads').value)    || 101300,
+        period:     document.getElementById('inputPeriod').value               || '2024년 3월 ~ 2026년 5월'
+    };
+    try {
+        localStorage.setItem('roa_stats', JSON.stringify(stats));
+        const msg = document.getElementById('statsSaveMsg');
+        msg.style.display = 'inline';
+        setTimeout(() => { msg.style.display = 'none'; }, 2500);
+    } catch(e) { alert('저장 실패: ' + e.message); }
+}
+
 function init() {
+    loadStats();
     try {
         const saved = localStorage.getItem('roa_photos');
         photos = saved ? JSON.parse(saved) : [];

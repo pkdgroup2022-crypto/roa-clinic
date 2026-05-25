@@ -99,7 +99,7 @@
         .mobile-menu a:last-child { border-bottom: none; }
 
         /* ═══════════════════════════════
-           HERO
+           HERO — 3-GIF 트리플 패널
         ═══════════════════════════════ */
         .hero {
             position: relative;
@@ -107,48 +107,80 @@
             display: flex; align-items: center; justify-content: center;
             overflow: hidden;
         }
-        .hero-bg {
+
+        /* GIF 3분할 배경 */
+        .hero-gifs {
             position: absolute; inset: 0;
-            background-image: url('https://images.unsplash.com/photo-1616394584738-fc6e612e71b9?w=1920&h=1080&fit=crop&q=85');
-            background-size: cover; background-position: center 25%;
-            transform: scale(1.04);
-            transition: transform 8s ease;
+            display: grid; grid-template-columns: repeat(3, 1fr);
         }
-        .hero.loaded .hero-bg { transform: scale(1); }
+        .hero-gif-panel {
+            overflow: hidden; position: relative;
+            background: #0d0d0d;
+        }
+        .hero-gif-panel:nth-child(1) { background: #120e0e; }
+        .hero-gif-panel:nth-child(2) { background: #0e120e; }
+        .hero-gif-panel:nth-child(3) { background: #0e0e12; }
+        .hero-gif-panel img {
+            width: 100%; height: 100%; object-fit: cover; display: block;
+            opacity: 0.85;
+        }
+        /* 패널 사이 얇은 구분선 */
+        .hero-gif-panel + .hero-gif-panel::before {
+            content: ''; position: absolute; inset: 0 auto 0 0;
+            width: 1px; background: rgba(255,255,255,0.1); z-index: 2;
+        }
+        /* 각 패널 하단 라벨 */
+        .hero-gif-label {
+            position: absolute; bottom: 1.4rem; left: 0; right: 0;
+            text-align: center; z-index: 3;
+            font-size: 0.6rem; letter-spacing: 0.22em; text-transform: uppercase;
+            color: rgba(255,255,255,0.35); font-weight: 500;
+        }
+
         .hero-overlay {
-            position: absolute; inset: 0;
+            position: absolute; inset: 0; z-index: 5;
             background: linear-gradient(
                 160deg,
-                rgba(8,8,8,0.55) 0%,
-                rgba(8,8,8,0.42) 45%,
-                rgba(8,8,8,0.68) 100%
+                rgba(4,4,4,0.62) 0%,
+                rgba(4,4,4,0.44) 45%,
+                rgba(4,4,4,0.72) 100%
             );
         }
         .hero-content {
             position: relative; z-index: 10;
-            text-align: center; padding: 0 2rem; max-width: 860px;
+            text-align: center; padding: 0 2rem; max-width: 900px;
         }
         .hero-eyebrow {
             display: inline-block;
             font-size: 0.68rem; font-weight: 500;
             letter-spacing: 0.32em; text-transform: uppercase;
-            color: var(--gold-l); margin-bottom: 1.8rem;
+            color: var(--gold-l); margin-bottom: 2rem;
         }
         .hero h1 {
             font-family: 'Noto Serif KR', serif;
-            font-size: clamp(3rem, 7vw, 5.5rem);
-            font-weight: 600; color: white;
-            line-height: 1.1; letter-spacing: 0.01em;
-            margin-bottom: 1.6rem;
+            font-size: clamp(2.4rem, 6vw, 5rem);
+            font-weight: 700; color: white;
+            line-height: 1.18; letter-spacing: -0.01em;
+            margin-bottom: 1.4rem;
+            word-break: keep-all;
         }
         .hero-tagline {
-            font-size: clamp(0.88rem, 1.6vw, 1.05rem);
-            color: rgba(255,255,255,0.72);
-            line-height: 2.1; margin-bottom: 3rem;
-            font-weight: 300; letter-spacing: 0.02em;
+            font-size: clamp(0.95rem, 1.8vw, 1.15rem);
+            color: rgba(255,255,255,0.65);
+            line-height: 2; margin-bottom: 3rem;
+            font-weight: 300; letter-spacing: 0.04em;
         }
         .hero-actions {
             display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;
+        }
+
+        /* 모바일: GIF 패널 세로로 적층 */
+        @media (max-width: 600px) {
+            .hero-gifs { grid-template-columns: 1fr; grid-template-rows: repeat(3, 1fr); }
+            .hero-gif-panel + .hero-gif-panel::before {
+                inset: auto 0 auto 0; width: auto; height: 1px;
+            }
+            .hero-gif-label { display: none; }
         }
 
         .btn {
@@ -217,6 +249,76 @@
             background: var(--gold); margin-top: 1.4rem;
         }
         .section-rule.light { background: var(--gold-l); }
+
+        /* ═══════════════════════════════
+           CLINIC APPEAL (2페이지)
+        ═══════════════════════════════ */
+        #clinic { background: #0f0f0f; }
+        .clinic-headline {
+            font-family: 'Noto Serif KR', serif;
+            font-size: clamp(1.8rem, 3.5vw, 2.8rem);
+            font-weight: 700; color: white;
+            line-height: 1.4; word-break: keep-all;
+            margin-bottom: 4rem; text-align: center;
+        }
+        .clinic-cards {
+            display: grid; grid-template-columns: repeat(3, 1fr);
+            gap: 1.5rem;
+        }
+        .clinic-card {
+            background: #1a1a1a;
+            border: 1px solid rgba(255,255,255,0.07);
+            border-top: 2px solid var(--gold);
+            padding: 2.8rem 2.2rem 2.4rem;
+            border-radius: 2px;
+        }
+        .clinic-card-tag {
+            font-size: 0.68rem; font-weight: 700;
+            letter-spacing: 0.2em; text-transform: uppercase;
+            color: var(--gold-l); margin-bottom: 2rem;
+        }
+        /* 숫자 카운터 카드 */
+        .clinic-stat-block { margin-bottom: 1.6rem; }
+        .clinic-stat-row {
+            display: flex; align-items: baseline; gap: 0.3rem;
+            margin-bottom: 0.3rem;
+        }
+        .clinic-counter {
+            font-family: 'Noto Serif KR', serif;
+            font-size: clamp(2.4rem, 4vw, 3.2rem);
+            font-weight: 700; color: white;
+            letter-spacing: -0.02em; line-height: 1;
+        }
+        .clinic-unit {
+            font-size: 1.1rem; font-weight: 500;
+            color: var(--gold-l);
+        }
+        .clinic-stat-label {
+            font-size: 0.82rem; color: rgba(255,255,255,0.45);
+            font-weight: 400; margin-bottom: 1.4rem;
+        }
+        .clinic-stat-period {
+            font-size: 0.7rem; color: rgba(255,255,255,0.28);
+            letter-spacing: 0.04em; margin-top: 0.8rem;
+            border-top: 1px solid rgba(255,255,255,0.07);
+            padding-top: 1rem;
+        }
+        /* 텍스트 카드 */
+        .clinic-card-main {
+            font-family: 'Noto Serif KR', serif;
+            font-size: clamp(1.6rem, 3vw, 2.2rem);
+            font-weight: 700; color: white;
+            line-height: 1.3; margin-bottom: 1rem;
+            word-break: keep-all;
+        }
+        .clinic-card-sub {
+            font-size: 0.88rem; color: rgba(255,255,255,0.5);
+            line-height: 1.8;
+        }
+        @media (max-width: 760px) {
+            .clinic-cards { grid-template-columns: 1fr; }
+            .clinic-card { padding: 2rem 1.6rem; }
+        }
 
         /* ═══════════════════════════════
            EVENTS
@@ -723,6 +825,7 @@
     <div class="nav-logo" id="navClinicName">로아한의원 부천점</div>
 
     <ul class="nav-center">
+        <li><a href="#clinic">로아한의원</a></li>
         <li><a href="#events">이달의 이벤트</a></li>
         <li><a href="#signature">시그니처</a></li>
         <li><a href="#custom">커스텀 리프팅</a></li>
@@ -740,6 +843,7 @@
 
 <!-- 모바일 메뉴 -->
 <div class="mobile-menu" id="mobileMenu">
+    <a href="#clinic"    onclick="closeMobileMenu()">로아한의원</a>
     <a href="#events"    onclick="closeMobileMenu()">이달의 이벤트</a>
     <a href="#signature" onclick="closeMobileMenu()">시그니처</a>
     <a href="#custom"    onclick="closeMobileMenu()">커스텀 리프팅</a>
@@ -749,23 +853,85 @@
 
 <!-- ─── Hero ─── -->
 <section class="hero" id="heroSection">
-    <div class="hero-bg" id="heroBg"></div>
+    <!-- 3-GIF 트리플 패널 배경 -->
+    <div class="hero-gifs" id="heroGifs">
+        <div class="hero-gif-panel">
+            <img src="images/hero-design.gif" alt="얼굴 디자인" id="heroGif1"
+                 onerror="this.style.display='none'">
+            <div class="hero-gif-label">Design</div>
+        </div>
+        <div class="hero-gif-panel">
+            <img src="images/hero-treatment.gif" alt="시술 모습" id="heroGif2"
+                 onerror="this.style.display='none'">
+            <div class="hero-gif-label">Treatment</div>
+        </div>
+        <div class="hero-gif-panel">
+            <img src="images/hero-consult.gif" alt="상담 모습" id="heroGif3"
+                 onerror="this.style.display='none'">
+            <div class="hero-gif-label">Consult</div>
+        </div>
+    </div>
     <div class="hero-overlay"></div>
     <div class="hero-content">
         <div class="hero-eyebrow" id="heroBadge">Beauty · Lifting · Care</div>
-        <h1 id="heroTitle">로아한의원<br>부천점</h1>
+        <h1 id="heroTitle">리프팅, 아무한테나<br>맡기지 마세요</h1>
         <p class="hero-tagline" id="heroDesc">
-            리프팅에 진심인,<br>
-            리프팅 잘하는 로아한의원 부천점입니다.
+            10년간 경험한 시술 노하우를 담았습니다.
         </p>
         <div class="hero-actions">
-            <a href="#events" class="btn btn-gold">이달의 이벤트</a>
+            <a href="#clinic" class="btn btn-gold">로아한의원 알아보기</a>
             <a id="heroReserveBtn" href="#" class="btn btn-naver" target="_blank" rel="noopener">네이버 예약하기</a>
         </div>
     </div>
     <div class="scroll-indicator">
         <span>Scroll</span>
         <div class="scroll-line"></div>
+    </div>
+</section>
+
+<!-- ─── Clinic Appeal (2페이지) ─── -->
+<section id="clinic" class="section">
+    <div class="section-inner">
+        <h2 class="clinic-headline">
+            로아한의원 부천점은<br>리프팅에 집중합니다.
+        </h2>
+        <div class="clinic-cards">
+
+            <!-- 카드 1: 숫자 실력 -->
+            <div class="clinic-card">
+                <div class="clinic-card-tag">숫자로 증명하는 실력</div>
+                <div class="clinic-stat-block">
+                    <div class="clinic-stat-row">
+                        <span class="clinic-counter" id="statTreatments" data-target="4500">0</span>
+                        <span class="clinic-unit">건</span>
+                    </div>
+                    <div class="clinic-stat-label">리프팅 시술</div>
+                </div>
+                <div class="clinic-stat-block">
+                    <div class="clinic-stat-row">
+                        <span class="clinic-counter" id="statThreads" data-target="101300">0</span>
+                        <span class="clinic-unit">줄</span>
+                    </div>
+                    <div class="clinic-stat-label">리프팅 실 사용</div>
+                </div>
+                <div class="clinic-stat-period" id="statPeriod">2024년 3월 ~ 2026년 5월 기준</div>
+            </div>
+
+            <!-- 카드 2: 재방문율 -->
+            <div class="clinic-card">
+                <div class="clinic-card-tag">재방문율</div>
+                <div class="clinic-card-main">매달 10명 중<br>4명이 다시<br>찾습니다</div>
+                <div class="clinic-card-sub">결과가 만든 신뢰입니다</div>
+            </div>
+
+            <!-- 카드 3: 의료진 직접 -->
+            <div class="clinic-card">
+                <div class="clinic-card-tag">의료진 직접 상담 · 직접 시술</div>
+                <div class="clinic-card-main">처음부터<br>마치는 순간까지<br>함께합니다</div>
+                <div class="clinic-card-sub">처음 만나는 순간부터 시술 마치는 순간까지<br>의료진이 직접 함께합니다</div>
+            </div>
+
+        </div>
     </div>
 </section>
 
@@ -1073,8 +1239,8 @@ const NAVER_MAP   = 'https://map.naver.com/p/entry/place/1064400953?';
 const DEMO = {
     info: {
         clinicName:    '로아한의원 부천점',
-        heroTitle:     '로아한의원\n부천점',
-        tagline:       '리프팅에 진심인,\n리프팅 잘하는 로아한의원 부천점입니다.',
+        heroTitle:     '리프팅, 아무한테나\n맡기지 마세요',
+        tagline:       '10년간 경험한 시술 노하우를 담았습니다.',
         eventsTitle:   '이달의 이벤트',
         programsTitle: '리프팅 프로그램',
         reviewsTitle:  '시술 전후 사진',
@@ -1082,6 +1248,11 @@ const DEMO = {
         phone:   '032-324-1118',
         hours:   '월·화·목·금 11:00-21:00 (점심 13:00-14:00)  |  토·공휴일 10:00-15:00  |  수·일 휴진',
         naverPlace: NAVER_PLACE
+    },
+    clinicStats: {
+        treatments: 4500,
+        threads:    101300,
+        period:     '2024년 3월 ~ 2026년 5월'
     },
     events: [
         { 이벤트명: '울쎄라 300샷',   원가: '690000', 이벤트가격: '590000', 기간: '이달의 체험가', 표시: '예' },
@@ -1178,11 +1349,64 @@ async function loadData() {
 }
 
 function render(data) {
-    renderInfo(data.info     || {});
-    renderEvents(data.events || []);
+    renderInfo(data.info           || {});
+    renderClinicStats(data.clinicStats || {});
+    renderEvents(data.events       || []);
     renderTreatmentSection('signatureContainer', 'Signature',      data.programs || []);
     renderTreatmentSection('customContainer',    'Custom Lifting', data.programs || []);
-    renderGallery(data.photos || []);
+    renderGallery(data.photos      || []);
+}
+
+/* ──── 클리닉 어필 통계 ──── */
+function renderClinicStats(stats) {
+    // localStorage 저장값이 있으면 우선 적용 (관리자 페이지에서 수정한 값)
+    try {
+        const local = JSON.parse(localStorage.getItem('roa_stats') || '{}');
+        if (local.treatments) stats = { ...stats, ...local };
+    } catch(e) {}
+
+    const treatments = parseInt(stats.treatments || stats['시술건수'] || 4500);
+    const threads    = parseInt(stats.threads    || stats['실사용줄'] || 101300);
+    const period     = stats.period || stats['기준기간'] || '2024년 3월 ~ 2026년 5월';
+
+    // data-target 업데이트 (카운터 애니메이션 기준)
+    const elT = el('statTreatments');
+    const elTh = el('statThreads');
+    const elP  = el('statPeriod');
+    if (elT)  elT.dataset.target  = treatments;
+    if (elTh) elTh.dataset.target = threads;
+    if (elP)  elP.textContent     = period + ' 기준';
+
+    // IntersectionObserver: 화면에 들어오면 카운터 시작
+    const clinicEl = el('clinic');
+    if (!clinicEl) return;
+    let animated = false;
+    const obs = new IntersectionObserver((entries) => {
+        if (entries[0].isIntersecting && !animated) {
+            animated = true;
+            animateCounter(elT,  treatments, 3000);
+            animateCounter(elTh, threads,    3000);
+            obs.disconnect();
+        }
+    }, { threshold: 0.25 });
+    obs.observe(clinicEl);
+}
+
+/* 숫자 카운터 애니메이션 (0 → target, duration ms) */
+function animateCounter(el, target, duration) {
+    if (!el) return;
+    const startTime = performance.now();
+    function tick(now) {
+        const elapsed = now - startTime;
+        const progress = Math.min(elapsed / duration, 1);
+        // easeOutExpo
+        const ease = progress === 1 ? 1 : 1 - Math.pow(2, -10 * progress);
+        const val = Math.floor(ease * target);
+        el.textContent = val.toLocaleString('ko-KR');
+        if (progress < 1) requestAnimationFrame(tick);
+        else el.textContent = target.toLocaleString('ko-KR');
+    }
+    requestAnimationFrame(tick);
 }
 
 /* ──── 기본 정보 ──── */
