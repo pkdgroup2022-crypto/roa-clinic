@@ -4,8 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title id="page-title">로아한의원 부천</title>
+    <meta name="referrer" content="unsafe-url">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@300;400;500;600;700&family=Noto+Sans+KR:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+    <script type="text/javascript" src="https://dapi.kakao.com/maps/sdk.js?appkey=c15a188b114a223c1757bb304d13d82e&autoload=false"></script>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
 
@@ -1877,13 +1879,11 @@ el('hamburger').addEventListener('click', () => {
 });
 function closeMobileMenu() { el('mobileMenu').classList.remove('open'); }
 
-/* ──── 카카오 지도 ──── */
-(function() {
-    const KEY = 'c15a188b114a223c1757bb304d13d82e';
+/* ──── 카카오 지도 (head 태그 스크립트로 로드) ──── */
+document.addEventListener('DOMContentLoaded', function() {
     const LAT = 37.5048028, LNG = 126.7525319;
-    const script = document.createElement('script');
-    script.src = 'https://dapi.kakao.com/maps/sdk.js?appkey=' + KEY;
-    script.onload = function() {
+    if (typeof kakao === 'undefined') return;
+    kakao.maps.load(function() {
         const container = document.getElementById('kakaoMap');
         if (!container) return;
         const ph = document.getElementById('mapPlaceholder');
@@ -1901,13 +1901,8 @@ function closeMobileMenu() { el('mobileMenu').classList.remove('open'); }
         kakao.maps.event.addListener(marker, 'click', function() {
             window.open('https://map.kakao.com/?itemId=1810541223', '_blank');
         });
-    };
-    script.onerror = function() {
-        const ph = document.getElementById('mapPlaceholder');
-        if (ph) ph.innerHTML = '<span style="color:#999;">지도를 불러오는 중입니다.</span>';
-    };
-    document.head.appendChild(script);
-})();
+    });
+});
 
 /* ──── 히어로 영상 끊김 없이 무한 재생 ──── */
 window.addEventListener('load', () => {
