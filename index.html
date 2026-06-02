@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title id="page-title">로아한의원 부천점</title>
+    <title id="page-title">로아한의원 부천</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@300;400;500;600;700&family=Noto+Sans+KR:wght@300;400;500;700;900&display=swap" rel="stylesheet">
     <style>
@@ -107,15 +107,24 @@
             display: flex; align-items: center; justify-content: flex-start;
             overflow: hidden;
         }
+        @media (max-width: 600px) {
+            .hero { height: 90vh; min-height: 560px; }
+            .hero-gif-bg .hero-vid-mobile { object-fit: cover; object-position: center center; }
+        }
 
-        /* 단일 GIF 배경 */
+        /* 히어로 배경 동영상 */
         .hero-gif-bg {
             position: absolute; inset: 0;
             background: #0d0d0d;
         }
-        .hero-gif-bg img {
+        .hero-gif-bg video {
             width: 100%; height: 100%; object-fit: cover; display: block;
             opacity: 0.88;
+        }
+        .hero-gif-bg .hero-vid-mobile { display: none; }
+        @media (max-width: 600px) {
+            .hero-gif-bg .hero-vid-pc     { display: none; }
+            .hero-gif-bg .hero-vid-mobile { display: block; }
         }
 
         .hero-overlay {
@@ -135,21 +144,24 @@
         }
         .hero h1 {
             font-family: 'Noto Serif KR', serif;
-            font-size: clamp(2rem, 4.5vw, 3.8rem);
+            font-size: clamp(1.6rem, 3.2vw, 2.6rem);
             font-weight: 700; color: white;
-            line-height: 1.25; letter-spacing: -0.01em;
+            line-height: 1.35; letter-spacing: -0.01em;
             margin-bottom: 1.2rem;
             word-break: keep-all;
         }
         .hero-tagline {
-            font-size: clamp(0.88rem, 1.5vw, 1rem);
-            color: rgba(255,255,255,0.6);
+            font-size: clamp(0.82rem, 1.3vw, 1rem);
+            color: rgba(255,255,255,0.65);
             line-height: 2; margin-bottom: 0;
-            font-weight: 300; letter-spacing: 0.04em;
+            font-weight: 300; letter-spacing: 0.02em;
+            word-break: keep-all;
+        }
+        @media (max-width: 600px) {
+            .hero h1 { white-space: normal; font-size: clamp(1.4rem, 6vw, 2rem); }
         }
         @media (max-width: 600px) {
             .hero-content { padding: 0 1.8rem; }
-            .hero h1 { font-size: clamp(1.8rem, 8vw, 2.8rem); }
         }
 
         .btn {
@@ -220,7 +232,7 @@
         .section-rule.light { background: var(--gold-l); }
 
         /* ═══════════════════════════════
-           CLINIC APPEAL (2페이지)
+           CLINIC APPEAL (2페이지) — 재설계
         ═══════════════════════════════ */
         #clinic { background: var(--cream); }
         .clinic-headline {
@@ -230,63 +242,90 @@
             line-height: 1.4; word-break: keep-all;
             margin-bottom: 4rem; text-align: center;
         }
-        .clinic-cards {
-            display: grid; grid-template-columns: repeat(3, 1fr);
-            gap: 1.5rem;
+
+        /* 각 POINT 공통 — 좌: 텍스트 / 우: 숫자카드 2개 */
+        .clinic-point {
+            display: grid; grid-template-columns: 1fr 2fr;
+            gap: 4rem; align-items: center;
+            padding-bottom: 3.5rem; margin-bottom: 3.5rem;
+            border-bottom: 1px solid rgba(0,0,0,0.09);
         }
-        .clinic-card {
-            background: var(--white);
-            border: 1px solid rgba(0,0,0,0.07);
-            border-top: 3px solid var(--gold);
-            padding: 2.8rem 2.2rem 2.4rem;
-            border-radius: 2px;
+        .clinic-point:last-child {
+            border-bottom: none; margin-bottom: 0; padding-bottom: 0;
         }
-        .clinic-card-tag {
-            font-size: 0.78rem; font-weight: 800;
-            letter-spacing: 0.06em;
-            color: var(--gold); margin-bottom: 2rem;
+        .clinic-pt-badge {
+            display: inline-flex; align-items: center;
+            font-size: 0.72rem; font-weight: 800;
+            letter-spacing: 0.12em; color: var(--gold);
+            border: 1.5px solid var(--gold);
+            padding: 0.28rem 0.9rem; border-radius: 20px;
+            margin-bottom: 1.4rem;
         }
-        /* 숫자 카운터 카드 — 라벨 위에, 숫자 크게 */
-        .clinic-stat-block { margin-bottom: 2rem; }
-        .clinic-stat-label {
-            font-size: 0.78rem; color: var(--muted);
-            font-weight: 500; margin-bottom: 0.4rem;
-            letter-spacing: 0.04em;
+        .clinic-pt-title {
+            font-family: 'Noto Serif KR', serif;
+            font-size: clamp(2rem, 3vw, 2.8rem);
+            font-weight: 700; color: var(--dark);
+            line-height: 1.3; margin-bottom: 1rem;
+            word-break: keep-all;
         }
-        .clinic-stat-row {
-            display: flex; align-items: baseline; gap: 0.4rem;
+        .clinic-pt-desc {
+            font-size: 0.92rem; color: var(--muted);
+            line-height: 1.9; word-break: keep-all;
+        }
+        .clinic-num-cards {
+            display: grid; grid-template-columns: 1fr 1fr;
+            gap: 1.2rem;
+        }
+        .clinic-num-card {
+            background: var(--white); border-radius: 12px;
+            padding: 2rem 1.8rem 1.6rem;
+            border: 1px solid rgba(176,144,96,0.2);
+        }
+        /* 텍스트 전용 카드 */
+        .clinic-num-card--text {
+            display: flex; flex-direction: column;
+            justify-content: center;
+        }
+        .clinic-txt-title {
+            font-family: 'Noto Serif KR', serif;
+            font-size: clamp(1.3rem, 2.2vw, 1.7rem);
+            font-weight: 700; color: var(--dark);
+            line-height: 1.4; margin-bottom: 0.8rem;
+            word-break: keep-all;
+        }
+        .clinic-txt-body {
+            font-size: 0.88rem; color: var(--muted);
+            line-height: 1.9; word-break: keep-all;
+        }
+        .clinic-num-label {
+            font-size: 0.85rem; color: var(--muted);
+            font-weight: 500; margin-bottom: 0.8rem;
+        }
+        .clinic-num-row {
+            display: flex; align-items: baseline; gap: 0.3rem;
+            margin-bottom: 1rem;
         }
         .clinic-counter {
             font-family: 'Noto Serif KR', serif;
-            font-size: clamp(2.8rem, 5vw, 4rem);
-            font-weight: 700; color: var(--dark);
+            font-size: clamp(2.4rem, 4.5vw, 3.6rem);
+            font-weight: 700; color: var(--gold);
             letter-spacing: -0.02em; line-height: 1;
         }
-        .clinic-unit {
-            font-size: 1.3rem; font-weight: 600;
-            color: var(--gold);
+        .clinic-num-unit {
+            font-size: 1.1rem; font-weight: 700; color: var(--gold);
         }
-        .clinic-stat-period {
-            font-size: 0.7rem; color: var(--muted);
-            letter-spacing: 0.04em; margin-top: 1rem;
+        .clinic-num-period {
+            font-size: 0.72rem; color: var(--muted);
             border-top: 1px solid rgba(0,0,0,0.08);
-            padding-top: 1rem;
+            padding-top: 0.8rem; line-height: 1.6;
         }
-        /* 텍스트 카드 */
-        .clinic-card-main {
-            font-family: 'Noto Serif KR', serif;
-            font-size: clamp(1.7rem, 3vw, 2.4rem);
-            font-weight: 700; color: var(--dark);
-            line-height: 1.35; margin-bottom: 1.2rem;
-            word-break: keep-all;
+
+        /* 모바일 */
+        @media (max-width: 860px) {
+            .clinic-point { grid-template-columns: 1fr; gap: 2rem; }
         }
-        .clinic-card-sub {
-            font-size: 0.88rem; color: var(--muted);
-            line-height: 1.9;
-        }
-        @media (max-width: 760px) {
-            .clinic-cards { grid-template-columns: 1fr; }
-            .clinic-card { padding: 2rem 1.6rem; }
+        @media (max-width: 500px) {
+            .clinic-num-cards { grid-template-columns: 1fr; }
         }
 
         /* ═══════════════════════════════
@@ -628,61 +667,96 @@
         /* ═══════════════════════════════
            CONTACT
         ═══════════════════════════════ */
-        /* 오시는길 섹션 배경: 따뜻한 짙은 브라운 (순수 블랙보다 부드럽고 골드와 조화) */
-        #contact.section-dark { background: #1d1a13; }
-        #contact .section-label { color: var(--gold-l); }
-        #contact .section-title { color: rgba(255,255,255,0.92); }
-        #contact .section-rule  { background: var(--gold-l); }
+        /* 오시는길 섹션 — 크림 배경 (밝고 자연스럽게) */
+        #contact { background: var(--cream); }
+
+        /* 카카오 지도 */
+        .contact-map {
+            width: 100%; height: 420px;
+            border-radius: 12px; overflow: hidden;
+            margin-bottom: 1rem;
+            border: 1px solid rgba(176,144,96,0.2);
+            box-shadow: 0 4px 24px rgba(0,0,0,0.07);
+            position: relative;
+        }
+        .map-links {
+            display: flex; gap: 0.75rem;
+            margin-bottom: 2.5rem;
+            flex-wrap: wrap;
+        }
+        .map-link-btn {
+            display: inline-flex; align-items: center; gap: 0.5rem;
+            padding: 0.6rem 1.2rem;
+            border-radius: 8px;
+            font-size: 0.85rem; font-weight: 600;
+            text-decoration: none;
+            transition: opacity 0.2s;
+        }
+        .map-link-btn:hover { opacity: 0.85; }
+        .map-link-kakao {
+            background: #FAE100; color: #3A1D1D;
+        }
+        .map-link-naver {
+            background: #03C75A; color: #fff;
+        }
+        .map-placeholder {
+            position: absolute; inset: 0;
+            display: flex; align-items: center; justify-content: center;
+            background: var(--warm);
+            color: var(--muted); font-size: 0.9rem;
+        }
 
         .info-grid {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
-            border-top: 1px solid rgba(255,255,255,0.12);
-            border-left: 1px solid rgba(255,255,255,0.12);
+            gap: 1.2rem;
         }
         .info-card {
-            padding: 3rem;
-            border-right: 1px solid rgba(255,255,255,0.12);
-            border-bottom: 1px solid rgba(255,255,255,0.12);
+            background: var(--white);
+            border-radius: 12px;
+            padding: 2.6rem 2.2rem;
+            border: 1px solid rgba(176,144,96,0.18);
         }
         .info-card-label {
             font-size: 0.72rem; font-weight: 700;
             letter-spacing: 0.22em; text-transform: uppercase;
-            color: var(--gold-l); margin-bottom: 1.4rem;
+            color: var(--gold); margin-bottom: 1.4rem;
         }
         .info-card-main {
-            font-size: 1.2rem; font-weight: 500; color: white;
+            font-size: 1.15rem; font-weight: 600; color: var(--dark);
             line-height: 1.75; margin-bottom: 0.6rem;
         }
         .info-card-sub {
-            font-size: 0.9rem; color: rgba(255,255,255,0.5);
+            font-size: 0.88rem; color: var(--muted);
             line-height: 1.85;
         }
         .info-link {
             display: inline-flex; align-items: center; gap: 0.4rem;
-            margin-top: 1.4rem; color: var(--gold-l);
-            font-size: 0.82rem; font-weight: 600;
-            text-decoration: none; letter-spacing: 0.1em; text-transform: uppercase;
+            margin-top: 1.4rem; color: var(--gold);
+            font-size: 0.82rem; font-weight: 700;
+            text-decoration: none; letter-spacing: 0.08em; text-transform: uppercase;
             transition: opacity 0.2s;
         }
         .info-link:hover { opacity: 0.65; }
 
-        .hours-table { width: 100%; border-collapse: collapse; }
-        .hours-table tr { border-bottom: 1px solid rgba(255,255,255,0.08); }
-        .hours-table tr:last-child { border-bottom: none; }
-        .hours-table td {
-            padding: 0.95rem 0;
-            font-size: 0.95rem; color: rgba(255,255,255,0.68);
-            vertical-align: top; line-height: 1.6;
+        .hours-list { width: 100%; display: flex; flex-direction: column; gap: 0; }
+        .hours-row {
+            padding: 0.85rem 0;
+            border-bottom: 1px solid rgba(0,0,0,0.07);
         }
-        .hours-table td:first-child {
-            font-weight: 600; width: 140px;
-            color: rgba(255,255,255,0.9); white-space: nowrap;
+        .hours-row:last-child { border-bottom: none; }
+        .hours-day {
+            font-size: 0.88rem; font-weight: 700;
+            color: var(--dark); margin-bottom: 0.25rem;
         }
-        .hours-closed { color: rgba(255,255,255,0.25) !important; }
+        .hours-time {
+            font-size: 0.9rem; color: var(--mid); line-height: 1.5;
+        }
+        .hours-closed .hours-day,
+        .hours-closed .hours-time { color: var(--silver); }
         .hours-note {
-            font-size: 0.78rem; color: rgba(255,255,255,0.38);
-            margin-top: 0.2rem; display: block;
+            font-size: 0.75rem; color: var(--muted);
+            margin-top: 0.15rem; display: block;
         }
 
         /* ═══════════════════════════════
@@ -709,16 +783,37 @@
         /* ═══════════════════════════════
            FLOATING BUTTON
         ═══════════════════════════════ */
-        .float-reserve {
-            display: none; position: fixed;
-            bottom: 1.5rem; right: 1.5rem; z-index: 400;
-            background: var(--naver); color: white;
-            font-size: 0.82rem; font-weight: 700;
-            padding: 0.88rem 1.4rem; border-radius: 3px;
+        /* ─── 우측 플로팅 사이드바 ─── */
+        .side-float {
+            position: fixed; right: 0; top: 50%;
+            transform: translateY(-50%);
+            z-index: 400;
+            display: flex; flex-direction: column;
+            gap: 0; overflow: hidden;
+            border-radius: 12px 0 0 12px;
+            box-shadow: -4px 0 24px rgba(0,0,0,0.13);
+        }
+        @media (max-width: 900px) {
+            .side-float { top: 70%; transform: translateY(-50%); }
+        }
+        .side-float-btn {
+            display: flex; flex-direction: column;
+            align-items: center; justify-content: center;
+            gap: 0.32rem;
+            width: 64px; height: 64px;
             text-decoration: none;
-            box-shadow: 0 8px 32px rgba(3,199,90,0.38);
-            align-items: center; gap: 0.4rem;
-            letter-spacing: 0.04em;
+            font-size: 0.6rem; font-weight: 700;
+            letter-spacing: 0.03em;
+            transition: filter 0.18s, transform 0.18s;
+            cursor: pointer; border: none;
+        }
+        .side-float-btn:hover { filter: brightness(1.1); transform: translateX(-3px); }
+        .side-float-btn svg { flex-shrink: 0; }
+        .side-float-naver  { background: #03C75A; color: #fff; }
+        .side-float-kakao  { background: #FAE100; color: #3A1D1D; }
+        .side-float-insta  { background: #E1306C; color: #fff; }
+        @media (max-width: 600px) {
+            .side-float-btn { width: 56px; height: 60px; font-size: 0.55rem; }
         }
 
         /* ═══════════════════════════════
@@ -771,14 +866,13 @@
             nav { padding: 0 1.4rem; }
             .nav-center { display: none; }
             .hamburger { display: flex; }
-            .float-reserve { display: flex; }
+
             .section { padding: 5.5rem 1.4rem; }
             .slide-header { padding: 1.5rem 1.5rem 1.2rem; }
             .info-grid { grid-template-columns: 1fr; }
             .info-card { padding: 2rem 1.8rem; }
         }
         @media (max-width: 540px) {
-            .hero h1 { font-size: 2.6rem; }
             .event-row {
                 flex-direction: column; align-items: flex-start; gap: 1rem;
             }
@@ -791,10 +885,10 @@
 
 <!-- ─── Navigation ─── -->
 <nav id="mainNav">
-    <div class="nav-logo" id="navClinicName">로아한의원 부천점</div>
+    <div class="nav-logo" id="navClinicName">로아한의원 부천</div>
 
     <ul class="nav-center">
-        <li><a href="#clinic">로아한의원</a></li>
+        <li><a href="#clinic">로아한의원 부천</a></li>
         <li><a href="#reviews">시술 후기</a></li>
         <li><a href="#events">이달의 이벤트</a></li>
         <li><a href="#signature">시그니처</a></li>
@@ -803,8 +897,7 @@
     </ul>
 
     <div class="nav-right">
-        <a id="navReserveBtn" href="#" class="btn-naver-nav" target="_blank" rel="noopener">예약하기</a>
-        <button class="hamburger" id="hamburger" aria-label="메뉴">
+<button class="hamburger" id="hamburger" aria-label="메뉴">
             <span></span><span></span><span></span>
         </button>
     </div>
@@ -812,7 +905,7 @@
 
 <!-- 모바일 메뉴 -->
 <div class="mobile-menu" id="mobileMenu">
-    <a href="#clinic"    onclick="closeMobileMenu()">로아한의원</a>
+    <a href="#clinic"    onclick="closeMobileMenu()">로아한의원 부천</a>
     <a href="#reviews"   onclick="closeMobileMenu()">시술 후기</a>
     <a href="#events"    onclick="closeMobileMenu()">이달의 이벤트</a>
     <a href="#signature" onclick="closeMobileMenu()">시그니처</a>
@@ -822,16 +915,23 @@
 
 <!-- ─── Hero ─── -->
 <section class="hero" id="heroSection">
-    <!-- 단일 GIF 배경 (images/hero.gif 파일 넣으면 자동 표시) -->
+    <!-- 히어로 배경 동영상 (images/hero.mp4 파일 넣으면 자동 표시) -->
     <div class="hero-gif-bg">
-        <img src="images/hero.gif" alt="로아한의원 시술 영상"
-             onerror="this.style.display='none'">
+        <!-- PC 영상 (600px 초과) -->
+        <video class="hero-vid hero-vid-pc" autoplay loop muted playsinline>
+            <source src="images/imageshero.mp4" type="video/mp4">
+        </video>
+        <!-- 모바일 영상 (600px 이하) -->
+        <video class="hero-vid hero-vid-mobile" autoplay loop muted playsinline>
+            <source src="images/imageshero-mobile.mp4" type="video/mp4">
+        </video>
     </div>
     <div class="hero-overlay"></div>
     <div class="hero-content">
-        <h1 id="heroTitle">리프팅,<br>아무나한테<br>맡기지 마세요</h1>
+        <h1 id="heroTitle">리프팅,<br>아무한테나 받지마세요.</h1>
         <p class="hero-tagline" id="heroDesc">
-            10년간 경험한 시술 노하우를 담았습니다.
+            원장님 본인도, 원장님 가족도 직접 받는 시술<br>
+            10년간 경험한 노하우, 결과로 증명합니다
         </p>
     </div>
     <div class="scroll-indicator">
@@ -844,45 +944,82 @@
 <section id="clinic" class="section">
     <div class="section-inner">
         <h2 class="clinic-headline">
-            로아한의원 부천점은<br>리프팅에 집중합니다.
+            로아한의원 부천은<br>리프팅에 집중합니다.
         </h2>
-        <div class="clinic-cards">
 
-            <!-- 카드 1: 숫자 실력 -->
-            <div class="clinic-card">
-                <div class="clinic-card-tag">숫자로 증명하는 실력</div>
-                <div class="clinic-stat-block">
-                    <div class="clinic-stat-label">리프팅 시술 건수</div>
-                    <div class="clinic-stat-row">
+        <!-- POINT 01: 숫자로 증명하는 실력 -->
+        <div class="clinic-point">
+            <div class="clinic-pt-left">
+                <div class="clinic-pt-badge">POINT 01</div>
+                <div class="clinic-pt-title">숫자로 증명하는<br>실력</div>
+                <div class="clinic-pt-desc">리프팅의 노하우는<br>실 건수가 말해줍니다.</div>
+            </div>
+            <div class="clinic-num-cards">
+                <div class="clinic-num-card">
+                    <div class="clinic-num-label">리프팅 시술 건수</div>
+                    <div class="clinic-num-row">
                         <span class="clinic-counter" id="statTreatments" data-target="4500">0</span>
-                        <span class="clinic-unit">건</span>
+                        <span class="clinic-num-unit">건</span>
                     </div>
+                    <div class="clinic-num-period" id="statPeriod">2024년 3월 ~ 2026년 5월 기준</div>
                 </div>
-                <div class="clinic-stat-block">
-                    <div class="clinic-stat-label">리프팅 실 사용</div>
-                    <div class="clinic-stat-row">
+                <div class="clinic-num-card">
+                    <div class="clinic-num-label">리프팅 실 사용 건수</div>
+                    <div class="clinic-num-row">
                         <span class="clinic-counter" id="statThreads" data-target="101300">0</span>
-                        <span class="clinic-unit">줄</span>
+                        <span class="clinic-num-unit">줄</span>
                     </div>
+                    <div class="clinic-num-period">2024년 3월 ~ 2026년 5월 기준</div>
                 </div>
-                <div class="clinic-stat-period" id="statPeriod">2024년 3월 ~ 2026년 5월 기준</div>
             </div>
-
-            <!-- 카드 2: 재방문율 -->
-            <div class="clinic-card">
-                <div class="clinic-card-tag">재방문율</div>
-                <div class="clinic-card-main">매달 10명 중<br>4명이 다시<br>찾습니다</div>
-                <div class="clinic-card-sub">결과가 만든 신뢰입니다</div>
-            </div>
-
-            <!-- 카드 3: 의료진 직접 -->
-            <div class="clinic-card">
-                <div class="clinic-card-tag">의료진 직접 상담 · 직접 시술</div>
-                <div class="clinic-card-main">처음부터<br>마치는 순간까지<br>함께합니다</div>
-                <div class="clinic-card-sub">처음 만나는 순간부터 시술 마치는 순간까지<br>의료진이 직접 함께합니다</div>
-            </div>
-
         </div>
+
+        <!-- POINT 02: 재방문율 -->
+        <div class="clinic-point">
+            <div class="clinic-pt-left">
+                <div class="clinic-pt-badge">POINT 02</div>
+                <div class="clinic-pt-title">재방문율</div>
+                <div class="clinic-pt-desc">한 번 경험한 환자가<br>다시 찾아오는 이유가 있습니다.</div>
+            </div>
+            <div class="clinic-num-cards">
+                <div class="clinic-num-card">
+                    <div class="clinic-num-label">재방문율</div>
+                    <div class="clinic-num-row">
+                        <span class="clinic-counter" id="statReturn" data-target="40">0</span>
+                        <span class="clinic-num-unit">%</span>
+                    </div>
+                    <div class="clinic-num-period">매달 10명 중 4명이 다시 찾습니다</div>
+                </div>
+                <div class="clinic-num-card clinic-num-card--text">
+                    <div class="clinic-txt-title">결과가 만든<br>신뢰입니다</div>
+                    <div class="clinic-txt-body">리프팅 결과에 만족하신 환자분들의 재방문과 지인 소개가 이어집니다.</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- POINT 03: 의료진 직접 상담·직접 시술 -->
+        <div class="clinic-point">
+            <div class="clinic-pt-left">
+                <div class="clinic-pt-badge">POINT 03</div>
+                <div class="clinic-pt-title">의료진 직접 상담<br>직접 시술</div>
+                <div class="clinic-pt-desc">처음부터 마치는 순간까지<br>의료진이 직접 함께합니다.</div>
+            </div>
+            <div class="clinic-num-cards">
+                <div class="clinic-num-card">
+                    <div class="clinic-num-label">원장 직접 상담 · 시술 비율</div>
+                    <div class="clinic-num-row">
+                        <span class="clinic-counter" id="statDirect" data-target="100">0</span>
+                        <span class="clinic-num-unit">%</span>
+                    </div>
+                    <div class="clinic-num-period">의료진의 진료 상담은 필수 원칙입니다.</div>
+                </div>
+                <div class="clinic-num-card clinic-num-card--text">
+                    <div class="clinic-txt-title">1:1 맞춤<br>시술 설계</div>
+                    <div class="clinic-txt-body">얼굴 구조와 피부 상태를 직접 분석하여 환자 개인에게 맞는 시술을 설계합니다.</div>
+                </div>
+            </div>
+        </div>
+
     </div>
 </section>
 
@@ -958,20 +1095,31 @@
 </section>
 
 <!-- ─── Contact ─── -->
-<section id="contact" class="section section-dark">
+<section id="contact" class="section">
     <div class="section-inner">
         <div class="section-head">
-            <div class="section-label light">Location &amp; Hours</div>
-            <h2 class="section-title light">오시는 길 &amp; 진료시간</h2>
-            <div class="section-rule light"></div>
+            <div class="section-label">Location &amp; Hours</div>
+            <h2 class="section-title">오시는 길 &amp; 진료시간</h2>
+            <div class="section-rule"></div>
         </div>
+
+        <!-- 지도 -->
+        <div class="contact-map">
+            <iframe
+                src="https://maps.google.com/maps?q=37.5048028,126.7525319&z=17&output=embed&hl=ko"
+                width="100%" height="100%" style="border:0;" loading="lazy"
+                allowfullscreen referrerpolicy="no-referrer-when-downgrade">
+            </iframe>
+        </div>
+
         <div class="info-grid">
 
             <div class="info-card">
                 <div class="info-card-label">주소</div>
                 <div class="info-card-main">경기 부천시 원미구<br>상동로 83 8층</div>
+                <div class="info-card-sub">지하철 7호선 부천시청역<br>3번 출구 도보 1분</div>
                 <a href="https://map.naver.com/p/entry/place/1064400953?" class="info-link" target="_blank" rel="noopener">
-                    지도 보기 →
+                    네이버 지도 →
                 </a>
             </div>
 
@@ -986,20 +1134,24 @@
 
             <div class="info-card">
                 <div class="info-card-label">진료시간</div>
-                <table class="hours-table">
-                    <tr>
-                        <td>월 · 화 · 목 · 금</td>
-                        <td>오전 11:00 — 오후 9:00<span class="hours-note">점심 1:00 — 2:00</span></td>
-                    </tr>
-                    <tr>
-                        <td>토 · 공휴일</td>
-                        <td>오전 10:00 — 오후 3:00<span class="hours-note">점심시간 없음</span></td>
-                    </tr>
-                    <tr>
-                        <td class="hours-closed">수 · 일요일</td>
-                        <td class="hours-closed">휴진</td>
-                    </tr>
-                </table>
+                <div class="hours-list">
+                    <div class="hours-row">
+                        <div class="hours-day">월 · 화 · 목 · 금</div>
+                        <div class="hours-time">오전 11:00 — 오후 9:00
+                            <span class="hours-note">점심 1:00 — 2:00</span>
+                        </div>
+                    </div>
+                    <div class="hours-row">
+                        <div class="hours-day">토 · 공휴일</div>
+                        <div class="hours-time">오전 10:00 — 오후 3:00
+                            <span class="hours-note">점심시간 없음</span>
+                        </div>
+                    </div>
+                    <div class="hours-row hours-closed">
+                        <div class="hours-day">수 · 일요일</div>
+                        <div class="hours-time">휴진</div>
+                    </div>
+                </div>
             </div>
 
         </div>
@@ -1012,23 +1164,33 @@
     <img id="lightboxImg" src="" alt="">
 </div>
 
-<!-- ─── Floating 예약 버튼 ─── -->
-<a id="floatReserveBtn" href="#" class="float-reserve" target="_blank" rel="noopener">
-    📅 네이버 예약
-</a>
+<!-- ─── 우측 플로팅 사이드바 ─── -->
+<div class="side-float">
+    <!-- 네이버 예약 -->
+    <a id="floatReserveBtn" href="https://booking.naver.com/booking/13/bizes/1064400953" class="side-float-btn side-float-naver" target="_blank" rel="noopener" title="네이버 예약">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M16.27 12.96L7.5 0H0v24h7.73V11.04L16.5 24H24V0h-7.73z"/></svg>
+        네이버예약
+    </a>
+    <!-- 카카오톡 문의 -->
+    <a href="https://pf.kakao.com/_gxfGxexj" class="side-float-btn side-float-kakao" target="_blank" rel="noopener" title="카카오톡 문의">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M12 3C6.48 3 2 6.92 2 11.76c0 2.96 1.67 5.58 4.25 7.26L5.1 22.3a.5.5 0 0 0 .73.54l4.07-2.43c.68.1 1.39.15 2.1.15 5.52 0 10-3.92 10-8.76C22 6.92 17.52 3 12 3z"/></svg>
+        카카오톡문의
+    </a>
+    <!-- 인스타그램 -->
+    <a href="https://www.instagram.com/" class="side-float-btn side-float-insta" target="_blank" rel="noopener" title="인스타그램">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 1 0 0 12.324 6.162 6.162 0 0 0 0-12.324zM12 16a4 4 0 1 1 0-8 4 4 0 0 1 0 8zm6.406-11.845a1.44 1.44 0 1 0 0 2.881 1.44 1.44 0 0 0 0-2.881z"/></svg>
+        인스타그램
+    </a>
+</div>
 
 <!-- ─── Footer ─── -->
 <footer>
-    <div class="footer-name" id="footerName">로아한의원 부천점</div>
+    <div class="footer-name" id="footerName">로아한의원 부천</div>
     <div class="footer-grid" id="footerGrid">
         <span class="footer-item">📍 경기 부천시 원미구 상동로 83 8층</span>
         <span class="footer-item">📞 032-324-1118</span>
     </div>
-    <a id="footerReserveLink" href="https://booking.naver.com/booking/13/bizes/865921/"
-       class="footer-reserve" target="_blank" rel="noopener">
-        📅 네이버 예약하기
-    </a>
-    <div class="footer-copy" id="footerCopy">© 2026 로아한의원 부천점. All rights reserved.</div>
+    <div class="footer-copy" id="footerCopy">© 2026 로아한의원 부천. All rights reserved.</div>
 </footer>
 
 <script>
@@ -1182,16 +1344,16 @@ const SIG_IMAGES = {
 /* ================================================================
    설정값
 ================================================================ */
-const SCRIPT_URL  = 'YOUR_APPS_SCRIPT_URL_HERE';
-const NAVER_PLACE = 'https://booking.naver.com/booking/13/bizes/865921/';
-const NAVER_MAP   = 'https://map.naver.com/p/entry/place/1064400953?';
+const FIREBASE_URL = 'https://roa-clinic-default-rtdb.firebaseio.com/roa';
+const NAVER_PLACE  = 'https://booking.naver.com/booking/13/bizes/865921/';
+const NAVER_MAP    = 'https://map.naver.com/p/entry/place/1064400953?';
 
 /* ──── 데모 데이터 ──── */
 const DEMO = {
     info: {
-        clinicName:    '로아한의원 부천점',
-        heroTitle:     '리프팅, 아무한테나\n맡기지 마세요',
-        tagline:       '10년간 경험한 시술 노하우를 담았습니다.',
+        clinicName:    '로아한의원 부천',
+        heroTitle:     '리프팅,<br>아무한테나 받지마세요.',
+        tagline:       '원장님 본인도, 원장님 가족도 직접 받는 시술\n10년간 경험한 노하우, 결과로 증명합니다',
         eventsTitle:   '이달의 이벤트',
         programsTitle: '리프팅 프로그램',
         reviewsTitle:  '시술 후기',
@@ -1290,19 +1452,48 @@ const DEMO = {
     ]
 };
 
-/* ──── 데이터 로드 ──── */
+/* ──── 데이터 로드 (Firebase Realtime Database) ──── */
 async function loadData() {
-    if (SCRIPT_URL === 'YOUR_APPS_SCRIPT_URL_HERE') { render(DEMO); return; }
     try {
-        const res = await fetch(SCRIPT_URL + '?t=' + Date.now());
-        render(await res.json());
-    } catch(e) { render(DEMO); }
+        const res = await fetch(FIREBASE_URL + '.json?t=' + Date.now());
+        const fb = await res.json();
+        if (!fb) { render(DEMO); return; }
+
+        // Firebase 데이터 + DEMO 기본값 병합
+        // (Firebase에 없는 항목은 DEMO 값 사용)
+        const toArr = v => Array.isArray(v) ? v : (v ? Object.values(v) : []);
+
+        const data = {
+            info:        { ...DEMO.info,        ...(fb.info  || {}) },
+            clinicStats: { ...DEMO.clinicStats,  ...(fb.stats || {}) },
+            events:      toArr(fb.events).length  ? toArr(fb.events)  : DEMO.events,
+            photos:      toArr(fb.photos).length  ? toArr(fb.photos)  : DEMO.photos,
+            programs:    DEMO.programs  // 시그니처/커스텀리프팅은 항상 DEMO 사용
+        };
+        render(data);
+    } catch(e) {
+        console.warn('Firebase 로드 실패, DEMO 데이터 사용:', e);
+        render(DEMO);
+    }
 }
 
 function render(data) {
-    renderInfo(data.info           || {});
+    // localStorage 관리자 저장값 우선 적용
+    let info = data.info || {};
+    try {
+        const localInfo = JSON.parse(localStorage.getItem('roa_info') || 'null');
+        if (localInfo) info = { ...info, ...localInfo };
+    } catch(e) {}
+
+    let events = data.events || [];
+    try {
+        const localEvents = JSON.parse(localStorage.getItem('roa_events') || 'null');
+        if (localEvents) events = localEvents;
+    } catch(e) {}
+
+    renderInfo(info);
     renderClinicStats(data.clinicStats || {});
-    renderEvents(data.events       || []);
+    renderEvents(events);
     renderTreatmentSection('signatureContainer', 'Signature',      data.programs || []);
     renderTreatmentSection('customContainer',    'Custom Lifting', data.programs || []);
     renderGallery(data.photos      || []);
@@ -1318,28 +1509,36 @@ function renderClinicStats(stats) {
 
     const treatments = parseInt(stats.treatments || stats['시술건수'] || 4500);
     const threads    = parseInt(stats.threads    || stats['실사용줄'] || 101300);
+    const returnRate = parseInt(stats.returnRate !== undefined ? stats.returnRate : 40);
     const period     = stats.period || stats['기준기간'] || '2024년 3월 ~ 2026년 5월';
 
     // data-target 업데이트 (카운터 애니메이션 기준)
-    const elT = el('statTreatments');
+    const elT  = el('statTreatments');
     const elTh = el('statThreads');
+    const elR  = el('statReturn');    // 재방문율 40%
+    const elD  = el('statDirect');   // 직접 시술 100%
     const elP  = el('statPeriod');
     if (elT)  elT.dataset.target  = treatments;
     if (elTh) elTh.dataset.target = threads;
     if (elP)  elP.textContent     = period + ' 기준';
 
-    // IntersectionObserver: 화면에 들어오면 카운터 시작
+    // IntersectionObserver: 화면에 들어올 때마다 카운터 재시작
     const clinicEl = el('clinic');
     if (!clinicEl) return;
-    let animated = false;
     const obs = new IntersectionObserver((entries) => {
-        if (entries[0].isIntersecting && !animated) {
-            animated = true;
+        if (entries[0].isIntersecting) {
             animateCounter(elT,  treatments, 3000);
             animateCounter(elTh, threads,    3000);
-            obs.disconnect();
+            animateCounter(elR,  returnRate, 2000);
+            animateCounter(elD,  100,        2500);
+        } else {
+            // 섹션 벗어날 때 숫자 초기화
+            if (elT)  elT.textContent  = '0';
+            if (elTh) elTh.textContent = '0';
+            if (elR)  elR.textContent  = '0';
+            if (elD)  elD.textContent  = '0';
         }
-    }, { threshold: 0.25 });
+    }, { threshold: 0.15 });
     obs.observe(clinicEl);
 }
 
@@ -1362,7 +1561,7 @@ function animateCounter(el, target, duration) {
 
 /* ──── 기본 정보 ──── */
 function renderInfo(info) {
-    const name = v(info, 'clinicName', '병원명', '로아한의원 부천점');
+    const name = v(info, 'clinicName', '병원명', '로아한의원 부천');
     document.title = name;
     el('navClinicName').textContent = name;
     el('footerName').textContent    = name;
@@ -1680,9 +1879,32 @@ el('hamburger').addEventListener('click', () => {
 });
 function closeMobileMenu() { el('mobileMenu').classList.remove('open'); }
 
-/* ──── 히어로 Ken Burns 효과 ──── */
+/* 지도: 구글 지도 iframe (카카오/네이버 바로가기 버튼 별도 제공) */
+
+/* ──── 히어로 영상 끊김 없이 무한 재생 ──── */
 window.addEventListener('load', () => {
     el('heroSection').classList.add('loaded');
+
+    const isMobile = window.innerWidth <= 600;
+    const heroVid  = isMobile
+        ? document.querySelector('.hero-vid-mobile')
+        : document.querySelector('.hero-vid-pc');
+    if (!heroVid) return;
+
+    // loop 속성이 있어도 일부 브라우저에서 끊김 → ended 이벤트로 강제 재시작
+    heroVid.addEventListener('ended', () => {
+        heroVid.currentTime = 0;
+        heroVid.play().catch(() => {});
+    });
+
+    // 다른 탭 갔다 돌아와도 자동 재생 재개
+    document.addEventListener('visibilitychange', () => {
+        if (!document.hidden && heroVid.paused) heroVid.play().catch(() => {});
+    });
+    window.addEventListener('focus', () => {
+        if (heroVid.paused) heroVid.play().catch(() => {});
+    });
+
 });
 
 /* ──── 유틸 ──── */
