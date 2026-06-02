@@ -634,33 +634,29 @@ function renderPhotos() {
                         oninput="photosData[${i}].시술후날짜=this.value">
                 </div>
             </div>
-            <div class="upload-row">
-                <div class="upload-box ${p.전사진URL?'has-image':''}" id="bef-${i}">
-                    <input type="file" accept="image/*" onchange="handleFile(event,${i},'before')"
-                        ondragover="this.parentElement.style.borderColor='var(--gold)'"
-                        ondragleave="this.parentElement.style.borderColor=''">
-                    ${p.전사진URL
-                        ? `<img src="${esc(p.전사진URL)}" alt="Before">
-                           <button class="upload-clear" onclick="clearImg(event,${i},'before')">✕</button>`
-                        : `<div class="upload-icon">📷</div>
-                           <div class="upload-label">Before (시술 전)</div>
-                           <div class="upload-hint">클릭하거나 드래그</div>`}
+            <div class="row2">
+                <div class="field">
+                    <label>전사진 URL (구글 드라이브 링크)</label>
+                    <input type="url" value="${esc(p.전사진URL)}" placeholder="https://drive.google.com/uc?export=view&id=..."
+                        oninput="photosData[${i}].전사진URL=this.value;updateImgPreview(${i})">
+                    ${p.전사진URL ? `<img src="${esc(p.전사진URL)}" style="margin-top:0.5rem;width:100%;height:140px;object-fit:cover;border-radius:6px;border:1px solid #eee;" id="prev-bef-${i}" onerror="this.style.display='none'">` : `<div id="prev-bef-${i}"></div>`}
                 </div>
-                <div class="upload-box ${p.후사진URL?'has-image':''}" id="aft-${i}">
-                    <input type="file" accept="image/*" onchange="handleFile(event,${i},'after')"
-                        ondragover="this.parentElement.style.borderColor='var(--gold)'"
-                        ondragleave="this.parentElement.style.borderColor=''">
-                    ${p.후사진URL
-                        ? `<img src="${esc(p.후사진URL)}" alt="After">
-                           <button class="upload-clear" onclick="clearImg(event,${i},'after')">✕</button>`
-                        : `<div class="upload-icon">✨</div>
-                           <div class="upload-label">After (시술 후)</div>
-                           <div class="upload-hint">클릭하거나 드래그</div>`}
+                <div class="field">
+                    <label>후사진 URL (구글 드라이브 링크)</label>
+                    <input type="url" value="${esc(p.후사진URL)}" placeholder="https://drive.google.com/uc?export=view&id=..."
+                        oninput="photosData[${i}].후사진URL=this.value;updateImgPreview(${i})">
+                    ${p.후사진URL ? `<img src="${esc(p.후사진URL)}" style="margin-top:0.5rem;width:100%;height:140px;object-fit:cover;border-radius:6px;border:1px solid #eee;" id="prev-aft-${i}" onerror="this.style.display='none'">` : `<div id="prev-aft-${i}"></div>`}
                 </div>
             </div>
         </div>`).join('');
 }
 
+function updateImgPreview(i) {
+    const bef = document.getElementById('prev-bef-' + i);
+    const aft = document.getElementById('prev-aft-' + i);
+    if (bef) { if (photosData[i].전사진URL) { bef.outerHTML = `<img src="${photosData[i].전사진URL}" style="margin-top:0.5rem;width:100%;height:140px;object-fit:cover;border-radius:6px;border:1px solid #eee;" id="prev-bef-${i}" onerror="this.style.display='none'">`; } }
+    if (aft) { if (photosData[i].후사진URL) { aft.outerHTML = `<img src="${photosData[i].후사진URL}" style="margin-top:0.5rem;width:100%;height:140px;object-fit:cover;border-radius:6px;border:1px solid #eee;" id="prev-aft-${i}" onerror="this.style.display='none'">`; } }
+}
 function updatePhTitle(i) {
     const card = document.querySelector(`#ph-${i} .card-title-text`);
     if (card) {
