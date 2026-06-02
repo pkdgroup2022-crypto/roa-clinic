@@ -1105,16 +1105,20 @@
             <div class="section-rule"></div>
         </div>
 
-        <!-- 카카오 정적 지도 이미지 -->
-        <a href="https://map.kakao.com/?itemId=1810541223" target="_blank" rel="noopener"
-           class="contact-map" style="display:block;cursor:pointer;text-decoration:none;">
-            <img
-                src="https://dapi.kakao.com/v2/maps/staticmap?appkey=29d417fbb29b0486f6f8d62cba68827b&center=126.7525319,37.5048028&level=3&w=900&h=420&marker=pos:126.7525319 37.5048028"
-                alt="로아한의원 부천 위치"
-                style="width:100%;height:100%;object-fit:cover;display:block;"
-                id="kakaoStaticMap"
-            >
-        </a>
+        <!-- 지도 -->
+        <div class="contact-map">
+            <iframe
+                src="https://maps.google.com/maps?q=37.5048028,126.7525319&z=17&output=embed&hl=ko"
+                width="100%" height="100%" style="border:0;" loading="lazy"
+                allowfullscreen referrerpolicy="no-referrer-when-downgrade">
+            </iframe>
+        </div>
+        <div style="margin-bottom:2.5rem;">
+            <a href="https://map.kakao.com/?itemId=1810541223" target="_blank" rel="noopener"
+               style="display:inline-flex;align-items:center;gap:0.5rem;background:#FAE100;color:#3A1D1D;padding:0.7rem 1.4rem;border-radius:8px;font-size:0.88rem;font-weight:700;text-decoration:none;">
+                🗺️ 카카오맵으로 보기
+            </a>
+        </div>
 
         <div class="info-grid">
 
