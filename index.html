@@ -377,6 +377,13 @@
             font-size: clamp(1.6rem, 2.8vw, 2.2rem);
             font-weight: 700; color: #D93025; letter-spacing: -0.01em;
         }
+        .vat-badge {
+            font-size: 0.72rem; font-weight: 700;
+            padding: 0.25rem 0.6rem; border-radius: 2px;
+            letter-spacing: 0.04em; border: 1px solid;
+        }
+        .vat-badge.incl { color: #1a7a3f; border-color: #1a7a3f; background: #f0faf4; }
+        .vat-badge.excl { color: var(--muted); border-color: var(--silver); background: transparent; }
         .price-badge {
             background: #D93025; color: white;
             font-size: 0.72rem; font-weight: 700;
@@ -1079,7 +1086,6 @@
             <h2 class="section-title" id="eventsTitle">이달의 이벤트</h2>
             <div class="section-rule"></div>
         </div>
-        <p class="vat-note">* VAT 포함</p>
         <div class="events-table" id="eventsGrid">
             <div class="loading">로딩 중</div>
         </div>
@@ -1636,7 +1642,9 @@ function renderEvents(list) {
         const orig   = ev['원가']        || ev.originalPrice || '';
         const sale   = ev['이벤트가격'] || ev.eventPrice    || '';
         const period = ev['기간']        || ev.period        || '';
+        const vat    = ev['VAT']         || ev.vat           || '포함';
         const pct    = calcDiscount(orig, sale);
+        const vatIncl = vat === '포함';
         return `<div class="event-row">
             <div class="event-row-left">
                 <div class="event-row-name">${name}</div>
@@ -1647,6 +1655,7 @@ function renderEvents(list) {
                 ${orig ? `<span class="price-arrow">→</span>` : ''}
                 <span class="price-event">${fmt(sale)}</span>
                 ${pct  ? `<span class="price-badge">${pct}</span>` : ''}
+                <span class="vat-badge ${vatIncl ? 'incl' : 'excl'}">VAT ${vat}</span>
             </div>
         </div>`;
     }).join('');
