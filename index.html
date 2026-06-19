@@ -594,19 +594,26 @@
             cursor: zoom-in; transition: transform 0.5s ease;
         }
         .slide-photo img:hover { transform: scale(1.03); }
+        .slide-labels { display: flex; flex-shrink: 0; border-top: 1px solid rgba(255,255,255,0.08); }
+        .slide-label-cell {
+            flex: 0 0 50%; width: 50%; padding: 0.6rem 1rem;
+            display: flex; justify-content: space-between; align-items: center;
+            background: #111;
+        }
+        .slide-label-cell + .slide-label-cell { border-left: 1px solid rgba(255,255,255,0.08); }
         .photo-label-wrap {
-            position: absolute; bottom: 0; left: 0; right: 0;
-            padding: 3rem 1.5rem 1.4rem;
-            background: linear-gradient(to top, rgba(0,0,0,0.75) 0%, transparent 100%);
-            display: flex; justify-content: space-between; align-items: flex-end;
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 0.6rem 1rem;
+            background: #111;
+            border-top: 1px solid rgba(255,255,255,0.08);
         }
         .photo-label {
             font-size: 0.68rem; font-weight: 700;
-            letter-spacing: 0.2em; text-transform: uppercase; color: white;
+            letter-spacing: 0.2em; text-transform: uppercase;
         }
-        .photo-label.before { color: rgba(255,255,255,0.6); }
+        .photo-label.before { color: rgba(255,255,255,0.55); }
         .photo-label.after  { color: var(--gold-l); }
-        .photo-date { font-size: 0.68rem; color: rgba(255,255,255,0.45); }
+        .photo-date { font-size: 0.68rem; color: rgba(255,255,255,0.4); }
 
         /* 캐러셀 컨트롤 바 (화살표 + 점) — 사진 아래 배치 */
         .carousel-controls {
@@ -1812,19 +1819,21 @@ function buildCarousel(list) {
                     ${beforeUrl
                         ? `<img src="${beforeUrl}" alt="Before" loading="lazy" onclick="openLightbox('${beforeUrl}')">`
                         : '<div style="background:#222;width:100%;height:100%;display:flex;align-items:center;justify-content:center;color:#555;font-size:0.8rem;">사진 없음</div>'}
-                    <div class="photo-label-wrap">
-                        <span class="photo-label before">Before</span>
-                        <span class="photo-date">${beforeDate}</span>
-                    </div>
                 </div>
                 <div class="slide-photo">
                     ${afterUrl
                         ? `<img src="${afterUrl}" alt="After" loading="lazy" onclick="openLightbox('${afterUrl}')">`
                         : '<div style="background:#222;width:100%;height:100%;display:flex;align-items:center;justify-content:center;color:#555;font-size:0.8rem;">사진 없음</div>'}
-                    <div class="photo-label-wrap">
-                        <span class="photo-label after">After</span>
-                        <span class="photo-date">${afterDate}</span>
-                    </div>
+                </div>
+            </div>
+            <div class="slide-labels">
+                <div class="slide-label-cell">
+                    <span class="photo-label before">Before</span>
+                    <span class="photo-date">${beforeDate}</span>
+                </div>
+                <div class="slide-label-cell">
+                    <span class="photo-label after">After</span>
+                    <span class="photo-date">${afterDate}</span>
                 </div>
             </div>
         </div>`;
