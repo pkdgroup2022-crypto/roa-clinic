@@ -549,9 +549,10 @@ function loadEvents() {
 
 function renderEvents() {
     document.getElementById('events-list').innerHTML = eventsData.map((e, i) => `
-        <div class="card" id="ev-${i}">
+        <div class="card" id="ev-${i}" draggable="true" data-idx="${i}">
             <div class="card-head">
                 <div class="card-title-text">
+                    <span class="drag-handle" title="드래그해서 순서 변경">⠿</span>
                     <span class="card-num">${i+1}</span>
                     ${esc(e.이벤트명) || '이벤트 ' + (i+1)}
                 </div>
@@ -582,6 +583,34 @@ function renderEvents() {
                 </div>
             </div>
         </div>`).join('');
+    initEventDrag();
+}
+
+function initEventDrag() {
+    let dragSrcEv = null;
+    document.querySelectorAll('#events-list .card').forEach(card => {
+        card.addEventListener('dragstart', e => {
+            dragSrcEv = parseInt(card.dataset.idx);
+            card.classList.add('dragging');
+            e.dataTransfer.effectAllowed = 'move';
+        });
+        card.addEventListener('dragend', () => {
+            document.querySelectorAll('#events-list .card').forEach(c => c.classList.remove('dragging', 'drag-over'));
+        });
+        card.addEventListener('dragover', e => {
+            e.preventDefault();
+            document.querySelectorAll('#events-list .card').forEach(c => c.classList.remove('drag-over'));
+            card.classList.add('drag-over');
+        });
+        card.addEventListener('drop', e => {
+            e.preventDefault();
+            const dest = parseInt(card.dataset.idx);
+            if (dragSrcEv === null || dragSrcEv === dest) return;
+            const moved = eventsData.splice(dragSrcEv, 1)[0];
+            eventsData.splice(dest, 0, moved);
+            renderEvents();
+        });
+    });
 }
 
 function updateEvTitle(i) {
