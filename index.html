@@ -1805,8 +1805,12 @@ function buildCarousel(list) {
     }
     el('carouselTrack').innerHTML = list.map(p => {
         const title      = p['시술명']     || p.title      || '';
-        const beforeUrl  = p['전사진URL']  || p.beforeUrl  || '';
-        const afterUrl   = p['후사진URL']  || p.afterUrl   || '';
+        const toDirectUrl = url => {
+            const m = url && url.match(/\/file\/d\/([^/]+)/);
+            return m ? `https://drive.google.com/uc?export=view&id=${m[1]}` : url;
+        };
+        const beforeUrl  = toDirectUrl(p['전사진URL']  || p.beforeUrl  || '');
+        const afterUrl   = toDirectUrl(p['후사진URL']  || p.afterUrl   || '');
         const beforeDate = p['시술전날짜'] || p.beforeDate || '';
         const afterDate  = p['시술후날짜'] || p.afterDate  || '';
         return `<div class="review-slide">
