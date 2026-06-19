@@ -1213,7 +1213,7 @@
    아이콘 SVG (골드 라인아트)
 ================================================================ */
 const ICONS = {
-'수줍은 리프팅': `<svg viewBox="0 0 80 80" fill="none" stroke="#B09060" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg">
+'원데이 리프팅': `<svg viewBox="0 0 80 80" fill="none" stroke="#B09060" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg">
   <!-- 얼굴 윤곽 -->
   <path d="M26 62 Q21 51 21 41 Q21 27 30 21 Q34 18 40 18 Q46 18 50 21 Q59 27 59 41 Q59 51 54 62 Q49 69 40 70 Q31 69 26 62Z"/>
   <!-- 눈썹 -->
@@ -1351,7 +1351,7 @@ const ICONS = {
    시그니처 섹션 이미지 (SVG 대신 실제 이미지 사용 시)
 ================================================================ */
 const SIG_IMAGES = {
-    '수줍은 리프팅': 'images/sig-lifting.png',
+    '원데이 리프팅': 'images/sig-lifting.png',
     '볼륨샷':       'images/sig-volume.png',
     '슬림샷':       'images/sig-slim.png'
 };
@@ -1390,7 +1390,7 @@ const DEMO = {
     ],
     programs: [
         {
-            카테고리: 'Signature', 프로그램명: '수줍은 리프팅', 표시: '예',
+            카테고리: 'Signature', 프로그램명: '원데이 리프팅', 표시: '예',
             부제: '근본적인 탄력과 처짐 개선',
             슬로건: '"시간을 되돌리는 가장 섬세하고 자연스러운 리프팅"',
             핵심: '단순히 강하게 당기는 리프팅이 아닌, 본래의 얼굴 라인을 지키면서 처짐의 근본 원인을 해결합니다.',
@@ -1429,7 +1429,7 @@ const DEMO = {
     ],
     photos: [
         {
-            시술명: '수줍은 리프팅',
+            시술명: '원데이 리프팅',
             전사진URL: 'https://images.unsplash.com/photo-1519415510236-718bdfcd89c8?w=700&h=900&fit=crop',
             후사진URL: 'https://images.unsplash.com/photo-1570172619644-dfd03ed5d881?w=700&h=900&fit=crop',
             시술전날짜: '2026년 1월', 시술후날짜: '2026년 3월', 표시: '예'
@@ -1719,7 +1719,7 @@ function renderTreatmentSection(containerId, category, list) {
 }
 
 /* ──── 후기 사진 캐러셀 ──── */
-const FILTER_ORDER = ['수줍은 리프팅', '울쎄라', '온다', '볼륨샷', '슬림샷', '비너스코'];
+const FILTER_ORDER = ['원데이 리프팅', '울쎄라', '온다', '볼륨샷', '슬림샷', '비너스코'];
 let _allPhotos   = [];
 let _activeFilter = null;
 
