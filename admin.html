@@ -655,13 +655,13 @@ function renderPhotos() {
                     <label>전사진 URL (구글 드라이브 링크)</label>
                     <input type="url" value="${esc(p.전사진URL)}" placeholder="https://drive.google.com/uc?export=view&id=..."
                         oninput="photosData[${i}].전사진URL=this.value;updateImgPreview(${i})">
-                    ${p.전사진URL ? `<img src="${esc(p.전사진URL)}" style="margin-top:0.5rem;width:100%;height:140px;object-fit:cover;border-radius:6px;border:1px solid #eee;" id="prev-bef-${i}" onerror="this.style.display='none'">` : `<div id="prev-bef-${i}"></div>`}
+                    ${p.전사진URL ? `<img src="${esc(toDirectUrl(p.전사진URL))}" style="margin-top:0.5rem;width:100%;height:140px;object-fit:cover;border-radius:6px;border:1px solid #eee;" id="prev-bef-${i}" onerror="this.style.display='none'">` : `<div id="prev-bef-${i}"></div>`}
                 </div>
                 <div class="field">
                     <label>후사진 URL (구글 드라이브 링크)</label>
                     <input type="url" value="${esc(p.후사진URL)}" placeholder="https://drive.google.com/uc?export=view&id=..."
                         oninput="photosData[${i}].후사진URL=this.value;updateImgPreview(${i})">
-                    ${p.후사진URL ? `<img src="${esc(p.후사진URL)}" style="margin-top:0.5rem;width:100%;height:140px;object-fit:cover;border-radius:6px;border:1px solid #eee;" id="prev-aft-${i}" onerror="this.style.display='none'">` : `<div id="prev-aft-${i}"></div>`}
+                    ${p.후사진URL ? `<img src="${esc(toDirectUrl(p.후사진URL))}" style="margin-top:0.5rem;width:100%;height:140px;object-fit:cover;border-radius:6px;border:1px solid #eee;" id="prev-aft-${i}" onerror="this.style.display='none'">` : `<div id="prev-aft-${i}"></div>`}
                 </div>
             </div>
         </div>`).join('');
@@ -699,11 +699,16 @@ function initPhotoDrag() {
     });
 }
 
+function toDirectUrl(url) {
+    const m = url && url.match(/\/file\/d\/([^/]+)/);
+    return m ? `https://drive.google.com/uc?export=view&id=${m[1]}` : url;
+}
+
 function updateImgPreview(i) {
     const bef = document.getElementById('prev-bef-' + i);
     const aft = document.getElementById('prev-aft-' + i);
-    if (bef) { if (photosData[i].전사진URL) { bef.outerHTML = `<img src="${photosData[i].전사진URL}" style="margin-top:0.5rem;width:100%;height:140px;object-fit:cover;border-radius:6px;border:1px solid #eee;" id="prev-bef-${i}" onerror="this.style.display='none'">`; } }
-    if (aft) { if (photosData[i].후사진URL) { aft.outerHTML = `<img src="${photosData[i].후사진URL}" style="margin-top:0.5rem;width:100%;height:140px;object-fit:cover;border-radius:6px;border:1px solid #eee;" id="prev-aft-${i}" onerror="this.style.display='none'">`; } }
+    if (bef) { if (photosData[i].전사진URL) { bef.outerHTML = `<img src="${toDirectUrl(photosData[i].전사진URL)}" style="margin-top:0.5rem;width:100%;height:140px;object-fit:cover;border-radius:6px;border:1px solid #eee;" id="prev-bef-${i}" onerror="this.style.display='none'">`; } }
+    if (aft) { if (photosData[i].후사진URL) { aft.outerHTML = `<img src="${toDirectUrl(photosData[i].후사진URL)}" style="margin-top:0.5rem;width:100%;height:140px;object-fit:cover;border-radius:6px;border:1px solid #eee;" id="prev-aft-${i}" onerror="this.style.display='none'">`; } }
 }
 function updatePhTitle(i) {
     const card = document.querySelector(`#ph-${i} .card-title-text`);
