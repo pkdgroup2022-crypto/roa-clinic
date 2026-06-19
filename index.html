@@ -25,13 +25,14 @@
             --naver-d:  #02a84a;
         }
 
-        html { scroll-behavior: smooth; scroll-padding-top: 80px; }
+        html { scroll-behavior: smooth; scroll-padding-top: 80px; overflow-x: hidden; }
         body {
             font-family: 'Noto Sans KR', sans-serif;
             background: var(--white);
             color: var(--dark);
             line-height: 1.6;
             -webkit-font-smoothing: antialiased;
+            overflow-x: hidden;
         }
 
         /* ═══════════════════════════════
@@ -212,7 +213,7 @@
         .section-warm  { background: var(--warm); }
         .section-white { background: var(--white); }
         .section-dark  { background: var(--dark); }
-        .section-inner { max-width: 1100px; margin: 0 auto; }
+        .section-inner { max-width: 1100px; margin: 0 auto; width: 100%; }
 
         .section-head { margin-bottom: 4.5rem; }
         .section-label {
@@ -880,6 +881,20 @@
             .slide-header { padding: 1.5rem 1.5rem 1.2rem; }
             .info-grid { grid-template-columns: 1fr; }
             .info-card { padding: 2rem 1.8rem; }
+        }
+        @media (max-width: 600px) {
+            .section { padding: 4rem 1rem; }
+            .section-head { margin-bottom: 2.5rem; }
+            /* 캐러셀 좌우 패딩 제거 — 풀블리드 */
+            #reviews { padding-left: 0; padding-right: 0; }
+            #reviews .section-head,
+            #reviews .review-filter-btns,
+            #reviews .carousel-controls,
+            #reviews .disclaimer { padding-left: 1rem; padding-right: 1rem; }
+            .slide-photos { height: auto; aspect-ratio: 3 / 4; }
+            .slide-label-cell { padding: 0.5rem 0.75rem; }
+            .photo-label { font-size: 0.62rem; }
+            .photo-date { font-size: 0.62rem; }
         }
         @media (max-width: 540px) {
             .event-row {
