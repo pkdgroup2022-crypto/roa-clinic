@@ -198,6 +198,22 @@
         .toggle::after { content: ''; position: absolute; top: 3px; left: 3px; width: 16px; height: 16px; border-radius: 50%; background: white; transition: left 0.2s; }
         .toggle.on::after { left: 21px; }
 
+        /* 시술 필터 바 */
+        .photo-filter-bar {
+            background: var(--white); border-bottom: 1px solid var(--border);
+            padding: 0.8rem 1.5rem; display: flex; gap: 0.5rem; flex-wrap: wrap;
+            position: sticky; top: 96px; z-index: 80;
+        }
+        .filter-chip {
+            padding: 0.4rem 1rem; border-radius: 999px;
+            border: 1px solid var(--border); background: transparent;
+            font-size: 0.78rem; font-weight: 600; font-family: inherit;
+            color: var(--mid); cursor: pointer; transition: all 0.15s;
+            white-space: nowrap;
+        }
+        .filter-chip:hover { border-color: var(--gold); color: var(--gold); }
+        .filter-chip.active { background: var(--dark); color: white; border-color: var(--dark); }
+
         /* 드래그 순서 변경 */
         .drag-handle {
             cursor: grab; padding: 0.3rem 0.5rem; color: var(--muted);
@@ -336,6 +352,7 @@
 
 <!-- ═══ 탭 4: 전후 사진 ═══ -->
 <div id="tab-photos" class="tab-panel">
+    <div class="photo-filter-bar" id="photoFilterBar"></div>
     <div class="container">
         <div class="section-title">시술 전후 사진</div>
         <p class="section-desc">사진을 업로드하면 홈페이지 후기 섹션에 표시됩니다. 사진은 이 기기 브라우저에 저장됩니다.</p>
@@ -605,11 +622,34 @@ function resetEvents() {
    탭 4: 전후 사진
 ════════════════════════════════ */
 let photosData = [];
+const PHOTO_FILTERS = ['전체', '원데이 리프팅', '울쎄라', '온다', '볼륨샷', '슬림샷', '비너스코'];
+let activeFilter = '전체';
 
 function loadPhotos() {
     photosData = loadJSON('roa_photos', []);
     if (!photosData.length) photosData.push(emptyPhoto());
+    renderFilterBar();
     renderPhotos();
+}
+
+function renderFilterBar() {
+    document.getElementById('photoFilterBar').innerHTML = PHOTO_FILTERS.map(f => `
+        <button class="filter-chip ${f === activeFilter ? 'active' : ''}" onclick="setPhotoFilter('${f}')">${f}</button>
+    `).join('');
+}
+
+function setPhotoFilter(name) {
+    activeFilter = name;
+    renderFilterBar();
+    renderPhotos();
+}
+
+function addPhoto() {
+    const newPhoto = emptyPhoto();
+    if (activeFilter !== '전체') newPhoto.시술명 = activeFilter;
+    photosData.push(newPhoto);
+    renderPhotos();
+    setTimeout(() => { const c = document.querySelectorAll('#photos-list .card'); c[c.length-1]?.scrollIntoView({behavior:'smooth',block:'center'}); }, 50);
 }
 
 function emptyPhoto() {
@@ -617,7 +657,13 @@ function emptyPhoto() {
 }
 
 function renderPhotos() {
-    document.getElementById('photos-list').innerHTML = photosData.map((p, i) => `
+    const filtered = activeFilter === '전체'
+        ? photosData.map((p, i) => ({ p, i }))
+        : photosData.map((p, i) => ({ p, i })).filter(({ p }) => (p.시술명 || '').includes(activeFilter));
+
+    document.getElementById('photos-list').innerHTML = filtered.length === 0
+        ? `<div style="text-align:center;padding:3rem;color:var(--muted);font-size:0.9rem;">이 시술의 사진이 없습니다.<br><br><button class="btn-add" style="width:auto;padding:0.7rem 2rem;" onclick="addPhoto()">＋ 사진 추가</button></div>`
+        : filtered.map(({ p, i }) => `
 
         <div class="card" id="ph-${i}" draggable="true" data-idx="${i}">
             <div class="card-head">
@@ -668,6 +714,7 @@ function renderPhotos() {
     initPhotoDrag();
 }
 
+
 /* 드래그 순서 변경 */
 let dragSrc = null;
 function initPhotoDrag() {
@@ -716,11 +763,6 @@ function updatePhTitle(i) {
         const num = card.querySelector('.card-num').outerHTML;
         card.innerHTML = num + ' ' + (photosData[i].시술명 || '사진 ' + (i+1));
     }
-}
-function addPhoto() {
-    photosData.push(emptyPhoto());
-    renderPhotos();
-    setTimeout(() => { const c = document.querySelectorAll('[id^="ph-"]'); c[c.length-1]?.scrollIntoView({behavior:'smooth',block:'center'}); }, 50);
 }
 function removePhoto(i) {
     if (photosData.length === 1) { photosData[0] = emptyPhoto(); renderPhotos(); return; }
