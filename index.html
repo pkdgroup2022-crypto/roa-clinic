@@ -1807,7 +1807,7 @@ function buildCarousel(list) {
         const title      = p['시술명']     || p.title      || '';
         const toDirectUrl = url => {
             const m = url && url.match(/\/file\/d\/([^/]+)/);
-            return m ? `https://drive.google.com/uc?export=view&id=${m[1]}` : url;
+            return m ? `https://drive.google.com/thumbnail?id=${m[1]}&sz=w1000` : url;
         };
         const beforeUrl  = toDirectUrl(p['전사진URL']  || p.beforeUrl  || '');
         const afterUrl   = toDirectUrl(p['후사진URL']  || p.afterUrl   || '');

@@ -701,7 +701,7 @@ function initPhotoDrag() {
 
 function toDirectUrl(url) {
     const m = url && url.match(/\/file\/d\/([^/]+)/);
-    return m ? `https://drive.google.com/uc?export=view&id=${m[1]}` : url;
+    return m ? `https://drive.google.com/thumbnail?id=${m[1]}&sz=w1000` : url;
 }
 
 function updateImgPreview(i) {
