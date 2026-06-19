@@ -549,7 +549,7 @@ function loadEvents() {
 
 function renderEvents() {
     document.getElementById('events-list').innerHTML = eventsData.map((e, i) => `
-        <div class="card" id="ev-${i}" draggable="true" data-idx="${i}">
+        <div class="card" id="ev-${i}" data-idx="${i}">
             <div class="card-head">
                 <div class="card-title-text">
                     <span class="drag-handle" title="드래그해서 순서 변경">⠿</span>
@@ -586,32 +586,7 @@ function renderEvents() {
     initEventDrag();
 }
 
-function initEventDrag() {
-    let dragSrcEv = null;
-    document.querySelectorAll('#events-list .card').forEach(card => {
-        card.addEventListener('dragstart', e => {
-            dragSrcEv = parseInt(card.dataset.idx);
-            card.classList.add('dragging');
-            e.dataTransfer.effectAllowed = 'move';
-        });
-        card.addEventListener('dragend', () => {
-            document.querySelectorAll('#events-list .card').forEach(c => c.classList.remove('dragging', 'drag-over'));
-        });
-        card.addEventListener('dragover', e => {
-            e.preventDefault();
-            document.querySelectorAll('#events-list .card').forEach(c => c.classList.remove('drag-over'));
-            card.classList.add('drag-over');
-        });
-        card.addEventListener('drop', e => {
-            e.preventDefault();
-            const dest = parseInt(card.dataset.idx);
-            if (dragSrcEv === null || dragSrcEv === dest) return;
-            const moved = eventsData.splice(dragSrcEv, 1)[0];
-            eventsData.splice(dest, 0, moved);
-            renderEvents();
-        });
-    });
-}
+function initEventDrag() { initDrag('#events-list', eventsData, renderEvents); }
 
 function updateEvTitle(i) {
     const card = document.querySelector(`#ev-${i} .card-title-text`);
@@ -694,7 +669,7 @@ function renderPhotos() {
         ? `<div style="text-align:center;padding:3rem;color:var(--muted);font-size:0.9rem;">이 시술의 사진이 없습니다.<br><br><button class="btn-add" style="width:auto;padding:0.7rem 2rem;" onclick="addPhoto()">＋ 사진 추가</button></div>`
         : filtered.map(({ p, i }) => `
 
-        <div class="card" id="ph-${i}" draggable="true" data-idx="${i}">
+        <div class="card" id="ph-${i}" data-idx="${i}">
             <div class="card-head">
                 <div class="card-title-text">
                     <span class="drag-handle" title="드래그해서 순서 변경">⠿</span>
@@ -744,36 +719,44 @@ function renderPhotos() {
 }
 
 
-/* 드래그 순서 변경 */
-let dragSrc = null;
-function initPhotoDrag() {
-    document.querySelectorAll('#photos-list .card').forEach(card => {
+/* 드래그 순서 변경 공통 함수 */
+function initDrag(listSelector, dataArr, onReorder) {
+    let dragSrc = null;
+    const cards = document.querySelectorAll(listSelector + ' .card');
+    cards.forEach(card => {
+        // 핸들에 mousedown 시에만 draggable 활성화
+        const handle = card.querySelector('.drag-handle');
+        if (handle) {
+            handle.addEventListener('mousedown', () => { card.draggable = true; });
+            document.addEventListener('mouseup', () => { card.draggable = false; }, { once: false });
+        }
         card.addEventListener('dragstart', e => {
+            if (!card.draggable) { e.preventDefault(); return; }
             dragSrc = parseInt(card.dataset.idx);
             card.classList.add('dragging');
             e.dataTransfer.effectAllowed = 'move';
         });
         card.addEventListener('dragend', () => {
-            document.querySelectorAll('#photos-list .card').forEach(c => {
-                c.classList.remove('dragging', 'drag-over');
-            });
+            card.draggable = false;
+            document.querySelectorAll(listSelector + ' .card').forEach(c => c.classList.remove('dragging', 'drag-over'));
         });
         card.addEventListener('dragover', e => {
             e.preventDefault();
-            e.dataTransfer.dropEffect = 'move';
-            document.querySelectorAll('#photos-list .card').forEach(c => c.classList.remove('drag-over'));
+            document.querySelectorAll(listSelector + ' .card').forEach(c => c.classList.remove('drag-over'));
             card.classList.add('drag-over');
         });
         card.addEventListener('drop', e => {
             e.preventDefault();
             const dest = parseInt(card.dataset.idx);
             if (dragSrc === null || dragSrc === dest) return;
-            const moved = photosData.splice(dragSrc, 1)[0];
-            photosData.splice(dest, 0, moved);
-            renderPhotos();
+            const moved = dataArr.splice(dragSrc, 1)[0];
+            dataArr.splice(dest, 0, moved);
+            onReorder();
         });
     });
 }
+
+function initPhotoDrag() { initDrag('#photos-list', photosData, renderPhotos); }
 
 function toDirectUrl(url) {
     const m = url && url.match(/\/file\/d\/([^/]+)/);
