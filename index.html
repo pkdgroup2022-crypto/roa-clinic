@@ -885,7 +885,9 @@
         @media (max-width: 600px) {
             .section { padding: 4rem 1rem; }
             .section-head { margin-bottom: 2.5rem; }
-            .slide-photos { height: 260px; }
+            .slide-photos { height: auto; }
+            .slide-photo { aspect-ratio: 3 / 4; }
+            .slide-photo img { object-fit: contain; background: #111; }
             .slide-label-cell { padding: 0.5rem 0.75rem; }
             .photo-label { font-size: 0.62rem; }
             .photo-date { font-size: 0.62rem; }
