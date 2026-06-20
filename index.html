@@ -1598,7 +1598,7 @@
 <section class="floating-reviews-section" id="floatingReviews">
     <div class="floating-reviews-title">
         <span class="fr-label">NAVER REVIEW</span>
-        <h2>1000건이 넘는 리뷰가<br><span>증명합니다.</span></h2>
+        <h2><span>1000건이 넘는 리뷰</span>가<br>증명합니다.</h2>
     </div>
 </section>
 
@@ -2643,8 +2643,8 @@ loadData();
     if (!section) return;
 
     const isMobile = () => window.innerWidth <= 760;
-    const MAX_CARDS = () => isMobile() ? 8 : 14;
-    const INTERVAL = 1400;
+    const MAX_CARDS = () => REVIEWS.length;
+    const INTERVAL = Math.floor(3000 / REVIEWS.length);
 
     let pool = [];
     let queue = [...REVIEWS].sort(() => Math.random() - 0.5);
@@ -2668,8 +2668,10 @@ loadData();
         return { x, y };
     }
 
+    let done = false;
     function spawnCard() {
-        if (!queue.length) queue = [...REVIEWS].sort(() => Math.random() - 0.5);
+        if (done) { clearInterval(timer); timer = null; return; }
+        if (!queue.length) { done = true; clearInterval(timer); timer = null; return; }
         const src = queue.shift();
         const card = makeCard(src);
         const { x, y } = randomPos(card);
@@ -2677,16 +2679,7 @@ loadData();
         card.style.top = y + 'px';
         section.appendChild(card);
         pool.push(card);
-
-        requestAnimationFrame(() => {
-            requestAnimationFrame(() => card.classList.add('visible'));
-        });
-
-        // 최대 카드 수 초과 시 가장 오래된 카드 제거
-        if (pool.length > MAX_CARDS()) {
-            const old = pool.shift();
-            old.remove();
-        }
+        requestAnimationFrame(() => requestAnimationFrame(() => card.classList.add('visible')));
     }
 
     // IntersectionObserver로 섹션 진입 시 시작
