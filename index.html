@@ -703,17 +703,21 @@
             height: 100vh;
             background: #f9f7f4;
             overflow: hidden;
+            display: flex;
+            flex-direction: column;
         }
         .floating-reviews-title {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            z-index: 20;
+            flex-shrink: 0;
             text-align: center;
-            pointer-events: none;
-            padding: clamp(28px, 4vh, 50px) 20px clamp(20px, 3vh, 36px);
+            padding: clamp(28px, 4vh, 50px) 20px clamp(18px, 2.5vh, 32px);
             background: #f9f7f4;
+            position: relative;
+            z-index: 2;
+        }
+        .fr-card-area {
+            flex: 1;
+            position: relative;
+            overflow: hidden;
         }
         .floating-reviews-title .fr-label {
             font-size: clamp(0.75rem, 1.2vw, 0.9rem);
@@ -1601,6 +1605,7 @@
         <span class="fr-label">NAVER REVIEW</span>
         <h2><span>1000건이 넘는 리뷰</span>가<br>증명합니다.</h2>
     </div>
+    <div class="fr-card-area" id="frCardArea"></div>
 </section>
 
 <!-- ─── Clinic Appeal (2페이지) ─── -->
@@ -2641,7 +2646,8 @@ loadData();
     ];
 
     const section = document.getElementById('floatingReviews');
-    if (!section) return;
+    const cardArea = document.getElementById('frCardArea');
+    if (!section || !cardArea) return;
 
     const isMobile = () => window.innerWidth <= 760;
     const MAX_CARDS = () => REVIEWS.length;
@@ -2658,23 +2664,19 @@ loadData();
         return card;
     }
 
-    // 그리드 기반 균등 분산 배치 (타이틀 아래 영역)
+    // 그리드 기반 균등 분산 배치 (fr-card-area 기준)
     let gridSlots = [];
     function buildGrid() {
-        const sw = section.offsetWidth;
-        const sh = section.offsetHeight;
-        const titleEl = section.querySelector('.floating-reviews-title');
-        const titleH = titleEl ? titleEl.offsetHeight : (isMobile() ? 130 : 160);
-        const topOffset = titleH + 8;
-        const areaH = sh - topOffset;
+        const sw = cardArea.offsetWidth;
+        const sh = cardArea.offsetHeight;
         const cols = isMobile() ? 3 : 5;
         const rows = isMobile() ? 5 : 4;
         const cw = sw / cols;
-        const ch = areaH / rows;
+        const ch = sh / rows;
         gridSlots = [];
         for (let r = 0; r < rows; r++) {
             for (let c = 0; c < cols; c++) {
-                gridSlots.push({ x: c * cw, y: topOffset + r * ch, cw, ch });
+                gridSlots.push({ x: c * cw, y: r * ch, cw, ch });
             }
         }
         gridSlots.sort(() => Math.random() - 0.5);
@@ -2682,9 +2684,9 @@ loadData();
     function randomPos(idx) {
         if (!gridSlots.length) buildGrid();
         const slot = gridSlots[idx % gridSlots.length];
-        const jitterX = (Math.random() - 0.5) * slot.cw * 0.25;
-        const jitterY = (Math.random() - 0.5) * slot.ch * 0.25;
-        return { x: Math.max(0, slot.x + jitterX), y: slot.y + jitterY };
+        const jitterX = (Math.random() - 0.5) * slot.cw * 0.2;
+        const jitterY = (Math.random() - 0.5) * slot.ch * 0.2;
+        return { x: Math.max(2, slot.x + jitterX), y: Math.max(2, slot.y + jitterY) };
     }
 
     let done = false;
@@ -2696,23 +2698,29 @@ loadData();
         const { x, y } = randomPos(pool.length);
         card.style.left = x + 'px';
         card.style.top = y + 'px';
-        section.appendChild(card);
+        cardArea.appendChild(card);
         pool.push(card);
         requestAnimationFrame(() => requestAnimationFrame(() => card.classList.add('visible')));
     }
 
     // IntersectionObserver로 섹션 진입 시 시작
     let timer = null;
+    let started = false;
     const obs = new IntersectionObserver(entries => {
         entries.forEach(e => {
-            if (e.isIntersecting) {
-                if (!timer) timer = setInterval(spawnCard, INTERVAL);
-                spawnCard();
-            } else {
-                clearInterval(timer); timer = null;
+            if (e.isIntersecting && !started) {
+                started = true;
+                // 레이아웃 완료 후 그리드 구성
+                requestAnimationFrame(() => {
+                    requestAnimationFrame(() => {
+                        buildGrid();
+                        spawnCard();
+                        timer = setInterval(spawnCard, INTERVAL);
+                    });
+                });
             }
         });
-    }, { threshold: 0.1 });
+    }, { threshold: 0.05 });
     obs.observe(section);
 })();
 
