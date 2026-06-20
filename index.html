@@ -482,6 +482,9 @@
             border-radius: 12px;
             overflow: hidden;
             aspect-ratio: 4/3;
+            max-width: 560px;
+            width: 100%;
+            margin: 0 auto;
         }
         .wk-img-placeholder {
             background: #ede9e3;
@@ -494,19 +497,35 @@
             color: rgba(0,0,0,0.3);
             font-size: 0.85rem;
         }
-        /* wk 슬라이드쇼 (02번) */
-        .wk-slideshow { position: relative; overflow: hidden; }
-        .wk-slide { position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0; transition: opacity 0.7s ease; }
-        .wk-slide.active { opacity: 1; position: relative; }
-        .wk-slide-dots {
-            position: absolute; bottom: 12px; left: 50%; transform: translateX(-50%);
-            display: flex; gap: 6px;
+        /* wk 02번 3장 나열 */
+        .wk-gallery {
+            display: flex;
+            gap: 16px;
+            width: 100%;
         }
-        .wk-sdot {
-            width: 7px; height: 7px; border-radius: 50%;
-            background: rgba(255,255,255,0.5); transition: background 0.3s;
+        .wk-gallery-item {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
         }
-        .wk-sdot.active { background: #fff; }
+        .wk-gallery-img {
+            width: 100%;
+            aspect-ratio: 3/4;
+            object-fit: cover;
+            border-radius: 10px;
+        }
+        .wk-gallery-caption {
+            font-size: clamp(0.72rem, 1.1vw, 0.82rem);
+            color: #555;
+            text-align: center;
+            line-height: 1.5;
+            word-break: keep-all;
+        }
+        @media (max-width: 760px) {
+            .wk-gallery { gap: 10px; }
+            .wk-gallery-caption { font-size: 0.68rem; }
+        }
 
         .pc-br { display: inline; }
         .mo-br { display: none; }
@@ -1413,14 +1432,18 @@
                     <h3 class="wk-item-title">끊임없는 연구,<br class="mo-br"> 결과로 증명되는 실력</h3>
                     <p class="wk-item-desc">수많은 미용 학회와 임상 연구를 통해, 매년 변하는 트렌드 직접 시술하며 쌓아온 데이터가 당신의 리프팅 결과로 이어집니다.</p>
                 </div>
-                <div class="wk-item-image wk-slideshow" id="wkSlide02">
-                    <img src="images/wk-02a.jpg" alt="연구 이미지 1" class="wk-slide active" style="border-radius:12px;">
-                    <img src="images/wk-02b.png" alt="연구 이미지 2" class="wk-slide" style="border-radius:12px;">
-                    <img src="images/wk-02c.png" alt="연구 이미지 3" class="wk-slide" style="border-radius:12px;">
-                    <div class="wk-slide-dots">
-                        <span class="wk-sdot active"></span>
-                        <span class="wk-sdot"></span>
-                        <span class="wk-sdot"></span>
+                <div class="wk-gallery">
+                    <div class="wk-gallery-item">
+                        <img src="images/wk-02a.jpg" alt="임상약침회 수료" class="wk-gallery-img">
+                        <p class="wk-gallery-caption">임상약침회<br>스킨부스터 전문가과정 수료</p>
+                    </div>
+                    <div class="wk-gallery-item">
+                        <img src="images/wk-02b.png" alt="대한통합레이저학회" class="wk-gallery-img">
+                        <p class="wk-gallery-caption">대한통합레이저학회<br>회원</p>
+                    </div>
+                    <div class="wk-gallery-item">
+                        <img src="images/wk-02c.png" alt="서울시한의사회 인증" class="wk-gallery-img">
+                        <p class="wk-gallery-caption">서울특별시한의사회 인증<br>미용 시술 한의사</p>
                     </div>
                 </div>
             </div>
@@ -2372,21 +2395,6 @@ function carouselGoTo(idx) {
     const cc = el('carouselCount');
     if (cc) { const total = document.querySelectorAll('.review-slide').length; cc.textContent = `${idx + 1} / ${total}`; }
 }
-// wk-02 슬라이드쇼 자동 전환 (3초)
-(function() {
-    const wrap = document.getElementById('wkSlide02');
-    if (!wrap) return;
-    const slides = wrap.querySelectorAll('.wk-slide');
-    const dots   = wrap.querySelectorAll('.wk-sdot');
-    let idx = 0;
-    setInterval(() => {
-        slides[idx].classList.remove('active');
-        dots[idx].classList.remove('active');
-        idx = (idx + 1) % slides.length;
-        slides[idx].classList.add('active');
-        dots[idx].classList.add('active');
-    }, 3000);
-})();
 
 // 창 크기 변경 시 위치 재계산
 window.addEventListener('resize', () => {
