@@ -697,7 +697,7 @@ function addPhoto() {
 }
 
 function emptyPhoto() {
-    return { 시술명: '', 시술전날짜: '', 시술후날짜: '', 전사진URL: '', 후사진URL: '', 표시: '예' };
+    return { 시술명: '', 시술전날짜: '', 시술후날짜: '', 전사진URL: '', 후사진URL: '', 고민: '', 원인: '', 해결: '', 표시: '예' };
 }
 
 function renderPhotos() {
@@ -752,6 +752,21 @@ function renderPhotos() {
                     <input type="url" value="${esc(p.후사진URL)}" placeholder="https://drive.google.com/uc?export=view&id=..."
                         oninput="photosData[${i}].후사진URL=this.value;updateImgPreview(${i})">
                     ${p.후사진URL ? `<img src="${esc(toDirectUrl(p.후사진URL))}" style="margin-top:0.5rem;width:100%;height:140px;object-fit:cover;border-radius:6px;border:1px solid #eee;" id="prev-aft-${i}" onerror="this.style.display='none'">` : `<div id="prev-aft-${i}"></div>`}
+                </div>
+            </div>
+            <div style="margin-top:1rem;padding:1rem;background:#f9f9f9;border-radius:8px;border:1px solid #eee;">
+                <div style="font-size:0.75rem;font-weight:700;letter-spacing:0.12em;color:#8B1A2A;margin-bottom:0.8rem;">시술 노트</div>
+                <div class="field" style="margin-bottom:0.6rem;"><label>고민 (부위명)</label>
+                    <input type="text" value="${esc(p.고민||'')}" placeholder="예) 볼살 처짐, 팔자주름"
+                        oninput="photosData[${i}].고민=this.value">
+                </div>
+                <div class="field" style="margin-bottom:0.6rem;"><label>원인 (핵심 요인)</label>
+                    <input type="text" value="${esc(p.원인||'')}" placeholder="예) 피부 탄력 저하, 지방 이동"
+                        oninput="photosData[${i}].원인=this.value">
+                </div>
+                <div class="field"><label>해결 (시술 솔루션)</label>
+                    <input type="text" value="${esc(p.해결||'')}" placeholder="예) 원데이 실리프팅 + 볼륨실 병행"
+                        oninput="photosData[${i}].해결=this.value">
                 </div>
             </div>
         </div>`).join('');

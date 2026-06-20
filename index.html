@@ -12,15 +12,15 @@
         * { margin: 0; padding: 0; box-sizing: border-box; }
 
         :root {
-            --dark:     #0E0E0E;
+            --dark:     #1a1a1a;
             --mid:      #3C3C3C;
             --muted:    #888888;
-            --silver:   #C8C0B4;
-            --cream:    #F4EFE6;
-            --warm:     #FAF7F2;
+            --silver:   #C0C0C0;
+            --cream:    #FFFFFF;
+            --warm:     #F7F7F7;
             --white:    #FFFFFF;
-            --gold:     #B09060;
-            --gold-l:   #CDB08A;
+            --gold:     #8B1A2A;
+            --gold-l:   #B02235;
             --naver:    #03C75A;
             --naver-d:  #02a84a;
         }
@@ -143,12 +143,15 @@
             position: relative; z-index: 10;
             text-align: left;
             padding: 0 2rem 0 5vw;
-            max-width: 760px;
+            max-width: 860px;
+        }
+        @media (max-width: 600px) {
+            .hero-content { padding: 0 1.8rem; }
         }
         .hero h1 {
             font-family: 'Noto Serif KR', serif;
             font-size: clamp(1.6rem, 3.2vw, 2.6rem);
-            font-weight: 700; color: white;
+            font-weight: 700; color: #ffffff;
             line-height: 1.35; letter-spacing: -0.01em;
             margin-bottom: 1.2rem;
             word-break: keep-all;
@@ -156,7 +159,7 @@
         .hero-tagline {
             font-family: 'Noto Serif KR', serif;
             font-size: clamp(0.85rem, 1.9vw, 1.75rem);
-            color: white;
+            color: #ffffff;
             line-height: 1.6; margin-bottom: 0;
             font-weight: 500; letter-spacing: 0.02em;
             word-break: keep-all;
@@ -164,8 +167,180 @@
         @media (max-width: 600px) {
             .hero h1 { white-space: normal; font-size: clamp(1.4rem, 6vw, 2rem); }
         }
+
+        /* ── 고민 섹션 ── */
+        .worry-section {
+            background: #FFFFFF;
+            padding: 7rem 2rem;
+            display: flex;
+            justify-content: center;
+        }
+        .worry-inner {
+            max-width: 900px;
+            width: 100%;
+            text-align: center;
+        }
+        .worry-label {
+            font-size: 1rem;
+            color: var(--gold);
+            letter-spacing: 0.15em;
+            font-weight: 700;
+            margin-bottom: 1.2rem;
+        }
+        .worry-title {
+            font-family: 'Noto Serif KR', serif;
+            font-size: clamp(1.8rem, 3.8vw, 3rem);
+            font-weight: 700;
+            color: var(--dark);
+            line-height: 1.35;
+            margin-bottom: 1.2rem;
+            word-break: keep-all;
+        }
+        .worry-sub {
+            font-size: clamp(0.9rem, 1.5vw, 1.05rem);
+            color: var(--mid);
+            margin-bottom: 3.5rem;
+            line-height: 1.7;
+        }
+        .worry-row1 {
+            display: flex;
+            gap: 1.2rem;
+            margin-bottom: 1.2rem;
+        }
+        .worry-row2 {
+            display: flex;
+            gap: 1.2rem;
+            justify-content: center;
+        }
+        .worry-row2 .worry-card {
+            flex: 0 1 calc(33.33% - 0.6rem);
+        }
+        .worry-card {
+            flex: 1;
+            border: 1px solid rgba(139,26,42,0.2);
+            border-radius: 10px;
+            padding: 2rem 1.5rem;
+            font-size: clamp(0.88rem, 1.3vw, 1rem);
+            color: var(--mid);
+            line-height: 1.8;
+            text-align: center;
+            word-break: keep-all;
+            background: #fafafa;
+        }
+        .worry-card strong { color: var(--dark); font-weight: 700; }
+        .worry-bottom { margin-top: 4.5rem; }
+        .worry-bottom-main {
+            font-size: clamp(1rem, 1.6vw, 1.15rem);
+            color: var(--mid);
+            margin-bottom: 1rem;
+        }
+        .worry-bottom-sub {
+            font-family: 'Noto Serif KR', serif;
+            font-size: clamp(1.2rem, 2.4vw, 1.8rem);
+            color: var(--dark);
+            font-weight: 500;
+            line-height: 1.7;
+            word-break: keep-all;
+        }
+        .worry-bottom-sub strong { color: var(--gold); font-weight: 800; }
+        @media (max-width: 700px) {
+            .worry-section { padding: 5rem 1.6rem; }
+            .worry-row1, .worry-row2 { flex-direction: column; }
+            .worry-row2 .worry-card { flex: 1 1 auto; }
+            .worry-sub-mo { display: inline; }
+            .worry-sub-pc { display: none; }
+            .worry-bottom-sub { font-size: 1rem; }
+        }
+
+        /* ── 임팩트 통계 섹션 ── */
+        .impact-section {
+            background: #F7F7F7;
+            padding: 6rem 2rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 60vh;
+        }
+        .impact-inner {
+            max-width: 780px;
+            width: 100%;
+            margin: 0 auto;
+        }
+        .impact-stats-row {
+            display: flex;
+            align-items: center;
+            gap: 3rem;
+            flex-wrap: wrap;
+            margin-bottom: 0.7rem;
+        }
+        .impact-brackets-col {
+            display: flex;
+            flex-direction: column;
+            gap: 1.4rem;
+        }
+        .impact-bracket-item {
+            display: flex;
+            flex-direction: column;
+            gap: 0.3rem;
+        }
+        .impact-bracket-num {
+            font-family: 'Noto Serif KR', serif;
+            font-size: clamp(2.4rem, 5.5vw, 4.2rem);
+            font-weight: 700;
+            color: var(--dark);
+            letter-spacing: -0.01em;
+            line-height: 1.2;
+        }
+        .impact-bracket { color: var(--gold); }
+        .impact-counter { font-variant-numeric: tabular-nums; }
+        .impact-bracket-label {
+            font-size: clamp(0.72rem, 1.1vw, 0.88rem);
+            color: var(--muted);
+            letter-spacing: 0.08em;
+            padding-left: 0.2rem;
+        }
+        .impact-noha {
+            font-family: 'Noto Serif KR', serif;
+            font-size: clamp(1.8rem, 4vw, 3.4rem);
+            font-weight: 700;
+            color: var(--dark);
+            letter-spacing: 0.04em;
+            border-left: 3px solid var(--gold);
+            padding-left: 1.4rem;
+            line-height: 1.35;
+            white-space: nowrap;
+        }
+        .impact-period {
+            font-size: clamp(0.68rem, 1.2vw, 0.8rem);
+            color: var(--muted);
+            letter-spacing: 0.03em;
+            margin-bottom: 2rem;
+        }
+        .impact-copy {
+            font-family: 'Noto Serif KR', serif;
+            font-size: clamp(1.1rem, 1.8vw, 1.35rem);
+            color: var(--mid);
+            line-height: 1.9;
+            font-weight: 600;
+            word-break: keep-all;
+        }
+        .impact-copy strong { color: var(--dark); font-weight: 700; }
+        .mo-copy { display: none; }
+        .pc-copy { display: inline; }
+        .worry-sub-mo { display: none; }
+        .worry-sub-pc { display: inline; }
+        @media (max-width: 700px) {
+            .worry-sub-mo { display: inline; }
+            .worry-sub-pc { display: none; }
+        }
         @media (max-width: 600px) {
-            .hero-content { padding: 0 1.8rem; }
+            .impact-section { padding: 4rem 1.6rem; min-height: auto; }
+            .impact-stats-row { flex-direction: row; align-items: center; gap: 1.2rem; flex-wrap: nowrap; }
+            .impact-noha { font-size: clamp(1.6rem, 7vw, 2.2rem); white-space: normal; }
+            .impact-bracket-num { font-size: clamp(1.6rem, 7vw, 2.2rem); white-space: nowrap; }
+            .impact-copy { font-size: 0.83rem; }
+            .mo-copy { display: inline; }
+            .pc-copy { display: none; }
         }
 
         .btn {
@@ -236,7 +411,7 @@
         .wk-question {
             font-family: 'Noto Serif KR', serif;
             font-size: clamp(1.15rem, 2.4vw, 1.6rem);
-            color: #E1306C;
+            color: var(--gold);
             font-weight: 600;
             margin-bottom: 10px;
         }
@@ -245,6 +420,33 @@
             color: #666;
             margin: 0;
         }
+        .wk-answer-text {
+            font-size: clamp(1.1rem, 2.2vw, 1.4rem);
+            font-weight: 600;
+            color: #1a1a1a;
+            margin: 32px 0 0 0;
+            line-height: 1.7;
+            text-align: center;
+        }
+        .wk-conclusion {
+            margin: 60px 0 0 0;
+            text-align: center;
+            font-size: clamp(1.3rem, 3vw, 1.8rem);
+            line-height: 1.9;
+            color: #1a1a1a;
+            word-break: keep-all;
+        }
+        .wk-conclusion em {
+            font-style: normal;
+            color: #1a1a1a;
+            font-weight: 700;
+        }
+        .wk-conclusion strong {
+            color: var(--gold);
+            font-weight: 700;
+        }
+        .pc-br { display: inline; }
+        .mo-br-text { display: none; }
         .wk-items { display: flex; flex-direction: column; gap: 80px; }
         .wk-item {
             display: flex;
@@ -256,7 +458,7 @@
             display: block;
             font-family: 'Noto Serif KR', serif;
             font-size: 0.85rem;
-            color: #E1306C;
+            color: var(--gold);
             letter-spacing: 0.15em;
             margin-bottom: 12px;
             font-weight: 600;
@@ -301,6 +503,8 @@
             .wk-question { font-size: 1rem; }
             .wk-question-desc { word-break: keep-all; }
             .pc-br { display: none; }
+            .mo-br-text { display: inline; }
+            .pc-br { display: none; }
             .mo-br { display: inline; }
         }
         .section-white { background: var(--white); }
@@ -325,6 +529,19 @@
             background: var(--gold); margin-top: 1.4rem;
         }
         .section-rule.light { background: var(--gold-l); }
+        .reviews-sub {
+            font-size: 0.72em;
+            color: var(--gold);
+            font-weight: 600;
+            display: block;
+            margin-top: 12px;
+        }
+        .reviews-guide {
+            margin: 20px 0 0 0;
+            font-size: clamp(0.85rem, 1.6vw, 1rem);
+            color: #888;
+            line-height: 1.8;
+        }
 
         /* ═══════════════════════════════
            CLINIC APPEAL (2페이지) — 재설계
@@ -467,7 +684,7 @@
         .price-event {
             font-family: 'Noto Serif KR', serif;
             font-size: clamp(1.6rem, 2.8vw, 2.2rem);
-            font-weight: 700; color: #D93025; letter-spacing: -0.01em;
+            font-weight: 700; color: var(--gold); letter-spacing: -0.01em;
         }
         .vat-badge {
             font-size: 0.72rem; font-weight: 700;
@@ -477,7 +694,7 @@
         .vat-badge.incl { color: #1a7a3f; border-color: #1a7a3f; background: #f0faf4; }
         .vat-badge.excl { color: var(--muted); border-color: var(--silver); background: transparent; }
         .price-badge {
-            background: #D93025; color: white;
+            background: var(--gold); color: white;
             font-size: 0.72rem; font-weight: 700;
             padding: 0.3rem 0.7rem; border-radius: 2px;
             letter-spacing: 0.04em;
@@ -666,54 +883,84 @@
             transition: transform 0.5s cubic-bezier(0.4,0,0.2,1);
             will-change: transform;
         }
-        .review-slide { flex: 0 0 100%; width: 100%; min-width: 0; background: #111; }
+        .review-slide { flex: 0 0 100%; width: 100%; min-width: 0; background: #fff; }
 
         .slide-header {
-            padding: 2rem 2.5rem 1.6rem;
-            border-bottom: 1px solid rgba(255,255,255,0.08);
+            padding: 1.4rem 1.8rem 1.2rem;
+            border-bottom: 1px solid #eee;
+            background: #fff;
         }
         .slide-subtitle {
             font-size: 0.65rem; letter-spacing: 0.25em; text-transform: uppercase;
-            color: var(--gold-l); margin-bottom: 0.4rem;
+            color: var(--gold); margin-bottom: 0.35rem;
         }
         .slide-title {
             font-family: 'Noto Serif KR', serif;
-            font-size: clamp(1.2rem, 2.5vw, 1.7rem);
-            font-weight: 600; color: white; letter-spacing: 0.01em;
+            font-size: clamp(1.1rem, 2.2vw, 1.5rem);
+            font-weight: 600; color: #1a1a1a; letter-spacing: 0.01em;
         }
 
-        .slide-photos { display: flex; height: 520px; flex-shrink: 0; }
-        /* 모바일에서 직사각형 비율 유지 — 화면 너비의 75% */
-        @media (max-width: 600px) {
-            .slide-photos { height: auto; aspect-ratio: 4 / 3; }
-        }
-        .slide-photo { flex: 0 0 50%; width: 50%; position: relative; overflow: hidden; }
-        .slide-photo + .slide-photo { border-left: 1px solid rgba(255,255,255,0.12); }
-        .slide-photo img {
-            width: 100%; height: 100%; object-fit: cover; display: block;
-            cursor: zoom-in; transition: transform 0.5s ease;
-        }
+        /* slide-photos: aspect-ratio 2/1 = 각 사진이 정사각형 */
+        .slide-photos { display: flex; flex-shrink: 0; aspect-ratio: 2/1; }
+        .slide-photo { flex: 0 0 50%; width: 50%; overflow: hidden; background: #e8e8e8; }
+        .slide-photo + .slide-photo { border-left: 1px solid #e0e0e0; }
+        .slide-photo img { display: block; width: 100%; height: 100%; object-fit: cover; object-position: top center; cursor: zoom-in; transition: transform 0.5s ease; }
         .slide-photo img:hover { transform: scale(1.03); }
-        .slide-labels { display: flex; flex-shrink: 0; border-top: 1px solid rgba(255,255,255,0.08); }
+
+        .slide-labels { display: flex; flex-shrink: 0; border-top: 1px solid #eee; background: #fff; }
         .slide-label-cell {
-            flex: 0 0 50%; width: 50%; padding: 0.6rem 1rem;
+            flex: 0 0 50%; width: 50%; padding: 0.55rem 1rem;
             display: flex; justify-content: space-between; align-items: center;
-            background: #111;
+            background: #fff;
         }
-        .slide-label-cell + .slide-label-cell { border-left: 1px solid rgba(255,255,255,0.08); }
-        .photo-label-wrap {
-            display: flex; justify-content: space-between; align-items: center;
-            padding: 0.6rem 1rem;
-            background: #111;
-            border-top: 1px solid rgba(255,255,255,0.08);
-        }
+        .slide-label-cell + .slide-label-cell { border-left: 1px solid #eee; }
         .photo-label {
             font-size: 0.68rem; font-weight: 700;
             letter-spacing: 0.2em; text-transform: uppercase;
         }
-        .photo-label.before { color: rgba(255,255,255,0.55); }
-        .photo-label.after  { color: var(--gold-l); }
-        .photo-date { font-size: 0.68rem; color: rgba(255,255,255,0.4); }
+        .photo-label.before { color: #555; }
+        .photo-label.after  { color: var(--gold); }
+        .photo-date { font-size: 0.68rem; color: #999; }
+
+        /* 2단 필터 */
+        .review-filter-wrap { padding: 0 0 2rem; }
+        .review-tab-row {
+            display: flex; border-bottom: 2px solid #e0e0e0; margin-bottom: 1.2rem;
+        }
+        .review-tab {
+            flex: 1; padding: 0.85rem 0.3rem; text-align: center;
+            font-size: clamp(0.78rem, 2.5vw, 0.95rem); font-weight: 500; color: #888;
+            white-space: nowrap;
+            background: none; border: none; cursor: pointer;
+            border-bottom: 2px solid transparent; margin-bottom: -2px;
+            transition: all 0.2s; font-family: 'Noto Sans KR', sans-serif;
+        }
+        .review-tab:hover { color: var(--gold); }
+        .review-tab.active { color: var(--gold); font-weight: 700; border-bottom-color: var(--gold); }
+        .review-sub-row {
+            display: flex; flex-wrap: wrap; justify-content: center;
+            gap: 0.55rem;
+        }
+        .review-sub-row.has-items { padding: 0 0 1.4rem; }
+
+        .slide-note {
+            padding: 1rem 1.4rem 1.2rem;
+            background: #fafafa;
+            border-top: 1px solid #eee;
+        }
+        .slide-note-title {
+            font-size: 0.7rem; font-weight: 700; letter-spacing: 0.15em;
+            text-transform: uppercase; color: var(--gold); margin-bottom: 0.6rem;
+        }
+        .slide-note-row {
+            display: flex; gap: 0.7rem; align-items: baseline;
+            font-size: 0.88rem; line-height: 1.6; color: #333;
+            margin-bottom: 0.2rem;
+        }
+        .note-label {
+            font-weight: 700; color: #555; flex-shrink: 0; min-width: 2.2rem;
+        }
+        .note-val { color: #333; }
 
         /* 캐러셀 컨트롤 바 (화살표 + 점) — 사진 아래 배치 */
         .carousel-controls {
@@ -732,14 +979,18 @@
         .carousel-nav:hover { background: var(--gold); }
 
         .carousel-dots {
-            display: flex; justify-content: center; align-items: center; gap: 0.5rem;
+            display: flex; justify-content: center; align-items: center; gap: 0.4rem;
+            max-width: 200px; overflow: hidden; flex-shrink: 1;
         }
         .carousel-dot {
-            width: 24px; height: 2px;
+            width: 8px; height: 8px; flex-shrink: 0;
             background: var(--silver); border: none;
-            cursor: pointer; padding: 0; transition: all 0.28s; border-radius: 1px;
+            cursor: pointer; padding: 0; transition: all 0.28s; border-radius: 50%;
         }
-        .carousel-dot.active { background: var(--dark); width: 44px; }
+        .carousel-dot.active { background: var(--gold); width: 8px; }
+        .carousel-count {
+            font-size: 0.88rem; color: #888; font-weight: 500; white-space: nowrap;
+        }
 
         /* 시술명 필터 버튼 */
         .review-filter-btns {
@@ -1007,7 +1258,7 @@
     <div class="nav-logo" id="navClinicName">로아한의원 부천</div>
 
     <ul class="nav-center">
-        <li><a href="#clinic">로아한의원 부천</a></li>
+        <li><a href="#impactStats">로아한의원 부천</a></li>
         <li><a href="#reviews">시술 후기</a></li>
         <li><a href="#events">이달의 이벤트</a></li>
         <li><a href="#signature">시그니처</a></li>
@@ -1024,7 +1275,7 @@
 
 <!-- 모바일 메뉴 -->
 <div class="mobile-menu" id="mobileMenu">
-    <a href="#clinic"    onclick="closeMobileMenu()">로아한의원 부천</a>
+    <a href="#impactStats" onclick="closeMobileMenu()">로아한의원 부천</a>
     <a href="#reviews"   onclick="closeMobileMenu()">시술 후기</a>
     <a href="#events"    onclick="closeMobileMenu()">이달의 이벤트</a>
     <a href="#signature" onclick="closeMobileMenu()">시그니처</a>
@@ -1049,7 +1300,7 @@
     <div class="hero-content">
         <h1 id="heroTitle">공장형 리프팅을 원하시나요?<br>그렇다면 나가주셔도 좋습니다.</h1>
         <p class="hero-tagline" id="heroDesc">
-            <br>저희는 <span style="background:#E1306C;color:#fff;padding:0.05em 0.2em;border-radius:3px;font-weight:800;">원장이 직접 진료하고 디자인</span>합니다.<br>
+            <br>저희는 <span style="background:var(--gold);color:#fff;padding:0.05em 0.2em;border-radius:3px;font-weight:800;">원장이 직접 진료하고 디자인</span>합니다.<br>
             결과가 달라지는 이유, <span style="text-decoration:underline;text-underline-offset:4px;">1분이면 확인 가능합니다.</span>
         </p>
     </div>
@@ -1059,15 +1310,75 @@
     </div>
 </section>
 
+<!-- ─── 임팩트 통계 섹션 ─── -->
+<section id="impactStats" class="impact-section">
+    <div class="impact-inner">
+        <div class="impact-stats-row">
+            <div class="impact-brackets-col">
+                <div class="impact-bracket-item">
+                    <div class="impact-bracket-num">
+                        <span class="impact-bracket">[</span>&nbsp;<span class="impact-counter" id="heroStatTreatments" data-target="4500">0</span>건&nbsp;<span class="impact-bracket">]</span>
+                    </div>
+                    <div class="impact-bracket-label">리프팅 시술건수</div>
+                </div>
+                <div class="impact-bracket-item">
+                    <div class="impact-bracket-num">
+                        <span class="impact-bracket">[</span>&nbsp;<span class="impact-counter" id="heroStatThreads" data-target="101300">0</span>줄&nbsp;<span class="impact-bracket">]</span>
+                    </div>
+                    <div class="impact-bracket-label">리프팅 실 사용건수</div>
+                </div>
+            </div>
+            <div class="impact-noha">리프팅의<br>노하우</div>
+        </div>
+        <p class="impact-period">*2024년 3월 ~ 2026년 5월 기준</p>
+        <p class="impact-copy">
+            <span class="pc-copy">공장형 시술이 아닌, 오직 당신의 얼굴만을 위해 고민한 결과입니다.<br></span>
+            <span class="mo-copy">공장형 시술이 아닌,<br>오직 당신의 얼굴만을 위해 고민한 결과입니다.<br></span>
+            <strong>결과로 증명하는 1:1 맞춤 리프팅을 지금 확인하세요.</strong>
+        </p>
+    </div>
+</section>
+
+<!-- ─── 고민 섹션 ─── -->
+<section id="worrySection" class="worry-section">
+    <div class="worry-inner">
+        <div class="worry-label">병원 예약 전 고민</div>
+        <h2 class="worry-title">"정말 여기서 하면,<br>이번엔 다를까?"</h2>
+        <p class="worry-sub">
+            <span class="worry-sub-pc">병원 예약 버튼 누르기 전, 여러분이 속으로 하셨던 고민들입니다.</span>
+            <span class="worry-sub-mo">병원 예약 버튼 누르기 전,<br>여러분이 속으로 하셨던 고민들입니다.</span>
+        </p>
+
+        <div class="worry-row1">
+            <div class="worry-card">"비싼 돈 주고 했는데,<br><strong>효과가 없으면 어떻게 하지?</strong>"</div>
+            <div class="worry-card">"시술받다 잘못돼서<br><strong>얼굴이 어색해지면 어쩌지?</strong>"</div>
+            <div class="worry-card">"실장님 말고,<br><strong>진짜 원장님이 내 얼굴을 보고 상담해줄까?</strong>"</div>
+        </div>
+        <div class="worry-row2">
+            <div class="worry-card">"나만을 위한 디자인,<br><strong>나에게 어울리는 시술은 없을까?</strong>"</div>
+            <div class="worry-card">"도대체<br><strong>누구한테 내 얼굴을 맡겨야 할까?</strong>"</div>
+        </div>
+
+        <div class="worry-bottom">
+            <p class="worry-bottom-main">이런 고민들, 수많은 환자분이 토로하셨습니다.</p>
+            <p class="worry-bottom-sub">
+                <span class="worry-sub-pc">그래서 저희는 원장이 진료부터 시술까지,<br><strong>1:1 전담 시스템을 원칙으로 합니다.</strong></span>
+                <span class="worry-sub-mo">그래서 저희는 원장이 진료부터 시술까지,<br><strong>1:1 전담 시스템을 원칙으로 합니다.</strong></span>
+            </p>
+        </div>
+    </div>
+</section>
+
 <!-- ─── Why Korean Medicine ─── -->
 <section id="why-korean" class="section wk-section">
     <div class="section-inner wk-inner">
         <div class="wk-header">
-            <h2 class="wk-title">한의원에서도 리프팅?<br>의심하셔도 좋습니다.</h2>
+            <h2 class="wk-title">한의원에서 리프팅?<br>의심하셔도 좋습니다.</h2>
             <div class="wk-question-box">
                 <p class="wk-question">"리프팅은 피부과/성형외과 아니야?"</p>
-                <p class="wk-question-desc">저희에게 오시는 환자분들이<br class="mo-br"> 가장 많이 하시는 질문입니다.</p>
+                <p class="wk-question-desc"><span class="pc-br">저희에게 처음 오시는 분들이 가장 많이 하시는 질문입니다.</span><span class="mo-br-text">저희에게 처음 오시는 분들이<br>가장 많이 하시는 질문입니다.</span></p>
             </div>
+            <p class="wk-answer-text">왜 결과가 다른지,<br>이제 그 이유를 증명하겠습니다.</p>
         </div>
 
         <div class="wk-items">
@@ -1104,6 +1415,11 @@
                 </div>
             </div>
         </div>
+
+        <p class="wk-conclusion">
+            <span class="pc-br">결국, 여러분이 찾는 건 <em>'병원 종류나 이름'</em>이 아니라 <strong>'확실한 결과'</strong>입니다.</span>
+            <span class="mo-br-text">결국, 여러분이 찾는 건<br><em>'병원 종류나 이름'</em>이 아니라<br><strong>'확실한 결과'</strong>입니다.</span>
+        </p>
     </div>
 </section>
 
@@ -1112,10 +1428,14 @@
     <div class="section-inner">
         <div class="section-head">
             <div class="section-label">Reviews</div>
-            <h2 class="section-title" id="reviewsTitle">리얼 시술 후기</h2>
+            <h2 class="section-title">리얼 후기<br><span class="reviews-sub">결과로 증명합니다.</span></h2>
             <div class="section-rule"></div>
+            <p class="reviews-guide">시술명을 클릭해 전후 사진을 확인하세요.<br>좌우로 넘기면 더 많은 결과를 보실 수 있습니다.</p>
         </div>
-        <div class="review-filter-btns" id="reviewFilterBtns"></div>
+        <div class="review-filter-wrap" id="reviewFilterWrap">
+            <div class="review-tab-row" id="reviewTabRow"></div>
+            <div class="review-sub-row" id="reviewSubRow"></div>
+        </div>
         <div class="review-carousel-wrap" id="reviewCarousel">
             <div class="carousel-track" id="carouselTrack">
                 <div class="loading" style="min-width:100%;padding:4rem;">로딩 중</div>
@@ -1136,88 +1456,6 @@
 </section>
 
 <!-- ─── Clinic Appeal (2페이지) ─── -->
-<section id="clinic" class="section">
-    <div class="section-inner">
-        <h2 class="clinic-headline">
-            로아한의원 부천은<br>리프팅에 집중합니다.
-        </h2>
-
-        <!-- POINT 01: 숫자로 증명하는 실력 -->
-        <div class="clinic-point">
-            <div class="clinic-pt-left">
-                <div class="clinic-pt-badge">POINT 01</div>
-                <div class="clinic-pt-title">숫자로 증명하는<br>실력</div>
-                <div class="clinic-pt-desc">리프팅의 노하우는<br>실 건수가 말해줍니다.</div>
-            </div>
-            <div class="clinic-num-cards">
-                <div class="clinic-num-card">
-                    <div class="clinic-num-label">리프팅 시술 건수</div>
-                    <div class="clinic-num-row">
-                        <span class="clinic-counter" id="statTreatments" data-target="4500">0</span>
-                        <span class="clinic-num-unit">건</span>
-                    </div>
-                    <div class="clinic-num-period" id="statPeriod">2024년 3월 ~ 2026년 5월 기준</div>
-                </div>
-                <div class="clinic-num-card">
-                    <div class="clinic-num-label">리프팅 실 사용 건수</div>
-                    <div class="clinic-num-row">
-                        <span class="clinic-counter" id="statThreads" data-target="101300">0</span>
-                        <span class="clinic-num-unit">줄</span>
-                    </div>
-                    <div class="clinic-num-period">2024년 3월 ~ 2026년 5월 기준</div>
-                </div>
-            </div>
-        </div>
-
-        <!-- POINT 02: 재방문율 -->
-        <div class="clinic-point">
-            <div class="clinic-pt-left">
-                <div class="clinic-pt-badge">POINT 02</div>
-                <div class="clinic-pt-title">재방문율</div>
-                <div class="clinic-pt-desc">한 번 경험한 환자가<br>다시 찾아오는 이유가 있습니다.</div>
-            </div>
-            <div class="clinic-num-cards">
-                <div class="clinic-num-card">
-                    <div class="clinic-num-label">재방문율</div>
-                    <div class="clinic-num-row">
-                        <span class="clinic-counter" id="statReturn" data-target="50">0</span>
-                        <span class="clinic-num-unit">%</span>
-                    </div>
-                    <div class="clinic-num-period">10명 중 5명이 다시 찾습니다</div>
-                </div>
-                <div class="clinic-num-card clinic-num-card--text">
-                    <div class="clinic-txt-title">결과가 만든<br>신뢰입니다</div>
-                    <div class="clinic-txt-body">리프팅 결과에 만족하신 환자분들의 재방문과 지인 소개가 이어집니다.</div>
-                </div>
-            </div>
-        </div>
-
-        <!-- POINT 03: 의료진 직접 상담·직접 시술 -->
-        <div class="clinic-point">
-            <div class="clinic-pt-left">
-                <div class="clinic-pt-badge">POINT 03</div>
-                <div class="clinic-pt-title">의료진 직접 상담<br>직접 시술</div>
-                <div class="clinic-pt-desc">처음부터 마치는 순간까지<br>의료진이 직접 함께합니다.</div>
-            </div>
-            <div class="clinic-num-cards">
-                <div class="clinic-num-card">
-                    <div class="clinic-num-label">원장 직접 상담 · 시술 비율</div>
-                    <div class="clinic-num-row">
-                        <span class="clinic-counter" id="statDirect" data-target="100">0</span>
-                        <span class="clinic-num-unit">%</span>
-                    </div>
-                    <div class="clinic-num-period">의료진의 진료 상담은 필수 원칙입니다.</div>
-                </div>
-                <div class="clinic-num-card clinic-num-card--text">
-                    <div class="clinic-txt-title">1:1 맞춤<br>시술 설계</div>
-                    <div class="clinic-txt-body">얼굴 구조와 피부 상태를 직접 분석하여 환자 개인에게 맞는 시술을 설계합니다.</div>
-                </div>
-            </div>
-        </div>
-
-    </div>
-</section>
-
 <!-- ─── 시술 후기 (3페이지) ─── -->
 <!-- ─── Events ─── -->
 <section id="events" class="section section-white">
@@ -1526,7 +1764,7 @@ const DEMO = {
     info: {
         clinicName:    '로아한의원 부천',
         heroTitle:     '공장형 리프팅을 원하시나요?<br>그렇다면 나가주셔도 좋습니다.',
-        tagline:       '<br>저희는 <span style="background:#E1306C;color:#fff;padding:0.05em 0.2em;border-radius:3px;font-weight:800;">원장이 직접 진료하고 디자인</span>합니다.<br>결과가 달라지는 이유, <span style="text-decoration:underline;text-underline-offset:4px;">1분이면 확인 가능합니다.</span>',
+        tagline:       '<br>저희는 <span style="background:var(--gold);color:#fff;padding:0.05em 0.2em;border-radius:3px;font-weight:800;">원장이 직접 진료하고 디자인</span>합니다.<br>결과가 달라지는 이유, <span style="text-decoration:underline;text-underline-offset:4px;">1분이면 확인 가능합니다.</span>',
         eventsTitle:   '이달의 이벤트',
         programsTitle: '리프팅 프로그램',
         reviewsTitle:  '리얼 시술 후기',
@@ -1590,7 +1828,8 @@ const DEMO = {
             시술명: '원데이 실리프팅',
             전사진URL: 'https://images.unsplash.com/photo-1519415510236-718bdfcd89c8?w=700&h=900&fit=crop',
             후사진URL: 'https://images.unsplash.com/photo-1570172619644-dfd03ed5d881?w=700&h=900&fit=crop',
-            시술전날짜: '2026년 1월', 시술후날짜: '2026년 3월', 표시: '예'
+            시술전날짜: '2026년 1월', 시술후날짜: '2026년 3월',
+            고민: '볼살 처짐, 팔자주름', 원인: '피부 탄력 저하 및 지방 이동', 해결: '원데이 실리프팅으로 리프팅 라인 전체 재설계', 표시: '예'
         },
         {
             시술명: '울쎄라',
@@ -1688,14 +1927,35 @@ function renderClinicStats(stats) {
     // data-target 업데이트 (카운터 애니메이션 기준)
     const elT  = el('statTreatments');
     const elTh = el('statThreads');
-    const elR  = el('statReturn');    // 재방문율 40%
-    const elD  = el('statDirect');   // 직접 시술 100%
+    const elR  = el('statReturn');
+    const elD  = el('statDirect');
     const elP  = el('statPeriod');
     if (elT)  elT.dataset.target  = treatments;
     if (elTh) elTh.dataset.target = threads;
     if (elP)  elP.textContent     = period + ' 기준';
 
+    // 히어로 카운터도 동일 값으로 업데이트
+    const heroT  = el('heroStatTreatments');
+    const heroTh = el('heroStatThreads');
+    if (heroT)  heroT.dataset.target  = treatments;
+    if (heroTh) heroTh.dataset.target = threads;
+
     // IntersectionObserver: 화면에 들어올 때마다 카운터 재시작
+    // 임팩트 섹션 카운터: 화면에 들어올 때 시작
+    const impactEl = el('impactStats');
+    if (impactEl && (heroT || heroTh)) {
+        const impactObs = new IntersectionObserver((entries) => {
+            if (entries[0].isIntersecting) {
+                if (heroT)  animateCounter(heroT,  treatments, 1500);
+                if (heroTh) animateCounter(heroTh, threads,    1500);
+            } else {
+                if (heroT)  heroT.textContent  = '0';
+                if (heroTh) heroTh.textContent = '0';
+            }
+        }, { threshold: 0, rootMargin: '-40% 0px -20% 0px' });
+        impactObs.observe(impactEl);
+    }
+
     const clinicEl = el('clinic');
     if (!clinicEl) return;
     const obs = new IntersectionObserver((entries) => {
@@ -1744,7 +2004,7 @@ function renderInfo(info) {
     el('heroTitle').innerHTML = heroTitle.replace(/\\n/g,'<br>').replace(/\n/g,'<br>');
     el('heroDesc').innerHTML  = (v(info, 'tagline', '소개문구', '')).replace(/\\n/g,'<br>').replace(/\n/g,'<br>');
     el('eventsTitle').textContent  = v(info, 'eventsTitle',  '이벤트제목', '이달의 이벤트');
-    el('reviewsTitle').textContent = v(info, 'reviewsTitle', '후기제목',   '리얼 시술 후기');
+    if (el('reviewsTitle')) el('reviewsTitle').textContent = v(info, 'reviewsTitle', '후기제목', '리얼 후기');
 
     const address = v(info, 'address', '주소', '');
     const phone   = v(info, 'phone',   '전화번호', '');
@@ -1880,7 +2140,13 @@ function renderTreatmentSection(containerId, category, list) {
 }
 
 /* ──── 후기 사진 캐러셀 ──── */
-const FILTER_ORDER = ['원데이 실리프팅', '울쎄라', '온다', '볼륨샷', '슬림샷', '비너스코'];
+const FILTER_CATS = {
+    '실리프팅':    ['원데이 실리프팅', '코 실리프팅'],
+    '레이저 리프팅': ['울쎄라', '온다'],
+    '윤곽 시술':   ['볼륨샷', '슬림샷']
+};
+const FILTER_ORDER = ['원데이 실리프팅', '코 실리프팅', '울쎄라', '온다', '볼륨샷', '슬림샷', '비너스코'];
+let _activeCat = null;
 let _allPhotos   = [];
 let _activeFilter = null;
 
@@ -1919,43 +2185,79 @@ function getPhotoSortKey(photo) {
     return FILTER_ORDER.length;
 }
 
-/* 필터 버튼 DOM 생성 */
+/* 필터 버튼 DOM 생성 — 2단 탭 */
 function buildFilterButtons() {
-    const container = el('reviewFilterBtns');
-    if (!container) return;
-    container.innerHTML = FILTER_ORDER.map(name =>
-        `<button class="review-filter-btn" onclick="filterCarousel('${name}')">${name}</button>`
+    const tabRow = el('reviewTabRow');
+    const subRow = el('reviewSubRow');
+    if (!tabRow || !subRow) return;
+
+    // 1단: 카테고리 탭
+    const cats = ['전체보기', ...Object.keys(FILTER_CATS)];
+    tabRow.innerHTML = cats.map(cat =>
+        `<button class="review-tab${cat === '전체보기' ? ' active' : ''}" onclick="filterTab('${cat}')">${cat}</button>`
     ).join('');
+
+    // 2단: 서브 버튼 (처음엔 비어있음)
+    subRow.innerHTML = '';
 }
 
-/* 필터 클릭 → 해당 시술 슬라이드만 표시 (재클릭 시 전체 복원) */
-function filterCarousel(name) {
-    const btns = document.querySelectorAll('.review-filter-btn');
-    if (_activeFilter === name) {
-        // 같은 버튼 재클릭 → 전체 보기
-        _activeFilter = null;
-        btns.forEach(b => b.classList.remove('active'));
-        buildCarousel(_allPhotos);
+/* 1단 탭 클릭 */
+function filterTab(cat) {
+    _activeCat = cat === '전체보기' ? null : cat;
+    _activeFilter = null;
+
+    document.querySelectorAll('.review-tab').forEach(b =>
+        b.classList.toggle('active', b.textContent === cat)
+    );
+
+    const subRow = el('reviewSubRow');
+    if (_activeCat && FILTER_CATS[_activeCat]) {
+        const subs = ['전체보기', ...FILTER_CATS[_activeCat]];
+        subRow.innerHTML = subs.map(s =>
+            `<button class="review-filter-btn${s === '전체보기' ? ' active' : ''}" onclick="filterSub('${s}')">${s}</button>`
+        ).join('');
+        subRow.classList.add('has-items');
     } else {
-        _activeFilter = name;
-        btns.forEach(b => b.classList.toggle('active', b.textContent === name));
-        const filtered = _allPhotos.filter(p =>
-            (p['시술명'] || p.title || '').includes(name)
-        );
-        if (!filtered.length) {
-            el('carouselTrack').innerHTML =
-                `<div style="min-width:100%;height:320px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:0.8rem;background:#111;color:#888;">
-                    <div style="font-size:2rem;">📷</div>
-                    <div style="font-size:1rem;font-weight:600;color:#aaa;">${name}</div>
-                    <div style="font-size:0.85rem;">전후 사진 준비 중입니다.</div>
-                </div>`;
-            el('carouselDots').innerHTML = '';
-            carouselIdx = 0;
-        } else {
-            buildCarousel(filtered);
-        }
+        subRow.innerHTML = '';
+        subRow.classList.remove('has-items');
+    }
+
+    buildCarousel(_activeCat ? _allPhotos.filter(p =>
+        FILTER_CATS[_activeCat].some(sub => (p['시술명'] || p.title || '').includes(sub))
+    ) : _allPhotos);
+}
+
+/* 2단 서브 버튼 클릭 */
+function filterSub(name) {
+    _activeFilter = name === '전체보기' ? null : name;
+    document.querySelectorAll('.review-filter-btn').forEach(b =>
+        b.classList.toggle('active', b.textContent === name)
+    );
+
+    let list = _activeCat ? _allPhotos.filter(p =>
+        FILTER_CATS[_activeCat].some(sub => (p['시술명'] || p.title || '').includes(sub))
+    ) : _allPhotos;
+
+    if (_activeFilter) {
+        list = list.filter(p => (p['시술명'] || p.title || '').includes(_activeFilter));
+    }
+
+    if (!list.length) {
+        el('carouselTrack').innerHTML =
+            `<div style="min-width:100%;height:320px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:0.8rem;background:#f7f7f7;color:#888;">
+                <div style="font-size:2rem;">📷</div>
+                <div style="font-size:1rem;font-weight:600;color:#aaa;">${name}</div>
+                <div style="font-size:0.85rem;">전후 사진 준비 중입니다.</div>
+            </div>`;
+        el('carouselDots').innerHTML = '';
+        carouselIdx = 0;
+    } else {
+        buildCarousel(list);
     }
 }
+
+/* (레거시 호환) */
+function filterCarousel(name) { filterSub(name); }
 
 /* 슬라이드 HTML 빌드 (필터 교체 시에도 재사용) */
 function buildCarousel(list) {
@@ -1974,6 +2276,10 @@ function buildCarousel(list) {
         const afterUrl   = toDirectUrl(p['후사진URL']  || p.afterUrl   || '');
         const beforeDate = p['시술전날짜'] || p.beforeDate || '';
         const afterDate  = p['시술후날짜'] || p.afterDate  || '';
+        const concern    = p['고민'] || '';
+        const cause      = p['원인'] || '';
+        const solution   = p['해결'] || '';
+        const hasNote    = concern || cause || solution;
         return `<div class="review-slide">
             <div class="slide-header">
                 <div class="slide-subtitle">Before &amp; After</div>
@@ -1983,12 +2289,12 @@ function buildCarousel(list) {
                 <div class="slide-photo">
                     ${beforeUrl
                         ? `<img src="${beforeUrl}" alt="Before" loading="lazy" onclick="openLightbox('${beforeUrl}')">`
-                        : '<div style="background:#222;width:100%;height:100%;display:flex;align-items:center;justify-content:center;color:#555;font-size:0.8rem;">사진 없음</div>'}
+                        : '<div style="background:#e8e8e8;width:100%;height:100%;display:flex;align-items:center;justify-content:center;color:#999;font-size:0.8rem;">사진 없음</div>'}
                 </div>
                 <div class="slide-photo">
                     ${afterUrl
                         ? `<img src="${afterUrl}" alt="After" loading="lazy" onclick="openLightbox('${afterUrl}')">`
-                        : '<div style="background:#222;width:100%;height:100%;display:flex;align-items:center;justify-content:center;color:#555;font-size:0.8rem;">사진 없음</div>'}
+                        : '<div style="background:#e8e8e8;width:100%;height:100%;display:flex;align-items:center;justify-content:center;color:#999;font-size:0.8rem;">사진 없음</div>'}
                 </div>
             </div>
             <div class="slide-labels">
@@ -2001,12 +2307,22 @@ function buildCarousel(list) {
                     <span class="photo-date">${afterDate}</span>
                 </div>
             </div>
+            ${hasNote ? `<div class="slide-note">
+                <div class="slide-note-title">시술 노트</div>
+                ${concern  ? `<div class="slide-note-row"><span class="note-label">고민</span><span class="note-val">${concern}</span></div>` : ''}
+                ${cause    ? `<div class="slide-note-row"><span class="note-label">원인</span><span class="note-val">${cause}</span></div>` : ''}
+                ${solution ? `<div class="slide-note-row"><span class="note-label">해결</span><span class="note-val">${solution}</span></div>` : ''}
+            </div>` : ''}
         </div>`;
     }).join('');
 
-    el('carouselDots').innerHTML = list.map((_, i) =>
-        `<button class="carousel-dot ${i === 0 ? 'active' : ''}" onclick="carouselGoTo(${i})"></button>`
-    ).join('');
+    if (list.length > 7) {
+        el('carouselDots').innerHTML = `<span class="carousel-count" id="carouselCount">1 / ${list.length}</span>`;
+    } else {
+        el('carouselDots').innerHTML = list.map((_, i) =>
+            `<button class="carousel-dot ${i === 0 ? 'active' : ''}" onclick="carouselGoTo(${i})"></button>`
+        ).join('');
+    }
 
     carouselIdx = 0;
     el('carouselTrack').style.transform = 'translateX(0)';
@@ -2032,6 +2348,8 @@ function carouselGoTo(idx) {
     const w = el('reviewCarousel').offsetWidth;
     el('carouselTrack').style.transform = `translateX(-${idx * w}px)`;
     document.querySelectorAll('.carousel-dot').forEach((d, i) => d.classList.toggle('active', i === idx));
+    const cc = el('carouselCount');
+    if (cc) { const total = document.querySelectorAll('.review-slide').length; cc.textContent = `${idx + 1} / ${total}`; }
 }
 // 창 크기 변경 시 위치 재계산
 window.addEventListener('resize', () => {
