@@ -425,12 +425,17 @@ const DEFAULT_INFO = {
 let infoData = {};
 let hoursData = [];
 
-function loadInfo() {
-    const saved = loadJSON('roa_info', null);
+async function loadInfo() {
+    let saved = null;
+    try {
+        const fb = await fbGet('/info');
+        if (fb) { saved = fb; saveJSON('roa_info', fb); }
+        else { saved = loadJSON('roa_info', null); }
+    } catch(e) { saved = loadJSON('roa_info', null); }
     infoData = saved || { ...DEFAULT_INFO };
     hoursData = infoData.hours ? [...infoData.hours] : [...DEFAULT_INFO.hours];
 
-    document.getElementById('info-name').value = infoData.name || DEFAULT_INFO.name;
+    document.getElementById('info-name').value = infoData.name || infoData.clinicName || DEFAULT_INFO.name;
     document.getElementById('info-phone').value = infoData.phone || DEFAULT_INFO.phone;
     document.getElementById('info-address').value = infoData.address || DEFAULT_INFO.address;
     document.getElementById('info-address-sub').value = infoData.addressSub || DEFAULT_INFO.addressSub;
@@ -508,8 +513,14 @@ function resetInfo() {
 ════════════════════════════════ */
 const DEFAULT_STATS = { treatments: 4500, threads: 101300, returnRate: 40, period: '2024년 3월 ~ 2026년 5월 기준' };
 
-function loadStats() {
-    const s = loadJSON('roa_stats', DEFAULT_STATS);
+async function loadStats() {
+    let s = null;
+    try {
+        const fb = await fbGet('/stats');
+        if (fb) { s = fb; saveJSON('roa_stats', fb); }
+        else { s = loadJSON('roa_stats', DEFAULT_STATS); }
+    } catch(e) { s = loadJSON('roa_stats', DEFAULT_STATS); }
+    s = s || DEFAULT_STATS;
     document.getElementById('stat-treatments').value = s.treatments || DEFAULT_STATS.treatments;
     document.getElementById('stat-threads').value    = s.threads    || DEFAULT_STATS.threads;
     document.getElementById('stat-return').value     = s.returnRate !== undefined ? s.returnRate : DEFAULT_STATS.returnRate;
@@ -648,8 +659,18 @@ let photosData = [];
 const PHOTO_FILTERS = ['전체', '원데이 실리프팅', '울쎄라', '온다', '볼륨샷', '슬림샷', '비너스코'];
 let activeFilter = '전체';
 
-function loadPhotos() {
-    photosData = loadJSON('roa_photos', []);
+async function loadPhotos() {
+    try {
+        const fb = await fbGet('/photos');
+        if (fb) {
+            photosData = Object.values(fb);
+            saveJSON('roa_photos', photosData);
+        } else {
+            photosData = loadJSON('roa_photos', []);
+        }
+    } catch(e) {
+        photosData = loadJSON('roa_photos', []);
+    }
     if (!photosData.length) photosData.push(emptyPhoto());
     renderFilterBar();
     renderPhotos();
