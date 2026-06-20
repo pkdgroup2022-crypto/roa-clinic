@@ -706,13 +706,17 @@
         }
         .floating-reviews-title {
             position: absolute;
-            top: clamp(40px, 7vh, 70px);
+            top: 50%;
             left: 50%;
-            transform: translateX(-50%);
-            z-index: 10;
+            transform: translate(-50%, -50%);
+            z-index: 20;
             text-align: center;
             pointer-events: none;
             width: 100%;
+            padding: 24px 32px;
+            background: rgba(249,247,244,0.72);
+            backdrop-filter: blur(6px);
+            -webkit-backdrop-filter: blur(6px);
         }
         .floating-reviews-title .fr-label {
             font-size: clamp(0.75rem, 1.2vw, 0.9rem);
@@ -2644,7 +2648,7 @@ loadData();
 
     const isMobile = () => window.innerWidth <= 760;
     const MAX_CARDS = () => REVIEWS.length;
-    const INTERVAL = Math.floor(3000 / REVIEWS.length);
+    const INTERVAL = Math.floor(5000 / REVIEWS.length);
 
     let pool = [];
     let queue = [...REVIEWS].sort(() => Math.random() - 0.5);
@@ -2657,15 +2661,30 @@ loadData();
         return card;
     }
 
-    function randomPos(card) {
+    // 그리드 기반 균등 분산 배치
+    let gridSlots = [];
+    function buildGrid() {
         const sw = section.offsetWidth;
         const sh = section.offsetHeight;
-        const cw = isMobile() ? 180 : 300;
-        const topOffset = isMobile() ? 160 : 200; // 제목 아래부터 시작
-        const margin = 16;
-        const x = Math.random() * (sw - cw - margin * 2) + margin;
-        const y = topOffset + Math.random() * (sh - topOffset - 150);
-        return { x, y };
+        const cols = isMobile() ? 2 : 5;
+        const rows = isMobile() ? 6 : 5;
+        const cw = sw / cols;
+        const ch = sh / rows;
+        gridSlots = [];
+        for (let r = 0; r < rows; r++) {
+            for (let c = 0; c < cols; c++) {
+                gridSlots.push({ x: c * cw, y: r * ch, cw, ch });
+            }
+        }
+        // 셔플
+        gridSlots.sort(() => Math.random() - 0.5);
+    }
+    function randomPos(idx) {
+        if (!gridSlots.length) buildGrid();
+        const slot = gridSlots[idx % gridSlots.length];
+        const jitterX = (Math.random() - 0.5) * slot.cw * 0.3;
+        const jitterY = (Math.random() - 0.5) * slot.ch * 0.3;
+        return { x: slot.x + jitterX, y: slot.y + jitterY };
     }
 
     let done = false;
@@ -2674,7 +2693,7 @@ loadData();
         if (!queue.length) { done = true; clearInterval(timer); timer = null; return; }
         const src = queue.shift();
         const card = makeCard(src);
-        const { x, y } = randomPos(card);
+        const { x, y } = randomPos(pool.length);
         card.style.left = x + 'px';
         card.style.top = y + 'px';
         section.appendChild(card);
