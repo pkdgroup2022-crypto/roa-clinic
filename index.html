@@ -706,17 +706,14 @@
         }
         .floating-reviews-title {
             position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
+            top: 0;
+            left: 0;
+            width: 100%;
             z-index: 20;
             text-align: center;
             pointer-events: none;
-            width: 100%;
-            padding: 24px 32px;
-            background: rgba(249,247,244,0.72);
-            backdrop-filter: blur(6px);
-            -webkit-backdrop-filter: blur(6px);
+            padding: clamp(28px, 4vh, 50px) 20px clamp(20px, 3vh, 36px);
+            background: #f9f7f4;
         }
         .floating-reviews-title .fr-label {
             font-size: clamp(0.75rem, 1.2vw, 0.9rem);
@@ -748,9 +745,9 @@
             border-radius: 12px;
             overflow: hidden;
             opacity: 0;
-            transition: opacity 1s ease;
+            transition: opacity 0.7s ease;
             pointer-events: none;
-            width: clamp(200px, 22vw, 300px);
+            width: clamp(180px, 20vw, 280px);
         }
         .fr-card.visible { opacity: 1; }
         .fr-card img {
@@ -762,7 +759,7 @@
             -webkit-user-drag: none;
         }
         @media (max-width: 760px) {
-            .fr-card { width: clamp(150px, 44vw, 200px); }
+            .fr-card { width: clamp(120px, 36vw, 160px); }
         }
 
         /* ═══════════════════════════════
@@ -2661,30 +2658,33 @@ loadData();
         return card;
     }
 
-    // 그리드 기반 균등 분산 배치
+    // 그리드 기반 균등 분산 배치 (타이틀 아래 영역)
     let gridSlots = [];
     function buildGrid() {
         const sw = section.offsetWidth;
         const sh = section.offsetHeight;
-        const cols = isMobile() ? 2 : 5;
-        const rows = isMobile() ? 6 : 5;
+        const titleEl = section.querySelector('.floating-reviews-title');
+        const titleH = titleEl ? titleEl.offsetHeight : (isMobile() ? 130 : 160);
+        const topOffset = titleH + 8;
+        const areaH = sh - topOffset;
+        const cols = isMobile() ? 3 : 5;
+        const rows = isMobile() ? 5 : 4;
         const cw = sw / cols;
-        const ch = sh / rows;
+        const ch = areaH / rows;
         gridSlots = [];
         for (let r = 0; r < rows; r++) {
             for (let c = 0; c < cols; c++) {
-                gridSlots.push({ x: c * cw, y: r * ch, cw, ch });
+                gridSlots.push({ x: c * cw, y: topOffset + r * ch, cw, ch });
             }
         }
-        // 셔플
         gridSlots.sort(() => Math.random() - 0.5);
     }
     function randomPos(idx) {
         if (!gridSlots.length) buildGrid();
         const slot = gridSlots[idx % gridSlots.length];
-        const jitterX = (Math.random() - 0.5) * slot.cw * 0.3;
-        const jitterY = (Math.random() - 0.5) * slot.ch * 0.3;
-        return { x: slot.x + jitterX, y: slot.y + jitterY };
+        const jitterX = (Math.random() - 0.5) * slot.cw * 0.25;
+        const jitterY = (Math.random() - 0.5) * slot.ch * 0.25;
+        return { x: Math.max(0, slot.x + jitterX), y: slot.y + jitterY };
     }
 
     let done = false;
