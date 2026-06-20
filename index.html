@@ -2643,8 +2643,8 @@ loadData();
     if (!section) return;
 
     const isMobile = () => window.innerWidth <= 760;
-    const VISIBLE_AT_ONCE = () => isMobile() ? 4 : 7;
-    const INTERVAL = 2200;
+    const MAX_CARDS = () => isMobile() ? 8 : 14;
+    const INTERVAL = 1400;
 
     let pool = [];
     let queue = [...REVIEWS].sort(() => Math.random() - 0.5);
@@ -2669,10 +2669,9 @@ loadData();
     }
 
     function spawnCard() {
-        if (pool.length >= VISIBLE_AT_ONCE()) return;
         if (!queue.length) queue = [...REVIEWS].sort(() => Math.random() - 0.5);
-        const review = queue.shift();
-        const card = makeCard(review);
+        const src = queue.shift();
+        const card = makeCard(src);
         const { x, y } = randomPos(card);
         card.style.left = x + 'px';
         card.style.top = y + 'px';
@@ -2683,15 +2682,11 @@ loadData();
             requestAnimationFrame(() => card.classList.add('visible'));
         });
 
-        // 일정 시간 후 페이드아웃
-        const lifeTime = 3500 + Math.random() * 2500;
-        setTimeout(() => {
-            card.classList.remove('visible');
-            setTimeout(() => {
-                card.remove();
-                pool = pool.filter(c => c !== card);
-            }, 1000);
-        }, lifeTime);
+        // 최대 카드 수 초과 시 가장 오래된 카드 제거
+        if (pool.length > MAX_CARDS()) {
+            const old = pool.shift();
+            old.remove();
+        }
     }
 
     // IntersectionObserver로 섹션 진입 시 시작
