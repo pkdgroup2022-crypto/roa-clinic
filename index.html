@@ -751,7 +751,7 @@
             opacity: 0;
             transition: opacity 0.7s ease;
             pointer-events: none;
-            width: clamp(180px, 20vw, 280px);
+            width: clamp(200px, 26vw, 320px);
         }
         .fr-card.visible { opacity: 1; }
         .fr-card img {
@@ -763,7 +763,7 @@
             -webkit-user-drag: none;
         }
         @media (max-width: 760px) {
-            .fr-card { width: clamp(120px, 36vw, 160px); }
+            .fr-card { width: clamp(140px, 44vw, 200px); }
         }
 
         /* ═══════════════════════════════
@@ -2684,8 +2684,8 @@ loadData();
     function randomPos(idx) {
         if (!gridSlots.length) buildGrid();
         const slot = gridSlots[idx % gridSlots.length];
-        const jitterX = (Math.random() - 0.5) * slot.cw * 0.2;
-        const jitterY = (Math.random() - 0.5) * slot.ch * 0.2;
+        const jitterX = (Math.random() - 0.5) * slot.cw * 0.5;
+        const jitterY = (Math.random() - 0.5) * slot.ch * 0.4;
         return { x: Math.max(2, slot.x + jitterX), y: Math.max(2, slot.y + jitterY) };
     }
 
