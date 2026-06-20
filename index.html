@@ -701,22 +701,23 @@
             position: relative;
             width: 100%;
             height: 100vh;
-            background: #111;
+            background: #f9f7f4;
             overflow: hidden;
         }
         .floating-reviews-title {
             position: absolute;
-            top: 50%;
+            top: clamp(40px, 7vh, 70px);
             left: 50%;
-            transform: translate(-50%, -50%);
+            transform: translateX(-50%);
             z-index: 10;
             text-align: center;
             pointer-events: none;
+            width: 100%;
         }
         .floating-reviews-title .fr-label {
             font-size: clamp(0.75rem, 1.2vw, 0.9rem);
             letter-spacing: 0.25em;
-            color: rgba(255,255,255,0.45);
+            color: rgba(0,0,0,0.35);
             font-weight: 600;
             margin-bottom: 0.6rem;
             display: block;
@@ -724,7 +725,7 @@
         .floating-reviews-title h2 {
             font-family: 'Noto Serif KR', serif;
             font-size: clamp(1.3rem, 3vw, 2.6rem);
-            color: #fff;
+            color: #1a1a1a;
             font-weight: 700;
             line-height: 1.5;
             white-space: nowrap;
@@ -737,8 +738,9 @@
         }
         .fr-card {
             position: absolute;
-            background: rgba(255,255,255,0.08);
-            border: 1px solid rgba(255,255,255,0.12);
+            background: #fff;
+            border: 1px solid rgba(0,0,0,0.08);
+            box-shadow: 0 4px 20px rgba(0,0,0,0.07);
             border-radius: 12px;
             padding: 18px 22px;
             max-width: 320px;
@@ -756,13 +758,13 @@
         }
         .fr-card-text {
             font-size: clamp(0.78rem, 1.3vw, 0.9rem);
-            color: rgba(255,255,255,0.82);
+            color: #333;
             line-height: 1.7;
             word-break: keep-all;
         }
         .fr-card-name {
             font-size: 0.72rem;
-            color: rgba(255,255,255,0.35);
+            color: #999;
             margin-top: 10px;
         }
         @media (max-width: 760px) {
@@ -1603,6 +1605,14 @@
     </div>
 </section>
 
+<!-- ─── Floating Reviews ─── -->
+<section class="floating-reviews-section" id="floatingReviews">
+    <div class="floating-reviews-title">
+        <span class="fr-label">NAVER REVIEW</span>
+        <h2>1000건이 넘는 리뷰가<br><span>증명합니다.</span></h2>
+    </div>
+</section>
+
 <!-- ─── Clinic Appeal (2페이지) ─── -->
 <!-- ─── 시술 후기 (3페이지) ─── -->
 <!-- ─── Events ─── -->
@@ -1630,14 +1640,6 @@
         <div id="signatureContainer">
             <div class="loading">로딩 중</div>
         </div>
-    </div>
-</section>
-
-<!-- ─── Floating Reviews ─── -->
-<section class="floating-reviews-section" id="floatingReviews">
-    <div class="floating-reviews-title">
-        <span class="fr-label">NAVER REVIEW</span>
-        <h2>실제 환자들의<br><span>솔직한 후기</span>입니다</h2>
     </div>
 </section>
 
@@ -2663,19 +2665,10 @@ loadData();
         const sw = section.offsetWidth;
         const sh = section.offsetHeight;
         const cw = isMobile() ? 180 : 300;
-        const ch = 130;
-        // 중앙 제목 영역 피하기
-        const cx = sw / 2, cy = sh / 2;
-        let x, y, tries = 0;
-        do {
-            x = Math.random() * (sw - cw - 20) + 10;
-            y = Math.random() * (sh - ch - 20) + 10;
-            tries++;
-        } while (
-            tries < 20 &&
-            Math.abs(x + cw/2 - cx) < (isMobile() ? 120 : 200) &&
-            Math.abs(y + ch/2 - cy) < (isMobile() ? 80 : 130)
-        );
+        const topOffset = isMobile() ? 160 : 200; // 제목 아래부터 시작
+        const margin = 16;
+        const x = Math.random() * (sw - cw - margin * 2) + margin;
+        const y = topOffset + Math.random() * (sh - topOffset - 150);
         return { x, y };
     }
 
