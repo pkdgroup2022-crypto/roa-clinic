@@ -1389,7 +1389,7 @@ const DEMO = {
         tagline:       '원장님 본인도, 원장님 가족도 직접 받는 시술\n10년간 경험한 노하우, 결과로 증명합니다',
         eventsTitle:   '이달의 이벤트',
         programsTitle: '리프팅 프로그램',
-        reviewsTitle:  '시술 후기',
+        reviewsTitle:  '리얼 시술 후기',
         address: '경기 부천시 원미구 상동로 83 8층',
         phone:   '032-324-1118',
         hours:   '월·화·목·금 11:00-21:00 (점심 13:00-14:00)  |  토·공휴일 10:00-15:00  |  수·일 휴진',
@@ -1604,7 +1604,7 @@ function renderInfo(info) {
     el('heroTitle').innerHTML = heroTitle.replace(/\\n/g,'<br>').replace(/\n/g,'<br>');
     el('heroDesc').innerHTML  = (v(info, 'tagline', '소개문구', '')).replace(/\\n/g,'<br>').replace(/\n/g,'<br>');
     el('eventsTitle').textContent  = v(info, 'eventsTitle',  '이벤트제목', '이달의 이벤트');
-    el('reviewsTitle').textContent = v(info, 'reviewsTitle', '후기제목',   '시술 전후 사진');
+    el('reviewsTitle').textContent = v(info, 'reviewsTitle', '후기제목',   '리얼 시술 후기');
 
     const address = v(info, 'address', '주소', '');
     const phone   = v(info, 'phone',   '전화번호', '');
