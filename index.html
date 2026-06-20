@@ -695,6 +695,82 @@
         }
 
         /* ═══════════════════════════════
+           FLOATING REVIEWS
+        ═══════════════════════════════ */
+        .floating-reviews-section {
+            position: relative;
+            width: 100%;
+            height: 100vh;
+            background: #111;
+            overflow: hidden;
+        }
+        .floating-reviews-title {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 10;
+            text-align: center;
+            pointer-events: none;
+        }
+        .floating-reviews-title .fr-label {
+            font-size: clamp(0.75rem, 1.2vw, 0.9rem);
+            letter-spacing: 0.25em;
+            color: rgba(255,255,255,0.45);
+            font-weight: 600;
+            margin-bottom: 0.6rem;
+            display: block;
+        }
+        .floating-reviews-title h2 {
+            font-family: 'Noto Serif KR', serif;
+            font-size: clamp(1.3rem, 3vw, 2.6rem);
+            color: #fff;
+            font-weight: 700;
+            line-height: 1.5;
+            white-space: nowrap;
+        }
+        @media (max-width: 760px) {
+            .floating-reviews-title h2 { white-space: normal; font-size: 1.25rem; }
+        }
+        .floating-reviews-title h2 span {
+            color: var(--gold);
+        }
+        .fr-card {
+            position: absolute;
+            background: rgba(255,255,255,0.08);
+            border: 1px solid rgba(255,255,255,0.12);
+            border-radius: 12px;
+            padding: 18px 22px;
+            max-width: 320px;
+            min-width: 200px;
+            opacity: 0;
+            transition: opacity 1s ease;
+            pointer-events: none;
+        }
+        .fr-card.visible { opacity: 1; }
+        .fr-card-stars {
+            color: #FFD700;
+            font-size: 0.8rem;
+            margin-bottom: 8px;
+            letter-spacing: 2px;
+        }
+        .fr-card-text {
+            font-size: clamp(0.78rem, 1.3vw, 0.9rem);
+            color: rgba(255,255,255,0.82);
+            line-height: 1.7;
+            word-break: keep-all;
+        }
+        .fr-card-name {
+            font-size: 0.72rem;
+            color: rgba(255,255,255,0.35);
+            margin-top: 10px;
+        }
+        @media (max-width: 760px) {
+            .fr-card { max-width: 220px; min-width: 150px; padding: 14px 16px; }
+            .fr-card-text { font-size: 0.75rem; }
+        }
+
+        /* ═══════════════════════════════
            EVENTS
         ═══════════════════════════════ */
         .events-table {
@@ -1554,6 +1630,14 @@
         <div id="signatureContainer">
             <div class="loading">로딩 중</div>
         </div>
+    </div>
+</section>
+
+<!-- ─── Floating Reviews ─── -->
+<section class="floating-reviews-section" id="floatingReviews">
+    <div class="floating-reviews-title">
+        <span class="fr-label">NAVER REVIEW</span>
+        <h2>실제 환자들의<br><span>솔직한 후기</span>입니다</h2>
     </div>
 </section>
 
@@ -2535,6 +2619,106 @@ function calcDiscount(orig, sale) {
 }
 
 loadData();
+
+// ── 플로팅 리뷰 카드 ──
+(function() {
+    const REVIEWS = [
+        { name: '전**', text: '빠른 시술이었고 원장님이 직접 꼼꼼하게 설명해주셔서 믿음이 갔어요. 결과도 만족스럽습니다!' },
+        { name: '김**', text: '설명 꼼꼼하게 해주셔서 좋았어요. 시술 전 걱정이 많았는데 안심하고 받을 수 있었습니다.' },
+        { name: '조**', text: '꼼꼼해서 좋습니다. 예를 들어 어디부위를 하겠습니까 물어봐 주셔서 너무 좋았어요.' },
+        { name: '정**', text: '원장님의 상담이 일단 믿음직 스러웠어요. 자세한 설명 덕분에 불안함 없이 시술 받았습니다.' },
+        { name: '박**', text: '리프팅 효과가 이렇게 좋을 줄 몰랐어요. 친구들한테도 추천했습니다. 다음에 또 올게요!' },
+        { name: '이**', text: '한의원에서 리프팅을 받는다는 게 처음엔 의심스러웠는데, 결과 보고 완전히 생각이 바뀌었어요.' },
+        { name: '최**', text: '시술 후 붓기도 거의 없고 자연스러워서 좋아요. 원장님이 직접 상담하고 시술해주셔서 신뢰가 갔어요.' },
+        { name: '한**', text: '다른 병원들이랑 비교해봤는데 여기가 가장 꼼꼼하고 결과도 확실했어요. 강력 추천합니다!' },
+        { name: '윤**', text: '실리프팅 후 턱선이 정말 선명해졌어요. 시술 시간도 짧고 회복도 빨라서 부담 없이 받았습니다.' },
+        { name: '장**', text: '원장 선생님이 직접 상담부터 시술까지 해주셔서 안심됐어요. 결과도 기대 이상이라 너무 만족해요.' },
+        { name: '오**', text: '처음 방문했는데 강요 없이 필요한 시술만 추천해주셔서 믿음이 갔고 효과도 좋았습니다.' },
+        { name: '강**', text: '리프팅이 이렇게 자연스러울 수 있다는 게 신기했어요. 티 안 나게 올라가서 주변에서도 좋아 보인다고 해요.' },
+    ];
+
+    const section = document.getElementById('floatingReviews');
+    if (!section) return;
+
+    const isMobile = () => window.innerWidth <= 760;
+    const VISIBLE_AT_ONCE = () => isMobile() ? 4 : 7;
+    const INTERVAL = 2200;
+
+    let pool = [];
+    let queue = [...REVIEWS].sort(() => Math.random() - 0.5);
+    let slots = [];
+
+    function makeCard(review) {
+        const card = document.createElement('div');
+        card.className = 'fr-card';
+        card.innerHTML = `
+            <div class="fr-card-stars">★★★★★</div>
+            <div class="fr-card-text">${review.text}</div>
+            <div class="fr-card-name">${review.name}</div>
+        `;
+        return card;
+    }
+
+    function randomPos(card) {
+        const sw = section.offsetWidth;
+        const sh = section.offsetHeight;
+        const cw = isMobile() ? 180 : 300;
+        const ch = 130;
+        // 중앙 제목 영역 피하기
+        const cx = sw / 2, cy = sh / 2;
+        let x, y, tries = 0;
+        do {
+            x = Math.random() * (sw - cw - 20) + 10;
+            y = Math.random() * (sh - ch - 20) + 10;
+            tries++;
+        } while (
+            tries < 20 &&
+            Math.abs(x + cw/2 - cx) < (isMobile() ? 120 : 200) &&
+            Math.abs(y + ch/2 - cy) < (isMobile() ? 80 : 130)
+        );
+        return { x, y };
+    }
+
+    function spawnCard() {
+        if (pool.length >= VISIBLE_AT_ONCE()) return;
+        if (!queue.length) queue = [...REVIEWS].sort(() => Math.random() - 0.5);
+        const review = queue.shift();
+        const card = makeCard(review);
+        const { x, y } = randomPos(card);
+        card.style.left = x + 'px';
+        card.style.top = y + 'px';
+        section.appendChild(card);
+        pool.push(card);
+
+        requestAnimationFrame(() => {
+            requestAnimationFrame(() => card.classList.add('visible'));
+        });
+
+        // 일정 시간 후 페이드아웃
+        const lifeTime = 3500 + Math.random() * 2500;
+        setTimeout(() => {
+            card.classList.remove('visible');
+            setTimeout(() => {
+                card.remove();
+                pool = pool.filter(c => c !== card);
+            }, 1000);
+        }, lifeTime);
+    }
+
+    // IntersectionObserver로 섹션 진입 시 시작
+    let timer = null;
+    const obs = new IntersectionObserver(entries => {
+        entries.forEach(e => {
+            if (e.isIntersecting) {
+                if (!timer) timer = setInterval(spawnCard, INTERVAL);
+                spawnCard();
+            } else {
+                clearInterval(timer); timer = null;
+            }
+        });
+    }, { threshold: 0.1 });
+    obs.observe(section);
+})();
 
 // 이미지 우클릭 · 드래그 방지
 document.addEventListener('contextmenu', e => { if (e.target.tagName === 'IMG') e.preventDefault(); });
