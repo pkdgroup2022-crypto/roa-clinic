@@ -154,10 +154,11 @@
             word-break: keep-all;
         }
         .hero-tagline {
-            font-size: clamp(0.82rem, 1.3vw, 1rem);
-            color: rgba(255,255,255,0.65);
-            line-height: 2; margin-bottom: 0;
-            font-weight: 300; letter-spacing: 0.02em;
+            font-family: 'Noto Serif KR', serif;
+            font-size: clamp(0.85rem, 1.9vw, 1.75rem);
+            color: white;
+            line-height: 1.6; margin-bottom: 0;
+            font-weight: 500; letter-spacing: 0.02em;
             word-break: keep-all;
         }
         @media (max-width: 600px) {
@@ -957,8 +958,8 @@
     <div class="hero-content">
         <h1 id="heroTitle">공장형 리프팅을 원하시나요?<br>그렇다면 나가주셔도 좋습니다.</h1>
         <p class="hero-tagline" id="heroDesc">
-            저희는 원장이 직접 진료하고 직접 디자인합니다.<br>
-            결과가 달라지는 이유, 1분이면 확인 가능합니다.
+            <br>저희는 <span style="background:#E1306C;color:#fff;padding:0.05em 0.2em;border-radius:3px;font-weight:800;">원장이 직접 진료하고 디자인</span>합니다.<br>
+            결과가 달라지는 이유, <span style="text-decoration:underline;text-underline-offset:4px;">1분이면 확인 가능합니다.</span>
         </p>
     </div>
     <div class="scroll-indicator">
@@ -1385,8 +1386,8 @@ const NAVER_MAP    = 'https://map.naver.com/p/entry/place/1064400953?';
 const DEMO = {
     info: {
         clinicName:    '로아한의원 부천',
-        heroTitle:     '리프팅,<br>아무한테나 받지마세요.',
-        tagline:       '원장님 본인도, 원장님 가족도 직접 받는 시술\n10년간 경험한 노하우, 결과로 증명합니다',
+        heroTitle:     '공장형 리프팅을 원하시나요?<br>그렇다면 나가주셔도 좋습니다.',
+        tagline:       '<br>저희는 <span style="background:#E1306C;color:#fff;padding:0.05em 0.2em;border-radius:3px;font-weight:800;">원장이 직접 진료하고 디자인</span>합니다.<br>결과가 달라지는 이유, <span style="text-decoration:underline;text-underline-offset:4px;">1분이면 확인 가능합니다.</span>',
         eventsTitle:   '이달의 이벤트',
         programsTitle: '리프팅 프로그램',
         reviewsTitle:  '리얼 시술 후기',
