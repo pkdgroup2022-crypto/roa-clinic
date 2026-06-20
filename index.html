@@ -1298,10 +1298,17 @@
         }
         @media (max-width: 540px) {
             .event-row {
-                flex-direction: column; align-items: flex-start; gap: 1rem;
+                flex-direction: column; align-items: flex-start; gap: 0.6rem;
+                padding: 1rem 0;
             }
             .event-row:hover { padding-left: 0; padding-right: 0; margin: 0; }
-            .event-row-right { justify-content: flex-start; }
+            .event-row-right { justify-content: flex-start; gap: 0.6rem; }
+            .event-row-name { font-size: 1.05rem; }
+            .event-row-period { font-size: 0.72rem; margin-top: 0.25rem; }
+            .price-event { font-size: 1.15rem; }
+            .price-original { font-size: 0.75rem; }
+            .price-badge { font-size: 0.65rem; padding: 0.2rem 0.5rem; }
+            .vat-badge { font-size: 0.62rem; padding: 0.2rem 0.45rem; }
         }
     </style>
 </head>
