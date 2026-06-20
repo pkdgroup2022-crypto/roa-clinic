@@ -542,8 +542,19 @@ const DEFAULT_EVENTS = [
 
 let eventsData = [];
 
-function loadEvents() {
-    eventsData = loadJSON('roa_events', null) || DEFAULT_EVENTS.map(e => ({...e}));
+async function loadEvents() {
+    // Firebase에서 먼저 로드, 없으면 localStorage, 없으면 기본값
+    try {
+        const fb = await fbGet('/events');
+        if (fb) {
+            eventsData = Object.values(fb);
+            saveJSON('roa_events', eventsData); // 로컬에도 동기화
+        } else {
+            eventsData = loadJSON('roa_events', null) || DEFAULT_EVENTS.map(e => ({...e}));
+        }
+    } catch(e) {
+        eventsData = loadJSON('roa_events', null) || DEFAULT_EVENTS.map(e => ({...e}));
+    }
     renderEvents();
 }
 
