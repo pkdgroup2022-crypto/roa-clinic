@@ -1269,37 +1269,33 @@
         /* ═══════════════════════════════
            FLOATING BUTTON
         ═══════════════════════════════ */
-        /* ─── 우측 플로팅 사이드바 ─── */
-        .side-float {
-            position: fixed; right: 0; top: 50%;
-            transform: translateY(-50%);
-            z-index: 400;
-            display: flex; flex-direction: column;
-            gap: 0; overflow: hidden;
-            border-radius: 12px 0 0 12px;
-            box-shadow: -4px 0 24px rgba(0,0,0,0.13);
+        /* ─── 우측 플로팅 사이드바 (숨김) ─── */
+        .side-float { display: none; }
+
+        /* ─── 오시는 길 위 CTA 버튼 ─── */
+        .contact-cta {
+            display: flex; justify-content: center;
+            gap: 1rem; flex-wrap: wrap;
+            padding: clamp(28px, 4vw, 56px) 20px clamp(20px, 3vw, 40px);
         }
-        @media (max-width: 900px) {
-            .side-float { top: 70%; transform: translateY(-50%); }
-        }
-        .side-float-btn {
-            display: flex; flex-direction: column;
-            align-items: center; justify-content: center;
-            gap: 0.32rem;
-            width: 64px; height: 64px;
+        .contact-cta-btn {
+            display: flex; align-items: center; gap: 0.6rem;
+            padding: 0.85rem 1.8rem;
+            border-radius: 50px;
             text-decoration: none;
-            font-size: 0.6rem; font-weight: 700;
-            letter-spacing: 0.03em;
-            transition: filter 0.18s, transform 0.18s;
-            cursor: pointer; border: none;
+            font-size: clamp(0.88rem, 1.2vw, 1rem);
+            font-weight: 700; letter-spacing: 0.04em;
+            transition: filter 0.18s, transform 0.15s, box-shadow 0.18s;
+            box-shadow: 0 4px 16px rgba(0,0,0,0.13);
         }
-        .side-float-btn:hover { filter: brightness(1.1); transform: translateX(-3px); }
-        .side-float-btn svg { flex-shrink: 0; }
-        .side-float-naver  { background: #03C75A; color: #fff; }
-        .side-float-kakao  { background: #FAE100; color: #3A1D1D; }
-        .side-float-insta  { background: #E1306C; color: #fff; }
-        @media (max-width: 600px) {
-            .side-float-btn { width: 56px; height: 60px; font-size: 0.55rem; }
+        .contact-cta-btn:hover { filter: brightness(1.08); transform: translateY(-2px); box-shadow: 0 8px 24px rgba(0,0,0,0.18); }
+        .contact-cta-btn svg { flex-shrink: 0; }
+        .cta-naver  { background: #03C75A; color: #fff; }
+        .cta-kakao  { background: #FAE100; color: #3A1D1D; }
+        .cta-insta  { background: linear-gradient(135deg,#f9a825,#e91e8c,#9c27b0); color: #fff; }
+        @media (max-width: 540px) {
+            .contact-cta { gap: 0.7rem; padding: 24px 16px 16px; }
+            .contact-cta-btn { padding: 0.75rem 1.4rem; font-size: 0.82rem; }
         }
 
         /* ═══════════════════════════════
@@ -1651,6 +1647,22 @@
         </div>
     </div>
 </section>
+
+<!-- ─── Contact CTA 버튼 ─── -->
+<div class="contact-cta">
+    <a id="floatReserveBtn" href="https://booking.naver.com/booking/13/bizes/1064400953" class="contact-cta-btn cta-naver" target="_blank" rel="noopener">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M16.27 12.96L7.5 0H0v24h7.73V11.04L16.5 24H24V0h-7.73z"/></svg>
+        네이버 예약
+    </a>
+    <a href="https://pf.kakao.com/_gxfGxexj" class="contact-cta-btn cta-kakao" target="_blank" rel="noopener">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M12 3C6.48 3 2 6.92 2 11.76c0 2.96 1.67 5.58 4.25 7.26L5.1 22.3a.5.5 0 0 0 .73.54l4.07-2.43c.68.1 1.39.15 2.1.15 5.52 0 10-3.92 10-8.76C22 6.92 17.52 3 12 3z"/></svg>
+        카카오톡 문의
+    </a>
+    <a href="https://www.instagram.com/dr.shylifting?igsh=MTE2aXF0d25wZG51bQ==" class="contact-cta-btn cta-insta" target="_blank" rel="noopener">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg>
+        인스타그램
+    </a>
+</div>
 
 <!-- ─── Contact ─── -->
 <section id="contact" class="section">
