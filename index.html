@@ -1469,7 +1469,7 @@
             </div>
             <div class="impact-noha">리프팅의<br>노하우</div>
         </div>
-        <p class="impact-period">*2024년 3월 ~ 2026년 5월 기준</p>
+        <p class="impact-period" id="heroPeriod">*2024년 3월 ~ 2026년 5월 기준</p>
         <p class="impact-copy">
             <span class="pc-copy">공장형 시술이 아닌, 오직 당신의 얼굴만을 위해 고민한 결과입니다.<br></span>
             <span class="mo-copy">공장형 시술이 아닌,<br>오직 당신의 얼굴만을 위해 고민한 결과입니다.<br></span>
@@ -2112,11 +2112,13 @@ function renderClinicStats(stats) {
     if (elTh) elTh.dataset.target = threads;
     if (elP)  elP.textContent     = period + ' 기준';
 
-    // 히어로 카운터도 동일 값으로 업데이트
+    // 히어로 카운터 및 기준기간도 동일 값으로 업데이트
     const heroT  = el('heroStatTreatments');
     const heroTh = el('heroStatThreads');
+    const heroP  = el('heroPeriod');
     if (heroT)  heroT.dataset.target  = treatments;
     if (heroTh) heroTh.dataset.target = threads;
+    if (heroP)  heroP.textContent     = '*' + period.replace(' 기준','') + ' 기준';
 
     // IntersectionObserver: 화면에 들어올 때마다 카운터 재시작
     // 임팩트 섹션 카운터: 화면에 들어올 때 시작
