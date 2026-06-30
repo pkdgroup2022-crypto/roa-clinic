@@ -1892,7 +1892,7 @@ const ICONS = {
   <path d="M29 28 Q28 37 40 41 Q52 37 51 28"/>
 </svg>`,
 
-'온다': `<svg viewBox="0 0 80 80" fill="none" stroke="#B09060" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg">
+'온다 리프팅': `<svg viewBox="0 0 80 80" fill="none" stroke="#B09060" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg">
   <rect x="28" y="9" width="24" height="18" rx="4"/>
   <rect x="35" y="27" width="10" height="13" rx="2"/>
   <path d="M31 22 Q33 19 35 22 Q37 25 39 22 Q41 19 43 22 Q45 25 47 22 Q49 19 51 22" stroke-width="1.3"/>
@@ -2005,7 +2005,7 @@ const DEMO = {
             ]
         },
         { 카테고리: 'Custom Lifting', 프로그램명: '울쎄라피 프라임',   설명: 'HIFU 고강도 집속 초음파로 피부 속 깊이 리프팅',             이미지: 'images/ulthera.png',  표시: '예' },
-        { 카테고리: 'Custom Lifting', 프로그램명: '온다',     설명: 'Microwave(마이크로파) 에너지로 심부 피부층까지 정밀 리프팅', 이미지: 'images/onda.png',     표시: '예' },
+        { 카테고리: 'Custom Lifting', 프로그램명: '온다 리프팅',     설명: 'Microwave(마이크로파) 에너지로 심부 피부층까지 정밀 리프팅', 이미지: 'images/onda.png',     표시: '예' },
         { 카테고리: 'Custom Lifting', 프로그램명: '볼뉴머',   설명: '고주파(RF) 에너지로 콜라겐 재생 & 피부 탄력 개선',         이미지: 'images/volnumer.png', 표시: '예' },
         { 카테고리: 'Custom Lifting', 프로그램명: '코 실리프팅', 설명: '수술 없이 콧대+코끝을 올리는 코 실리프팅 시술', 이미지: 'images/venusko.png', 표시: '예' }
     ],
@@ -2024,7 +2024,7 @@ const DEMO = {
             시술전날짜: '2026년 2월', 시술후날짜: '2026년 4월', 표시: '예'
         },
         {
-            시술명: '온다',
+            시술명: '온다 리프팅',
             전사진URL: 'https://images.unsplash.com/photo-1556909172-54557c7e4fb7?w=700&h=900&fit=crop',
             후사진URL: 'https://images.unsplash.com/photo-1515377905703-c4788e51af15?w=700&h=900&fit=crop',
             시술전날짜: '2026년 2월', 시술후날짜: '2026년 4월', 표시: '예'
@@ -2329,11 +2329,11 @@ function renderTreatmentSection(containerId, category, list) {
 
 /* ──── 후기 사진 캐러셀 ──── */
 const FILTER_CATS = {
-    '레이저 리프팅': ['울쎄라피 프라임', '온다'],
+    '레이저 리프팅': ['울쎄라피 프라임', '온다 리프팅'],
     '실리프팅':    ['원데이 실리프팅', '코 실리프팅'],
     '윤곽시술':   ['볼륨샷', '슬림샷']
 };
-const FILTER_ORDER = ['울쎄라피 프라임', '온다', '원데이 실리프팅', '코 실리프팅', '볼륨샷', '슬림샷'];
+const FILTER_ORDER = ['울쎄라피 프라임', '온다 리프팅', '원데이 실리프팅', '코 실리프팅', '볼륨샷', '슬림샷'];
 let _activeCat = null;
 let _allPhotos   = [];
 let _activeFilter = null;
