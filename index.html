@@ -1309,19 +1309,20 @@
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            gap: 3px;
+            gap: 4px;
             text-decoration: none;
             font-size: 0.65rem;
             font-weight: 700;
             letter-spacing: 0.03em;
-            transition: filter 0.15s;
+            background: #f5f5f5;
+            transition: background 0.15s;
         }
-        .bfb-btn:hover { filter: brightness(1.1); }
+        .bfb-btn:hover { background: #eaeaea; }
         .bfb-btn span { line-height: 1; }
-        .bfb-naver  { background: #03C75A; color: #fff; }
-        .bfb-kakao  { background: #FAE100; color: #3A1D1D; }
-        .bfb-tel    { background: var(--gold); color: #fff; }
-        .bfb-insta  { background: linear-gradient(135deg, #f9a825, #e91e8c, #9c27b0); color: #fff; }
+        .bfb-naver  { color: #03C75A; }
+        .bfb-kakao  { color: #3A1D1D; }
+        .bfb-tel    { color: #555; }
+        .bfb-insta  { color: #e91e8c; }
 
         /* 하단 바 높이만큼 푸터 여백 */
         footer { padding-bottom: calc(3rem + 100px); }
