@@ -1,0 +1,7 @@
+User-agent: *
+Allow: /
+Sitemap: https://shylifting.com/sitemap.xml
+
+User-agent: Yeti
+Allow: /
+Sitemap: https://shylifting.com/sitemap.xml
