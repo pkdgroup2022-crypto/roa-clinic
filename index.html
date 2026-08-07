@@ -1519,6 +1519,99 @@
         .footer-reserve:hover { background: var(--naver-d); }
         .footer-copy { font-size: 0.68rem; opacity: 0.28; margin-top: 2rem; }
 
+        /* ═══ 이벤트 팝업 ═══ */
+        .ev-popup-overlay {
+            display: none;
+            position: fixed; inset: 0;
+            background: rgba(0,0,0,0.65);
+            z-index: 9000;
+            align-items: center;
+            justify-content: center;
+            padding: 1rem;
+        }
+        .ev-popup-overlay.active { display: flex; }
+        .ev-popup {
+            display: flex;
+            flex-direction: column;
+            background: #fff;
+            border-radius: 12px;
+            overflow: hidden;
+            width: min(480px, 94vw);
+            max-height: 92vh;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.4);
+        }
+        /* 상단: 이미지 */
+        .ev-popup-image {
+            width: 100%;
+            background: #f5f5f5;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+        .ev-popup-image img {
+            width: 100%;
+            height: auto;
+            max-height: 65vh;
+            object-fit: contain;
+            display: block;
+        }
+        /* 하단: 탭 + 푸터 */
+        .ev-popup-sidebar {
+            width: 100%;
+            flex-shrink: 0;
+            display: flex;
+            flex-direction: column;
+            background: #1a1a1a;
+        }
+        .ev-popup-tabs {
+            display: flex;
+            flex-direction: row;
+            overflow-x: auto;
+            overflow-y: hidden;
+        }
+        .ev-popup-tab {
+            flex-shrink: 0;
+            padding: 0.75rem 1.1rem;
+            background: none;
+            border: none;
+            border-right: 1px solid #2a2a2a;
+            color: #ccc;
+            font-size: 0.8rem;
+            white-space: nowrap;
+            cursor: pointer;
+            transition: background 0.15s;
+        }
+        .ev-popup-tab:hover { background: #2a2a2a; color: #fff; }
+        .ev-popup-tab.active { background: #8B1A2A; color: #fff; font-weight: 700; }
+        /* 푸터 */
+        .ev-popup-footer {
+            padding: 0.75rem 1rem;
+            border-top: 1px solid #2a2a2a;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .ev-popup-today {
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+            color: #aaa;
+            font-size: 0.75rem;
+            cursor: pointer;
+        }
+        .ev-popup-today input { accent-color: #8B1A2A; cursor: pointer; }
+        .ev-popup-close {
+            background: none;
+            border: 1px solid #444;
+            color: #aaa;
+            font-size: 0.75rem;
+            padding: 0.3rem 0.7rem;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        .ev-popup-close:hover { color: #fff; border-color: #fff; }
+
         /* ═══════════════════════════════
            LOADING
         ═══════════════════════════════ */
@@ -2178,6 +2271,64 @@ function closeDoctorModal(e) {
     document.getElementById('doctorModalOverlay').classList.remove('active');
     document.body.style.overflow = '';
 }
+
+/* ═══ 이벤트 팝업 ═══ */
+const POPUP_EVENTS = [
+    {
+        name: '🌟 8월 이벤트',
+        img_pc:     'images/popup-event1-pc.jpg',
+        img_mobile: 'images/popup-event1-mo.png'
+    },
+    {
+        name: '⚡ 타임어택 이벤트',
+        img_pc:     'images/popup-event2-pc.jpg',
+        img_mobile: 'images/popup-event2-mo.jpg'
+    },
+    {
+        name: '💧 모공관리 이벤트',
+        img_pc:     'images/popup-event3-pc.jpg',
+        img_mobile: 'images/popup-event3-mo.jpg'
+    },
+];
+
+function isMobile() { return window.innerWidth <= 600; }
+
+function initEvPopup() {
+    const today = new Date().toDateString();
+    if (localStorage.getItem('ev_popup_hidden') === today) return;
+
+    const tabs = document.getElementById('evPopupTabs');
+    POPUP_EVENTS.forEach((ev, i) => {
+        const btn = document.createElement('button');
+        btn.className = 'ev-popup-tab' + (i === 0 ? ' active' : '');
+        btn.textContent = ev.name;
+        btn.onclick = () => selectEvTab(i);
+        tabs.appendChild(btn);
+    });
+
+    selectEvTab(0);
+    document.getElementById('evPopupOverlay').classList.add('active');
+    document.body.style.overflow = 'hidden';
+}
+
+function selectEvTab(idx) {
+    const tabs = document.querySelectorAll('.ev-popup-tab');
+    tabs.forEach((t, i) => t.classList.toggle('active', i === idx));
+    const ev = POPUP_EVENTS[idx];
+    const img = document.getElementById('evPopupImg');
+    img.src = isMobile() ? ev.img_mobile : ev.img_pc;
+    img.alt = ev.name;
+}
+
+function closeEvPopup() {
+    if (document.getElementById('evTodayCheck').checked) {
+        localStorage.setItem('ev_popup_hidden', new Date().toDateString());
+    }
+    document.getElementById('evPopupOverlay').classList.remove('active');
+    document.body.style.overflow = '';
+}
+
+document.addEventListener('DOMContentLoaded', () => setTimeout(initEvPopup, 500));
 </script>
 
 <!-- ─── Signature ─── (숨김: display:none 제거하면 복구) -->
@@ -2331,6 +2482,24 @@ function closeDoctorModal(e) {
 </div>
 
 <!-- ─── Footer ─── -->
+<!-- ─── 이벤트 팝업 ─── -->
+<div class="ev-popup-overlay" id="evPopupOverlay">
+    <div class="ev-popup">
+        <div class="ev-popup-image">
+            <img id="evPopupImg" src="" alt="이벤트">
+        </div>
+        <div class="ev-popup-sidebar">
+            <div class="ev-popup-tabs" id="evPopupTabs"></div>
+            <div class="ev-popup-footer">
+                <label class="ev-popup-today">
+                    <input type="checkbox" id="evTodayCheck"> 오늘 하루 안보기
+                </label>
+                <button class="ev-popup-close" onclick="closeEvPopup()">닫기 ✕</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <!-- SEO 텍스트 블록 (검색엔진용) -->
 <div style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;">
 로아한의원 부천. 경기도 부천시 원미구 상동로 83 8층. 전화 032-324-1118.
