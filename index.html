@@ -1519,6 +1519,63 @@
         .footer-reserve:hover { background: var(--naver-d); }
         .footer-copy { font-size: 0.68rem; opacity: 0.28; margin-top: 2rem; }
 
+        /* ═══ 이벤트 팝업 ═══ */
+        .ev-popup-overlay {
+            display: none; position: fixed; inset: 0;
+            background: rgba(0,0,0,0.65); z-index: 9000;
+            align-items: center; justify-content: center; padding: 1rem;
+        }
+        .ev-popup-overlay.active { display: flex; }
+        .ev-popup {
+            display: flex; flex-direction: column;
+            background: transparent; border-radius: 12px; overflow: hidden;
+            width: min(780px, 94vw); max-height: 92vh;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.4);
+        }
+        .ev-popup-image {
+            width: 100%; background: rgba(0,0,0,0.55); position: relative;
+            display: flex; align-items: center; justify-content: center; overflow: hidden;
+            flex-direction: column;
+        }
+        .ev-popup-image img { width: calc(100% - 48px); height: auto; max-height: 68vh; object-fit: contain; display: block; margin: 20px auto 12px; border-radius: 8px; }
+        .ev-popup-sidebar { width: 100%; flex-shrink: 0; display: flex; flex-direction: column; background: #1a1a1a; }
+        .ev-popup-tabs { display: flex; flex-direction: row; overflow: hidden; }
+        .ev-popup-tab {
+            flex: 1; padding: 0.85rem 0.5rem;
+            background: none; border: none; border-right: 1px solid #2a2a2a;
+            color: #ccc; font-size: 0.88rem; white-space: nowrap; cursor: pointer; transition: background 0.15s;
+            text-align: center;
+        }
+        .ev-popup-tab:last-child { border-right: none; }
+        .ev-popup-tab:hover { background: #2a2a2a; color: #fff; }
+        .ev-popup-tab.active { background: #8B1A2A; color: #fff; font-weight: 700; }
+        .ev-tab-wrap { white-space: nowrap; }
+        @media (max-width: 480px) {
+            .ev-popup-image { background: transparent; }
+            .ev-popup-image img { width: 100%; max-height: 65vh; margin: 0; border-radius: 0; }
+            .ev-popup-tabs { flex-wrap: nowrap; }
+            .ev-popup-tab {
+                flex: 1; white-space: nowrap;
+                font-size: 0.75rem; padding: 0.6rem 0.25rem;
+                line-height: 1.35; text-align: center;
+                display: flex; align-items: center; justify-content: center;
+            }
+            .ev-popup-tab.ev-tab-wrap {
+                white-space: normal; word-spacing: 9999px; text-align: center;
+            }
+        }
+        .ev-popup-footer {
+            padding: 0.75rem 1rem; border-top: 1px solid #2a2a2a;
+            display: flex; align-items: center; justify-content: space-between;
+        }
+        .ev-popup-today { display: flex; align-items: center; gap: 0.4rem; color: #aaa; font-size: 0.75rem; cursor: pointer; }
+        .ev-popup-today input { accent-color: #8B1A2A; cursor: pointer; }
+        .ev-popup-close {
+            background: none; border: 1px solid #444; color: #aaa;
+            font-size: 0.75rem; padding: 0.3rem 0.7rem; border-radius: 4px; cursor: pointer;
+        }
+        .ev-popup-close:hover { color: #fff; border-color: #fff; }
+
         /* ═══════════════════════════════
            LOADING
         ═══════════════════════════════ */
@@ -2178,6 +2235,66 @@ function closeDoctorModal(e) {
     document.getElementById('doctorModalOverlay').classList.remove('active');
     document.body.style.overflow = '';
 }
+
+/* ═══ 이벤트 팝업 ═══ */
+const POPUP_EVENTS = [
+    { name: '⚡ 타임특가 이벤트',  imgs: ['images/popup-event1-mo.png'] },
+    { name: '🌿 온다리프팅 이벤트', imgs: ['images/popup-event2-mo.png'], wrap: true },
+    { name: '🌟 8월 이벤트',       imgs: ['images/popup-event3-mo.png', 'images/popup-event4-mo.png'] },
+];
+let _evTabIdx = 0;
+let _evImgIdx = 0;
+
+function initEvPopup() {
+    const today = new Date().toDateString();
+    if (localStorage.getItem('ev_popup_hidden') === today) return;
+    const tabs = document.getElementById('evPopupTabs');
+    POPUP_EVENTS.forEach((ev, i) => {
+        const btn = document.createElement('button');
+        btn.className = 'ev-popup-tab' + (i === 0 ? ' active' : '') + (ev.wrap ? ' ev-tab-wrap' : '');
+        btn.textContent = ev.name;
+        btn.onclick = () => selectEvTab(i);
+        tabs.appendChild(btn);
+    });
+    selectEvTab(0);
+    document.getElementById('evPopupOverlay').classList.add('active');
+    document.body.style.overflow = 'hidden';
+}
+
+function selectEvTab(idx) {
+    _evTabIdx = idx;
+    _evImgIdx = 0;
+    document.querySelectorAll('.ev-popup-tab').forEach((t, i) => t.classList.toggle('active', i === idx));
+    renderEvImage();
+}
+
+function renderEvImage() {
+    const ev = POPUP_EVENTS[_evTabIdx];
+    const img = document.getElementById('evPopupImg');
+    img.src = ev.imgs[_evImgIdx];
+    img.alt = ev.name;
+    const nav = document.getElementById('evImgNav');
+    if (ev.imgs.length > 1) {
+        nav.style.display = 'flex';
+        document.getElementById('evImgCounter').textContent = (_evImgIdx + 1) + ' / ' + ev.imgs.length;
+        document.getElementById('evImgPrev').disabled = _evImgIdx === 0;
+        document.getElementById('evImgNext').disabled = _evImgIdx === ev.imgs.length - 1;
+    } else {
+        nav.style.display = 'none';
+    }
+}
+
+function evImgPrev() { if (_evImgIdx > 0) { _evImgIdx--; renderEvImage(); } }
+function evImgNext() { if (_evImgIdx < POPUP_EVENTS[_evTabIdx].imgs.length - 1) { _evImgIdx++; renderEvImage(); } }
+
+function closeEvPopup() {
+    if (document.getElementById('evTodayCheck').checked)
+        localStorage.setItem('ev_popup_hidden', new Date().toDateString());
+    document.getElementById('evPopupOverlay').classList.remove('active');
+    document.body.style.overflow = '';
+}
+
+document.addEventListener('DOMContentLoaded', () => setTimeout(initEvPopup, 500));
 </script>
 
 <!-- ─── Signature ─── (숨김: display:none 제거하면 복구) -->
@@ -2331,6 +2448,29 @@ function closeDoctorModal(e) {
 </div>
 
 <!-- ─── Footer ─── -->
+<!-- ─── 이벤트 팝업 ─── -->
+<div class="ev-popup-overlay" id="evPopupOverlay">
+    <div class="ev-popup">
+        <div class="ev-popup-image">
+            <img id="evPopupImg" src="" alt="이벤트">
+            <div id="evImgNav" style="display:none;position:absolute;bottom:10px;left:50%;transform:translateX(-50%);align-items:center;gap:10px;background:rgba(0,0,0,0.45);border-radius:20px;padding:5px 14px;">
+                <button id="evImgPrev" onclick="evImgPrev()" style="background:none;color:#fff;border:none;font-size:1.3rem;cursor:pointer;line-height:1;padding:0 4px;">&#8249;</button>
+                <span id="evImgCounter" style="font-size:0.8rem;color:#fff;min-width:32px;text-align:center;"></span>
+                <button id="evImgNext" onclick="evImgNext()" style="background:none;color:#fff;border:none;font-size:1.3rem;cursor:pointer;line-height:1;padding:0 4px;">&#8250;</button>
+            </div>
+        </div>
+        <div class="ev-popup-sidebar">
+            <div class="ev-popup-tabs" id="evPopupTabs"></div>
+            <div class="ev-popup-footer">
+                <label class="ev-popup-today">
+                    <input type="checkbox" id="evTodayCheck"> 오늘 하루 안보기
+                </label>
+                <button class="ev-popup-close" onclick="closeEvPopup()">닫기 ✕</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <!-- SEO 텍스트 블록 (검색엔진용) -->
 <div style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;">
 로아한의원 부천. 경기도 부천시 원미구 상동로 83 8층. 전화 032-324-1118.
