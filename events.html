@@ -130,6 +130,25 @@ nav {
     padding-right: 0.4rem; font-size: 1rem; color: #aaa;
 }
 
+/* ─── Lightbox ─── */
+.lightbox-overlay {
+    display: none; position: fixed; inset: 0; z-index: 200;
+    background: rgba(0,0,0,0.92);
+    align-items: flex-start; justify-content: center; cursor: pointer;
+    overflow-y: auto; padding: 3.5rem 0 2rem;
+}
+.lightbox-overlay.open { display: flex; }
+.lightbox-content { display: flex; flex-direction: column; gap: 1rem; cursor: default; }
+.lightbox-img { max-width: 92vw; object-fit: contain; border-radius: 8px; display: block; }
+.lightbox-close {
+    position: fixed; top: 1.2rem; right: 1.2rem;
+    background: rgba(255,255,255,0.15); border: none; color: #fff;
+    font-size: 1.6rem; width: 2.4rem; height: 2.4rem; border-radius: 50%;
+    cursor: pointer; display: flex; align-items: center; justify-content: center;
+    transition: background 0.2s;
+}
+.lightbox-close:hover { background: rgba(255,255,255,0.3); }
+
 /* ─── Mobile ─── */
 @media (max-width: 900px) {
     .nav-center { display: none; }
@@ -158,9 +177,9 @@ nav {
 <nav>
     <a class="nav-logo" href="index.html">로아한의원 부천</a>
     <ul class="nav-center">
-        <li><a href="index.html#impactStats">로아한의원 부천</a></li>
+        <li><a href="events.html" class="active">시술메뉴/이벤트</a></li>
         <li><a href="index.html#reviews">시술 후기</a></li>
-        <li><a href="events.html" class="active">이벤트</a></li>
+        <li><a href="index.html#impactStats">로아한의원 부천</a></li>
         <li><a href="index.html#doctors">의료진 소개</a></li>
         <li><a href="index.html#contact">오시는 길</a></li>
     </ul>
@@ -172,9 +191,9 @@ nav {
 </nav>
 
 <div class="mobile-menu" id="mobileMenu">
-    <a href="index.html#impactStats" onclick="closeMenu()">로아한의원 부천</a>
+    <a href="events.html" onclick="closeMenu()">시술메뉴/이벤트</a>
     <a href="index.html#reviews" onclick="closeMenu()">시술 후기</a>
-    <a href="events.html" onclick="closeMenu()">이벤트</a>
+    <a href="index.html#impactStats" onclick="closeMenu()">로아한의원 부천</a>
     <a href="index.html#doctors" onclick="closeMenu()">의료진 소개</a>
     <a href="index.html#contact" onclick="closeMenu()">오시는 길</a>
 </div>
@@ -198,6 +217,11 @@ nav {
     <div class="cat-scroll-hint" id="scrollHint">›</div>
 </div>
 
+<div id="lightbox" class="lightbox-overlay" onclick="if(event.target===this||event.target.id==='lightbox')closeLightbox()">
+    <button class="lightbox-close" onclick="closeLightbox()">✕</button>
+    <div class="lightbox-content" id="lightboxContent"></div>
+</div>
+
 <div class="content-area" id="contentArea">
     <p class="no-data">로딩 중…</p>
 </div>
@@ -206,9 +230,9 @@ nav {
 const FIREBASE_URL = 'https://roa-clinic-default-rtdb.firebaseio.com/roa';
 
 const EVENT_CARDS = [
-    { id: 'event1', name: '⚡ 타임특가 이벤트',  desc: '한정 수량 타임특가 할인',   img: 'images/popup-event1-mo.png', price: '문의' },
-    { id: 'event2', name: '🌿 온다리프팅 이벤트', desc: '온다리프팅 특별 이벤트가',  img: 'images/popup-event2-mo.png', price: '문의' },
-    { id: 'event3', name: '🌟 8월 이벤트',       desc: '8월 한정 특별 이벤트',      img: 'images/popup-event3-mo.png', price: '문의' },
+    { id: 'event1', name: '⚡ 타임특가 이벤트',  desc: '한정 수량 타임특가 할인',   img: 'images/popup-event1-mo.png', imgs: ['images/popup-event1-mo.png'], price: '문의' },
+    { id: 'event2', name: '🌿 온다리프팅 이벤트', desc: '온다리프팅 특별 이벤트가',  img: 'images/popup-event2-mo.png', imgs: ['images/popup-event2-mo.png'], price: '문의' },
+    { id: 'event3', name: '🌟 8월 이벤트',       desc: '8월 한정 특별 이벤트',      img: 'images/popup-event3-mo.png', imgs: ['images/popup-event3-mo.png','images/popup-event4-mo.png'], price: '문의' },
 ];
 
 const PROGRAMS = {
@@ -229,7 +253,7 @@ const PROGRAMS = {
         { id: 'onda-body',     name: '온다리프팅',      desc: '마이크로파 에너지 바디 슬리밍',         img: 'images/program-onda.png',          price: '220,000' },
         { id: 'slim-shot',     name: '슬림샷',          desc: '한약 성분 지방 분해 주사',              img: 'images/program-slim-shot.png',     price: '150,000' },
         { id: 'body-slim',     name: '바디슬림샷',      desc: '바디 부위 집중 지방 분해',              img: 'images/program-body-slim.png',     price: '180,000' },
-        { id: 'slim-nose',     name: '슬림코약침',      desc: '코 부위 슬림 약침',                     img: 'images/program-slim-nose.png',     price: '100,000' },
+        { id: 'slim-nose',     name: '슬림코약침',      desc: '코 부위 슬림 약침 (VAT별도)',            img: 'images/program-slim-nose.png',     price: '80,000' },
     ],
     '볼륨UP': [
         { id: 'nasolabial2',   name: '팔자볼륨실',      desc: '팔자주름 개선 볼륨 실 리프팅',          img: 'images/program-nasolabial.png',    price: '340,000' },
@@ -238,7 +262,7 @@ const PROGRAMS = {
     '스킨부스터': [
         { id: 'radiusse',      name: '라디쥬',          desc: '피부 수분·탄력 부스터 주사',            img: 'images/program-radiusse.png',      price: '220,000' },
         { id: 'whitening',     name: '미백약침',        desc: '미백·피부톤 개선 약침',                 img: 'images/program-whitening.png',     price: '150,000' },
-        { id: 'exosome',       name: '엑소좀',          desc: '줄기세포 유래 피부 재생 치료',           img: 'images/program-exosome.png',       price: '300,000' },
+        { id: 'exosome',       name: '엑소좀',          desc: '줄기세포 유래 피부 재생 치료',           img: 'images/program-exosome.png',       price: '220,000' },
     ],
     '여드름/흉터': [
         { id: 'scar',          name: '흉터새살침',      desc: '흉터 재생 전문 약침',                   img: 'images/program-scar.png',          price: '130,000' },
@@ -247,9 +271,9 @@ const PROGRAMS = {
         { id: 'radiusse2',     name: '라디쥬',          desc: '피부 진정·수분 부스터',                 img: 'images/program-radiusse.png',      price: '220,000' },
     ],
     '다이어트': [
-        { id: 'circulation',   name: '순환개선탕',      desc: '한방 순환 개선 다이어트 탕약',           img: 'images/program-circulation.png',   price: '문의' },
-        { id: 'color-pill',    name: '컬러환',          desc: '한방 체중 관리 환약',                   img: 'images/program-color-pill.png',    price: '문의' },
-        { id: 'beauty-pill',   name: '미인환',          desc: '한방 미용 다이어트 환약',               img: 'images/program-beauty-pill.png',   price: '문의' },
+        { id: 'circulation',   name: '순환개선탕',      desc: '한방 순환 개선 다이어트 탕약 (1개월)',   img: 'images/program-circulation.png',   price: '400,000' },
+        { id: 'color-pill',    name: '컬러환',          desc: '한방 체중 관리 환약 (1개월)',           img: 'images/program-color-pill.png',    price: '180,000' },
+        { id: 'beauty-pill',   name: '미인환',          desc: '한방 미용 다이어트 환약 (1개월)',       img: 'images/program-beauty-pill.png',   price: '160,000' },
     ],
 };
 
@@ -275,11 +299,42 @@ function isOn(v) {
     return ['예','yes','true','1','on'].includes(String(v).toLowerCase().trim());
 }
 
+const TAB_TITLES = {
+    '이달의 이벤트':  '부천피부과 시술 한의원 | 로아한의원 부천 상동역',
+    '리프팅/탄력':   '상동피부과 시술 리프팅 탄력 | 로아한의원 부천',
+    '실리프팅':      '상동역피부과 시술 실리프팅 | 로아한의원 부천',
+    '윤곽/지방제거': '부천 피부과 윤곽 지방분해 시술 | 로아한의원 상동역',
+    '볼륨UP':       '상동 피부과 볼륨 시술 | 로아한의원 부천 상동역',
+    '스킨부스터':   '부천 피부과 스킨부스터 피부재생 | 로아한의원 상동역',
+    '여드름/흉터':  '부천 피부과 여드름 흉터 치료 | 로아한의원 상동역',
+    '다이어트':     '부천 다이어트 한의원 한방다이어트 | 로아한의원 상동역',
+};
+
+function setTabTitle(cat) {
+    document.title = TAB_TITLES[cat] || '이벤트 | 로아한의원 부천';
+}
+
 function selectCat(btn) {
     document.querySelectorAll('.cat-tab').forEach(t => t.classList.remove('active'));
     btn.classList.add('active');
     currentCat = btn.dataset.cat;
+    sessionStorage.setItem('eventsTab', currentCat);
+    setTabTitle(currentCat);
     render();
+}
+
+function openLightbox(srcs, alt) {
+    const arr = Array.isArray(srcs) ? srcs : [srcs];
+    document.getElementById('lightboxContent').innerHTML =
+        arr.map(s => `<img class="lightbox-img" src="${s}" alt="${alt}">`).join('');
+    const lb = document.getElementById('lightbox');
+    lb.scrollTop = 0;
+    lb.classList.add('open');
+    document.body.style.overflow = 'hidden';
+}
+function closeLightbox() {
+    document.getElementById('lightbox').classList.remove('open');
+    document.body.style.overflow = '';
 }
 
 (function initScrollHint() {
@@ -335,7 +390,6 @@ function render() {
                     <div class="card-name">${it.name}</div>
                     ${it.desc ? `<div class="card-desc">${it.desc}</div>` : ''}
                     <div class="card-price-wrap">
-                        <span class="card-price-from">부터</span>
                         <span class="card-price">${it.price}</span>
                         <span class="card-price-unit">원~</span>
                     </div>
@@ -357,6 +411,20 @@ async function loadData() {
 
 function toggleMenu() { document.getElementById('mobileMenu').classList.toggle('open'); }
 function closeMenu()   { document.getElementById('mobileMenu').classList.remove('open'); }
+
+// 뒤로가기 후 탭 복원
+(function restoreTab() {
+    const saved = sessionStorage.getItem('eventsTab');
+    if (saved && (PROGRAMS[saved] || saved === '이달의 이벤트')) {
+        currentCat = saved;
+        const btn = document.querySelector(`.cat-tab[data-cat="${saved}"]`);
+        if (btn) {
+            document.querySelectorAll('.cat-tab').forEach(t => t.classList.remove('active'));
+            btn.classList.add('active');
+        }
+    }
+    setTabTitle(currentCat);
+})();
 
 loadData();
 </script>

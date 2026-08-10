@@ -176,6 +176,52 @@ nav {
 }
 .seo-section strong { color: var(--dark); }
 
+/* ─── 시술 후기 사진 (홈페이지와 동일 스타일) ─── */
+.review-section { padding: 0 0 2rem; }
+.review-section-title { font-family: 'Noto Serif KR', serif; font-size: 1.3rem; font-weight: 600; margin: 0 2rem 0.5rem; }
+.review-section-title span { color: var(--gold); }
+.review-guide { font-size: 0.82rem; color: var(--muted); margin: 0 2rem 1.2rem; }
+.review-carousel { position: relative; overflow: hidden; }
+.review-track { display: flex; transition: transform 0.4s cubic-bezier(.4,0,.2,1); }
+.review-slide { min-width: 100%; flex-shrink: 0; }
+.slide-header { padding: 1rem 2rem 0.6rem; }
+.slide-subtitle { font-size: 0.72rem; letter-spacing: 0.12em; color: var(--muted); text-transform: uppercase; margin-bottom: 0.2rem; }
+.slide-title { font-size: 0.88rem; font-weight: 600; color: var(--dark); }
+.slide-photos { display: flex; flex-shrink: 0; aspect-ratio: 2/1; }
+.slide-photo { flex: 0 0 50%; width: 50%; overflow: hidden; background: #e8e8e8; }
+.slide-photo + .slide-photo { border-left: 1px solid #e0e0e0; }
+.slide-photo img { display: block; width: 100%; height: 100%; object-fit: cover; object-position: top center; }
+.slide-labels { display: flex; padding: 0.5rem 2rem 0; }
+.slide-label-cell { flex: 1; display: flex; align-items: center; gap: 0.4rem; }
+.photo-label { font-size: 0.7rem; font-weight: 700; letter-spacing: 0.06em; }
+.photo-label.before { color: #555; }
+.photo-label.after  { color: var(--gold); }
+.photo-date { font-size: 0.68rem; color: #999; }
+.review-nav { position: absolute; top: 50%; transform: translateY(-50%); background: rgba(0,0,0,0.4); color: #fff; border: none; width: 36px; height: 36px; border-radius: 50%; font-size: 1.2rem; cursor: pointer; display: flex; align-items: center; justify-content: center; z-index: 2; transition: background 0.2s; }
+.review-nav:hover { background: rgba(0,0,0,0.7); }
+.review-nav.prev { left: 8px; }
+.review-nav.next { right: 8px; }
+.review-dots { display: flex; justify-content: center; gap: 6px; margin-top: 0.8rem; }
+.review-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--border); border: none; cursor: pointer; padding: 0; transition: background 0.2s; }
+.review-dot.active { background: var(--dark); }
+.review-disclaimer { font-size: 0.72rem; color: var(--muted); margin: 0.8rem 2rem 0; line-height: 1.6; }
+@media (max-width: 540px) {
+    .slide-photos { height: auto; }
+    .slide-photo { aspect-ratio: 3/4; }
+    .slide-photo img { object-fit: contain; background: #111; }
+}
+
+/* ─── 이벤트 전용 레이아웃 ─── */
+#eventLayout { display: none; max-width: 860px; margin: 80px auto 0; padding-bottom: 4rem; }
+.event-images { display: flex; flex-direction: column; gap: 0; }
+.event-images img { width: 100%; display: block; }
+.event-seo { padding: 3rem 2rem 1rem; }
+.event-seo h2 { font-family: 'Noto Serif KR', serif; font-size: 1.3rem; font-weight: 600; margin-bottom: 0.8rem; padding-bottom: 0.5rem; border-bottom: 1px solid var(--border); }
+.event-seo p { color: var(--mid); font-size: 0.9rem; line-height: 1.8; margin-bottom: 1.2rem; }
+.event-seo h3 { font-size: 1rem; font-weight: 700; margin: 1.5rem 0 0.5rem; color: var(--dark); }
+.event-cta { margin: 2rem 2rem 0; display: flex; gap: 1rem; flex-wrap: wrap; }
+.event-cta .btn-naver { display: inline-flex; align-items: center; gap: 0.5rem; background: #03C75A; color: #fff; padding: 0.9rem 1.8rem; border-radius: 8px; text-decoration: none; font-weight: 700; font-size: 0.95rem; }
+
 /* ─── Mobile ─── */
 @media (max-width: 900px) {
     .nav-center { display: none; }
@@ -200,23 +246,32 @@ nav {
 <nav>
     <a href="index.html" class="nav-logo">로아한의원 부천</a>
     <ul class="nav-center">
-        <li><a href="index.html">로아한의원 부천</a></li>
-        <li><a href="index.html#review">시술 후기</a></li>
-        <li><a href="events.html" class="active">이벤트</a></li>
+        <li><a href="events.html" class="active">시술메뉴/이벤트</a></li>
+        <li><a href="index.html#reviews">시술 후기</a></li>
+        <li><a href="index.html#impactStats">로아한의원 부천</a></li>
         <li><a href="index.html#doctors">의료진 소개</a></li>
-        <li><a href="index.html#map">오시는 길</a></li>
+        <li><a href="index.html#contact">오시는 길</a></li>
     </ul>
     <button class="hamburger" onclick="this.nextElementSibling.classList.toggle('open')">
         <span></span><span></span><span></span>
     </button>
     <div class="mobile-menu">
-        <a href="index.html">로아한의원 부천</a>
-        <a href="index.html#review">시술 후기</a>
-        <a href="events.html">이벤트</a>
+        <a href="events.html">시술메뉴/이벤트</a>
+        <a href="index.html#reviews">시술 후기</a>
+        <a href="index.html#impactStats">로아한의원 부천</a>
         <a href="index.html#doctors">의료진 소개</a>
-        <a href="index.html#map">오시는 길</a>
+        <a href="index.html#contact">오시는 길</a>
     </div>
 </nav>
+
+<!-- 이벤트 전용 레이아웃 -->
+<div id="eventLayout">
+    <div class="event-images" id="eventImages"></div>
+    <div class="event-cta">
+        <a href="https://booking.naver.com/booking/13/bizes/1064400953" target="_blank" class="btn-naver">📅 네이버 예약하기</a>
+    </div>
+    <div class="event-seo" id="eventSeo"></div>
+</div>
 
 <!-- Hero / 가격 -->
 <section class="hero" id="hero">
@@ -237,6 +292,19 @@ nav {
         </a>
     </div>
 </section>
+
+<!-- 시술 후기 사진 -->
+<div id="reviewSection" class="review-section" style="display:none">
+    <div class="review-section-title">리얼 후기 <span>결과로 증명합니다.</span></div>
+    <p class="review-guide">좌우로 넘기면 더 많은 결과를 보실 수 있습니다.</p>
+    <div class="review-carousel" id="reviewCarousel">
+        <div class="review-track" id="reviewTrack"></div>
+        <button class="review-nav prev" onclick="reviewMove(-1)">&#8249;</button>
+        <button class="review-nav next" onclick="reviewMove(1)">&#8250;</button>
+    </div>
+    <div class="review-dots" id="reviewDots"></div>
+    <p class="review-disclaimer">※ 시술 효과는 개인마다 상이할 수 있습니다. 사진은 실제 내원 고객의 후기입니다.</p>
+</div>
 
 <!-- 효과 -->
 <div class="section">
@@ -272,7 +340,158 @@ nav {
 <script>
 const NAVER_BOOKING = 'https://booking.naver.com/booking/13/bizes/1064400953';
 
+/* 각 시술 ID → Firebase 사진의 시술명 필터 키워드 (복수 가능, OR 조건) */
+const REVIEW_KEYWORDS = {
+    ulthera:        ['울쎄라피 프라임'],
+    onda:           ['온다 리프팅'],
+    'oneday-silift':['원데이 실리프팅'],
+    'slim-shot':    ['슬림샷'],
+    'volume-shot':  ['볼륨샷'],
+    volsera:        ['울쎄라피 프라임', '볼륨샷'],
+    onsera:         ['울쎄라피 프라임', '온다 리프팅'],
+    nasolabial:     ['팔자주름'],
+};
+
+const FIREBASE_URL = 'https://roa-clinic-default-rtdb.firebaseio.com/roa';
+
+/* Firebase 사진 로드 후 해당 시술 후기만 표시 */
+async function loadReviewPhotos(id) {
+    const keywords = REVIEW_KEYWORDS[id];
+    const reviewSection = document.getElementById('reviewSection');
+    if (!keywords) { reviewSection.style.display = 'none'; return; }
+    try {
+        const res = await fetch(FIREBASE_URL + '.json?t=' + Date.now());
+        const fb = await res.json();
+        const toArr = v => Array.isArray(v) ? v : (v ? Object.values(v) : []);
+        const isOn = v => v === undefined || v === true || v === 1 || v === '1' || v === 'true' || v === 'on' || v === '예';
+        const toDirectUrl = url => {
+            const m = url && url.match(/\/file\/d\/([^/]+)/);
+            return m ? `https://drive.google.com/thumbnail?id=${m[1]}&sz=w1000` : url;
+        };
+        let photos = toArr(fb && fb.photos)
+            .filter(p => isOn(p['표시'] ?? p.show))
+            .filter(p => {
+                const name = p['시술명'] || p.title || '';
+                return keywords.some(k => name.includes(k));
+            });
+        buildReviewCarousel(photos, id);
+    } catch(e) {
+        reviewSection.style.display = 'none';
+        return;
+    }
+    function buildReviewCarousel(photos, id) {
+        const reviewSection = document.getElementById('reviewSection');
+        if (!photos.length) { reviewSection.style.display = 'none'; return; }
+        reviewSection.style.display = 'block';
+        const track = document.getElementById('reviewTrack');
+        track.innerHTML = photos.map(p => {
+            const title = p['시술명'] || p.title || '';
+            const beforeUrl = toDirectUrl(p['전사진URL'] || p.beforeUrl || '');
+            const afterUrl  = toDirectUrl(p['후사진URL'] || p.afterUrl  || '');
+            const beforeDate = p['시술전날짜'] || p.beforeDate || '';
+            const afterDate  = p['시술후날짜'] || p.afterDate  || '';
+            return `<div class="review-slide">
+                <div class="slide-header">
+                    <div class="slide-subtitle">Before &amp; After</div>
+                    ${title ? `<div class="slide-title">${title}</div>` : ''}
+                </div>
+                <div class="slide-photos">
+                    <div class="slide-photo">
+                        ${beforeUrl ? `<img src="${beforeUrl}" alt="Before" loading="lazy">` : '<div style="background:#e8e8e8;width:100%;height:100%;display:flex;align-items:center;justify-content:center;color:#999;font-size:0.8rem;">사진 없음</div>'}
+                    </div>
+                    <div class="slide-photo">
+                        ${afterUrl ? `<img src="${afterUrl}" alt="After" loading="lazy">` : '<div style="background:#e8e8e8;width:100%;height:100%;display:flex;align-items:center;justify-content:center;color:#999;font-size:0.8rem;">사진 없음</div>'}
+                    </div>
+                </div>
+                <div class="slide-labels">
+                    <div class="slide-label-cell"><span class="photo-label before">Before</span><span class="photo-date">${beforeDate}</span></div>
+                    <div class="slide-label-cell"><span class="photo-label after">After</span><span class="photo-date">${afterDate}</span></div>
+                </div>
+            </div>`;
+        }).join('');
+        const dots = document.getElementById('reviewDots');
+        dots.innerHTML = photos.map((_, i) =>
+            `<button class="review-dot${i === 0 ? ' active' : ''}" onclick="reviewGoTo(${i})"></button>`
+        ).join('');
+        reviewGoTo(0);
+
+        // 터치 스와이프
+        const wrap = document.getElementById('reviewCarousel');
+        let tx = 0;
+        wrap.addEventListener('touchstart', e => { tx = e.touches[0].clientX; }, {passive:true});
+        wrap.addEventListener('touchend',   e => {
+            const diff = tx - e.changedTouches[0].clientX;
+            if (Math.abs(diff) > 45) reviewMove(diff > 0 ? 1 : -1);
+        });
+    }
+}
+
+
 const PROGRAMS = {
+    event1: {
+        type: 'event',
+        name: '타임특가 이벤트',
+        titleSeo: '상동역피부과 타임특가 이벤트',
+        canonicalPath: '/program.html?id=event1',
+        metaDesc: '상동역 로아한의원 타임특가 이벤트. 부천피부과·상동피부과·상동역피부과 시술을 한의원에서 특가로. 한정 기간 이벤트.',
+        keywords: '상동역피부과 이벤트, 부천피부과 이벤트, 상동피부과 이벤트, 부천 한의원 이벤트, 상동역 한의원 이벤트, 로아한의원 이벤트, 부천 리프팅 이벤트, 상동역 리프팅 이벤트',
+        img: 'images/popup-event1-mo.png',
+        imgs: ['images/popup-event1-mo.png'],
+        seo: `
+<h2>상동역피부과 타임특가 이벤트 — 로아한의원 부천</h2>
+<p>로아한의원 부천은 <strong>상동역 3번 출구 도보 1분</strong>에 위치한 미용 한의원으로, <strong>부천피부과·상동피부과·상동역피부과</strong>에서 받는 리프팅·윤곽·스킨 시술을 한의원 가격으로 받으실 수 있습니다. 이번 타임특가 이벤트는 한정 기간·한정 수량으로 진행되므로 사전 예약을 권장합니다.</p>
+<p><strong>부천 상동역피부과</strong>를 찾고 계신다면 로아한의원에서 부천·신중동·부평 지역 분들이 합리적인 가격으로 다양한 시술을 받고 계십니다. 네이버 예약 또는 전화로 편리하게 상담받으세요.</p>
+<h2>로아한의원 부천 — 상동역피부과 시술 안내</h2>
+<p>로아한의원 부천에서는 울쎄라·온다리프팅·볼뉴머 등 리프팅부터 실리프팅·슬림샷·스킨부스터·다이어트한약까지 다양한 미용 시술을 진행하고 있습니다. <strong>상동역·신중동역·부천시청역</strong> 어디서든 편리하게 방문하실 수 있습니다.</p>
+<h3>Q. 상동역피부과와 로아한의원의 차이가 있나요?</h3>
+<p>로아한의원은 한의원이지만 리프팅·윤곽·스킨부스터 등 미용 시술을 진행합니다. 한방 약침과 현대 미용 시술을 결합해 더 자연스럽고 안전한 시술을 제공합니다.</p>
+<h3>Q. 타임특가 이벤트 예약은 어떻게 하나요?</h3>
+<p>네이버 예약 또는 전화 상담으로 예약하실 수 있습니다. 이벤트 수량이 한정되어 있으므로 빠른 예약을 권장합니다.</p>
+<h3>Q. 상동역에서 얼마나 걸리나요?</h3>
+<p><strong>상동역 3번 출구에서 도보 1분</strong> 거리입니다.</p>
+        `,
+    },
+    event2: {
+        type: 'event',
+        name: '온다리프팅 이벤트',
+        titleSeo: '부천피부과 온다리프팅 이벤트',
+        canonicalPath: '/program.html?id=event2',
+        metaDesc: '상동역 로아한의원 온다리프팅 특별 이벤트. 부천피부과·상동피부과에서 온다리프팅 특가로. 마이크로파 리프팅.',
+        keywords: '부천피부과 온다리프팅, 상동피부과 온다리프팅, 상동역피부과 온다리프팅, 부천 온다리프팅 이벤트, 상동역 온다리프팅, 부천 리프팅 이벤트',
+        img: 'images/popup-event2-mo.png',
+        imgs: ['images/popup-event2-mo.png'],
+        seo: `
+<h2>부천피부과 온다리프팅 이벤트 — 로아한의원 부천 상동역</h2>
+<p>로아한의원 부천에서는 <strong>온다리프팅 특별 이벤트</strong>를 진행하고 있습니다. 온다리프팅은 마이크로파(Microwave) 에너지로 피부 심층부 지방과 근막에 직접 작용해 얼굴 윤곽과 처짐을 동시에 개선하는 리프팅 시술입니다.</p>
+<p><strong>부천피부과·상동피부과·상동역피부과</strong>에서 받는 리프팅 시술을 로아한의원에서 이벤트 가격으로 만나보세요. <strong>상동역 3번 출구 도보 1분</strong> 거리로 접근이 편리합니다.</p>
+<h3>Q. 온다리프팅 이벤트 가격은 얼마인가요?</h3>
+<p>이벤트 가격은 기간마다 다를 수 있습니다. 네이버 예약 또는 전화로 최신 이벤트 가격을 확인하세요.</p>
+<h3>Q. 온다리프팅은 몇 회 받으면 효과가 나나요?</h3>
+<p>1회 시술로도 효과를 느끼실 수 있으며, 3회 이상 받으시면 더욱 뚜렷한 리프팅 효과가 유지됩니다.</p>
+        `,
+    },
+    event3: {
+        type: 'event',
+        name: '8월 이벤트',
+        titleSeo: '부천피부과 8월 이벤트',
+        canonicalPath: '/program.html?id=event3',
+        metaDesc: '상동역 로아한의원 8월 한정 이벤트. 부천·상동 피부과 시술을 한의원 특가로. 리프팅·실리프팅·스킨부스터·윤곽 시술.',
+        keywords: '부천피부과 8월 이벤트, 상동역피부과 이벤트, 상동피부과 이벤트, 부천 한의원 이벤트, 부천 리프팅 이벤트, 상동역 리프팅 이벤트, 부천 실리프팅 이벤트',
+        img: 'images/popup-event3-mo.png',
+        imgs: ['images/popup-event3-mo.png', 'images/popup-event4-mo.png'],
+        seo: `
+<h2>부천피부과 8월 이벤트 — 로아한의원 부천 상동역</h2>
+<p>로아한의원 부천의 <strong>8월 한정 이벤트</strong>입니다. 리프팅·실리프팅·스킨부스터·윤곽 시술까지 다양한 시술을 이벤트 가격으로 받으실 수 있습니다. <strong>상동역 3번 출구 도보 1분</strong>에 위치해 부천·신중동·부평 어디서든 편리하게 방문하실 수 있습니다.</p>
+<p><strong>부천피부과·상동피부과·상동역피부과</strong>에서 받는 시술을 로아한의원에서 합리적인 가격으로 경험하세요. 8월 이벤트는 한정 기간 운영이므로 사전 예약을 권장합니다.</p>
+<h3>Q. 8월 이벤트 시술 항목은 어떻게 되나요?</h3>
+<p>이벤트 이미지에서 확인하실 수 있으며, 울쎄라·온다리프팅·볼뉴머·실리프팅·스킨부스터·슬림샷 등이 포함됩니다. 상담 시 원하시는 시술을 말씀해 주세요.</p>
+<h3>Q. 이벤트 예약은 어떻게 하나요?</h3>
+<p>네이버 예약 또는 전화로 간편하게 예약하실 수 있습니다. 이벤트 수량 한정이므로 빠른 예약을 권장합니다.</p>
+<h3>Q. 상동역에서 얼마나 걸리나요?</h3>
+<p><strong>상동역 3번 출구에서 도보 1분</strong> 거리입니다. 부천시청역·신중동역에서도 버스로 편리하게 오실 수 있습니다.</p>
+        `,
+    },
+
     ulthera: {
         category: '리프팅 · 탄력',
         name: '울쎄라피 프라임',
@@ -897,10 +1116,10 @@ const PROGRAMS = {
     nasolabial: {
         category: '실리프팅',
         name: '팔자볼륨실',
-        titleSeo: '부천 팔자볼륨실 | 팔자주름 실리프팅',
+        titleSeo: '부천 팔자볼륨실 잼버실 | 팔자주름 볼륨 실리프팅',
         canonicalPath: '/부천-팔자볼륨실',
-        metaDesc: '상동역 로아한의원 팔자볼륨실. 부천·신중동·부평에서 팔자주름 개선 볼륨 실 리프팅. 당일 예약 가능.',
-        keywords: '부천 팔자볼륨실, 부천 팔자주름, 상동 팔자볼륨실, 부천 팔자주름 리프팅, 상동역 팔자볼륨실, 부천 피부과 팔자주름',
+        metaDesc: '상동역 로아한의원 팔자볼륨실·잼버실. 부천에서 팔자주름 개선 볼륨 실 리프팅. 당일 예약 가능.',
+        keywords: '부천 팔자볼륨실, 부천 잼버실, 부천 팔자주름, 상동 팔자볼륨실, 부천 팔자주름 실리프팅, 부천 팔자주름 리프팅, 잼버실 부천, 상동역 팔자볼륨실, 신중동역 팔자볼륨실, 부천시청역 팔자볼륨실, 부천 피부과 팔자주름',
         subtitle: '팔자주름 개선 볼륨 실 리프팅',
         desc: '팔자주름 부위에 볼륨실을 삽입해 주름을 채우고 처진 볼살을 끌어올리는 시술입니다.',
         img: 'images/program-nasolabial.png',
@@ -927,8 +1146,9 @@ const PROGRAMS = {
         ],
         ctaTitle: '부천 팔자볼륨실 상담 예약하세요',
         seo: `
-<h2>부천 팔자볼륨실이란?</h2>
-<p>팔자볼륨실은 <strong>팔자주름 부위에 볼륨실을 삽입</strong>해 주름을 채우고 볼살 처짐을 개선하는 시술입니다. 로아한의원 부천 <strong>상동역 3번 출구 도보 1분</strong>에서 받으실 수 있습니다.</p>
+<h2>부천 팔자볼륨실(잼버실)이란?</h2>
+<p>팔자볼륨실은 <strong>잼버실</strong>이라고도 불리며, <strong>팔자주름 부위에 볼륨실을 삽입</strong>해 주름을 채우고 볼살 처짐을 개선하는 시술입니다. 수술 없이 팔자주름을 즉각적으로 개선할 수 있어 <strong>부천 팔자주름 실리프팅</strong>을 찾으시는 분께 적합합니다. 로아한의원 부천 <strong>상동역 3번 출구 도보 1분</strong>에서 받으실 수 있습니다.</p>
+<p><strong>부천 잼버실·팔자볼륨실</strong>로 팔자주름을 자연스럽게 개선하세요.</p>
 
 <h2>자주 묻는 질문 (FAQ)</h2>
 <h3>Q. 부천 팔자볼륨실 가격이 얼마인가요?</h3>
@@ -1098,15 +1318,90 @@ const PROGRAMS = {
         `,
     },
 
+    'slim-nose': {
+        category: '윤곽 · 지방제거',
+        name: '슬림코약침',
+        titleSeo: '부천 슬림코약침 코지방 코슬리밍 | 비수술 코 슬리밍 약침',
+        canonicalPath: '/부천-슬림코약침',
+        metaDesc: '상동역 로아한의원 슬림코약침. 부천에서 비수술로 코 지방·코볼·낮은코를 슬리밍하는 한방 약침 시술. VAT별도 1회 8만원.',
+        keywords: '부천 슬림코약침, 상동 슬림코약침, 부천 코슬리밍, 부천 코지방, 부천 코지방분해, 코슬림약침, 부천 코약침, 부천 코볼, 부천 비수술코, 상동역 슬림코약침, 신중동역 슬림코약침, 부천시청역 슬림코약침, 부천 한의원 코슬리밍',
+        subtitle: '비수술로 코 지방을 줄이는 한방 약침',
+        desc: '한약 성분 약침을 코 부위에 주입해 코 지방·코볼을 감소시키는 비수술 시술입니다.',
+        img: 'images/program-slim-nose.png',
+        prices: [
+            { name: '슬림코약침 1회', amount: '80,000' },
+            { name: '슬림코약침 3회', amount: '160,000' },
+        ],
+        priceNote: '* VAT 별도',
+        pointsTitle: '슬림코약침의 특징',
+        points: [
+            { icon: '💉', title: '비수술 코 슬리밍', desc: '수술 없이 코 지방을 줄여 코 라인을 정리' },
+            { icon: '🌿', title: '한약 성분 약침', desc: '한방 지방분해 성분으로 코볼·코 지방을 점진적으로 감소' },
+            { icon: '⏱️', title: '빠른 시술·즉각 복귀', desc: '시술 시간 약 10분, 당일 일상생활 가능' },
+        ],
+        indications: [
+            '코가 퍼지거나 코볼이 넓은 분',
+            '코에 지방이 많아 코 라인이 뭉툭한 분',
+            '수술 없이 코를 정리하고 싶은 분',
+            '코 필러나 코 수술이 부담스러운 분',
+        ],
+        steps: [
+            { title: '상담 및 코 상태 확인', desc: '코 지방 분포와 목표 형태를 확인합니다.' },
+            { title: '마취 크림 도포', desc: '시술 부위에 마취 크림을 도포합니다.' },
+            { title: '약침 주입', desc: '한방 지방분해 약침을 코 부위에 정밀 주입합니다. 약 10분 소요.' },
+            { title: '시술 후 안내', desc: '주의사항 안내 후 당일 일상 복귀 가능합니다.' },
+        ],
+        ctaTitle: '부천 슬림코약침 상담 예약하세요',
+        seo: `
+<h2>부천 슬림코약침이란?</h2>
+<p>슬림코약침은 <strong>한방 지방분해 성분</strong>을 코 부위에 직접 주입해 코 지방·코볼을 줄이는 <strong>비수술 코 슬리밍</strong> 시술입니다. <strong>부천 한의원</strong>에서 수술 없이 코를 정리하고 싶은 분께 적합합니다. 로아한의원 부천 <strong>상동역 3번 출구 도보 1분</strong>에 위치해 있어 편리하게 방문하실 수 있습니다.</p>
+<p><strong>부천 코슬리밍·코지방분해</strong>를 원하신다면 로아한의원 상동역점에서 슬림코약침으로 자연스러운 코 라인을 완성하세요.</p>
+
+<h2>슬림코약침 효과</h2>
+<p>슬림코약침은 코볼·코 지방이 많아 코가 퍼져 보이는 분께 효과적입니다. 한방 지방분해 성분이 코 부위 지방 세포를 점진적으로 감소시켜 코 라인이 정리됩니다. 3회 이상 반복 시술 시 더욱 뚜렷한 효과를 볼 수 있습니다.</p>
+
+<h2>자주 묻는 질문 (FAQ)</h2>
+<h3>Q. 부천 슬림코약침 가격이 얼마인가요?</h3>
+<p>1회 80,000원, 3회 160,000원(VAT 별도)입니다.</p>
+
+<h3>Q. 슬림코약침이 코 필러와 다른 점은 무엇인가요?</h3>
+<p>코 필러는 볼륨을 채워 코 높이를 올리는 시술이고, 슬림코약침은 코 지방을 분해해 코볼·코 퍼짐을 줄이는 시술입니다. 목적이 다르므로 코 상태에 따라 적합한 시술이 다릅니다.</p>
+
+<h3>Q. 슬림코약침 몇 회 받으면 효과가 나나요?</h3>
+<p>개인차가 있으나 <strong>3회 이상</strong> 받으시면 코 라인 변화를 느끼실 수 있으며, 2~4주 간격 시술을 권장합니다.</p>
+
+<h3>Q. 시술이 아픈가요?</h3>
+<p>마취 크림 도포 후 진행하므로 통증이 최소화됩니다. 주사 시 약간의 따끔함이 있을 수 있습니다.</p>
+
+<h3>Q. 시술 후 붓기가 있나요?</h3>
+<p>약한 붓기가 1~2일 있을 수 있으나 대부분 일상생활에 지장 없이 빠르게 가라앉습니다.</p>
+
+<h3>Q. 코 수술이나 코 필러를 했는데 슬림코약침을 받을 수 있나요?</h3>
+<p>기존 시술 종류와 경과 기간에 따라 가능 여부가 다릅니다. 상담 시 말씀해 주시면 안전하게 안내해 드립니다.</p>
+
+<h3>Q. 효과가 얼마나 지속되나요?</h3>
+<p>분해된 지방 세포는 자연적으로 배출되므로 유지 기간이 비교적 길지만, 체중 변화에 따라 달라질 수 있어 유지 시술을 권장합니다.</p>
+
+<h3>Q. 코 지방이 아니라 코가 낮은 건데 슬림코약침이 도움이 되나요?</h3>
+<p>코가 낮은 경우엔 코실리프팅이나 코 필러가 더 적합합니다. 슬림코약침은 코 지방이 많아 코볼이 넓거나 코가 퍼져 보이는 분께 효과적입니다.</p>
+
+<h3>Q. 상동역에서 얼마나 걸리나요?</h3>
+<p><strong>상동역 3번 출구에서 도보 1분</strong> 거리입니다. 부천시청역·신중동역·부평역에서도 버스로 편리하게 오실 수 있습니다.</p>
+
+<h3>Q. 당일 예약이 가능한가요?</h3>
+<p>당일 예약도 가능합니다. 네이버 예약이나 전화로 문의해 주세요.</p>
+        `,
+    },
+
     'volume-shot': {
         category: '볼륨UP',
         name: '볼륨샷',
-        titleSeo: '부천 볼륨샷 | 얼굴 볼륨 주사',
+        titleSeo: '부천 볼륨샷 스컬트라 쥬베룩볼륨 | 콜라겐부스터 얼굴 볼륨',
         canonicalPath: '/부천-볼륨샷',
-        metaDesc: '상동역 로아한의원 볼륨샷. 부천·신중동·부평에서 얼굴 볼륨 개선 볼륨샷. 당일 예약 가능.',
-        keywords: '부천 볼륨샷, 상동 볼륨샷, 부천 얼굴볼륨, 상동역 볼륨샷, 신중동역 볼륨샷, 부천시청역 볼륨샷, 부천 피부과 볼륨샷',
-        subtitle: '꺼진 볼륨을 채우는 맞춤 볼륨 시술',
-        desc: '꺼진 볼·관자놀이·눈가 등 볼륨이 부족한 부위를 채워 젊고 생기있는 얼굴 라인을 완성하는 시술입니다.',
+        metaDesc: '상동역 로아한의원 볼륨샷. 스컬트라·쥬베룩볼륨 계열 콜라겐부스터로 부천에서 얼굴 볼륨 개선. 필러와 다른 자연스러운 볼륨.',
+        keywords: '부천 볼륨샷, 부천 스컬트라, 부천 쥬베룩볼륨, 부천 콜라겐부스터, 상동 볼륨샷, 부천 얼굴볼륨, 상동역 볼륨샷, 신중동역 볼륨샷, 부천시청역 볼륨샷, 부천 피부과 볼륨샷, 스컬트라 부천, 쥬베룩볼륨 부천',
+        subtitle: '콜라겐 생성으로 만드는 자연스러운 입체 볼륨',
+        desc: '스컬트라·쥬베룩볼륨과 같은 콜라겐부스터 계열로 꺼진 볼·관자놀이·눈가 등 볼륨이 부족한 부위를 채워 젊고 생기있는 얼굴 라인을 완성하는 시술입니다. 필러가 아닌 콜라겐 생성 촉진 방식으로 자연스러운 볼륨을 만듭니다.',
         img: 'images/program-volume-shot.png',
         prices: [
             { name: '볼륨샷 5cc 1회', amount: '450,000' },
@@ -1134,15 +1429,21 @@ const PROGRAMS = {
         ],
         ctaTitle: '부천 볼륨샷 상담 예약하세요',
         seo: `
-<h2>부천 볼륨샷이란?</h2>
-<p>볼륨샷은 <strong>꺼진 볼·관자놀이·눈가 등에 볼륨 성분을 주입</strong>해 젊고 생기있는 얼굴 라인을 완성하는 시술입니다. 로아한의원 부천 <strong>상동역 3번 출구 도보 1분</strong>에서 부천·신중동·부평 지역 분들이 방문하고 계십니다.</p>
+<h2>부천 볼륨샷(스컬트라·쥬베룩볼륨)이란?</h2>
+<p>볼륨샷은 <strong>스컬트라·쥬베룩볼륨과 같은 콜라겐부스터 계열 시술</strong>로, 꺼진 볼·관자놀이·눈가 등에 콜라겐 생성을 촉진해 자연스러운 입체 볼륨을 완성합니다. <strong>필러와 달리</strong> 이물질을 채우는 방식이 아니라 피부 자체의 콜라겐을 늘리는 방식이라 더 자연스럽고 점진적인 볼륨감을 만들어냅니다. 로아한의원 부천 <strong>상동역 3번 출구 도보 1분</strong>에서 받으실 수 있습니다.</p>
 
 <h2>자주 묻는 질문 (FAQ)</h2>
 <h3>Q. 부천 볼륨샷 가격이 얼마인가요?</h3>
 <p>5cc 1회 450,000원 / 3회 1,150,000원, 10cc 1회 650,000원 / 3회 1,650,000원(모두 VAT 별도)입니다.</p>
 
+<h3>Q. 볼륨샷이 필러와 다른 점이 뭔가요?</h3>
+<p>볼륨샷은 <strong>필러가 아닙니다.</strong> 필러는 히알루론산 등의 이물질을 직접 채워 즉각적인 볼륨을 만드는 방식이지만, 볼륨샷은 <strong>스컬트라·쥬베룩볼륨 계열의 콜라겐부스터</strong>로 피부 자체의 콜라겐 생성을 촉진해 자연스럽게 볼륨을 회복시킵니다. 결과가 더 자연스럽고 이물감이 없습니다.</p>
+
+<h3>Q. 스컬트라·쥬베룩볼륨과 어떻게 다른가요?</h3>
+<p>스컬트라·쥬베룩볼륨은 콜라겐부스터 계열의 대표 브랜드 제품명입니다. 로아한의원 볼륨샷도 동일한 콜라겐 생성 촉진 원리로 시술하며, 꺼진 볼·관자놀이 볼륨 회복에 효과적입니다.</p>
+
 <h3>Q. 볼륨샷 효과는 얼마나 지속되나요?</h3>
-<p>주입 성분과 개인 대사에 따라 다르지만 보통 <strong>6개월~1년</strong> 지속됩니다.</p>
+<p>콜라겐 생성 방식이라 보통 <strong>1~2년</strong> 지속됩니다. 필러에 비해 유지 기간이 길고 자연스럽게 유지됩니다.</p>
 
 <h3>Q. 볼륨샷으로 어느 부위를 개선할 수 있나요?</h3>
 <p>꺼진 볼, 관자놀이, 눈가, 이마, 턱선 등 볼륨이 부족한 얼굴 전반에 시술이 가능합니다. 상담 시 원하는 부위를 말씀해 주시면 설계해 드립니다.</p>
@@ -1155,9 +1456,6 @@ const PROGRAMS = {
 
 <h3>Q. 볼륨샷 후 붓기가 있나요?</h3>
 <p>시술 후 1~3일간 약간의 붓기가 있을 수 있으며 자연스럽게 가라앉습니다. 최종 결과는 붓기가 완전히 빠진 1~2주 후에 확인하실 수 있습니다.</p>
-
-<h3>Q. 볼륨샷과 필러의 차이가 뭔가요?</h3>
-<p>볼륨샷과 필러는 모두 볼륨 성분을 주입하는 방식이며 유사한 개념입니다. 사용하는 성분과 주입 방식에 따라 효과 지속 기간과 질감이 달라집니다. 상담 시 자세히 설명해 드립니다.</p>
 
 <h3>Q. 볼륨샷 3회 패키지를 사면 얼마나 절약이 되나요?</h3>
 <p>5cc 기준 1회 450,000원 × 3 = 1,350,000원이지만 패키지는 1,150,000원으로 <strong>200,000원 절약</strong>됩니다. 10cc 기준은 3회 패키지(1,650,000원)로 300,000원 절약됩니다.</p>
@@ -1768,7 +2066,10 @@ function render() {
 
     // Meta
     const canonicalUrl = `https://shylifting.com${p.canonicalPath || '/program.html?id=' + id}`;
-    document.getElementById('pageTitle').textContent = `${p.titleSeo || p.name} | 로아한의원 부천 상동역`;
+    const fullTitle = p.type === 'event'
+        ? `${p.titleSeo} | 로아한의원 부천 상동역`
+        : `${p.titleSeo || p.name} | 로아한의원 부천 상동역`;
+    document.getElementById('pageTitle').textContent = fullTitle;
     document.getElementById('pageDesc').content = p.metaDesc || `부천 로아한의원 ${p.name} — ${p.desc}`;
     document.getElementById('ogTitle').content = `${p.titleSeo || p.name} | 로아한의원 부천`;
     document.getElementById('ogDesc').content = p.metaDesc || `부천 로아한의원 ${p.name} — ${p.desc}`;
@@ -1811,6 +2112,20 @@ function render() {
         ]
     });
 
+    // 이벤트 전용 페이지
+    if (p.type === 'event') {
+        document.getElementById('eventLayout').style.display = 'block';
+        document.getElementById('hero').style.display = 'none';
+        document.querySelectorAll('.section, .cta-band').forEach(el => el.style.display = 'none');
+        document.getElementById('seoSection').style.display = 'none';
+        const imgs = p.imgs || [p.img];
+        document.getElementById('eventImages').innerHTML = imgs.map(s =>
+            `<img src="${s}" alt="${p.name} | 로아한의원 부천">`
+        ).join('');
+        document.getElementById('eventSeo').innerHTML = p.seo || '';
+        return;
+    }
+
     // Hero
     const img = document.getElementById('heroImg');
     img.src = p.img; img.alt = `${p.name} | 로아한의원 부천`;
@@ -1825,6 +2140,9 @@ function render() {
         </div>`
     ).join('');
     document.getElementById('heroPriceNote').textContent = p.priceNote || '';
+
+    // 시술 후기 사진 (Firebase에서 로드)
+    loadReviewPhotos(id);
 
     // Points
     document.getElementById('pointsTitle').textContent = p.pointsTitle;
@@ -1860,6 +2178,17 @@ function render() {
     // SEO
     document.getElementById('seoSection').innerHTML = p.seo;
 }
+
+// 시술 후기 캐러셀
+let reviewIdx = 0;
+function reviewGoTo(i) {
+    const slides = document.querySelectorAll('.review-slide');
+    if (!slides.length) return;
+    reviewIdx = (i + slides.length) % slides.length;
+    document.getElementById('reviewTrack').style.transform = `translateX(-${reviewIdx * 100}%)`;
+    document.querySelectorAll('.review-dot').forEach((d, j) => d.classList.toggle('active', j === reviewIdx));
+}
+function reviewMove(dir) { reviewGoTo(reviewIdx + dir); }
 
 render();
 </script>
