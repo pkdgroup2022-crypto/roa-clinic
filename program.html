@@ -1,0 +1,2196 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title id="pageTitle">시술 안내 | 로아한의원 부천</title>
+<meta name="description" id="pageDesc" content="로아한의원 부천 시술 안내">
+<meta property="og:title" id="ogTitle" content="시술 안내 | 로아한의원 부천">
+<meta property="og:description" id="ogDesc" content="로아한의원 부천 시술 안내">
+<meta property="og:image" id="ogImage" content="">
+<meta property="og:type" content="website">
+<meta property="og:url" id="ogUrl" content="">
+<meta name="keywords" id="pageKeywords" content="">
+<script type="application/ld+json" id="ldJson"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&family=Noto+Serif+KR:wght@400;600&display=swap" rel="stylesheet">
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+:root {
+    --dark: #0E0E0E; --gold: #B09060; --cream: #F4EFE6;
+    --warm: #FAF7F2; --red: #8B1A2A; --red-light: #fdf2f3;
+    --silver: #aaa; --mid: #666; --muted: #999; --border: #e8e0d8;
+}
+body { font-family: 'Noto Sans KR', sans-serif; background: #fff; color: var(--dark); }
+
+/* ─── Nav ─── */
+nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 0 2rem; height: 60px;
+    background: rgba(14,14,14,0.97); backdrop-filter: blur(8px);
+}
+.nav-logo { font-family: 'Noto Serif KR', serif; color: #fff; font-size: 1rem; font-weight: 600; text-decoration: none; }
+.nav-center { display: flex; gap: 2rem; list-style: none; }
+.nav-center a { color: #ccc; text-decoration: none; font-size: 0.88rem; transition: color 0.2s; }
+.nav-center a:hover, .nav-center a.active { color: #fff; }
+.hamburger { display: none; flex-direction: column; gap: 5px; background: none; border: none; cursor: pointer; padding: 4px; }
+.hamburger span { display: block; width: 22px; height: 2px; background: #fff; border-radius: 2px; }
+.mobile-menu {
+    display: none; flex-direction: column;
+    position: fixed; top: 60px; left: 0; right: 0; z-index: 99;
+    background: rgba(14,14,14,0.97); padding: 1rem 0;
+}
+.mobile-menu.open { display: flex; }
+.mobile-menu a { color: #ccc; text-decoration: none; padding: 0.85rem 2rem; font-size: 0.95rem; border-bottom: 1px solid #222; }
+.mobile-menu a:hover { color: #fff; background: #1a1a1a; }
+
+/* ─── Hero ─── */
+.hero {
+    margin-top: 60px;
+    background: #fff;
+    max-width: 860px; margin-left: auto; margin-right: auto;
+    padding: 0 0 2.5rem;
+}
+.hero-title-area {
+    padding: 1.8rem 2rem 1.2rem;
+    border-bottom: 1px solid var(--border);
+}
+.hero-img {
+    width: 100%; background: var(--cream);
+    display: flex; align-items: center; justify-content: center; overflow: hidden;
+}
+.hero-img img { width: 100%; max-height: 480px; object-fit: contain; display: block; }
+.hero-info { padding: 1.8rem 2rem 0; }
+.hero-category {
+    display: inline-block; font-size: 0.72rem; color: var(--red);
+    letter-spacing: 0.08em; font-weight: 700; margin-bottom: 0.7rem;
+    border: 1px solid var(--red); padding: 0.2rem 0.7rem; border-radius: 20px;
+}
+.hero-name {
+    font-family: 'Noto Serif KR', serif;
+    font-size: clamp(1.5rem, 3vw, 2.2rem); font-weight: 600;
+    line-height: 1.25; margin-bottom: 0.4rem; color: var(--dark);
+}
+.hero-subtitle { font-size: 0.88rem; color: var(--muted); }
+.hero-desc { color: var(--mid); font-size: 0.93rem; line-height: 1.7; margin-bottom: 1.8rem; }
+
+/* 가격 리스트 */
+.price-list { display: flex; flex-direction: column; gap: 0; margin-bottom: 1.8rem; }
+.price-row {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 1rem 0; border-bottom: 1px solid var(--border);
+    gap: 1rem;
+}
+.price-row:first-child { border-top: 2px solid var(--dark); }
+.price-row-name { font-size: 0.95rem; color: var(--dark); font-weight: 500; flex: 1; }
+.price-row-amount {
+    font-family: 'Noto Serif KR', serif; font-size: 1.25rem;
+    font-weight: 700; color: var(--red); flex-shrink: 0;
+}
+.price-row-amount span { font-size: 0.8rem; color: var(--mid); font-family: 'Noto Sans KR'; font-weight: 400; }
+.price-note { font-size: 0.75rem; color: var(--muted); margin-top: -0.5rem; margin-bottom: 1.5rem; }
+
+.btn-booking {
+    display: flex; align-items: center; justify-content: center; gap: 0.5rem;
+    background: #03C75A; color: #fff; text-decoration: none;
+    padding: 1rem 2rem; border-radius: 8px; font-size: 1rem; font-weight: 700;
+    transition: opacity 0.2s; width: 100%;
+}
+.btn-booking:hover { opacity: 0.88; }
+
+/* ─── 효과/대상 섹션 ─── */
+.section { max-width: 860px; margin: 0 auto; padding: 4rem 2rem; }
+.section-title {
+    font-family: 'Noto Serif KR', serif; font-size: 1.5rem; font-weight: 600;
+    color: var(--dark); margin-bottom: 2rem; padding-bottom: 0.8rem;
+    border-bottom: 2px solid var(--dark);
+}
+.points-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; }
+.point-card {
+    background: var(--warm); border-radius: 12px; padding: 1.6rem 1.4rem;
+    text-align: center;
+}
+.point-icon { font-size: 2rem; margin-bottom: 0.7rem; }
+.point-title { font-weight: 700; font-size: 0.95rem; margin-bottom: 0.4rem; color: var(--dark); }
+.point-desc { font-size: 0.8rem; color: var(--mid); line-height: 1.6; }
+
+.target-list { display: flex; flex-direction: column; gap: 0.8rem; }
+.target-item {
+    display: flex; align-items: flex-start; gap: 0.8rem;
+    padding: 1rem 1.2rem; background: var(--warm); border-radius: 8px;
+}
+.target-check { color: var(--red); font-weight: 700; flex-shrink: 0; margin-top: 0.1rem; }
+.target-text { font-size: 0.92rem; color: var(--dark); line-height: 1.55; }
+
+.steps { display: flex; flex-direction: column; gap: 0; }
+.step {
+    display: flex; gap: 1.5rem; align-items: flex-start;
+    padding: 1.4rem 0; border-bottom: 1px solid var(--border);
+}
+.step:last-child { border-bottom: none; }
+.step-num {
+    width: 36px; height: 36px; border-radius: 50%; background: var(--dark);
+    color: #fff; font-size: 0.82rem; font-weight: 700;
+    display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+}
+.step-body { flex: 1; }
+.step-title { font-weight: 700; font-size: 0.95rem; margin-bottom: 0.3rem; }
+.step-desc { font-size: 0.82rem; color: var(--mid); line-height: 1.6; }
+
+/* ─── 예약 CTA ─── */
+.cta-band {
+    background: var(--dark); color: #fff;
+    text-align: center; padding: 4rem 2rem;
+}
+.cta-band h2 { font-family: 'Noto Serif KR', serif; font-size: 1.6rem; margin-bottom: 0.5rem; }
+.cta-band p { color: #aaa; font-size: 0.9rem; margin-bottom: 2rem; }
+.cta-btns { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; }
+.btn-naver {
+    display: inline-flex; align-items: center; gap: 0.5rem;
+    background: #03C75A; color: #fff; text-decoration: none;
+    padding: 1rem 2.5rem; border-radius: 8px; font-size: 1rem; font-weight: 700;
+}
+.btn-call {
+    display: inline-flex; align-items: center; gap: 0.5rem;
+    background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2);
+    color: #fff; text-decoration: none;
+    padding: 1rem 2.5rem; border-radius: 8px; font-size: 1rem; font-weight: 600;
+}
+
+/* ─── SEO 줄글 ─── */
+.seo-section {
+    max-width: 860px; margin: 0 auto; padding: 4rem 2rem 6rem;
+    border-top: 1px solid var(--border);
+}
+.seo-section h2 {
+    font-family: 'Noto Serif KR', serif; font-size: 1.3rem; font-weight: 600;
+    color: var(--dark); margin: 2.5rem 0 0.8rem;
+}
+.seo-section h2:first-child { margin-top: 0; }
+.seo-section h3 {
+    font-size: 1.05rem; font-weight: 700; color: var(--dark); margin: 1.8rem 0 0.6rem;
+}
+.seo-section p {
+    font-size: 0.92rem; color: var(--mid); line-height: 1.85; margin-bottom: 0.8rem;
+}
+.seo-section strong { color: var(--dark); }
+
+/* ─── 시술 후기 사진 (홈페이지와 동일 스타일) ─── */
+.review-section { padding: 0 0 2rem; }
+.review-section-title { font-family: 'Noto Serif KR', serif; font-size: 1.3rem; font-weight: 600; margin: 0 2rem 0.5rem; }
+.review-section-title span { color: var(--gold); }
+.review-guide { font-size: 0.82rem; color: var(--muted); margin: 0 2rem 1.2rem; }
+.review-carousel { position: relative; overflow: hidden; }
+.review-track { display: flex; transition: transform 0.4s cubic-bezier(.4,0,.2,1); }
+.review-slide { min-width: 100%; flex-shrink: 0; }
+.slide-header { padding: 1rem 2rem 0.6rem; }
+.slide-subtitle { font-size: 0.72rem; letter-spacing: 0.12em; color: var(--muted); text-transform: uppercase; margin-bottom: 0.2rem; }
+.slide-title { font-size: 0.88rem; font-weight: 600; color: var(--dark); }
+.slide-photos { display: flex; flex-shrink: 0; aspect-ratio: 2/1; }
+.slide-photo { flex: 0 0 50%; width: 50%; overflow: hidden; background: #e8e8e8; }
+.slide-photo + .slide-photo { border-left: 1px solid #e0e0e0; }
+.slide-photo img { display: block; width: 100%; height: 100%; object-fit: cover; object-position: top center; }
+.slide-labels { display: flex; padding: 0.5rem 2rem 0; }
+.slide-label-cell { flex: 1; display: flex; align-items: center; gap: 0.4rem; }
+.photo-label { font-size: 0.7rem; font-weight: 700; letter-spacing: 0.06em; }
+.photo-label.before { color: #555; }
+.photo-label.after  { color: var(--gold); }
+.photo-date { font-size: 0.68rem; color: #999; }
+.review-nav { position: absolute; top: 50%; transform: translateY(-50%); background: rgba(0,0,0,0.4); color: #fff; border: none; width: 36px; height: 36px; border-radius: 50%; font-size: 1.2rem; cursor: pointer; display: flex; align-items: center; justify-content: center; z-index: 2; transition: background 0.2s; }
+.review-nav:hover { background: rgba(0,0,0,0.7); }
+.review-nav.prev { left: 8px; }
+.review-nav.next { right: 8px; }
+.review-dots { display: flex; justify-content: center; gap: 6px; margin-top: 0.8rem; }
+.review-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--border); border: none; cursor: pointer; padding: 0; transition: background 0.2s; }
+.review-dot.active { background: var(--dark); }
+.review-disclaimer { font-size: 0.72rem; color: var(--muted); margin: 0.8rem 2rem 0; line-height: 1.6; }
+@media (max-width: 540px) {
+    .slide-photos { height: auto; }
+    .slide-photo { aspect-ratio: 3/4; }
+    .slide-photo img { object-fit: contain; background: #111; }
+}
+
+/* ─── 이벤트 전용 레이아웃 ─── */
+#eventLayout { display: none; max-width: 860px; margin: 80px auto 0; padding-bottom: 4rem; }
+.event-images { display: flex; flex-direction: column; gap: 0; }
+.event-images img { width: 100%; display: block; }
+.event-seo { padding: 3rem 2rem 1rem; }
+.event-seo h2 { font-family: 'Noto Serif KR', serif; font-size: 1.3rem; font-weight: 600; margin-bottom: 0.8rem; padding-bottom: 0.5rem; border-bottom: 1px solid var(--border); }
+.event-seo p { color: var(--mid); font-size: 0.9rem; line-height: 1.8; margin-bottom: 1.2rem; }
+.event-seo h3 { font-size: 1rem; font-weight: 700; margin: 1.5rem 0 0.5rem; color: var(--dark); }
+.event-cta { margin: 2rem 2rem 0; display: flex; gap: 1rem; flex-wrap: wrap; }
+.event-cta .btn-naver { display: inline-flex; align-items: center; gap: 0.5rem; background: #03C75A; color: #fff; padding: 0.9rem 1.8rem; border-radius: 8px; text-decoration: none; font-weight: 700; font-size: 0.95rem; }
+
+/* ─── Mobile ─── */
+@media (max-width: 900px) {
+    .nav-center { display: none; }
+    .hamburger { display: flex; }
+    .hero { margin-top: 60px; }
+    .hero-info { padding: 1.5rem 1.2rem 0; }
+    .points-grid { grid-template-columns: 1fr; gap: 0.8rem; }
+    .point-card { text-align: left; display: flex; align-items: flex-start; gap: 1rem; }
+    .point-icon { font-size: 1.5rem; margin-bottom: 0; flex-shrink: 0; }
+}
+@media (max-width: 540px) {
+    .hero-name { font-size: 1.5rem; }
+    .price-row-name { font-size: 0.88rem; }
+    .price-row-amount { font-size: 1.1rem; }
+    .cta-btns { flex-direction: column; align-items: center; }
+    .btn-naver, .btn-call { width: 100%; max-width: 320px; justify-content: center; }
+}
+</style>
+</head>
+<body>
+
+<nav>
+    <a href="index.html" class="nav-logo">로아한의원 부천</a>
+    <ul class="nav-center">
+        <li><a href="events.html" class="active">시술메뉴/이벤트</a></li>
+        <li><a href="index.html#reviews">시술 후기</a></li>
+        <li><a href="index.html#impactStats">로아한의원 부천</a></li>
+        <li><a href="index.html#doctors">의료진 소개</a></li>
+        <li><a href="index.html#contact">오시는 길</a></li>
+    </ul>
+    <button class="hamburger" onclick="this.nextElementSibling.classList.toggle('open')">
+        <span></span><span></span><span></span>
+    </button>
+    <div class="mobile-menu">
+        <a href="events.html">시술메뉴/이벤트</a>
+        <a href="index.html#reviews">시술 후기</a>
+        <a href="index.html#impactStats">로아한의원 부천</a>
+        <a href="index.html#doctors">의료진 소개</a>
+        <a href="index.html#contact">오시는 길</a>
+    </div>
+</nav>
+
+<!-- 이벤트 전용 레이아웃 -->
+<div id="eventLayout">
+    <div class="event-images" id="eventImages"></div>
+    <div class="event-cta">
+        <a href="https://booking.naver.com/booking/13/bizes/1064400953" target="_blank" class="btn-naver">📅 네이버 예약하기</a>
+    </div>
+    <div class="event-seo" id="eventSeo"></div>
+</div>
+
+<!-- Hero / 가격 -->
+<section class="hero" id="hero">
+    <div class="hero-title-area">
+        <div class="hero-category" id="heroCategory"></div>
+        <h1 class="hero-name" id="heroName"></h1>
+        <p class="hero-subtitle" id="heroSubtitle"></p>
+    </div>
+    <div class="hero-img">
+        <img id="heroImg" src="" alt="">
+    </div>
+    <div class="hero-info">
+        <p class="hero-desc" id="heroDesc"></p>
+        <div class="price-list" id="priceList"></div>
+        <p class="price-note" id="heroPriceNote"></p>
+        <a href="https://booking.naver.com/booking/13/bizes/1064400953" target="_blank" class="btn-booking">
+            📅 네이버 예약하기
+        </a>
+    </div>
+</section>
+
+<!-- 시술 후기 사진 -->
+<div id="reviewSection" class="review-section" style="display:none">
+    <div class="review-section-title">리얼 후기 <span>결과로 증명합니다.</span></div>
+    <p class="review-guide">좌우로 넘기면 더 많은 결과를 보실 수 있습니다.</p>
+    <div class="review-carousel" id="reviewCarousel">
+        <div class="review-track" id="reviewTrack"></div>
+        <button class="review-nav prev" onclick="reviewMove(-1)">&#8249;</button>
+        <button class="review-nav next" onclick="reviewMove(1)">&#8250;</button>
+    </div>
+    <div class="review-dots" id="reviewDots"></div>
+    <p class="review-disclaimer">※ 시술 효과는 개인마다 상이할 수 있습니다. 사진은 실제 내원 고객의 후기입니다.</p>
+</div>
+
+<!-- 효과 -->
+<div class="section">
+    <h2 class="section-title" id="pointsTitle"></h2>
+    <div class="points-grid" id="pointsGrid"></div>
+</div>
+
+<!-- 이런 분께 추천 -->
+<div class="section" style="padding-top:0">
+    <h2 class="section-title">이런 분께 추천드려요</h2>
+    <div class="target-list" id="targetList"></div>
+</div>
+
+<!-- 시술 과정 -->
+<div class="section" style="padding-top:0">
+    <h2 class="section-title">시술 과정</h2>
+    <div class="steps" id="stepsList"></div>
+</div>
+
+<!-- CTA -->
+<div class="cta-band">
+    <h2 id="ctaTitle"></h2>
+    <p>상동역 3번 출구 도보 1분 · 로아한의원</p>
+    <div class="cta-btns">
+        <a href="https://booking.naver.com/booking/13/bizes/1064400953" target="_blank" class="btn-naver">📅 네이버 예약</a>
+        <a href="tel:032-000-0000" class="btn-call">📞 전화 상담</a>
+    </div>
+</div>
+
+<!-- SEO 줄글 -->
+<div class="seo-section" id="seoSection"></div>
+
+<script>
+const NAVER_BOOKING = 'https://booking.naver.com/booking/13/bizes/1064400953';
+
+/* 각 시술 ID → Firebase 사진의 시술명 필터 키워드 (복수 가능, OR 조건) */
+const REVIEW_KEYWORDS = {
+    ulthera:        ['울쎄라피 프라임'],
+    onda:           ['온다 리프팅'],
+    'oneday-silift':['원데이 실리프팅'],
+    'slim-shot':    ['슬림샷'],
+    'volume-shot':  ['볼륨샷'],
+    volsera:        ['울쎄라피 프라임', '볼륨샷'],
+    onsera:         ['울쎄라피 프라임', '온다 리프팅'],
+    nasolabial:     ['팔자주름'],
+};
+
+const FIREBASE_URL = 'https://roa-clinic-default-rtdb.firebaseio.com/roa';
+
+/* Firebase 사진 로드 후 해당 시술 후기만 표시 */
+async function loadReviewPhotos(id) {
+    const keywords = REVIEW_KEYWORDS[id];
+    const reviewSection = document.getElementById('reviewSection');
+    if (!keywords) { reviewSection.style.display = 'none'; return; }
+    try {
+        const res = await fetch(FIREBASE_URL + '.json?t=' + Date.now());
+        const fb = await res.json();
+        const toArr = v => Array.isArray(v) ? v : (v ? Object.values(v) : []);
+        const isOn = v => v === undefined || v === true || v === 1 || v === '1' || v === 'true' || v === 'on' || v === '예';
+        const toDirectUrl = url => {
+            const m = url && url.match(/\/file\/d\/([^/]+)/);
+            return m ? `https://drive.google.com/thumbnail?id=${m[1]}&sz=w1000` : url;
+        };
+        let photos = toArr(fb && fb.photos)
+            .filter(p => isOn(p['표시'] ?? p.show))
+            .filter(p => {
+                const name = p['시술명'] || p.title || '';
+                return keywords.some(k => name.includes(k));
+            });
+        buildReviewCarousel(photos, id);
+    } catch(e) {
+        reviewSection.style.display = 'none';
+        return;
+    }
+    function buildReviewCarousel(photos, id) {
+        const reviewSection = document.getElementById('reviewSection');
+        if (!photos.length) { reviewSection.style.display = 'none'; return; }
+        reviewSection.style.display = 'block';
+        const track = document.getElementById('reviewTrack');
+        track.innerHTML = photos.map(p => {
+            const title = p['시술명'] || p.title || '';
+            const beforeUrl = toDirectUrl(p['전사진URL'] || p.beforeUrl || '');
+            const afterUrl  = toDirectUrl(p['후사진URL'] || p.afterUrl  || '');
+            const beforeDate = p['시술전날짜'] || p.beforeDate || '';
+            const afterDate  = p['시술후날짜'] || p.afterDate  || '';
+            return `<div class="review-slide">
+                <div class="slide-header">
+                    <div class="slide-subtitle">Before &amp; After</div>
+                    ${title ? `<div class="slide-title">${title}</div>` : ''}
+                </div>
+                <div class="slide-photos">
+                    <div class="slide-photo">
+                        ${beforeUrl ? `<img src="${beforeUrl}" alt="Before" loading="lazy">` : '<div style="background:#e8e8e8;width:100%;height:100%;display:flex;align-items:center;justify-content:center;color:#999;font-size:0.8rem;">사진 없음</div>'}
+                    </div>
+                    <div class="slide-photo">
+                        ${afterUrl ? `<img src="${afterUrl}" alt="After" loading="lazy">` : '<div style="background:#e8e8e8;width:100%;height:100%;display:flex;align-items:center;justify-content:center;color:#999;font-size:0.8rem;">사진 없음</div>'}
+                    </div>
+                </div>
+                <div class="slide-labels">
+                    <div class="slide-label-cell"><span class="photo-label before">Before</span><span class="photo-date">${beforeDate}</span></div>
+                    <div class="slide-label-cell"><span class="photo-label after">After</span><span class="photo-date">${afterDate}</span></div>
+                </div>
+            </div>`;
+        }).join('');
+        const dots = document.getElementById('reviewDots');
+        dots.innerHTML = photos.map((_, i) =>
+            `<button class="review-dot${i === 0 ? ' active' : ''}" onclick="reviewGoTo(${i})"></button>`
+        ).join('');
+        reviewGoTo(0);
+
+        // 터치 스와이프
+        const wrap = document.getElementById('reviewCarousel');
+        let tx = 0;
+        wrap.addEventListener('touchstart', e => { tx = e.touches[0].clientX; }, {passive:true});
+        wrap.addEventListener('touchend',   e => {
+            const diff = tx - e.changedTouches[0].clientX;
+            if (Math.abs(diff) > 45) reviewMove(diff > 0 ? 1 : -1);
+        });
+    }
+}
+
+
+const PROGRAMS = {
+    event1: {
+        type: 'event',
+        name: '타임특가 이벤트',
+        titleSeo: '상동역피부과 타임특가 이벤트',
+        canonicalPath: '/program.html?id=event1',
+        metaDesc: '상동역 로아한의원 타임특가 이벤트. 부천피부과·상동피부과·상동역피부과 시술을 한의원에서 특가로. 한정 기간 이벤트.',
+        keywords: '상동역피부과 이벤트, 부천피부과 이벤트, 상동피부과 이벤트, 부천 한의원 이벤트, 상동역 한의원 이벤트, 로아한의원 이벤트, 부천 리프팅 이벤트, 상동역 리프팅 이벤트',
+        img: 'images/popup-event1-mo.png',
+        imgs: ['images/popup-event1-mo.png'],
+        seo: `
+<h2>상동역피부과 타임특가 이벤트 — 로아한의원 부천</h2>
+<p>로아한의원 부천은 <strong>상동역 3번 출구 도보 1분</strong>에 위치한 미용 한의원으로, <strong>부천피부과·상동피부과·상동역피부과</strong>에서 받는 리프팅·윤곽·스킨 시술을 한의원 가격으로 받으실 수 있습니다. 이번 타임특가 이벤트는 한정 기간·한정 수량으로 진행되므로 사전 예약을 권장합니다.</p>
+<p><strong>부천 상동역피부과</strong>를 찾고 계신다면 로아한의원에서 부천·신중동·부평 지역 분들이 합리적인 가격으로 다양한 시술을 받고 계십니다. 네이버 예약 또는 전화로 편리하게 상담받으세요.</p>
+<h2>로아한의원 부천 — 상동역피부과 시술 안내</h2>
+<p>로아한의원 부천에서는 울쎄라·온다리프팅·볼뉴머 등 리프팅부터 실리프팅·슬림샷·스킨부스터·다이어트한약까지 다양한 미용 시술을 진행하고 있습니다. <strong>상동역·신중동역·부천시청역</strong> 어디서든 편리하게 방문하실 수 있습니다.</p>
+<h3>Q. 상동역피부과와 로아한의원의 차이가 있나요?</h3>
+<p>로아한의원은 한의원이지만 리프팅·윤곽·스킨부스터 등 미용 시술을 진행합니다. 한방 약침과 현대 미용 시술을 결합해 더 자연스럽고 안전한 시술을 제공합니다.</p>
+<h3>Q. 타임특가 이벤트 예약은 어떻게 하나요?</h3>
+<p>네이버 예약 또는 전화 상담으로 예약하실 수 있습니다. 이벤트 수량이 한정되어 있으므로 빠른 예약을 권장합니다.</p>
+<h3>Q. 상동역에서 얼마나 걸리나요?</h3>
+<p><strong>상동역 3번 출구에서 도보 1분</strong> 거리입니다.</p>
+        `,
+    },
+    event2: {
+        type: 'event',
+        name: '온다리프팅 이벤트',
+        titleSeo: '부천피부과 온다리프팅 이벤트',
+        canonicalPath: '/program.html?id=event2',
+        metaDesc: '상동역 로아한의원 온다리프팅 특별 이벤트. 부천피부과·상동피부과에서 온다리프팅 특가로. 마이크로파 리프팅.',
+        keywords: '부천피부과 온다리프팅, 상동피부과 온다리프팅, 상동역피부과 온다리프팅, 부천 온다리프팅 이벤트, 상동역 온다리프팅, 부천 리프팅 이벤트',
+        img: 'images/popup-event2-mo.png',
+        imgs: ['images/popup-event2-mo.png'],
+        seo: `
+<h2>부천피부과 온다리프팅 이벤트 — 로아한의원 부천 상동역</h2>
+<p>로아한의원 부천에서는 <strong>온다리프팅 특별 이벤트</strong>를 진행하고 있습니다. 온다리프팅은 마이크로파(Microwave) 에너지로 피부 심층부 지방과 근막에 직접 작용해 얼굴 윤곽과 처짐을 동시에 개선하는 리프팅 시술입니다.</p>
+<p><strong>부천피부과·상동피부과·상동역피부과</strong>에서 받는 리프팅 시술을 로아한의원에서 이벤트 가격으로 만나보세요. <strong>상동역 3번 출구 도보 1분</strong> 거리로 접근이 편리합니다.</p>
+<h3>Q. 온다리프팅 이벤트 가격은 얼마인가요?</h3>
+<p>이벤트 가격은 기간마다 다를 수 있습니다. 네이버 예약 또는 전화로 최신 이벤트 가격을 확인하세요.</p>
+<h3>Q. 온다리프팅은 몇 회 받으면 효과가 나나요?</h3>
+<p>1회 시술로도 효과를 느끼실 수 있으며, 3회 이상 받으시면 더욱 뚜렷한 리프팅 효과가 유지됩니다.</p>
+        `,
+    },
+    event3: {
+        type: 'event',
+        name: '8월 이벤트',
+        titleSeo: '부천피부과 8월 이벤트',
+        canonicalPath: '/program.html?id=event3',
+        metaDesc: '상동역 로아한의원 8월 한정 이벤트. 부천·상동 피부과 시술을 한의원 특가로. 리프팅·실리프팅·스킨부스터·윤곽 시술.',
+        keywords: '부천피부과 8월 이벤트, 상동역피부과 이벤트, 상동피부과 이벤트, 부천 한의원 이벤트, 부천 리프팅 이벤트, 상동역 리프팅 이벤트, 부천 실리프팅 이벤트',
+        img: 'images/popup-event3-mo.png',
+        imgs: ['images/popup-event3-mo.png', 'images/popup-event4-mo.png'],
+        seo: `
+<h2>부천피부과 8월 이벤트 — 로아한의원 부천 상동역</h2>
+<p>로아한의원 부천의 <strong>8월 한정 이벤트</strong>입니다. 리프팅·실리프팅·스킨부스터·윤곽 시술까지 다양한 시술을 이벤트 가격으로 받으실 수 있습니다. <strong>상동역 3번 출구 도보 1분</strong>에 위치해 부천·신중동·부평 어디서든 편리하게 방문하실 수 있습니다.</p>
+<p><strong>부천피부과·상동피부과·상동역피부과</strong>에서 받는 시술을 로아한의원에서 합리적인 가격으로 경험하세요. 8월 이벤트는 한정 기간 운영이므로 사전 예약을 권장합니다.</p>
+<h3>Q. 8월 이벤트 시술 항목은 어떻게 되나요?</h3>
+<p>이벤트 이미지에서 확인하실 수 있으며, 울쎄라·온다리프팅·볼뉴머·실리프팅·스킨부스터·슬림샷 등이 포함됩니다. 상담 시 원하시는 시술을 말씀해 주세요.</p>
+<h3>Q. 이벤트 예약은 어떻게 하나요?</h3>
+<p>네이버 예약 또는 전화로 간편하게 예약하실 수 있습니다. 이벤트 수량 한정이므로 빠른 예약을 권장합니다.</p>
+<h3>Q. 상동역에서 얼마나 걸리나요?</h3>
+<p><strong>상동역 3번 출구에서 도보 1분</strong> 거리입니다. 부천시청역·신중동역에서도 버스로 편리하게 오실 수 있습니다.</p>
+        `,
+    },
+
+    ulthera: {
+        category: '리프팅 · 탄력',
+        name: '울쎄라피 프라임',
+        titleSeo: '부천 울쎄라 울쎄라피프라임 | HIFU 리프팅',
+        canonicalPath: '/부천-울쎄라',
+        metaDesc: '상동역 로아한의원의 울쎄라피 프라임. 부천·신중동·부평 인근에서 HIFU 울쎄라 리프팅을 합리적인 가격으로 받아보세요. 당일 예약 가능.',
+        keywords: '부천 울쎄라, 부천 울쎄라리프팅, 상동역 울쎄라, 상동 울쎄라, 신중동역 울쎄라, 부천시청역 울쎄라, 부평 울쎄라, 울쎄라피프라임 부천, 부천 HIFU 리프팅, 부천역 울쎄라, 부천 리프팅 한의원, 부천 피부과 울쎄라, 상동 피부과 울쎄라, 부천 피부과 리프팅, 상동피부과, 부천피부과 리프팅시술',
+        subtitle: '샷 수는 UP, 가격 부담은 DOWN',
+        desc: 'HIFU(고강도 집속 초음파) 에너지로 피부 깊은 층 SMAS까지 직접 자극해 처짐을 끌어올리는 리프팅 시술입니다.',
+        img: 'images/program-ulthera.png',
+        prices: [
+            { name: '울쎄라피 프라임 300샷', amount: '590,000' },
+            { name: '100샷 추가 시', amount: '+ 270,000' },
+        ],
+        priceNote: '* 첫 체험 시 적용 · VAT 별도 · 정확한 가격은 상담 후 확정',
+        pointsTitle: '울쎄라피 프라임의 특징',
+        points: [
+            { icon: '🎯', title: 'SMAS층 직접 자극', desc: '피부 표면이 아닌 근막층까지 에너지를 정확히 전달해 확실한 리프팅 효과' },
+            { icon: '⏱️', title: '시술 즉시 일상 복귀', desc: '회복 기간 없이 당일 바로 일상생활 가능, 다운타임 최소화' },
+            { icon: '📈', title: '지속적인 콜라겐 생성', desc: '시술 후 2~6개월에 걸쳐 콜라겐이 지속 생성되어 효과가 점점 좋아짐' },
+        ],
+        targets: [
+            '얼굴 윤곽이 예전보다 처져 보이는 분',
+            '팔자주름·볼살 처짐이 고민인 분',
+            '수술 없이 자연스럽게 리프팅하고 싶은 분',
+            '1~2회 시술로 오래 지속되는 효과를 원하시는 분',
+            '결혼식·행사 등 중요한 일정 전 관리가 필요한 분',
+        ],
+        steps: [
+            { title: '상담 및 피부 분석', desc: '의료진이 피부 상태와 처진 정도를 확인 후 적합한 레벨·횟수를 설계합니다.' },
+            { title: '클렌징 및 마취 크림', desc: '시술 부위를 세정하고 마취 크림을 30~40분 도포해 불편함을 줄입니다.' },
+            { title: '울쎄라피 시술', desc: 'HIFU 에너지를 표적 깊이에 집중 조사합니다. 소요 시간 약 40~60분.' },
+            { title: '시술 후 진정 케어', desc: '쿨링 및 진정 케어로 피부를 안정시킵니다.' },
+            { title: '일상 복귀', desc: '특별한 회복 기간 없이 당일 바로 일상생활이 가능합니다.' },
+        ],
+        ctaTitle: '지금 울쎄라피 프라임 상담 예약하세요',
+        seo: `
+<h2>부천 울쎄라 리프팅 — 울쎄라피 프라임이란?</h2>
+<p>울쎄라피 프라임(Ultherapy Prime)은 미국 FDA 승인을 받은 <strong>HIFU(고강도 집속 초음파)</strong> 기반의 리프팅 시술입니다. 일반적인 레이저가 피부 표면에 작용하는 것과 달리, <strong>부천 울쎄라</strong> 시술은 피부 아래 <strong>SMAS(근막층)</strong>까지 초음파 에너지를 정밀하게 집중시켜 열 응고점을 형성합니다. 이 자극이 콜라겐 재생을 촉진해 처진 피부를 위로 끌어올리는 원리입니다.</p>
+<p>로아한의원 부천은 <strong>상동역 도보 3분</strong> 거리에 위치한 리프팅 집중진료 한의원으로, 최신 울쎄라피 프라임 장비를 사용해 전안면·이중턱·목·데콜테 등 다양한 부위에 맞춤 <strong>울쎄라 리프팅</strong> 시술을 제공합니다. <strong>신중동역·부천시청역·부평역</strong> 등 부천 전 지역에서 편리하게 방문하실 수 있습니다.</p>
+
+<h2>울쎄라피 효과 — 언제부터 느껴질까요?</h2>
+<p><strong>부천 울쎄라리프팅</strong> 시술 직후에도 약간의 당김 효과를 느끼시는 분들이 많습니다. 그러나 <strong>진짜 효과는 시술 1~3개월 후</strong>부터 본격적으로 나타납니다. 초음파 에너지가 SMAS층에 형성한 열 응고점 주변으로 새로운 콜라겐이 지속 생성되기 때문입니다. 효과는 보통 <strong>6개월~1년 이상</strong> 지속되며, 개인 피부 상태와 생활 습관에 따라 차이가 있습니다.</p>
+
+<h3>울쎄라 vs 써마지 — 무엇이 다를까요?</h3>
+<p>울쎄라는 <strong>초음파(HIFU)</strong> 에너지로 SMAS층까지 작용해 리프팅 효과에 강점이 있습니다. 써마지는 <strong>고주파(RF)</strong> 에너지로 진피층의 콜라겐 재생과 피부 탄력 개선에 효과적입니다. 처짐이 주요 고민이라면 울쎄라, 피부 결·탄력 개선이 목적이라면 써마지가 적합하며, 두 시술을 병행하면 시너지 효과를 얻을 수 있습니다.</p>
+
+<h2>울쎄라 시술 후 주의사항</h2>
+<p>시술 직후 약간의 붓기·붉음·저림 증상이 나타날 수 있으나 대부분 1~3일 내에 자연스럽게 회복됩니다. 시술 후 <strong>1주일간 음주·사우나·격렬한 운동</strong>은 삼가시고, 자외선 차단제를 꼭 발라주세요. 특별한 다운타임 없이 당일 일상생활이 가능하지만, 강한 마사지는 2주 정도 피하는 것이 좋습니다.</p>
+
+<h2>상동역 로아한의원 울쎄라 — 이렇게 다릅니다</h2>
+<p>로아한의원 부천은 <strong>울쎄라피프라임 리프팅 집중진료 한의원</strong>으로, 풍부한 임상 경험을 바탕으로 1:1 맞춤 상담 후 시술합니다. <strong>상동역·부천시청역·신중동역</strong> 인근은 물론, <strong>소사·오정·부평</strong> 지역에서도 많은 분들이 <strong>부천 울쎄라리프팅</strong>을 위해 방문하고 계십니다.</p>
+<p>울쎄라 단독 시술뿐 아니라 <strong>온쎄라(울쎄라+온다), 볼쎄라(울쎄라+볼뉴머)</strong> 등 복합 리프팅 솔루션도 제공합니다. <strong>부천 울쎄라 가격</strong>이 궁금하시거나 상담을 원하시면 네이버 예약 또는 전화로 편하게 문의해 주세요.</p>
+<p>울쎄라는 <strong>부천 피부과</strong>에서도 많이 받는 대표적인 리프팅 시술입니다. 로아한의원은 <strong>상동 피부과 시술</strong>로 잘 알려진 울쎄라피프라임을 한의학적 관점의 맞춤 상담과 함께 제공해, 보다 세심한 케어를 원하시는 분들께 좋은 선택이 될 수 있습니다.</p>
+
+<h2>자주 묻는 질문 (FAQ)</h2>
+
+<h3>Q. 부천 울쎄라 가격이 얼마나 하나요?</h3>
+<p>로아한의원 부천의 울쎄라피프라임은 <strong>300샷 590,000원(첫 체험가 · VAT 별도)</strong>부터 시작합니다. 100샷 추가 시 270,000원이 추가되며, 부천 피부과와 동일한 정품 장비로 합리적인 가격에 시술받으실 수 있습니다.</p>
+
+<h3>Q. 울쎄라 효과가 없다는 후기도 있던데 사실인가요?</h3>
+<p>시술자의 경험과 에너지 설정에 따라 결과 차이가 큽니다. 효과가 없었다는 경우는 대부분 샷 수가 부족하거나 에너지 레벨이 낮은 경우입니다. 로아한의원은 <strong>개인 피부 두께·처짐 정도에 맞는 최적 설정</strong>으로 효과를 극대화합니다.</p>
+
+<h3>Q. 울쎄라 한 번만 맞아도 되나요?</h3>
+<p><strong>1회 시술로도 충분한 리프팅 효과</strong>를 볼 수 있습니다. 효과 유지를 위해 6개월~1년에 1회 반복을 권장하며, 처음 받으시는 분은 1회 후 효과를 확인하고 추가 계획을 세우셔도 됩니다.</p>
+
+<h3>Q. 울쎄라 부작용은 없나요?</h3>
+<p>FDA 승인을 받은 안전한 시술이지만, 일부에서 일시적인 저림·붓기·작열감이 나타날 수 있습니다. 대부분 <strong>수일~수주 내 자연 회복</strong>되며, 충분한 상담과 정확한 에너지 조절로 부작용을 최소화합니다.</p>
+
+<h3>Q. 시술 후 붓기·멍은 얼마나 가나요?</h3>
+<p>대부분 <strong>1~3일 내 자연 회복</strong>됩니다. 가벼운 붉음·저림·당김이 나타날 수 있으나 일상생활에는 지장이 없으며, 냉찜질로 빠르게 진정됩니다.</p>
+
+<h3>Q. 부천에서 울쎄라 시술은 얼마나 자주 받아야 하나요?</h3>
+<p>일반적으로 <strong>6개월~1년에 1회</strong>를 권장합니다. 피부 노화 속도와 개인 목표에 따라 주기는 조정될 수 있으며, 시술 후 상담에서 유지 플랜을 안내해 드립니다.</p>
+
+<h3>Q. 상동·부천에서 얼굴 처짐에 울쎄라가 가장 좋은가요?</h3>
+<p>얼굴 처짐 개선에 울쎄라가 가장 근본적인 접근법입니다. 다만 처짐 정도·피부 상태에 따라 온다리프팅·볼뉴머 병행이 더 좋은 결과를 낼 수 있습니다. 상담 시 <strong>처짐 유형에 맞는 맞춤 플랜</strong>을 제안해 드립니다.</p>
+
+<h3>Q. 울쎄라피프라임 시술이 아픈가요?</h3>
+<p>마취 크림을 충분히 도포한 후 시술해 통증이 크게 줄어듭니다. 에너지가 집중되는 순간 찌릿한 느낌이 있을 수 있으나 대부분 무리 없이 마치십니다.</p>
+
+<h3>Q. 부천 피부과 대신 한의원에서 울쎄라를 받아도 되나요?</h3>
+<p>한의원에서도 적법하게 시술받으실 수 있습니다. 로아한의원은 <strong>상동 피부과 시술</strong>과 동일한 정품 울쎄라피프라임 장비를 사용하며, 한의학적 체질 상담을 더해 더욱 세심한 케어를 제공합니다.</p>
+
+<h3>Q. 신중동역·상동 근처에서 당일 예약이 가능한가요?</h3>
+<p>당일 예약도 가능합니다. 네이버 예약 또는 전화로 빈 시간을 확인하신 후 방문해 주세요. <strong>상동역 3번 출구 도보 1분</strong> 거리로 부천시청역·신중동·부평 어디서든 편리하게 오실 수 있습니다.</p>
+
+<h3>Q. 울쎄라 시술 당일 세안·화장이 가능한가요?</h3>
+<p>시술 당일 저녁부터 부드러운 세안이 가능하며, 다음 날부터 일반 화장도 가능합니다. 자극적인 필링·레티놀 제품은 1주일 정도 피해주세요.</p>
+        `,
+    },
+
+    onda: {
+        category: '리프팅 · 탄력',
+        name: '온다리프팅',
+        titleSeo: '부천 온다리프팅 바디온다 | 마이크로파 리프팅',
+        canonicalPath: '/부천-온다리프팅',
+        metaDesc: '상동역 로아한의원의 온다리프팅·바디온다. 부천·신중동·부평 인근에서 온다 리프팅을 합리적인 가격으로. 당일 예약 가능.',
+        keywords: '부천온다리프팅, 부천 온다, 부천 바디온다, 상동 온다리프팅, 상동역 온다리프팅, 온다리프팅 부천, 바디온다 부천, 신중동역 온다리프팅, 부천시청역 온다리프팅, 부평 온다리프팅, 부천 피부과 온다, 상동 피부과 온다리프팅',
+        subtitle: '마이크로파 에너지로 지방층까지 공략하는 리프팅',
+        desc: '마이크로파(Microwave) 에너지를 이용해 피부 깊은 층 지방과 근막에 직접 작용, 얼굴 윤곽과 처짐을 동시에 개선하는 리프팅 시술입니다.',
+        img: 'images/program-onda.png',
+        prices: [
+            { name: '온다리프팅 6만줄', amount: '220,000' },
+            { name: '온다리프팅 8만줄', amount: '300,000' },
+            { name: '온다리프팅 10만줄', amount: '370,000' },
+            { name: '온다리프팅 12만줄', amount: '450,000' },
+            { name: '온다리프팅 16만줄', amount: '550,000' },
+            { name: '6만줄 1년 무제한', amount: '1,990,000' },
+        ],
+        priceNote: '* 첫 체험 시 적용 · VAT 별도 · 정확한 가격은 상담 후 확정',
+        pointsTitle: '온다리프팅의 특징',
+        points: [
+            { icon: '🎯', title: '지방층 직접 공략', desc: '마이크로파가 피부 지방층까지 침투해 볼살·이중턱 등 윤곽 개선에 탁월' },
+            { icon: '❄️', title: '쿨링 동시 진행', desc: '시술 중 피부 표면을 냉각해 통증·열감을 최소화하며 안전하게 진행' },
+            { icon: '⚡', title: '즉각적인 탄력 개선', desc: '시술 직후부터 피부 당김·탄력 개선 효과를 느낄 수 있으며 지속적으로 향상' },
+        ],
+        targets: [
+            '볼살·이중턱이 처져 윤곽이 흐려진 분',
+            '지방층이 두꺼워 울쎄라 단독으로 효과가 부족하셨던 분',
+            '리프팅과 지방 감소를 동시에 원하시는 분',
+            '시술 다운타임을 최소화하고 싶은 분',
+            '1년 무제한으로 꾸준히 관리하고 싶은 분',
+        ],
+        steps: [
+            { title: '상담 및 피부 분석', desc: '볼살·이중턱 두께와 처짐 정도를 확인 후 적합한 줄 수와 부위를 결정합니다.' },
+            { title: '클렌징 및 쿨링젤 도포', desc: '시술 부위를 세정하고 마이크로파 전도를 위한 전용 젤을 바릅니다.' },
+            { title: '온다리프팅 시술', desc: '핸드피스를 피부에 밀착해 마이크로파 에너지를 조사합니다. 소요 시간 약 30~50분.' },
+            { title: '진정 케어', desc: '쿨링 및 진정 처치로 피부 온도를 낮추고 안정시킵니다.' },
+            { title: '일상 복귀', desc: '특별한 회복 기간 없이 당일 바로 일상생활이 가능합니다.' },
+        ],
+        ctaTitle: '부천 온다리프팅 상담 예약하세요',
+        seo: `
+<h2>부천 온다리프팅이란?</h2>
+<p>온다리프팅(ONDA)은 <strong>마이크로파(Microwave) 에너지</strong>를 이용한 리프팅 시술입니다. 기존 HIFU나 고주파와 달리 마이크로파는 <strong>피부 지방층에 선택적으로 작용</strong>해 볼살·이중턱 등 부위별 윤곽 개선에 탁월합니다. 로아한의원 부천은 <strong>상동역 3번 출구 도보 1분</strong> 거리에 위치해 부천·신중동·부평 어디서든 편리하게 방문하실 수 있습니다.</p>
+
+<h2>온다리프팅 효과 — 무엇이 달라지나요?</h2>
+<p><strong>부천 온다리프팅</strong>은 단순한 피부 탄력 개선을 넘어 지방층 부피 감소와 근막 수축을 동시에 가져옵니다. 시술 직후부터 가벼운 당김과 탄력 변화를 느끼실 수 있으며, <strong>2~4주 후</strong>부터 윤곽 개선이 본격적으로 나타납니다. 효과는 개인차가 있으나 보통 <strong>6개월 이상</strong> 지속됩니다.</p>
+
+<h3>온다리프팅 vs 울쎄라 — 어떤 차이가 있나요?</h3>
+<p>울쎄라가 <strong>SMAS 근막층</strong>에 집중해 전체적인 리프팅에 강점이 있다면, 온다리프팅은 <strong>지방층 공략</strong>에 특화되어 볼살·이중턱·턱선 개선에 더 효과적입니다. 두 시술을 병행하는 <strong>온쎄라(온다+울쎄라)</strong>로 리프팅과 윤곽을 동시에 잡을 수도 있습니다.</p>
+
+<h2>온다리프팅 줄 수 선택 가이드</h2>
+<p>온다리프팅은 줄 수에 따라 시술 범위와 효과가 달라집니다. <strong>6만줄</strong>은 얼굴 전체 기본 범위에 적합하며, <strong>10만줄 이상</strong>은 턱선·이중턱까지 포함한 광범위 시술에 권장됩니다. 처음 받으시는 분께는 상담 후 피부 상태에 맞는 줄 수를 추천해 드립니다.</p>
+<p>꾸준한 관리를 원하신다면 <strong>6만줄 1년 무제한 패키지(1,990,000원)</strong>를 통해 정기적으로 유지하시는 것도 좋은 방법입니다.</p>
+
+<h2>온다리프팅 시술 후 주의사항</h2>
+<p>시술 직후 약간의 붓기·붉음·열감이 나타날 수 있으나 대부분 1~2일 내 회복됩니다. <strong>1주일간 음주·사우나·격렬한 운동</strong>은 삼가시고, 자외선 차단제를 꼭 발라주세요. 당일 일상생활이 가능하며 세안·화장도 다음 날부터 가능합니다.</p>
+
+<h2>상동역 로아한의원 온다리프팅 — 이렇게 다릅니다</h2>
+<p>로아한의원 부천은 온다리프팅 리프팅 집중진료 한의원으로, 풍부한 임상 경험을 바탕으로 1:1 맞춤 상담 후 시술합니다. <strong>상동역·부천시청역·신중동역</strong> 인근은 물론 <strong>소사·오정·부평</strong> 지역에서도 <strong>부천 온다리프팅</strong>을 위해 많은 분들이 방문하고 계십니다.</p>
+<p><strong>부천 피부과</strong>에서 많이 받는 온다리프팅을 로아한의원에서는 한의학적 체질 상담과 함께 제공해 더욱 세심한 케어를 받으실 수 있습니다.</p>
+
+<h2>자주 묻는 질문 (FAQ)</h2>
+
+<h3>Q. 부천 온다리프팅 가격이 얼마인가요?</h3>
+<p>로아한의원 부천의 온다리프팅은 <strong>6만줄 220,000원(첫 체험가 · VAT 별도)</strong>부터 시작합니다. 줄 수에 따라 가격이 달라지며, 꾸준한 관리를 원하시면 6만줄 1년 무제한 패키지(1,990,000원)도 운영합니다.</p>
+
+<h3>Q. 온다리프팅 효과가 없다는 후기도 있던데 사실인가요?</h3>
+<p>줄 수가 부족하거나 피부 상태에 맞지 않는 설정으로 시술한 경우 효과가 미미할 수 있습니다. 로아한의원은 <strong>개인 지방층 두께·처짐 정도를 분석</strong>해 최적의 줄 수와 부위를 설정합니다.</p>
+
+<h3>Q. 온다리프팅 한 번으로 효과가 나타나나요?</h3>
+<p><strong>1회 시술 후 2~4주 내</strong>에 윤곽 변화를 느끼실 수 있습니다. 더 뚜렷한 효과를 위해 2~3회 연속 시술 또는 1년 무제한 패키지를 통한 꾸준한 관리를 권장합니다.</p>
+
+<h3>Q. 상동·부천에서 온다리프팅 당일 예약이 가능한가요?</h3>
+<p>당일 예약도 가능합니다. 네이버 예약 또는 전화로 빈 시간을 확인 후 방문해 주세요. <strong>상동역 3번 출구 도보 1분</strong> 거리로 신중동·부천시청역·부평 어디서든 편리하게 오실 수 있습니다.</p>
+
+<h3>Q. 부천 피부과 대신 한의원에서 온다리프팅 받아도 되나요?</h3>
+<p>한의원에서도 적법하게 시술받으실 수 있습니다. 로아한의원은 <strong>상동 피부과</strong>와 동일한 정품 온다 장비를 사용하며, 체질 맞춤 상담으로 더욱 세심한 케어를 제공합니다.</p>
+
+<h3>Q. 온다리프팅 시술이 아픈가요?</h3>
+<p>쿨링 시스템이 함께 작동해 열감과 통증을 줄여줍니다. 마이크로파 에너지가 집중되는 순간 따뜻한 느낌이 있을 수 있으나 대부분 무리 없이 마치십니다.</p>
+        `,
+    },
+
+    volnumer: {
+        category: '리프팅 · 탄력',
+        name: '볼뉴머',
+        titleSeo: '부천 볼뉴머 | 써마지 올리지오 덴서티 고주파 RF 리프팅',
+        canonicalPath: '/부천-볼뉴머',
+        metaDesc: '상동역 로아한의원 볼뉴머. 부천에서 써마지·올리지오·덴서티 대신 볼뉴머 RF 리프팅을 합리적인 가격으로. 당일 예약 가능.',
+        keywords: '부천 볼뉴머, 상동 볼뉴머, 상동역 볼뉴머, 신중동역 볼뉴머, 부천시청역 볼뉴머, 부평 볼뉴머, 볼뉴머 부천, 부천 고주파 리프팅, 부천 써마지, 부천 올리지오, 부천 덴서티, 써마지 부천, 올리지오 부천, 덴서티 부천, 부천 피부과 볼뉴머, 상동 피부과 볼뉴머, 부천 RF리프팅',
+        subtitle: '고주파(RF) 에너지로 콜라겐 재생 & 피부 탄력 개선',
+        desc: '고주파(RF) 에너지를 진피층 깊이 전달해 콜라겐 재생을 촉진하고 피부 탄력을 끌어올리는 리프팅 시술입니다.',
+        img: 'images/program-volnumer.png',
+        prices: [
+            { name: '볼뉴머 330샷', amount: '320,000' },
+            { name: '100샷 추가 시', amount: '+ 90,000' },
+        ],
+        priceNote: '* 첫 체험 시 적용 · VAT 별도 · 정확한 가격은 상담 후 확정',
+        pointsTitle: '볼뉴머의 특징',
+        points: [
+            { icon: '⚡', title: '고주파 진피층 자극', desc: 'RF 에너지가 진피층 깊이 침투해 콜라겐·엘라스틴 생성 촉진' },
+            { icon: '🌡️', title: '균일한 열 전달', desc: '넓은 면적에 균일하게 열에너지를 전달해 고른 탄력 개선 효과' },
+            { icon: '✨', title: '다운타임 최소화', desc: '시술 직후 일상생활 가능, 피부 결·톤 개선 효과 동반' },
+        ],
+        targets: [
+            '피부 탄력이 떨어지고 처짐이 느껴지는 분',
+            '피부 결·모공 개선을 함께 원하시는 분',
+            '다운타임 없이 꾸준히 관리하고 싶은 분',
+            '울쎄라·온다와 병행해 복합 리프팅을 원하시는 분',
+        ],
+        steps: [
+            { title: '상담 및 피부 분석', desc: '피부 탄력과 처짐 정도를 확인 후 샷 수와 시술 부위를 결정합니다.' },
+            { title: '클렌징 및 전도 젤 도포', desc: '시술 부위를 세정 후 RF 에너지 전달을 위한 젤을 바릅니다.' },
+            { title: '볼뉴머 시술', desc: '핸드피스로 고주파 에너지를 전달합니다. 소요 시간 약 30~40분.' },
+            { title: '진정 케어 후 일상 복귀', desc: '마무리 진정 처치 후 바로 일상생활이 가능합니다.' },
+        ],
+        ctaTitle: '부천 볼뉴머 상담 예약하세요',
+        seo: `
+<h2>부천 볼뉴머란?</h2>
+<p>볼뉴머(Volnumer)는 <strong>고주파(RF) 에너지</strong>를 진피층에 전달해 콜라겐·엘라스틴 생성을 촉진하는 리프팅 시술입니다. <strong>써마지·올리지오·덴서티</strong>와 같은 RF 리프팅 계열 시술로, <strong>부천 피부과</strong>에서도 많이 받는 대표적인 RF 리프팅입니다. 로아한의원 부천 <strong>상동역 3번 출구 도보 1분</strong> 거리에서 받으실 수 있습니다.</p>
+<p><strong>부천 볼뉴머</strong>는 피부 탄력·모공·피부결 개선에 효과적이며, 써마지·올리지오·덴서티와 유사한 RF 에너지 방식으로 진피층을 자극합니다. 신중동역·부천시청역·부평역 등 부천 전 지역에서 방문하실 수 있습니다.</p>
+
+<h2>볼뉴머 효과 및 지속 기간</h2>
+<p>시술 직후부터 피부 당김·탄력 변화를 느끼실 수 있으며, <strong>1~2개월 후</strong> 콜라겐 재생이 본격화되면서 효과가 더욱 뚜렷해집니다. 효과는 보통 <strong>6개월 내외</strong> 지속되며 정기적 시술로 유지 관리하시는 것을 권장합니다.</p>
+
+<h2>볼뉴머 vs 써마지·올리지오·덴서티</h2>
+<p>써마지·올리지오·덴서티는 모두 <strong>RF(고주파) 에너지</strong>를 이용해 피부 탄력을 개선하는 시술 계열입니다. 볼뉴머도 동일한 RF 원리로 진피층에 열 자극을 주어 콜라겐 생성을 촉진합니다. 부천에서 <strong>써마지·올리지오·덴서티</strong>를 찾고 계신다면, 볼뉴머를 통해 합리적인 가격으로 유사한 RF 리프팅 효과를 경험하실 수 있습니다.</p>
+
+<h2>자주 묻는 질문 (FAQ)</h2>
+<h3>Q. 부천 볼뉴머 가격이 얼마인가요?</h3>
+<p>로아한의원 부천의 볼뉴머는 <strong>330샷 320,000원(첫 체험가 · VAT 별도)</strong>이며, 100샷 추가 시 90,000원이 추가됩니다.</p>
+
+<h3>Q. 써마지·올리지오·덴서티와 볼뉴머의 차이가 뭔가요?</h3>
+<p>써마지·올리지오·덴서티는 모두 고주파(RF) 기반 리프팅 장비 브랜드입니다. 볼뉴머도 동일한 RF 원리로 작동하며, 부천에서 <strong>써마지나 올리지오, 덴서티</strong>를 찾으시는 분께 볼뉴머가 합리적인 대안이 될 수 있습니다. 정확한 비교는 상담 시 설명 드립니다.</p>
+
+<h3>Q. 부천에서 써마지 받으려고 했는데 볼뉴머로 대체 가능한가요?</h3>
+<p>써마지와 볼뉴머는 모두 RF(고주파) 에너지로 진피층을 자극하는 리프팅 시술입니다. <strong>부천 상동역 로아한의원</strong>에서 볼뉴머로 유사한 효과를 합리적인 가격으로 받으실 수 있습니다. 상담 후 비교 설명해 드립니다.</p>
+
+<h3>Q. 볼뉴머 시술이 아픈가요?</h3>
+<p>고주파 에너지가 전달되는 동안 따뜻한 열감이 느껴지는 정도입니다. 써마지·올리지오처럼 국소 통증이 있을 수 있으나 대부분 불편함 없이 마치십니다.</p>
+
+<h3>Q. 볼뉴머 한 번으로 효과가 나타나나요?</h3>
+<p>1회 시술 후 1~2개월 내 콜라겐 재생으로 탄력 변화를 느끼실 수 있습니다. 더 뚜렷한 효과를 위해 2~3회 이상 시술을 권장합니다.</p>
+
+<h3>Q. 볼뉴머 효과가 얼마나 지속되나요?</h3>
+<p>개인 피부 상태와 생활 습관에 따라 다르지만 보통 <strong>6개월 내외</strong> 지속됩니다. 3~6개월 간격으로 정기 시술하시면 효과를 유지할 수 있습니다.</p>
+
+<h3>Q. 볼뉴머 시술 후 다운타임이 있나요?</h3>
+<p>시술 직후 약간의 붉음·열감이 있을 수 있으나 대부분 수 시간 내 가라앉습니다. 당일 일상생활이 가능하고 세안·화장도 다음 날부터 가능합니다.</p>
+
+<h3>Q. 볼뉴머와 울쎄라를 같이 받아도 되나요?</h3>
+<p>네, 볼뉴머(RF)와 울쎄라(HIFU)는 서로 다른 에너지 방식이라 병행 시술이 가능합니다. <strong>볼쎄라(볼뉴머+울쎄라)</strong> 복합 패키지로 받으시면 더 큰 시너지 효과를 얻을 수 있습니다.</p>
+
+<h3>Q. 올리지오·덴서티와 볼뉴머 중 어떤 걸 받는 게 좋나요?</h3>
+<p>올리지오·덴서티·볼뉴머는 모두 RF 계열로 피부 탄력 개선에 효과적입니다. 개인 피부 상태와 목표에 따라 달라지므로 <strong>부천 상동역 로아한의원</strong>에서 무료 상담 후 결정하시는 것을 권장합니다.</p>
+
+<h3>Q. 볼뉴머 부천 어디서 받을 수 있나요?</h3>
+<p>로아한의원 부천 <strong>상동역 3번 출구 도보 1분</strong>에서 받으실 수 있습니다. 부천시청역·신중동역·부평역에서도 가깝습니다.</p>
+
+<h3>Q. 부천 피부과 볼뉴머와 한의원 볼뉴머의 차이는 뭔가요?</h3>
+<p>동일한 장비와 기술로 시술하며 효과는 동일합니다. 로아한의원은 <strong>한의학 체질 상담</strong>을 함께 진행해 피부 상태에 맞는 추가 케어를 제공합니다.</p>
+
+<h3>Q. 상동역 근처에서 당일 예약이 가능한가요?</h3>
+<p>당일 예약도 가능합니다. <strong>상동역 3번 출구 도보 1분</strong> 거리로 부천시청역·신중동·부평 어디서든 편리하게 오실 수 있습니다.</p>
+        `,
+    },
+
+    'eye-volnumer': {
+        category: '리프팅 · 탄력',
+        name: '아이볼뉴머',
+        titleSeo: '부천 아이볼뉴머 | 눈가 고주파 리프팅',
+        canonicalPath: '/부천-아이볼뉴머',
+        metaDesc: '상동역 로아한의원 아이볼뉴머. 부천·신중동·부평에서 눈가 전용 고주파 리프팅을 합리적인 가격으로. 당일 예약 가능.',
+        keywords: '부천 아이볼뉴머, 상동 아이볼뉴머, 부천 눈가리프팅, 부천 눈가탄력, 상동역 아이볼뉴머, 부천시청역 아이볼뉴머, 부천 피부과 눈가리프팅',
+        subtitle: '눈가 전용 고주파로 눈가 처짐·잔주름 집중 개선',
+        desc: '눈가 전용 고주파(RF) 핸드피스로 눈밑·눈가 처짐과 잔주름을 집중 개선하는 시술입니다.',
+        img: 'images/program-eye-volnumer.png',
+        prices: [
+            { name: '아이볼뉴머 200샷', amount: '300,000' },
+        ],
+        priceNote: '* VAT 별도 · 정확한 가격은 상담 후 확정',
+        pointsTitle: '아이볼뉴머의 특징',
+        points: [
+            { icon: '👁️', title: '눈가 전용 설계', desc: '얇고 예민한 눈가 피부에 최적화된 전용 핸드피스 사용' },
+            { icon: '✨', title: '눈밑·눈가 처짐 개선', desc: '눈가 콜라겐 재생을 촉진해 처짐과 잔주름을 동시에 개선' },
+            { icon: '🌿', title: '안전한 저자극', desc: '눈가 피부에 맞춘 낮은 에너지로 안전하게 시술' },
+        ],
+        targets: [
+            '눈가·눈밑 처짐이 고민인 분',
+            '눈가 잔주름이 신경 쓰이는 분',
+            '눈 주변 피부 탄력이 떨어진 분',
+        ],
+        steps: [
+            { title: '상담 및 눈가 상태 확인', desc: '눈가 처짐·주름 정도를 확인하고 시술 계획을 세웁니다.' },
+            { title: '클렌징 및 전도 젤 도포', desc: '눈가 부위를 세정 후 전용 젤을 바릅니다.' },
+            { title: '아이볼뉴머 시술', desc: '눈가 전용 핸드피스로 고주파 에너지를 전달합니다. 소요 시간 약 20~30분.' },
+            { title: '진정 케어 후 일상 복귀', desc: '마무리 진정 후 바로 일상생활이 가능합니다.' },
+        ],
+        ctaTitle: '부천 아이볼뉴머 상담 예약하세요',
+        seo: `
+<h2>부천 아이볼뉴머란?</h2>
+<p>아이볼뉴머는 <strong>눈가 전용 고주파(RF)</strong> 시술로, 얇고 예민한 눈가 피부에 최적화된 핸드피스를 사용해 눈밑 처짐·잔주름을 집중 개선합니다. <strong>부천 상동역 3번 출구 도보 1분</strong> 거리 로아한의원에서 받으실 수 있습니다.</p>
+<p>눈가는 일반 RF 핸드피스로 시술하기 어려운 예민한 부위입니다. <strong>부천 아이볼뉴머</strong>는 눈가 전용으로 설계된 낮은 에너지 핸드피스를 사용해 안전하고 효과적으로 눈가 노화를 관리합니다.</p>
+
+<h2>자주 묻는 질문 (FAQ)</h2>
+<h3>Q. 부천 아이볼뉴머 가격이 얼마인가요?</h3>
+<p>로아한의원 부천의 아이볼뉴머는 <strong>200샷 300,000원(VAT 별도)</strong>입니다.</p>
+
+<h3>Q. 아이볼뉴머는 눈가 어느 부위에 시술하나요?</h3>
+<p>눈밑·눈가 측면·미간·눈꺼풀 아래 등 <strong>눈 주변 전체</strong>에 시술이 가능합니다. 상담 시 처짐이 심한 부위를 집중 관리합니다.</p>
+
+<h3>Q. 눈가 시술이라 안전한가요?</h3>
+<p>눈가 전용으로 설계된 낮은 에너지의 핸드피스를 사용하며, 충분한 상담 후 진행합니다. 안구에 직접 닿지 않아 안전합니다.</p>
+
+<h3>Q. 아이볼뉴머 효과가 얼마나 지속되나요?</h3>
+<p>개인 피부 상태에 따라 다르지만 보통 <strong>4~6개월</strong> 지속됩니다. 주기적인 관리로 효과를 유지하실 수 있습니다.</p>
+
+<h3>Q. 아이볼뉴머 시술 후 눈이 붓지 않나요?</h3>
+<p>시술 후 약간의 열감·붉음이 있을 수 있으나 대부분 수 시간 내 가라앉습니다. 심한 붓기는 드뭅니다.</p>
+
+<h3>Q. 아이볼뉴머와 울쎄라 눈가 시술의 차이가 뭔가요?</h3>
+<p>울쎄라는 HIFU(초음파) 방식, 아이볼뉴머는 RF(고주파) 방식으로 에너지가 다릅니다. RF는 넓은 면적에 균일한 열을 전달하는 반면, HIFU는 특정 층에 집중 에너지를 전달합니다. 상담 시 비교 설명 드립니다.</p>
+
+<h3>Q. 아이볼뉴머로 눈 밑 지방도 개선되나요?</h3>
+<p>RF 에너지는 주로 탄력·주름 개선에 효과적이며, 눈 밑 지방 자체를 제거하지는 않습니다. 탄력 개선으로 처짐이 완화되는 효과는 있습니다.</p>
+
+<h3>Q. 볼뉴머와 아이볼뉴머를 같이 받을 수 있나요?</h3>
+<p>네, 같은 날 볼뉴머(전체 얼굴)와 아이볼뉴머(눈가 집중)를 함께 받으시는 분도 많습니다. 상담 시 조합을 추천해 드립니다.</p>
+
+<h3>Q. 아이볼뉴머 몇 회 받아야 하나요?</h3>
+<p>보통 <strong>3~5회</strong> 이상 받으시면 효과가 누적되어 더욱 뚜렷해집니다. 1~2개월 간격으로 꾸준히 관리하시는 것을 권장합니다.</p>
+
+<h3>Q. 상동·신중동·부평에서 방문할 수 있나요?</h3>
+<p><strong>상동역 3번 출구 도보 1분</strong> 거리로 부천시청역·신중동역·부평역 어디서든 편리하게 오실 수 있습니다.</p>
+
+<h3>Q. 당일 예약이 가능한가요?</h3>
+<p>당일 예약도 가능합니다. 네이버 예약 또는 전화로 빈 시간을 확인 후 방문해 주세요.</p>
+        `,
+    },
+
+    onsera: {
+        category: '리프팅 · 탄력',
+        name: '온쎄라',
+        titleSeo: '부천 온쎄라 온다 울쎄라 | 복합 리프팅',
+        canonicalPath: '/부천-온쎄라',
+        metaDesc: '상동역 로아한의원 온쎄라(온다+울쎄라 복합). 부천·신중동·부평에서 복합 리프팅을 합리적인 가격으로. 당일 예약 가능.',
+        keywords: '부천 온쎄라, 상동 온쎄라, 온쎄라 부천, 부천 복합리프팅, 온다 울쎄라 부천, 상동역 온쎄라, 부천시청역 온쎄라, 부천 피부과 복합리프팅',
+        subtitle: '온다리프팅 + 울쎄라피프라임 동시 효과',
+        desc: '온다리프팅(마이크로파)과 울쎄라피프라임(HIFU)을 결합한 복합 리프팅으로, 지방층부터 근막층까지 전층 리프팅이 가능합니다.',
+        img: 'images/program-onsera.png',
+        prices: [
+            { name: '온다 6만줄 + 울쎄라 300샷', amount: '750,000' },
+        ],
+        priceNote: '* VAT 별도 · 정확한 가격은 상담 후 확정',
+        pointsTitle: '온쎄라의 특징',
+        points: [
+            { icon: '⚡', title: '전층 동시 리프팅', desc: '온다로 지방층, 울쎄라로 SMAS 근막층을 동시에 자극해 극대화된 리프팅 효과' },
+            { icon: '🔥', title: '시너지 효과', desc: '두 에너지의 시너지로 단일 시술 대비 훨씬 뚜렷한 윤곽·탄력 개선' },
+            { icon: '💰', title: '합리적인 복합 가격', desc: '개별 시술보다 훨씬 합리적인 가격으로 두 가지 효과를 동시에' },
+        ],
+        targets: [
+            '리프팅 효과를 극대화하고 싶은 분',
+            '볼살 처짐과 전체적인 처짐을 동시에 개선하고 싶은 분',
+            '한 번 시술로 오래가는 효과를 원하시는 분',
+        ],
+        steps: [
+            { title: '상담 및 피부 분석', desc: '처짐·지방 분포를 분석해 온다·울쎄라 각 설정을 결정합니다.' },
+            { title: '온다리프팅 시술', desc: '마이크로파로 지방층·근막을 먼저 자극합니다.' },
+            { title: '울쎄라피프라임 시술', desc: 'HIFU로 SMAS층을 집중 리프팅합니다.' },
+            { title: '진정 케어 후 일상 복귀', desc: '마무리 진정 후 당일 일상생활이 가능합니다.' },
+        ],
+        ctaTitle: '부천 온쎄라 복합 리프팅 예약하세요',
+        seo: `
+<h2>부천 온쎄라란?</h2>
+<p>온쎄라는 <strong>온다리프팅(마이크로파) + 울쎄라피프라임(HIFU)</strong>을 결합한 복합 리프팅 시술입니다. 온다로 지방층을 공략하고 울쎄라로 SMAS 근막층을 리프팅해 <strong>전층 동시 개선</strong>이 가능합니다. 로아한의원 부천 <strong>상동역 3번 출구 도보 1분</strong>에서 받으실 수 있습니다.</p>
+<p><strong>부천 온쎄라</strong>는 온다(지방·윤곽)와 울쎄라(근막·탄력)의 장점을 한 번에 가져가는 복합 프로그램입니다. 신중동역·부천시청역·부평역 인근 분들도 편리하게 방문하실 수 있습니다.</p>
+
+<h2>자주 묻는 질문 (FAQ)</h2>
+<h3>Q. 부천 온쎄라 가격이 얼마인가요?</h3>
+<p>온다 6만줄 + 울쎄라피프라임 300샷 복합 시술 <strong>750,000원(VAT 별도)</strong>입니다.</p>
+
+<h3>Q. 온다와 울쎄라를 따로 받는 것과 차이가 있나요?</h3>
+<p>같은 날 두 시술을 연속으로 진행하면 각 에너지가 시너지를 일으켜 단독 시술 대비 더 뚜렷한 효과를 얻을 수 있습니다. 또한 개별 시술보다 가격이 합리적입니다.</p>
+
+<h3>Q. 온쎄라 시술 시간이 얼마나 걸리나요?</h3>
+<p>온다 + 울쎄라 순서로 진행하며 총 <strong>60~90분</strong> 내외 소요됩니다. 피부 상태와 시술 범위에 따라 달라질 수 있습니다.</p>
+
+<h3>Q. 온쎄라 효과가 얼마나 지속되나요?</h3>
+<p>개인 피부 상태에 따라 다르지만 보통 <strong>6개월~1년</strong> 지속됩니다. 온다와 울쎄라의 시너지로 단독 시술보다 더 오래 효과가 유지되는 편입니다.</p>
+
+<h3>Q. 온쎄라 시술 후 붓기가 심한가요?</h3>
+<p>온다와 울쎄라 각각의 반응이 나타날 수 있습니다. 약간의 붓기·붉음·열감이 있을 수 있으나 보통 <strong>2~3일</strong> 내에 가라앉습니다.</p>
+
+<h3>Q. 온쎄라가 볼쎄라(볼뉴머+울쎄라)와 다른 점은 뭔가요?</h3>
+<p>온쎄라는 <strong>온다(마이크로파)+울쎄라(HIFU)</strong>의 조합으로 지방층 공략에 강점이 있고, 볼쎄라는 <strong>볼뉴머(RF)+울쎄라(HIFU)</strong>의 조합으로 진피 탄력·리프팅을 동시에 개선합니다. 볼살이 많거나 윤곽 개선이 목표라면 온쎄라, 처짐과 탄력 개선이 목표라면 볼쎄라를 권장합니다.</p>
+
+<h3>Q. 처음 리프팅 시술을 받는데 온쎄라가 적합한가요?</h3>
+<p>복합 시술이라 처음에는 부담스러울 수 있습니다. 상담을 통해 피부 상태를 확인한 후, 단독 시술로 시작할지 복합 시술로 바로 진행할지 결정하는 것을 권장합니다.</p>
+
+<h3>Q. 온쎄라 울쎄라 샷 수는 어떻게 정하나요?</h3>
+<p>울쎄라 300샷은 얼굴 전체 기본 범위에 해당합니다. 시술 부위나 강도에 따라 샷 수 조정이 가능하며 상담 시 결정합니다.</p>
+
+<h3>Q. 당일 예약이 가능한가요?</h3>
+<p>당일 예약도 가능합니다. <strong>상동역 3번 출구 도보 1분</strong>에서 네이버 예약 또는 전화로 빈 시간을 확인 후 방문해 주세요.</p>
+
+<h3>Q. 부천시청역·신중동역 근처에서도 방문할 수 있나요?</h3>
+<p><strong>상동역 3번 출구 도보 1분</strong> 거리에 위치해 부천시청역·신중동역·부평역 어디서든 10분 내외로 오실 수 있습니다.</p>
+        `,
+    },
+
+    volsera: {
+        category: '리프팅 · 탄력',
+        name: '볼쎄라',
+        titleSeo: '부천 볼쎄라 볼뉴머 울쎄라 | 복합 리프팅',
+        canonicalPath: '/부천-볼쎄라',
+        metaDesc: '상동역 로아한의원 볼쎄라(볼뉴머+울쎄라 복합). 부천·신중동·부평에서 복합 리프팅을 합리적인 가격으로.',
+        keywords: '부천 볼쎄라, 상동 볼쎄라, 볼쎄라 부천, 부천 복합리프팅, 볼뉴머 울쎄라 부천, 상동역 볼쎄라, 부천시청역 볼쎄라',
+        subtitle: '볼뉴머(고주파) + 울쎄라피프라임(HIFU) 복합 리프팅',
+        desc: '볼뉴머(RF 고주파)와 울쎄라피프라임(HIFU)을 결합해 진피 탄력 개선과 SMAS 리프팅을 동시에 실현하는 복합 시술입니다.',
+        img: 'images/program-volsera.png',
+        prices: [
+            { name: '볼뉴머 300샷 + 울쎄라 300샷', amount: '880,000' },
+        ],
+        priceNote: '* VAT 별도 · 정확한 가격은 상담 후 확정',
+        pointsTitle: '볼쎄라의 특징',
+        points: [
+            { icon: '⚡', title: 'RF + HIFU 이중 효과', desc: '고주파로 진피 탄력, 초음파로 근막 리프팅을 동시에' },
+            { icon: '🌟', title: '넓은 범위 균일 개선', desc: '볼뉴머의 넓은 열 전달 + 울쎄라의 정밀 리프팅으로 고른 개선' },
+            { icon: '💰', title: '합리적인 복합 가격', desc: '개별 시술보다 합리적인 가격으로 두 가지 효과를 한 번에' },
+        ],
+        targets: [
+            '피부 탄력과 전체적인 처짐을 동시에 개선하고 싶은 분',
+            '피부결·탄력 + 리프팅 효과를 함께 원하시는 분',
+        ],
+        steps: [
+            { title: '상담 및 피부 분석', desc: '탄력·처짐 정도에 따라 각 에너지 설정을 결정합니다.' },
+            { title: '볼뉴머 시술', desc: 'RF 에너지로 진피층 콜라겐 재생을 먼저 자극합니다.' },
+            { title: '울쎄라피프라임 시술', desc: 'HIFU로 SMAS층을 리프팅합니다.' },
+            { title: '진정 케어 후 일상 복귀', desc: '당일 일상생활이 가능합니다.' },
+        ],
+        ctaTitle: '부천 볼쎄라 복합 리프팅 예약하세요',
+        seo: `
+<h2>부천 볼쎄라란?</h2>
+<p>볼쎄라는 <strong>볼뉴머(RF 고주파) + 울쎄라피프라임(HIFU)</strong>을 결합한 복합 리프팅입니다. RF로 진피층 탄력을 높이고 HIFU로 SMAS 근막을 리프팅해 <strong>피부결·탄력·리프팅을 한 번에</strong> 개선합니다. 로아한의원 부천 <strong>상동역 3번 출구 도보 1분</strong>에서 받으실 수 있습니다.</p>
+
+<h2>자주 묻는 질문 (FAQ)</h2>
+<h3>Q. 부천 볼쎄라 가격이 얼마인가요?</h3>
+<p>볼뉴머 300샷 + 울쎄라피프라임 300샷 복합 시술 <strong>880,000원(VAT 별도)</strong>입니다.</p>
+
+<h3>Q. 볼쎄라와 온쎄라의 차이가 뭔가요?</h3>
+<p>볼쎄라는 <strong>볼뉴머(RF)+울쎄라(HIFU)</strong> 조합으로 진피 탄력과 리프팅을 동시에 개선합니다. 온쎄라는 <strong>온다(마이크로파)+울쎄라(HIFU)</strong> 조합으로 지방층 윤곽 개선에 더 강점이 있습니다. 상담 시 비교 설명해 드립니다.</p>
+
+<h3>Q. 볼쎄라 시술 시간이 얼마나 걸리나요?</h3>
+<p>볼뉴머와 울쎄라 순서로 진행하며 총 <strong>60~90분</strong> 소요됩니다.</p>
+
+<h3>Q. 볼쎄라 효과가 얼마나 지속되나요?</h3>
+<p>보통 <strong>6개월~1년</strong> 지속되며, RF와 HIFU의 시너지로 단독 시술보다 더 오래 효과가 유지되는 경향이 있습니다.</p>
+
+<h3>Q. 볼쎄라 시술이 아픈가요?</h3>
+<p>볼뉴머는 따뜻한 열감, 울쎄라는 시술 부위에 따라 따끔한 느낌이 있을 수 있습니다. 마취 크림을 충분히 도포한 후 진행합니다.</p>
+
+<h3>Q. 볼쎄라 시술 후 붓기가 있나요?</h3>
+<p>약간의 붓기·붉음이 있을 수 있으나 보통 <strong>1~3일</strong> 내에 가라앉습니다.</p>
+
+<h3>Q. 볼쎄라로 어떤 부위를 개선할 수 있나요?</h3>
+<p>볼살 처짐, 팔자주름, 턱선, 이마, 눈가 등 얼굴 전체 리프팅이 가능합니다. 상담 시 집중 부위를 설계합니다.</p>
+
+<h3>Q. 써마지(올리지오)와 울쎄라를 같이 받는 것과 볼쎄라가 같은 건가요?</h3>
+<p>써마지·올리지오는 RF 계열이고 볼뉴머도 RF 방식입니다. 볼쎄라는 볼뉴머(RF)+울쎄라(HIFU) 조합으로, 써마지+울쎄라 복합 시술과 유사한 효과를 합리적인 가격으로 받을 수 있습니다.</p>
+
+<h3>Q. 처음 복합 리프팅을 받는데 볼쎄라가 괜찮을까요?</h3>
+<p>상담을 통해 피부 상태와 목표를 확인한 후 결정합니다. 처음이시라면 단독 시술부터 시작하시거나 볼쎄라로 두 효과를 한 번에 경험하시는 것도 좋습니다.</p>
+
+<h3>Q. 상동역 근처에서 당일 예약이 가능한가요?</h3>
+<p>당일 예약도 가능합니다. <strong>상동역 3번 출구 도보 1분</strong> 거리로 부천시청역·신중동·부평 어디서든 편리하게 오실 수 있습니다.</p>
+        `,
+    },
+
+    'oneday-silift': {
+        category: '실리프팅',
+        name: '원데이실리프팅',
+        titleSeo: '부천 실리프팅 V라인 | 원데이실리프팅',
+        canonicalPath: '/부천-원데이실리프팅',
+        metaDesc: '상동역 로아한의원 실리프팅. 부천에서 V라인 실리프팅·원데이실리프팅을 합리적인 가격으로. 당일 예약 가능.',
+        keywords: '부천 실리프팅, 부천 원데이실리프팅, 부천 V라인 실리프팅, 부천 V라인 리프팅, 상동 실리프팅, 상동역 실리프팅, 신중동역 실리프팅, 부천시청역 실리프팅, 부평 실리프팅, 부천 피부과 실리프팅, 상동 피부과 실리프팅, 실리프팅 부천, 부천 실 리프팅',
+        subtitle: '수술 없이 당기는 프리미엄 실 리프팅 (팔자 볼륨실 최대 4줄 포함)',
+        desc: '특수 실을 피부 아래 삽입해 처진 피부를 물리적으로 끌어올리고, 콜라겐 생성을 자극해 탄력을 높이는 리프팅 시술입니다.',
+        img: 'images/program-oneday-silift.png',
+        prices: [
+            { name: '원데이실리프팅 16줄 (팔자 볼륨실 최대 4줄 포함)', amount: '720,000' },
+        ],
+        priceNote: '* VAT 별도 · 정확한 가격은 상담 후 확정',
+        pointsTitle: '원데이실리프팅의 특징',
+        points: [
+            { icon: '🧵', title: '즉각적인 리프팅', desc: '실 삽입 즉시 처진 피부가 올라가는 즉각적인 리프팅 효과' },
+            { icon: '🌿', title: '콜라겐 재생 촉진', desc: '실 주변으로 콜라겐이 생성되어 시술 후에도 지속적으로 탄력 개선' },
+            { icon: '✅', title: '팔자주름 동시 개선', desc: '팔자 볼륨실 최대 4줄 포함으로 팔자주름까지 한 번에' },
+        ],
+        targets: [
+            '수술 없이 즉각적인 리프팅 효과를 원하시는 분',
+            '팔자주름과 볼살 처짐을 동시에 개선하고 싶은 분',
+            '당일 시술 후 일상 복귀가 필요한 분',
+        ],
+        steps: [
+            { title: '상담 및 삽입 설계', desc: '처짐 부위와 정도에 따라 실의 방향·개수를 설계합니다.' },
+            { title: '마취 크림 도포', desc: '시술 부위에 마취 크림을 충분히 도포해 통증을 줄입니다.' },
+            { title: '실 삽입', desc: '특수 캐뉼라로 실을 정확한 위치에 삽입합니다. 소요 시간 약 30~40분.' },
+            { title: '마무리 및 주의사항 안내', desc: '시술 후 주의사항을 안내 후 일상 복귀가 가능합니다.' },
+        ],
+        ctaTitle: '부천 원데이실리프팅 상담 예약하세요',
+        seo: `
+<h2>부천 실리프팅이란?</h2>
+<p><strong>부천 실리프팅</strong>은 특수 실을 피부 아래 삽입해 처진 피부를 물리적으로 끌어올리는 리프팅 시술입니다. 시술 즉시 리프팅 효과가 나타나고, 이후 콜라겐 재생으로 탄력이 지속됩니다. 로아한의원 부천 <strong>상동역 3번 출구 도보 1분</strong>에서 받으실 수 있습니다.</p>
+<p><strong>부천 피부과 실리프팅</strong>과 동일한 수준의 시술을 합리적인 가격에 제공하며, 팔자 볼륨실 최대 4줄이 포함되어 팔자주름까지 한 번에 개선하는 <strong>V라인 실리프팅</strong>입니다.</p>
+
+<h2>부천 실리프팅 효과 — V라인이 가능한가요?</h2>
+<p>실리프팅은 처진 볼살을 끌어올리고 턱선을 정돈해 <strong>V라인 윤곽</strong>을 만드는 데 효과적입니다. 팔자주름과 볼살 처짐이 동시에 개선되어 한층 젊어 보이는 얼굴 라인을 완성할 수 있습니다.</p>
+
+<h2>자주 묻는 질문 (FAQ)</h2>
+<h3>Q. 부천 실리프팅 가격이 얼마인가요?</h3>
+<p>원데이실리프팅 16줄(팔자 볼륨실 최대 4줄 포함) <strong>720,000원(VAT 별도)</strong>입니다.</p>
+
+<h3>Q. 부천 실리프팅으로 V라인을 만들 수 있나요?</h3>
+<p>볼살 처짐을 끌어올리고 턱선을 정돈해 <strong>V라인 윤곽</strong>을 개선하는 데 효과적입니다. 개인 얼굴 구조에 따라 효과 차이가 있으며 상담 시 예상 결과를 설명해 드립니다.</p>
+
+<h3>Q. 실리프팅 효과는 얼마나 지속되나요?</h3>
+<p>실 종류와 개인 피부 상태에 따라 다르지만 일반적으로 <strong>1~2년</strong> 지속됩니다. 실이 흡수된 후에도 콜라겐 재생 효과가 남아 탄력을 유지합니다.</p>
+
+<h3>Q. 실리프팅과 울쎄라 중 어느 게 더 효과적인가요?</h3>
+<p>실리프팅은 <strong>즉각적이고 물리적인 리프팅</strong>에 강점이 있고, 울쎄라는 <strong>에너지 기반 근막층 리프팅</strong>에 강점이 있습니다. 처짐이 심하거나 즉각 효과가 필요한 경우 실리프팅, 자연스러운 탄력 개선을 원한다면 울쎄라를 권장합니다. 두 시술을 병행하는 분도 많습니다.</p>
+
+<h3>Q. 실리프팅 시술이 아픈가요?</h3>
+<p>마취 크림을 충분히 도포한 후 진행하므로 통증이 크지 않습니다. 실 삽입 시 약간의 이물감이 있을 수 있으나 대부분 시술을 잘 마치십니다.</p>
+
+<h3>Q. 실리프팅 후 붓기가 얼마나 지속되나요?</h3>
+<p>시술 후 <strong>2~5일</strong> 정도 약간의 붓기·멍이 생길 수 있습니다. 일주일 내로 가라앉으며, 이후 본격적인 리프팅 효과가 나타납니다.</p>
+
+<h3>Q. 실리프팅 시술 후 일상생활이 바로 가능한가요?</h3>
+<p>당일 가벼운 일상생활은 가능하나, 1주일 간은 격렬한 운동·사우나·얼굴 마사지를 피하시는 것을 권장합니다.</p>
+
+<h3>Q. 실리프팅 후 세안·화장은 언제 가능한가요?</h3>
+<p>시술 다음 날부터 가벼운 세안이 가능하며, 화장은 <strong>2~3일 후</strong>부터 가능합니다.</p>
+
+<h3>Q. 팔자 볼륨실이 포함된다는 게 무슨 의미인가요?</h3>
+<p>원데이실리프팅 16줄 안에 팔자주름 부위를 채우는 볼륨실 최대 4줄이 포함됩니다. 추가 비용 없이 팔자주름까지 함께 개선됩니다.</p>
+
+<h3>Q. 실리프팅은 몇 회 받아야 하나요?</h3>
+<p>1회 시술로도 뚜렷한 효과를 볼 수 있습니다. 효과가 유지되다가 실이 흡수되는 <strong>1~2년 후</strong> 재시술을 받으시는 분이 많습니다.</p>
+
+<h3>Q. 상동역 근처에서 당일 예약이 가능한가요?</h3>
+<p>당일 예약도 가능합니다. <strong>상동역 3번 출구 도보 1분</strong> 거리로 부천시청역·신중동·부평 어디서든 편리하게 오실 수 있습니다.</p>
+        `,
+    },
+
+    'nose-silift': {
+        category: '실리프팅',
+        name: '코실리프팅',
+        titleSeo: '부천 코실리프팅 하이코 코필러 미스코 | 비수술 코 리프팅',
+        canonicalPath: '/부천-코실리프팅',
+        metaDesc: '상동역 로아한의원 코실리프팅. 부천에서 하이코·비너스코·코필러·미스코 대신 코실리프팅으로 수술 없이 콧대·코끝을 올리세요. 당일 예약 가능.',
+        keywords: '부천 코실리프팅, 부천 코리프팅, 부천 하이코, 부천 비너스코, 부천 코필러, 부천 바비코, 부천 미쥬코, 부천 미스코, 부천 코프팅, 부천 코끝필러, 상동 코실리프팅, 상동역 코실리프팅, 신중동역 코실리프팅, 부천 비수술코성형, 부천 피부과 코실리프팅',
+        subtitle: '수술 없이 콧대·코끝을 올리는 실 리프팅',
+        desc: '특수 실을 코에 삽입해 수술 없이 콧대를 높이고 코끝을 정돈하는 비수술 코 리프팅 시술입니다.',
+        img: 'images/program-nose-silift.png',
+        prices: [
+            { name: '코실리프팅 6줄', amount: '350,000' },
+            { name: '코실리프팅 10줄', amount: '490,000' },
+            { name: '코실리프팅 무제한', amount: '580,000' },
+        ],
+        priceNote: '* VAT 별도 · 정확한 가격은 상담 후 확정',
+        pointsTitle: '코실리프팅의 특징',
+        points: [
+            { icon: '👃', title: '비수술 코 교정', desc: '절개·보형물 없이 콧대를 높이고 코끝을 올려 자연스러운 코 라인 완성' },
+            { icon: '⚡', title: '즉각적인 효과', desc: '시술 직후 바로 코 모양 변화 확인 가능, 당일 일상 복귀' },
+            { icon: '🔄', title: '교정 및 재시술 가능', desc: '실이 흡수된 후 재시술 가능, 원하는 모양에 따라 조정 가능' },
+        ],
+        targets: [
+            '낮은 콧대나 뭉툭한 코끝이 고민인 분',
+            '수술 없이 자연스럽게 코를 교정하고 싶은 분',
+            '코 성형 전 미리 체험해보고 싶은 분',
+        ],
+        steps: [
+            { title: '상담 및 코 형태 분석', desc: '원하는 코 모양과 현재 상태를 분석해 실의 개수·방향을 설계합니다.' },
+            { title: '마취 크림 도포', desc: '코 부위에 마취 크림을 도포해 통증을 줄입니다.' },
+            { title: '코실리프팅 시술', desc: '특수 캐뉼라로 실을 정확하게 삽입합니다. 소요 시간 약 20~30분.' },
+            { title: '마무리 및 주의사항 안내', desc: '시술 후 당일 일상생활이 가능합니다.' },
+        ],
+        ctaTitle: '부천 코실리프팅 상담 예약하세요',
+        seo: `
+<h2>부천 코실리프팅이란?</h2>
+<p>코실리프팅은 <strong>특수 실을 코에 삽입</strong>해 수술 없이 콧대를 높이고 코끝을 정돈하는 비수술 코 교정 시술입니다. <strong>하이코·비너스코·코필러·바비코·미쥬코·미스코·코프팅</strong> 등 코 시술을 찾고 계신다면, 부천 상동역 로아한의원 코실리프팅으로 수술 없이 자연스러운 코 라인을 완성하세요.</p>
+<p>로아한의원 부천 <strong>상동역 3번 출구 도보 1분</strong>에서 부천·신중동·부평 지역 분들이 방문하고 계십니다.</p>
+
+<h2>코실리프팅 vs 하이코·비너스코·코필러·미스코</h2>
+<p>하이코·비너스코·코끝필러·바비코·미쥬코·미스코·코프팅은 모두 비수술 방식으로 코를 교정하는 시술 계열입니다. <strong>부천 코실리프팅</strong>도 절개·보형물 없이 실을 삽입해 콧대를 높이고 코끝을 정돈합니다. 코필러처럼 볼륨을 채우는 방식과 실리프팅은 차이가 있으며, 상담 시 비교 설명해 드립니다.</p>
+
+<h2>자주 묻는 질문 (FAQ)</h2>
+<h3>Q. 부천 코실리프팅 가격이 얼마인가요?</h3>
+<p>6줄 350,000원, 10줄 490,000원, 무제한 580,000원(모두 VAT 별도)입니다.</p>
+
+<h3>Q. 하이코·비너스코·미스코와 코실리프팅의 차이가 뭔가요?</h3>
+<p>하이코·비너스코·미스코·코프팅은 실 삽입 방식으로 코실리프팅과 유사한 계열입니다. 코필러·바비코·미쥬코는 필러(히알루론산) 주입 방식으로 볼륨을 채웁니다. <strong>부천 코실리프팅</strong>은 실 삽입으로 콧대를 물리적으로 올리는 방식입니다. 상담 시 상세히 비교해 드립니다.</p>
+
+<h3>Q. 부천에서 하이코·비너스코 받으려 했는데 코실리프팅으로 가능한가요?</h3>
+<p>코실리프팅은 하이코·비너스코·코프팅과 유사한 실 삽입 방식입니다. 로아한의원 부천 <strong>상동역 3번 출구 도보 1분</strong>에서 상담 후 코 교정 방향을 결정할 수 있습니다.</p>
+
+<h3>Q. 코실리프팅 효과는 얼마나 지속되나요?</h3>
+<p>실 종류에 따라 다르지만 보통 <strong>6개월~1년</strong> 지속됩니다. 실이 흡수된 후 재시술로 효과를 유지할 수 있습니다.</p>
+
+<h3>Q. 코실리프팅으로 콧대만 올릴 수 있나요, 코끝도 되나요?</h3>
+<p>콧대(콧등)를 높이는 시술과 코끝을 올리는 시술 모두 가능합니다. 상담 시 원하는 코 모양을 말씀해 주시면 설계해 드립니다.</p>
+
+<h3>Q. 코실리프팅이 아픈가요?</h3>
+<p>마취 크림을 충분히 도포한 후 진행합니다. 실 삽입 시 약간의 이물감이 있을 수 있으나 통증은 크지 않습니다.</p>
+
+<h3>Q. 코실리프팅 후 붓기가 얼마나 가나요?</h3>
+<p>시술 직후 약간의 붓기·붉음이 있을 수 있으며 보통 <strong>2~5일</strong> 내에 가라앉습니다.</p>
+
+<h3>Q. 코필러와 코실리프팅 중 어느 게 더 자연스러운가요?</h3>
+<p>코필러는 볼륨 채우기, 코실리프팅은 실로 올리기 방식입니다. 원하는 결과와 코 상태에 따라 다르며 상담 시 비교 설명해 드립니다. 두 시술을 병행하는 경우도 있습니다.</p>
+
+<h3>Q. 코실리프팅 몇 줄이 필요한지 어떻게 아나요?</h3>
+<p>코 높이·코끝 각도·원하는 정도에 따라 달라집니다. 상담 시 코 모양을 확인해 적정 줄 수를 추천해 드립니다. 무제한 패키지(580,000원)로 최대한 교정하실 수도 있습니다.</p>
+
+<h3>Q. 코실리프팅 당일 예약이 가능한가요?</h3>
+<p>당일 예약도 가능합니다. <strong>상동역 3번 출구 도보 1분</strong> 거리로 부천시청역·신중동·부평 어디서든 편리하게 오실 수 있습니다.</p>
+        `,
+    },
+
+    nasolabial: {
+        category: '실리프팅',
+        name: '팔자볼륨실',
+        titleSeo: '부천 팔자볼륨실 잼버실 | 팔자주름 볼륨 실리프팅',
+        canonicalPath: '/부천-팔자볼륨실',
+        metaDesc: '상동역 로아한의원 팔자볼륨실·잼버실. 부천에서 팔자주름 개선 볼륨 실 리프팅. 당일 예약 가능.',
+        keywords: '부천 팔자볼륨실, 부천 잼버실, 부천 팔자주름, 상동 팔자볼륨실, 부천 팔자주름 실리프팅, 부천 팔자주름 리프팅, 잼버실 부천, 상동역 팔자볼륨실, 신중동역 팔자볼륨실, 부천시청역 팔자볼륨실, 부천 피부과 팔자주름',
+        subtitle: '팔자주름 개선 볼륨 실 리프팅',
+        desc: '팔자주름 부위에 볼륨실을 삽입해 주름을 채우고 처진 볼살을 끌어올리는 시술입니다.',
+        img: 'images/program-nasolabial.png',
+        prices: [
+            { name: '팔자볼륨실 1줄', amount: '100,000' },
+        ],
+        priceNote: '* VAT 별도 · 필요한 줄 수는 상담 후 결정',
+        pointsTitle: '팔자볼륨실의 특징',
+        points: [
+            { icon: '✨', title: '팔자주름 즉각 개선', desc: '볼륨실 삽입으로 팔자주름을 채우고 볼살 처짐을 동시에 개선' },
+            { icon: '🌿', title: '자연스러운 볼륨감', desc: '필러와 달리 실이 주름을 자연스럽게 채워 과한 볼륨감 없이 개선' },
+            { icon: '⚡', title: '당일 시술·당일 복귀', desc: '시술 후 당일 일상생활 가능' },
+        ],
+        targets: [
+            '팔자주름이 깊어 고민인 분',
+            '볼살 처짐으로 입가 주름이 생긴 분',
+            '필러 없이 자연스럽게 팔자주름을 개선하고 싶은 분',
+        ],
+        steps: [
+            { title: '상담 및 주름 분석', desc: '팔자주름 깊이와 범위를 확인해 필요한 줄 수를 결정합니다.' },
+            { title: '마취 크림 도포', desc: '시술 부위에 마취 크림을 도포합니다.' },
+            { title: '볼륨실 삽입', desc: '팔자주름 라인을 따라 볼륨실을 삽입합니다. 소요 시간 약 20분.' },
+            { title: '마무리 후 일상 복귀', desc: '당일 일상생활이 가능합니다.' },
+        ],
+        ctaTitle: '부천 팔자볼륨실 상담 예약하세요',
+        seo: `
+<h2>부천 팔자볼륨실(잼버실)이란?</h2>
+<p>팔자볼륨실은 <strong>잼버실</strong>이라고도 불리며, <strong>팔자주름 부위에 볼륨실을 삽입</strong>해 주름을 채우고 볼살 처짐을 개선하는 시술입니다. 수술 없이 팔자주름을 즉각적으로 개선할 수 있어 <strong>부천 팔자주름 실리프팅</strong>을 찾으시는 분께 적합합니다. 로아한의원 부천 <strong>상동역 3번 출구 도보 1분</strong>에서 받으실 수 있습니다.</p>
+<p><strong>부천 잼버실·팔자볼륨실</strong>로 팔자주름을 자연스럽게 개선하세요.</p>
+
+<h2>자주 묻는 질문 (FAQ)</h2>
+<h3>Q. 부천 팔자볼륨실 가격이 얼마인가요?</h3>
+<p><strong>1줄 100,000원(VAT 별도)</strong>이며, 필요한 줄 수는 상담 후 결정합니다.</p>
+
+<h3>Q. 팔자볼륨실과 필러의 차이가 뭔가요?</h3>
+<p>필러는 히알루론산을 주입해 볼륨을 채우는 방식이고, 볼륨실은 실로 주름을 채우며 동시에 처진 살을 끌어올리는 효과가 있습니다. 더 자연스러운 결과를 원하시는 분께 적합합니다.</p>
+
+<h3>Q. 팔자주름이 심한데 몇 줄이 필요한가요?</h3>
+<p>팔자주름 깊이와 범위에 따라 다르지만 보통 <strong>양쪽 2~4줄</strong>을 삽입합니다. 상담 시 주름 상태를 확인하고 적정 줄 수를 안내해 드립니다.</p>
+
+<h3>Q. 팔자볼륨실 효과가 얼마나 지속되나요?</h3>
+<p>실 종류에 따라 다르지만 보통 <strong>6개월~1년</strong> 지속됩니다. 실이 흡수된 후에도 콜라겐 생성 효과가 일부 남습니다.</p>
+
+<h3>Q. 팔자볼륨실 시술 후 바로 일상생활이 가능한가요?</h3>
+<p>당일 가벼운 일상생활은 가능합니다. 1주일 간 격렬한 운동·사우나·얼굴 마사지는 피하시는 것을 권장합니다.</p>
+
+<h3>Q. 팔자볼륨실과 원데이실리프팅을 같이 받을 수 있나요?</h3>
+<p>원데이실리프팅에 팔자 볼륨실 최대 4줄이 포함되어 있어 함께 받으실 수 있습니다. 볼살 처짐과 팔자주름을 동시에 개선하고 싶다면 원데이실리프팅을 추천합니다.</p>
+
+<h3>Q. 팔자볼륨실이 아픈가요?</h3>
+<p>마취 크림을 도포한 후 진행하므로 통증이 크지 않습니다. 실 삽입 시 약간의 이물감이 있을 수 있습니다.</p>
+
+<h3>Q. 팔자볼륨실로 팔자주름이 완전히 없어지나요?</h3>
+<p>팔자주름을 완전히 제거하기보다 깊이와 선명도를 개선하는 효과입니다. 처음 시술 후 상태를 확인하며 줄 수를 조정할 수 있습니다.</p>
+
+<h3>Q. 당일 예약이 가능한가요?</h3>
+<p>당일 예약도 가능합니다. <strong>상동역 3번 출구 도보 1분</strong> 거리로 부천시청역·신중동·부평 어디서든 편리하게 오실 수 있습니다.</p>
+        `,
+    },
+
+    'slim-shot': {
+        category: '윤곽 · 지방제거',
+        name: '슬림샷',
+        titleSeo: '부천 슬림샷 윤곽주사 지방분해주사 DCA | 얼굴 지방 분해',
+        canonicalPath: '/부천-슬림샷',
+        metaDesc: '상동역 로아한의원 슬림샷. 부천에서 윤곽주사·DCA주사·지방분해주사로 이중턱·볼살 제거. 당일 예약 가능.',
+        keywords: '부천 슬림샷, 상동 슬림샷, 부천 윤곽주사, 부천 지방분해주사, 부천 DCA주사, 부천 이중턱주사, 부천 이중턱제거, 윤곽주사 부천, DCA주사 부천, 지방분해주사 부천, 상동역 슬림샷, 신중동역 슬림샷, 부천시청역 슬림샷, 부천 피부과 슬림샷, 부천 피부과 윤곽주사',
+        subtitle: '얼굴 부위별 지방 분해로 선명한 윤곽 완성',
+        desc: '지방 분해 성분을 직접 주입해 이중턱·볼살·턱선 등 얼굴 부위별 지방을 감소시키는 시술입니다.',
+        img: 'images/program-slim-shot.png',
+        prices: [
+            { name: '슬림샷 1부위 1회', amount: '90,000' },
+            { name: '슬림샷 1부위 3회', amount: '200,000' },
+        ],
+        priceNote: '* VAT 별도 · 정확한 부위·횟수는 상담 후 확정',
+        pointsTitle: '슬림샷의 특징',
+        points: [
+            { icon: '💉', title: '부위별 정밀 지방 분해', desc: '이중턱·볼살·턱선 등 원하는 부위에만 정밀하게 주입' },
+            { icon: '⚡', title: '빠른 시술·즉각 복귀', desc: '시술 시간 약 10~20분, 당일 일상생활 가능' },
+            { icon: '📉', title: '반복 시술로 효과 극대화', desc: '3회 이상 반복 시술 시 더욱 뚜렷한 윤곽 개선' },
+        ],
+        targets: [
+            '이중턱·볼살이 고민인 분',
+            '선명한 V라인·턱선을 원하는 분',
+            '다이어트해도 얼굴 살이 빠지지 않는 분',
+        ],
+        steps: [
+            { title: '상담 및 부위 결정', desc: '지방 분포를 확인해 주입 부위와 횟수를 결정합니다.' },
+            { title: '마취 크림 도포', desc: '시술 부위에 마취 크림을 도포합니다.' },
+            { title: '슬림샷 주입', desc: '지방 분해 성분을 목표 부위에 주입합니다. 소요 시간 약 10~20분.' },
+            { title: '주의사항 안내 후 일상 복귀', desc: '당일 일상생활이 가능합니다.' },
+        ],
+        ctaTitle: '부천 슬림샷 상담 예약하세요',
+        seo: `
+<h2>부천 슬림샷이란?</h2>
+<p>슬림샷은 <strong>지방 분해 성분을 직접 주입</strong>해 이중턱·볼살 등 원하는 부위의 지방을 감소시키는 시술입니다. <strong>윤곽주사·DCA주사·지방분해주사</strong>라고도 불리며, <strong>부천 피부과</strong>에서도 많이 받는 대표적인 얼굴 윤곽 개선 시술입니다. 로아한의원 부천 <strong>상동역 3번 출구 도보 1분</strong>에서 받으실 수 있습니다.</p>
+<p><strong>부천 윤곽주사·DCA주사·지방분해주사</strong>를 찾고 계신다면 상동역 로아한의원에서 슬림샷으로 이중턱·볼살을 효과적으로 개선하세요.</p>
+
+<h2>슬림샷(윤곽주사·DCA주사) 효과</h2>
+<p>슬림샷(지방분해주사)은 <strong>이중턱·볼살·턱선</strong> 부위에 직접 주입해 지방 세포를 분해합니다. 시술 후 2~4주 간격으로 반복하면 효과가 누적되어 뚜렷한 윤곽 개선을 볼 수 있습니다.</p>
+
+<h2>자주 묻는 질문 (FAQ)</h2>
+<h3>Q. 부천 슬림샷(윤곽주사) 가격이 얼마인가요?</h3>
+<p>1부위 1회 90,000원, 3회 200,000원(VAT 별도)입니다.</p>
+
+<h3>Q. 슬림샷·윤곽주사·DCA주사가 다 같은 건가요?</h3>
+<p>모두 지방 분해 성분을 주입해 국소 지방을 감소시키는 같은 계열의 시술입니다. DCA(데옥시콜산)는 대표적인 지방 분해 성분 중 하나이며, 슬림샷·윤곽주사는 이러한 지방분해주사를 부르는 다양한 이름입니다.</p>
+
+<h3>Q. 슬림샷 몇 회 받아야 효과가 나나요?</h3>
+<p>보통 <strong>3회 이상</strong> 받으시면 뚜렷한 효과를 볼 수 있으며, 2~4주 간격으로 시술을 권장합니다.</p>
+
+<h3>Q. 슬림샷(지방분해주사)으로 이중턱이 없어지나요?</h3>
+<p>이중턱 지방을 직접 분해해 턱선이 선명해지는 효과가 있습니다. 지방량과 개인 체질에 따라 효과 차이가 있으며 꾸준한 시술로 개선됩니다.</p>
+
+<h3>Q. 슬림샷 시술이 아픈가요?</h3>
+<p>주사 시 따끔한 느낌이 있을 수 있습니다. 마취 크림을 도포한 후 진행해 통증을 줄입니다.</p>
+
+<h3>Q. 슬림샷 후 붓기가 있나요?</h3>
+<p>시술 후 1~3일간 약간의 붓기·부종이 있을 수 있습니다. 지방이 분해되는 과정에서 나타나는 정상 반응이며 자연스럽게 가라앉습니다.</p>
+
+<h3>Q. 슬림샷과 온다리프팅을 같이 받아도 되나요?</h3>
+<p>슬림샷(지방분해주사)과 온다리프팅(마이크로파)은 모두 지방층에 작용하는 시술입니다. 상담 시 병행 여부를 결정하며, 함께 받으시면 더 뚜렷한 윤곽 개선 효과를 볼 수 있습니다.</p>
+
+<h3>Q. 부천에서 윤곽주사 받으려면 어디로 가야 하나요?</h3>
+<p>로아한의원 부천 <strong>상동역 3번 출구 도보 1분</strong>에서 윤곽주사(슬림샷·지방분해주사)를 받으실 수 있습니다. 부천시청역·신중동역·부평역에서도 가깝습니다.</p>
+
+<h3>Q. 슬림샷 당일 예약이 가능한가요?</h3>
+<p>당일 예약도 가능합니다. 네이버 예약 또는 전화로 빈 시간을 확인 후 방문해 주세요.</p>
+
+<h3>Q. 부천 피부과 윤곽주사와 한의원 슬림샷의 차이가 있나요?</h3>
+<p>사용하는 지방분해 성분과 주입 방식은 유사합니다. 로아한의원은 <strong>한의학 체질 상담</strong>을 병행해 개인 상태에 맞는 맞춤 케어를 제공합니다.</p>
+        `,
+    },
+
+    'body-slim': {
+        category: '윤곽 · 지방제거',
+        name: '바디슬림샷',
+        titleSeo: '부천 바디슬림샷 지방분해주사 | 복부 허벅지 지방 분해',
+        canonicalPath: '/부천-바디슬림샷',
+        metaDesc: '상동역 로아한의원 바디슬림샷. 부천에서 복부·허벅지 지방분해주사로 체형 개선. 당일 예약 가능.',
+        keywords: '부천 바디슬림샷, 상동 바디슬림샷, 부천 지방분해주사, 부천 복부지방분해, 부천 허벅지지방분해, 부천 체형관리, 상동역 바디슬림샷, 부천 피부과 지방분해주사, 부천 한의원 지방분해',
+        subtitle: '복부·허벅지 등 바디 부위별 지방 분해',
+        desc: '복부·허벅지·팔뚝 등 신체 부위별 지방에 직접 분해 성분을 주입해 국소 지방을 감소시키는 시술입니다.',
+        img: 'images/program-body-slim.png',
+        prices: [
+            { name: '바디슬림샷 1부위 1회', amount: '150,000' },
+            { name: '바디슬림샷 1부위 3회', amount: '360,000' },
+        ],
+        priceNote: '* VAT 별도 · 정확한 부위·횟수는 상담 후 확정',
+        pointsTitle: '바디슬림샷의 특징',
+        points: [
+            { icon: '💪', title: '바디 부위별 지방 분해', desc: '복부·허벅지·팔뚝 등 원하는 부위 지방을 집중 분해' },
+            { icon: '⚡', title: '비수술 지방 감소', desc: '수술 없이 국소 지방 감소 효과, 당일 일상 복귀' },
+            { icon: '📉', title: '반복 시술로 효과 증대', desc: '3회 패키지로 더욱 효과적인 지방 감소' },
+        ],
+        targets: [
+            '다이어트로도 빠지지 않는 부위 살이 고민인 분',
+            '복부·허벅지 등 국소 지방을 줄이고 싶은 분',
+            '수술 없이 체형을 개선하고 싶은 분',
+        ],
+        steps: [
+            { title: '상담 및 부위 결정', desc: '지방 분포를 확인해 주입 부위와 횟수를 결정합니다.' },
+            { title: '마취 크림 도포', desc: '시술 부위에 마취 크림을 도포합니다.' },
+            { title: '바디슬림샷 주입', desc: '지방 분해 성분을 목표 부위에 주입합니다.' },
+            { title: '주의사항 안내 후 일상 복귀', desc: '당일 일상생활이 가능합니다.' },
+        ],
+        ctaTitle: '부천 바디슬림샷 상담 예약하세요',
+        seo: `
+<h2>부천 바디슬림샷이란?</h2>
+<p>바디슬림샷은 <strong>복부·허벅지·팔뚝 등 신체 부위에 지방 분해 성분을 직접 주입</strong>해 국소 지방을 감소시키는 시술입니다. 로아한의원 부천 <strong>상동역 3번 출구 도보 1분</strong>에서 받으실 수 있습니다.</p>
+
+<h2>자주 묻는 질문 (FAQ)</h2>
+<h3>Q. 부천 바디슬림샷 가격이 얼마인가요?</h3>
+<p>1부위 1회 150,000원, 3회 360,000원(VAT 별도)입니다.</p>
+
+<h3>Q. 슬림샷과 바디슬림샷의 차이가 뭔가요?</h3>
+<p>슬림샷은 얼굴 부위(이중턱·볼살), 바디슬림샷은 신체 부위(복부·허벅지·팔뚝 등)에 사용합니다. 주입 성분 농도와 양이 다르게 조절됩니다.</p>
+
+<h3>Q. 바디슬림샷으로 어느 부위가 가능한가요?</h3>
+<p>복부, 허벅지, 팔뚝, 허리, 엉덩이 등 지방이 축적된 신체 부위 대부분에 가능합니다. 상담 시 원하는 부위를 말씀해 주세요.</p>
+
+<h3>Q. 바디슬림샷 몇 회 받아야 효과가 나나요?</h3>
+<p>보통 <strong>3~5회</strong> 이상 받으시면 뚜렷한 효과를 볼 수 있으며, 2~4주 간격으로 시술을 권장합니다.</p>
+
+<h3>Q. 바디슬림샷 후 붓기가 있나요?</h3>
+<p>시술 후 2~5일간 약간의 붓기·부종·열감이 있을 수 있습니다. 지방 분해 과정에서 나타나는 정상 반응이며 자연스럽게 가라앉습니다.</p>
+
+<h3>Q. 다이어트를 해도 빠지지 않는 부위 살에 효과가 있나요?</h3>
+<p>운동·식이요법으로 빠지지 않는 국소 지방(복부·허벅지 등)에 직접 지방분해 성분을 주입하므로 효과적입니다. 다이어트와 병행하시면 더욱 좋습니다.</p>
+
+<h3>Q. 바디슬림샷과 온다리프팅을 같이 받아도 되나요?</h3>
+<p>온다리프팅(마이크로파)도 바디 부위 지방층에 작용해 병행 시 더 뚜렷한 체형 개선이 가능합니다. 상담 시 조합을 추천해 드립니다.</p>
+
+<h3>Q. 당일 예약이 가능한가요?</h3>
+<p>당일 예약도 가능합니다. <strong>상동역 3번 출구 도보 1분</strong> 거리로 부천시청역·신중동·부평 어디서든 편리하게 오실 수 있습니다.</p>
+        `,
+    },
+
+    'slim-nose': {
+        category: '윤곽 · 지방제거',
+        name: '슬림코약침',
+        titleSeo: '부천 슬림코약침 코지방 코슬리밍 | 비수술 코 슬리밍 약침',
+        canonicalPath: '/부천-슬림코약침',
+        metaDesc: '상동역 로아한의원 슬림코약침. 부천에서 비수술로 코 지방·코볼·낮은코를 슬리밍하는 한방 약침 시술. VAT별도 1회 8만원.',
+        keywords: '부천 슬림코약침, 상동 슬림코약침, 부천 코슬리밍, 부천 코지방, 부천 코지방분해, 코슬림약침, 부천 코약침, 부천 코볼, 부천 비수술코, 상동역 슬림코약침, 신중동역 슬림코약침, 부천시청역 슬림코약침, 부천 한의원 코슬리밍',
+        subtitle: '비수술로 코 지방을 줄이는 한방 약침',
+        desc: '한약 성분 약침을 코 부위에 주입해 코 지방·코볼을 감소시키는 비수술 시술입니다.',
+        img: 'images/program-slim-nose.png',
+        prices: [
+            { name: '슬림코약침 1회', amount: '80,000' },
+            { name: '슬림코약침 3회', amount: '160,000' },
+        ],
+        priceNote: '* VAT 별도',
+        pointsTitle: '슬림코약침의 특징',
+        points: [
+            { icon: '💉', title: '비수술 코 슬리밍', desc: '수술 없이 코 지방을 줄여 코 라인을 정리' },
+            { icon: '🌿', title: '한약 성분 약침', desc: '한방 지방분해 성분으로 코볼·코 지방을 점진적으로 감소' },
+            { icon: '⏱️', title: '빠른 시술·즉각 복귀', desc: '시술 시간 약 10분, 당일 일상생활 가능' },
+        ],
+        indications: [
+            '코가 퍼지거나 코볼이 넓은 분',
+            '코에 지방이 많아 코 라인이 뭉툭한 분',
+            '수술 없이 코를 정리하고 싶은 분',
+            '코 필러나 코 수술이 부담스러운 분',
+        ],
+        steps: [
+            { title: '상담 및 코 상태 확인', desc: '코 지방 분포와 목표 형태를 확인합니다.' },
+            { title: '마취 크림 도포', desc: '시술 부위에 마취 크림을 도포합니다.' },
+            { title: '약침 주입', desc: '한방 지방분해 약침을 코 부위에 정밀 주입합니다. 약 10분 소요.' },
+            { title: '시술 후 안내', desc: '주의사항 안내 후 당일 일상 복귀 가능합니다.' },
+        ],
+        ctaTitle: '부천 슬림코약침 상담 예약하세요',
+        seo: `
+<h2>부천 슬림코약침이란?</h2>
+<p>슬림코약침은 <strong>한방 지방분해 성분</strong>을 코 부위에 직접 주입해 코 지방·코볼을 줄이는 <strong>비수술 코 슬리밍</strong> 시술입니다. <strong>부천 한의원</strong>에서 수술 없이 코를 정리하고 싶은 분께 적합합니다. 로아한의원 부천 <strong>상동역 3번 출구 도보 1분</strong>에 위치해 있어 편리하게 방문하실 수 있습니다.</p>
+<p><strong>부천 코슬리밍·코지방분해</strong>를 원하신다면 로아한의원 상동역점에서 슬림코약침으로 자연스러운 코 라인을 완성하세요.</p>
+
+<h2>슬림코약침 효과</h2>
+<p>슬림코약침은 코볼·코 지방이 많아 코가 퍼져 보이는 분께 효과적입니다. 한방 지방분해 성분이 코 부위 지방 세포를 점진적으로 감소시켜 코 라인이 정리됩니다. 3회 이상 반복 시술 시 더욱 뚜렷한 효과를 볼 수 있습니다.</p>
+
+<h2>자주 묻는 질문 (FAQ)</h2>
+<h3>Q. 부천 슬림코약침 가격이 얼마인가요?</h3>
+<p>1회 80,000원, 3회 160,000원(VAT 별도)입니다.</p>
+
+<h3>Q. 슬림코약침이 코 필러와 다른 점은 무엇인가요?</h3>
+<p>코 필러는 볼륨을 채워 코 높이를 올리는 시술이고, 슬림코약침은 코 지방을 분해해 코볼·코 퍼짐을 줄이는 시술입니다. 목적이 다르므로 코 상태에 따라 적합한 시술이 다릅니다.</p>
+
+<h3>Q. 슬림코약침 몇 회 받으면 효과가 나나요?</h3>
+<p>개인차가 있으나 <strong>3회 이상</strong> 받으시면 코 라인 변화를 느끼실 수 있으며, 2~4주 간격 시술을 권장합니다.</p>
+
+<h3>Q. 시술이 아픈가요?</h3>
+<p>마취 크림 도포 후 진행하므로 통증이 최소화됩니다. 주사 시 약간의 따끔함이 있을 수 있습니다.</p>
+
+<h3>Q. 시술 후 붓기가 있나요?</h3>
+<p>약한 붓기가 1~2일 있을 수 있으나 대부분 일상생활에 지장 없이 빠르게 가라앉습니다.</p>
+
+<h3>Q. 코 수술이나 코 필러를 했는데 슬림코약침을 받을 수 있나요?</h3>
+<p>기존 시술 종류와 경과 기간에 따라 가능 여부가 다릅니다. 상담 시 말씀해 주시면 안전하게 안내해 드립니다.</p>
+
+<h3>Q. 효과가 얼마나 지속되나요?</h3>
+<p>분해된 지방 세포는 자연적으로 배출되므로 유지 기간이 비교적 길지만, 체중 변화에 따라 달라질 수 있어 유지 시술을 권장합니다.</p>
+
+<h3>Q. 코 지방이 아니라 코가 낮은 건데 슬림코약침이 도움이 되나요?</h3>
+<p>코가 낮은 경우엔 코실리프팅이나 코 필러가 더 적합합니다. 슬림코약침은 코 지방이 많아 코볼이 넓거나 코가 퍼져 보이는 분께 효과적입니다.</p>
+
+<h3>Q. 상동역에서 얼마나 걸리나요?</h3>
+<p><strong>상동역 3번 출구에서 도보 1분</strong> 거리입니다. 부천시청역·신중동역·부평역에서도 버스로 편리하게 오실 수 있습니다.</p>
+
+<h3>Q. 당일 예약이 가능한가요?</h3>
+<p>당일 예약도 가능합니다. 네이버 예약이나 전화로 문의해 주세요.</p>
+        `,
+    },
+
+    'volume-shot': {
+        category: '볼륨UP',
+        name: '볼륨샷',
+        titleSeo: '부천 볼륨샷 스컬트라 쥬베룩볼륨 | 콜라겐부스터 얼굴 볼륨',
+        canonicalPath: '/부천-볼륨샷',
+        metaDesc: '상동역 로아한의원 볼륨샷. 스컬트라·쥬베룩볼륨 계열 콜라겐부스터로 부천에서 얼굴 볼륨 개선. 필러와 다른 자연스러운 볼륨.',
+        keywords: '부천 볼륨샷, 부천 스컬트라, 부천 쥬베룩볼륨, 부천 콜라겐부스터, 상동 볼륨샷, 부천 얼굴볼륨, 상동역 볼륨샷, 신중동역 볼륨샷, 부천시청역 볼륨샷, 부천 피부과 볼륨샷, 스컬트라 부천, 쥬베룩볼륨 부천',
+        subtitle: '콜라겐 생성으로 만드는 자연스러운 입체 볼륨',
+        desc: '스컬트라·쥬베룩볼륨과 같은 콜라겐부스터 계열로 꺼진 볼·관자놀이·눈가 등 볼륨이 부족한 부위를 채워 젊고 생기있는 얼굴 라인을 완성하는 시술입니다. 필러가 아닌 콜라겐 생성 촉진 방식으로 자연스러운 볼륨을 만듭니다.',
+        img: 'images/program-volume-shot.png',
+        prices: [
+            { name: '볼륨샷 5cc 1회', amount: '450,000' },
+            { name: '볼륨샷 5cc 3회', amount: '1,150,000' },
+            { name: '볼륨샷 10cc 1회', amount: '650,000' },
+            { name: '볼륨샷 10cc 3회', amount: '1,650,000' },
+        ],
+        priceNote: '* VAT 별도 · 정확한 용량은 상담 후 확정',
+        pointsTitle: '볼륨샷의 특징',
+        points: [
+            { icon: '✨', title: '즉각적인 볼륨 개선', desc: '시술 직후 꺼진 부위가 채워지는 즉각적인 볼륨 효과' },
+            { icon: '🎯', title: '부위별 맞춤 주입', desc: '꺼진 볼·관자놀이·눈가 등 부위에 따라 정밀하게 주입' },
+            { icon: '🌿', title: '자연스러운 결과', desc: '얼굴 구조에 맞게 설계해 자연스러운 볼륨감 완성' },
+        ],
+        targets: [
+            '나이가 들며 볼·관자놀이가 꺼진 분',
+            '마른 편이라 얼굴이 홀쭉해 보이는 분',
+            '피부 탄력과 볼륨을 동시에 개선하고 싶은 분',
+        ],
+        steps: [
+            { title: '상담 및 볼륨 설계', desc: '꺼진 부위와 필요한 볼륨량을 분석해 주입 계획을 세웁니다.' },
+            { title: '마취 크림 도포', desc: '시술 부위에 마취 크림을 도포합니다.' },
+            { title: '볼륨샷 주입', desc: '설계에 따라 볼륨 성분을 정밀하게 주입합니다. 소요 시간 약 20~30분.' },
+            { title: '마무리 후 일상 복귀', desc: '시술 후 주의사항 안내 후 일상생활이 가능합니다.' },
+        ],
+        ctaTitle: '부천 볼륨샷 상담 예약하세요',
+        seo: `
+<h2>부천 볼륨샷(스컬트라·쥬베룩볼륨)이란?</h2>
+<p>볼륨샷은 <strong>스컬트라·쥬베룩볼륨과 같은 콜라겐부스터 계열 시술</strong>로, 꺼진 볼·관자놀이·눈가 등에 콜라겐 생성을 촉진해 자연스러운 입체 볼륨을 완성합니다. <strong>필러와 달리</strong> 이물질을 채우는 방식이 아니라 피부 자체의 콜라겐을 늘리는 방식이라 더 자연스럽고 점진적인 볼륨감을 만들어냅니다. 로아한의원 부천 <strong>상동역 3번 출구 도보 1분</strong>에서 받으실 수 있습니다.</p>
+
+<h2>자주 묻는 질문 (FAQ)</h2>
+<h3>Q. 부천 볼륨샷 가격이 얼마인가요?</h3>
+<p>5cc 1회 450,000원 / 3회 1,150,000원, 10cc 1회 650,000원 / 3회 1,650,000원(모두 VAT 별도)입니다.</p>
+
+<h3>Q. 볼륨샷이 필러와 다른 점이 뭔가요?</h3>
+<p>볼륨샷은 <strong>필러가 아닙니다.</strong> 필러는 히알루론산 등의 이물질을 직접 채워 즉각적인 볼륨을 만드는 방식이지만, 볼륨샷은 <strong>스컬트라·쥬베룩볼륨 계열의 콜라겐부스터</strong>로 피부 자체의 콜라겐 생성을 촉진해 자연스럽게 볼륨을 회복시킵니다. 결과가 더 자연스럽고 이물감이 없습니다.</p>
+
+<h3>Q. 스컬트라·쥬베룩볼륨과 어떻게 다른가요?</h3>
+<p>스컬트라·쥬베룩볼륨은 콜라겐부스터 계열의 대표 브랜드 제품명입니다. 로아한의원 볼륨샷도 동일한 콜라겐 생성 촉진 원리로 시술하며, 꺼진 볼·관자놀이 볼륨 회복에 효과적입니다.</p>
+
+<h3>Q. 볼륨샷 효과는 얼마나 지속되나요?</h3>
+<p>콜라겐 생성 방식이라 보통 <strong>1~2년</strong> 지속됩니다. 필러에 비해 유지 기간이 길고 자연스럽게 유지됩니다.</p>
+
+<h3>Q. 볼륨샷으로 어느 부위를 개선할 수 있나요?</h3>
+<p>꺼진 볼, 관자놀이, 눈가, 이마, 턱선 등 볼륨이 부족한 얼굴 전반에 시술이 가능합니다. 상담 시 원하는 부위를 말씀해 주시면 설계해 드립니다.</p>
+
+<h3>Q. 볼륨샷 몇 cc가 적합한가요?</h3>
+<p>얼굴 전체 기본 볼륨 개선은 5cc, 더 많은 부위나 뚜렷한 볼륨이 필요한 경우 10cc를 주입합니다. 상담 시 얼굴 상태를 보고 추천해 드립니다.</p>
+
+<h3>Q. 볼륨샷이 아픈가요?</h3>
+<p>마취 크림을 도포한 후 시술하므로 통증이 크지 않습니다. 주입 시 약간의 압박감이 있을 수 있습니다.</p>
+
+<h3>Q. 볼륨샷 후 붓기가 있나요?</h3>
+<p>시술 후 1~3일간 약간의 붓기가 있을 수 있으며 자연스럽게 가라앉습니다. 최종 결과는 붓기가 완전히 빠진 1~2주 후에 확인하실 수 있습니다.</p>
+
+<h3>Q. 볼륨샷 3회 패키지를 사면 얼마나 절약이 되나요?</h3>
+<p>5cc 기준 1회 450,000원 × 3 = 1,350,000원이지만 패키지는 1,150,000원으로 <strong>200,000원 절약</strong>됩니다. 10cc 기준은 3회 패키지(1,650,000원)로 300,000원 절약됩니다.</p>
+
+<h3>Q. 당일 예약이 가능한가요?</h3>
+<p>당일 예약도 가능합니다. <strong>상동역 3번 출구 도보 1분</strong> 거리로 부천시청역·신중동·부평 어디서든 편리하게 오실 수 있습니다.</p>
+        `,
+    },
+
+    radiusse: {
+        category: '스킨부스터',
+        name: '라디쥬',
+        titleSeo: '부천 라디쥬 | 스킨부스터 피부 재생',
+        canonicalPath: '/부천-라디쥬',
+        metaDesc: '상동역 로아한의원 라디쥬 스킨부스터. 부천·신중동·부평에서 피부 수분·탄력 개선. 당일 예약 가능.',
+        keywords: '부천 라디쥬, 상동 라디쥬, 부천 스킨부스터, 상동역 라디쥬, 신중동역 라디쥬, 부천 피부과 라디쥬, 부천 피부 수분',
+        subtitle: '피부 깊은 곳부터 수분·탄력·재생을 동시에',
+        desc: '라디쥬는 히알루론산 기반 스킨부스터로 피부 깊은 층에 수분을 공급하고 콜라겐 생성을 촉진해 탄력과 피부결을 개선합니다.',
+        img: 'images/program-radiusse.png',
+        prices: [
+            { name: '라디쥬 5cc 1회', amount: '220,000' },
+            { name: '라디쥬 5cc 3회', amount: '620,000' },
+        ],
+        priceNote: '* VAT 별도 · 정확한 용량은 상담 후 확정',
+        pointsTitle: '라디쥬의 특징',
+        points: [
+            { icon: '💧', title: '진피층 수분 공급', desc: '히알루론산이 피부 진피층에 직접 수분을 공급해 속건조·당김 개선' },
+            { icon: '✨', title: '탄력·피부결 개선', desc: '콜라겐 생성 촉진으로 탄력·모공·피부결을 종합적으로 개선' },
+            { icon: '🌿', title: '자연스러운 광채', desc: '인위적인 볼륨 없이 피부 본연의 수분광 살아남' },
+        ],
+        targets: [
+            '피부 속건조·당김이 심한 분',
+            '모공·피부결이 고민인 분',
+            '피부 탄력이 떨어지고 칙칙해진 분',
+        ],
+        steps: [
+            { title: '상담 및 피부 분석', desc: '피부 수분 상태와 탄력을 확인해 주입 부위를 결정합니다.' },
+            { title: '마취 크림 도포', desc: '시술 부위에 마취 크림을 도포합니다.' },
+            { title: '라디쥬 주입', desc: '미세 주사로 히알루론산을 균일하게 주입합니다. 소요 시간 약 20~30분.' },
+            { title: '마무리 후 일상 복귀', desc: '당일 일상생활이 가능합니다.' },
+        ],
+        ctaTitle: '부천 라디쥬 스킨부스터 예약하세요',
+        seo: `
+<h2>부천 라디쥬란?</h2>
+<p>라디쥬는 <strong>히알루론산 기반 스킨부스터</strong>로 피부 진피층에 수분을 직접 공급해 속건조·탄력·피부결을 개선합니다. 로아한의원 부천 <strong>상동역 3번 출구 도보 1분</strong>에서 받으실 수 있습니다.</p>
+
+<h2>자주 묻는 질문 (FAQ)</h2>
+<h3>Q. 부천 라디쥬 가격이 얼마인가요?</h3>
+<p>5cc 1회 220,000원, 3회 620,000원(VAT 별도)입니다.</p>
+
+<h3>Q. 라디쥬 효과는 언제 나타나나요?</h3>
+<p>시술 직후부터 피부 수분감이 개선되며, <strong>2~4주 후</strong> 콜라겐 재생과 함께 탄력·피부결 개선이 본격화됩니다.</p>
+
+<h3>Q. 라디쥬 효과가 얼마나 지속되나요?</h3>
+<p>보통 <strong>6개월 내외</strong> 지속됩니다. 3~6개월 간격으로 정기 시술하시면 효과를 유지하실 수 있습니다.</p>
+
+<h3>Q. 라디쥬와 엑소좀의 차이가 뭔가요?</h3>
+<p>라디쥬는 히알루론산으로 <strong>수분 공급</strong>이 주목적이고, 엑소좀은 세포 재생 신호를 전달해 <strong>피부 재생력 자체를 높이는</strong> 것이 목적입니다. 두 시술을 병행하시면 수분과 재생을 동시에 잡을 수 있습니다.</p>
+
+<h3>Q. 라디쥬 시술이 아픈가요?</h3>
+<p>마취 크림을 도포한 후 미세 주사로 주입하므로 통증이 크지 않습니다. 따끔한 느낌이 있을 수 있습니다.</p>
+
+<h3>Q. 라디쥬 시술 후 관리가 필요한가요?</html>
+<p>시술 후 자외선 차단제를 꼭 바르시고, 당일 격렬한 운동·사우나는 피하세요. 세안·화장은 다음 날부터 가능합니다.</p>
+
+<h3>Q. 라디쥬와 리쥬란의 차이가 뭔가요?</h3>
+<p>라디쥬는 히알루론산 기반, 리쥬란은 연어 DNA 성분 기반 스킨부스터입니다. 수분 공급과 콜라겐 생성 촉진이라는 공통 목적이 있으며, 부천에서 스킨부스터를 찾고 계신다면 상담 시 비교 설명해 드립니다.</p>
+
+<h3>Q. 라디쥬 3회 패키지 가격이 얼마인가요?</h3>
+<p>5cc 3회 패키지 620,000원(VAT 별도)으로 1회 단가보다 합리적입니다.</p>
+
+<h3>Q. 당일 예약이 가능한가요?</h3>
+<p>당일 예약도 가능합니다. <strong>상동역 3번 출구 도보 1분</strong> 거리로 부천시청역·신중동·부평 어디서든 편리하게 오실 수 있습니다.</p>
+        `,
+    },
+
+    whitening: {
+        category: '스킨부스터',
+        name: '미백약침',
+        titleSeo: '부천 미백약침 | 피부 미백 개선',
+        canonicalPath: '/부천-미백약침',
+        metaDesc: '상동역 로아한의원 미백약침. 부천·신중동·부평에서 피부 미백·잡티 개선. 당일 예약 가능.',
+        keywords: '부천 미백약침, 상동 미백약침, 부천 피부미백, 상동역 미백약침, 신중동역 미백약침, 부천 한의원 미백, 부천 피부과 미백주사',
+        subtitle: '피부 속 미백 성분으로 잡티·칙칙함 개선',
+        desc: '미백 효과가 있는 한약 성분을 피부에 직접 주입해 잡티·색소침착·칙칙한 피부 톤을 개선하는 한의원 미백 시술입니다.',
+        img: 'images/program-whitening.png',
+        prices: [
+            { name: '미백약침 2cc 1회', amount: '150,000' },
+            { name: '미백약침 2cc 3회', amount: '420,000' },
+        ],
+        priceNote: '* VAT 포함 · 정확한 가격은 상담 후 확정',
+        pointsTitle: '미백약침의 특징',
+        points: [
+            { icon: '✨', title: '피부 톤 개선', desc: '미백 한약 성분이 색소 생성을 억제해 잡티·칙칙함 개선' },
+            { icon: '🌿', title: '한방 미백 성분', desc: '한의학 기반 미백 성분으로 부작용 최소화' },
+            { icon: '💧', title: '수분·탄력 동반 개선', desc: '미백 효과와 함께 피부 수분·탄력도 함께 개선' },
+        ],
+        targets: [
+            '잡티·색소침착이 고민인 분',
+            '칙칙하고 어두운 피부 톤을 개선하고 싶은 분',
+            '피부 미백과 탄력을 함께 원하시는 분',
+        ],
+        steps: [
+            { title: '상담 및 피부 분석', desc: '피부 톤과 잡티 분포를 확인해 주입 계획을 세웁니다.' },
+            { title: '클렌징', desc: '시술 부위를 세정합니다.' },
+            { title: '미백약침 주입', desc: '미백 한약 성분을 미세 주사로 주입합니다. 소요 시간 약 20분.' },
+            { title: '마무리 후 일상 복귀', desc: '당일 일상생활이 가능합니다.' },
+        ],
+        ctaTitle: '부천 미백약침 상담 예약하세요',
+        seo: `
+<h2>부천 미백약침이란?</h2>
+<p>미백약침은 <strong>한의학 기반 미백 성분을 피부에 직접 주입</strong>해 잡티·색소침착·칙칙함을 개선하는 시술입니다. 로아한의원 부천 <strong>상동역 3번 출구 도보 1분</strong>에서 받으실 수 있습니다.</p>
+
+<h2>자주 묻는 질문 (FAQ)</h2>
+<h3>Q. 부천 미백약침 가격이 얼마인가요?</h3>
+<p>2cc 1회 150,000원, 3회 420,000원(VAT 포함)입니다.</p>
+
+<h3>Q. 미백약침 몇 회 받아야 효과가 나나요?</h3>
+<p>보통 <strong>3회 이상</strong> 받으시면 뚜렷한 효과를 볼 수 있으며, 2주 간격으로 시술을 권장합니다.</p>
+
+<h3>Q. 미백약침으로 잡티가 없어지나요?</h3>
+<p>미백 성분이 색소 생성을 억제해 잡티를 옅게 만들어 줍니다. 완전히 제거되기보다 색소가 옅어지고 피부 톤이 밝아집니다. 꾸준한 시술로 효과가 누적됩니다.</p>
+
+<h3>Q. 미백약침은 언제부터 효과가 보이나요?</h3>
+<p>시술 후 <strong>2~4주</strong>부터 피부 톤 변화를 느끼실 수 있으며, 3회 이상 받으시면 더 뚜렷하게 나타납니다.</p>
+
+<h3>Q. 미백약침 시술이 아픈가요?</h3>
+<p>미세 주사로 주입하므로 약간의 따끔함이 있을 수 있습니다. 클렌징 후 바로 진행되므로 시술 시간은 약 20분 내외입니다.</p>
+
+<h3>Q. 미백약침 시술 후 자외선 차단을 꼭 해야 하나요?</h3>
+<p>네, 시술 후 자외선 노출을 최소화하고 자외선 차단제를 꼭 바르셔야 합니다. 자외선은 색소 생성을 촉진해 시술 효과를 감소시킬 수 있습니다.</p>
+
+<h3>Q. 미백약침과 엑소좀을 함께 받을 수 있나요?</h3>
+<p>네, 두 시술을 병행하시면 미백 + 피부 재생·탄력 개선 효과를 동시에 얻을 수 있습니다. 상담 시 조합을 추천해 드립니다.</p>
+
+<h3>Q. 부천 피부과 미백주사와 한의원 미백약침의 차이는 뭔가요?</h3>
+<p>피부과 미백주사는 비타민 C·글루타치온 등을 정맥 또는 피부에 주입하고, 미백약침은 한방 미백 성분을 피부에 직접 주입합니다. 로아한의원은 한의학 체질 상담과 함께 제공합니다.</p>
+
+<h3>Q. 당일 예약이 가능한가요?</h3>
+<p>당일 예약도 가능합니다. <strong>상동역 3번 출구 도보 1분</strong> 거리로 부천시청역·신중동·부평 어디서든 편리하게 오실 수 있습니다.</p>
+        `,
+    },
+
+    exosome: {
+        category: '스킨부스터',
+        name: '엑소좀',
+        titleSeo: '부천 엑소좀 | 피부 재생 스킨부스터',
+        canonicalPath: '/부천-엑소좀',
+        metaDesc: '상동역 로아한의원 엑소좀 스킨부스터. 부천·신중동·부평에서 피부 재생·탄력 개선. 당일 예약 가능.',
+        keywords: '부천 엑소좀, 상동 엑소좀, 부천 피부재생, 상동역 엑소좀, 신중동역 엑소좀, 부천시청역 엑소좀, 부천 피부과 엑소좀',
+        subtitle: '세포 재생 신호 물질로 피부 근본부터 재생',
+        desc: '세포 간 신호 전달 물질인 엑소좀을 피부에 주입해 손상된 피부 세포를 재생하고 탄력·피부결을 근본적으로 개선합니다.',
+        img: 'images/program-exosome.png',
+        prices: [
+            { name: '엑소좀 2cc 1회', amount: '220,000' },
+            { name: '엑소좀 2cc 3회', amount: '600,000' },
+        ],
+        priceNote: '* VAT 별도 · 정확한 가격은 상담 후 확정',
+        pointsTitle: '엑소좀의 특징',
+        points: [
+            { icon: '🔬', title: '세포 재생 촉진', desc: '세포 신호 전달 물질이 피부 세포 재생을 직접 자극' },
+            { icon: '✨', title: '탄력·피부결 개선', desc: '콜라겐·엘라스틴 생성 촉진으로 탄력과 피부결을 근본적으로 개선' },
+            { icon: '🌿', title: '염증 진정 효과', desc: '항염 효과로 트러블·붉음증 진정에도 도움' },
+        ],
+        targets: [
+            '피부 재생력이 떨어진 분',
+            '탄력·피부결을 근본적으로 개선하고 싶은 분',
+            '시술 후 피부 재생에 도움이 필요한 분',
+        ],
+        steps: [
+            { title: '상담 및 피부 분석', desc: '피부 상태와 목표를 확인해 주입 계획을 세웁니다.' },
+            { title: '클렌징 및 마취 크림', desc: '시술 부위를 세정하고 마취 크림을 도포합니다.' },
+            { title: '엑소좀 주입', desc: '미세 주사로 엑소좀을 균일하게 주입합니다. 소요 시간 약 20~30분.' },
+            { title: '마무리 후 일상 복귀', desc: '당일 일상생활이 가능합니다.' },
+        ],
+        ctaTitle: '부천 엑소좀 스킨부스터 예약하세요',
+        seo: `
+<h2>부천 엑소좀이란?</h2>
+<p>엑소좀은 <strong>세포 간 신호 전달 물질</strong>로, 피부 세포 재생을 촉진해 탄력·피부결·재생력을 근본적으로 개선합니다. <strong>부천 피부과</strong>에서도 주목받는 차세대 스킨부스터로, 로아한의원 부천 <strong>상동역 3번 출구 도보 1분</strong>에서 받으실 수 있습니다.</p>
+
+<h2>자주 묻는 질문 (FAQ)</h2>
+<h3>Q. 부천 엑소좀 가격이 얼마인가요?</h3>
+<p>2cc 1회 220,000원, 3회 600,000원(VAT 별도)입니다.</p>
+
+<h3>Q. 엑소좀과 일반 스킨부스터의 차이가 뭔가요?</h3>
+<p>일반 스킨부스터는 수분 공급이 주목적이라면, 엑소좀은 세포 재생 신호를 직접 전달해 <strong>피부 재생력 자체를 높이는</strong> 효과가 있습니다.</p>
+
+<h3>Q. 엑소좀 효과는 언제 나타나나요?</h3>
+<p>시술 후 <strong>2~4주</strong>부터 피부 재생·탄력 변화를 느끼실 수 있으며, 3회 이상 받으시면 더욱 뚜렷해집니다.</p>
+
+<h3>Q. 엑소좀 효과가 얼마나 지속되나요?</h3>
+<p>보통 <strong>6개월 내외</strong> 지속되며, 3~6개월 간격으로 정기 시술하시면 피부 재생력을 꾸준히 유지하실 수 있습니다.</p>
+
+<h3>Q. 엑소좀과 라디쥬를 같이 받아도 되나요?</h3>
+<p>두 시술은 서로 다른 성분이라 병행이 가능합니다. 라디쥬(수분)와 엑소좀(재생)을 함께 받으시면 피부 수분·탄력·재생을 종합적으로 개선할 수 있습니다.</p>
+
+<h3>Q. 엑소좀 시술이 아픈가요?</h3>
+<p>마취 크림을 도포한 후 미세 주사로 주입합니다. 약간의 따끔함이 있을 수 있으나 대부분 불편함 없이 마치십니다.</p>
+
+<h3>Q. 엑소좀 시술 후 주의사항이 있나요?</h3>
+<p>시술 당일은 격렬한 운동·사우나·음주를 삼가시고, 자외선 차단제를 꼭 바르세요. 세안·화장은 다음 날부터 가능합니다.</p>
+
+<h3>Q. 엑소좀으로 여드름 흉터나 모공도 개선되나요?</h3>
+<p>엑소좀이 진피 재생을 촉진해 여드름 흉터·모공·피부결 개선에도 도움이 됩니다. 흉터새살침·진피재생약침과 병행하시면 더욱 효과적입니다.</p>
+
+<h3>Q. 당일 예약이 가능한가요?</h3>
+<p>당일 예약도 가능합니다. <strong>상동역 3번 출구 도보 1분</strong> 거리로 부천시청역·신중동·부평 어디서든 편리하게 오실 수 있습니다.</p>
+        `,
+    },
+
+    scar: {
+        category: '여드름 · 흉터',
+        name: '흉터새살침',
+        titleSeo: '부천 흉터새살침 재건침 새살침 | 흉터치료',
+        canonicalPath: '/부천-흉터새살침',
+        metaDesc: '상동역 로아한의원 흉터새살침. 부천에서 재건침·새살침으로 여드름 흉터·외상 흉터 치료. 당일 예약 가능.',
+        keywords: '부천 흉터새살침, 부천 재건침, 부천 새살침, 부천 흉터치료, 부천 여드름흉터, 부천 여드름흉터치료, 흉터새살침 부천, 재건침 부천, 새살침 부천, 상동 흉터새살침, 상동역 흉터새살침, 부천 피부과 흉터, 부천 한의원 흉터치료',
+        subtitle: '한방 재생 성분으로 흉터를 새살로 채우는 시술',
+        desc: '흉터 부위에 조직 재생을 촉진하는 한약 성분을 직접 주입해 흉터를 새살로 채우고 피부 표면을 개선하는 시술입니다.',
+        img: 'images/program-scar.png',
+        prices: [
+            { name: '흉터새살침 1개당', amount: '90,000' },
+            { name: '반명함 사이즈', amount: '180,000' },
+            { name: '명함 사이즈', amount: '270,000' },
+        ],
+        priceNote: '* VAT 별도 · 정확한 가격은 상담 후 확정',
+        pointsTitle: '흉터새살침의 특징',
+        points: [
+            { icon: '🌿', title: '한방 재생 성분', desc: '조직 재생을 촉진하는 한약 성분으로 흉터를 새살로 채움' },
+            { icon: '🎯', title: '흉터 부위 정밀 주입', desc: '흉터 크기와 깊이에 맞게 정확한 부위에 주입' },
+            { icon: '✨', title: '피부 표면 개선', desc: '흉터 재생과 함께 주변 피부 결·톤도 함께 개선' },
+        ],
+        targets: [
+            '여드름 흉터가 고민인 분',
+            '수술·외상 흉터를 개선하고 싶은 분',
+            '켈로이드가 아닌 일반 흉터를 치료하고 싶은 분',
+        ],
+        steps: [
+            { title: '상담 및 흉터 분석', desc: '흉터 크기·깊이·종류를 확인해 시술 계획을 세웁니다.' },
+            { title: '마취 크림 도포', desc: '흉터 부위에 마취 크림을 도포합니다.' },
+            { title: '흉터새살침 주입', desc: '재생 한약 성분을 흉터에 정밀 주입합니다.' },
+            { title: '마무리 후 일상 복귀', desc: '당일 일상생활이 가능합니다.' },
+        ],
+        ctaTitle: '부천 흉터새살침 상담 예약하세요',
+        seo: `
+<h2>부천 흉터새살침이란?</h2>
+<p>흉터새살침(재건침·새살침)은 <strong>한약 재생 성분을 흉터에 직접 주입</strong>해 새살을 채우고 피부 표면을 개선하는 시술입니다. 로아한의원 부천 <strong>상동역 3번 출구 도보 1분</strong>에서 받으실 수 있습니다.</p>
+<p><strong>부천 흉터치료</strong>를 찾고 계신다면, 재건침·새살침으로 여드름 흉터·외상 흉터를 한방으로 개선해 드립니다.</p>
+
+<h2>자주 묻는 질문 (FAQ)</h2>
+<h3>Q. 부천 흉터새살침(재건침·새살침) 가격이 얼마인가요?</h3>
+<p>1개당 90,000원, 반명함 사이즈 180,000원, 명함 사이즈 270,000원(VAT 별도)입니다.</p>
+
+<h3>Q. 재건침·새살침·흉터새살침이 다 같은 건가요?</h3>
+<p>모두 흉터 부위에 재생 성분을 주입해 새살을 채우는 같은 계열의 시술을 다르게 부르는 명칭입니다. 로아한의원의 흉터새살침은 한방 재생 성분을 사용합니다.</p>
+
+<h3>Q. 모든 흉터에 효과가 있나요?</h3>
+<p>일반적인 여드름 흉터·외상 흉터에 효과적입니다. 켈로이드성 흉터는 상담 후 적합성을 판단합니다.</p>
+
+<h3>Q. 흉터새살침으로 여드름 흉터가 없어지나요?</h3>
+<p>흉터를 완전히 없애기보다 흉터 깊이를 줄이고 피부 표면을 고르게 만드는 효과입니다. 꾸준한 시술로 눈에 띄게 개선됩니다.</p>
+
+<h3>Q. 흉터 크기에 따라 가격이 달라지나요?</h3>
+<p>네, 1개(작은 점 크기) 90,000원, 반명함 사이즈(약 4.5×2.8cm) 180,000원, 명함 사이즈(약 9×5.5cm) 270,000원으로 크기에 따라 달라집니다.</p>
+
+<h3>Q. 흉터새살침 몇 회 받아야 하나요?</h3>
+<p>흉터 깊이와 크기에 따라 다르지만 보통 <strong>4~8회</strong> 이상 꾸준히 받으시면 효과가 누적됩니다. 2~4주 간격으로 시술을 권장합니다.</p>
+
+<h3>Q. 흉터새살침과 진피재생약침의 차이가 뭔가요?</h3>
+<p>흉터새살침은 흉터 부위를 집중 타겟팅하고, 진피재생약침은 모공·피부결 전반을 개선합니다. 여드름 흉터라면 두 시술을 함께 받으시면 더 효과적입니다.</p>
+
+<h3>Q. 흉터새살침 시술이 아픈가요?</h3>
+<p>마취 크림을 충분히 도포한 후 진행합니다. 주입 시 약간의 따끔함이 있을 수 있으나 대부분 잘 마치십니다.</p>
+
+<h3>Q. 당일 예약이 가능한가요?</h3>
+<p>당일 예약도 가능합니다. <strong>상동역 3번 출구 도보 1분</strong> 거리로 부천시청역·신중동·부평 어디서든 편리하게 오실 수 있습니다.</p>
+        `,
+    },
+
+    'anti-inflam': {
+        category: '여드름 · 흉터',
+        name: '염증약침',
+        titleSeo: '부천 염증약침 | 여드름 염증 치료',
+        canonicalPath: '/부천-염증약침',
+        metaDesc: '상동역 로아한의원 염증약침. 부천·신중동·부평에서 여드름·피부 염증 한방 치료. 당일 예약 가능.',
+        keywords: '부천 염증약침, 상동 염증약침, 부천 여드름치료, 부천 피부염증, 상동역 염증약침, 부천 한의원 여드름, 부천 피부과 여드름주사',
+        subtitle: '염증 유발 성분을 직접 억제하는 한방 여드름 치료',
+        desc: '항염 효과가 있는 한약 성분을 염증 부위에 직접 주입해 여드름·피부 염증을 빠르게 진정시키는 시술입니다.',
+        img: 'images/program-anti-inflam.png',
+        prices: [
+            { name: '염증약침 1회', amount: '10,000' },
+        ],
+        priceNote: '* VAT 별도 · 횟수·부위에 따라 상이',
+        pointsTitle: '염증약침의 특징',
+        points: [
+            { icon: '🌿', title: '빠른 염증 진정', desc: '한약 항염 성분이 염증을 직접 억제해 여드름·뾰루지를 빠르게 진정' },
+            { icon: '💰', title: '부담 없는 가격', desc: '합리적인 가격으로 여드름 관리를 꾸준히 받을 수 있음' },
+            { icon: '🎯', title: '염증 부위 정밀 타깃', desc: '염증 부위에만 정밀하게 주입해 주변 피부 자극 최소화' },
+        ],
+        targets: [
+            '여드름·뾰루지가 자주 올라오는 분',
+            '피부 염증으로 고민인 분',
+            '부담 없이 꾸준히 관리하고 싶은 분',
+        ],
+        steps: [
+            { title: '염증 부위 확인', desc: '여드름·염증 부위를 확인합니다.' },
+            { title: '염증약침 주입', desc: '항염 한약 성분을 염증 부위에 직접 주입합니다. 소요 시간 약 5~10분.' },
+            { title: '주의사항 안내 후 일상 복귀', desc: '당일 일상생활이 가능합니다.' },
+        ],
+        ctaTitle: '부천 염증약침 상담 예약하세요',
+        seo: `
+<h2>부천 염증약침이란?</h2>
+<p>염증약침은 <strong>항염 효과 한약 성분을 여드름·염증 부위에 직접 주입</strong>해 빠르게 진정시키는 한방 시술입니다. 로아한의원 부천 <strong>상동역 3번 출구 도보 1분</strong>에서 받으실 수 있습니다.</p>
+
+<h2>자주 묻는 질문 (FAQ)</h2>
+<h3>Q. 부천 염증약침 가격이 얼마인가요?</h3>
+<p><strong>1회 10,000원(VAT 별도)</strong>으로 부담 없이 꾸준히 관리하실 수 있습니다.</p>
+
+<h3>Q. 염증약침은 얼마나 자주 받아야 하나요?</h3>
+<p>여드름 상태에 따라 다르지만 <strong>주 1~2회</strong> 시술을 권장합니다. 꾸준히 받으시면 여드름 빈도가 줄어드는 효과를 볼 수 있습니다.</p>
+
+<h3>Q. 염증약침으로 여드름이 빠르게 가라앉나요?</h3>
+<p>항염 한약 성분을 직접 주입하므로 일반 연고나 먹는 약보다 빠르게 여드름·뾰루지를 진정시킵니다. 시술 후 <strong>1~2일</strong> 내에 효과를 느끼시는 분이 많습니다.</p>
+
+<h3>Q. 염증약침과 흉터새살침을 함께 받을 수 있나요?</h3>
+<p>네, 활성 여드름은 염증약침으로 진정시키고, 기존 여드름 흉터는 흉터새살침으로 개선하는 병행 시술을 권장합니다.</p>
+
+<h3>Q. 여드름이 많이 올라왔을 때 염증약침이 도움이 되나요?</h3>
+<p>네, 여드름이 많이 올라왔을 때 염증약침으로 한 번에 여러 부위를 진정시킬 수 있습니다. 부위 수에 따라 비용이 달라집니다.</p>
+
+<h3>Q. 염증약침 시술이 아픈가요?</h3>
+<p>아주 가는 주사를 사용하므로 따끔함이 최소화됩니다. 5~10분 내외로 시술이 끝납니다.</p>
+
+<h3>Q. 염증약침 후 세안·화장이 가능한가요?</h3>
+<p>시술 후 당일 세안이 가능하며, 화장은 다음 날부터 권장합니다. 시술 부위를 자극하지 않는 것이 중요합니다.</p>
+
+<h3>Q. 부천 한의원 여드름 치료로 어떤 시술들이 있나요?</h3>
+<p>로아한의원 부천에서는 <strong>염증약침(여드름 진정), 흉터새살침(여드름 흉터), 진피재생약침(모공·피부결), 미백약침(잡티·톤)</strong>을 통해 여드름 관련 피부 문제를 종합적으로 관리합니다.</p>
+
+<h3>Q. 당일 예약이 가능한가요?</h3>
+<p>당일 예약도 가능합니다. <strong>상동역 3번 출구 도보 1분</strong> 거리로 부천시청역·신중동·부평 어디서든 편리하게 오실 수 있습니다.</p>
+        `,
+    },
+
+    dermal: {
+        category: '여드름 · 흉터',
+        name: '진피재생약침',
+        titleSeo: '부천 진피재생약침 | 피부 진피 재생',
+        canonicalPath: '/부천-진피재생약침',
+        metaDesc: '상동역 로아한의원 진피재생약침. 부천·신중동·부평에서 진피 재생·여드름 흉터 개선. 당일 예약 가능.',
+        keywords: '부천 진피재생약침, 상동 진피재생약침, 부천 진피재생, 부천 여드름흉터재생, 상동역 진피재생약침, 부천 한의원 진피재생',
+        subtitle: '진피층을 직접 재생시키는 한방 피부 재생 시술',
+        desc: '진피층 재생을 촉진하는 한약 성분을 주입해 여드름 흉터·모공·피부 결을 근본적으로 개선하는 시술입니다.',
+        img: 'images/program-dermal.png',
+        prices: [
+            { name: '진피재생약침 1cc', amount: '90,000' },
+        ],
+        priceNote: '* VAT 별도 · 필요 용량은 상담 후 확정',
+        pointsTitle: '진피재생약침의 특징',
+        points: [
+            { icon: '🔬', title: '진피층 직접 재생', desc: '한약 재생 성분이 진피층에 작용해 콜라겐·조직 재생을 촉진' },
+            { icon: '🌿', title: '여드름 흉터 개선', desc: '움푹 파인 여드름 흉터를 채우고 피부 결을 고르게 개선' },
+            { icon: '✨', title: '모공·피부결 개선', desc: '진피 재생과 함께 모공 축소·피부결 개선 효과 동반' },
+        ],
+        targets: [
+            '여드름 흉터·움푹 파인 흉터가 고민인 분',
+            '모공·피부결을 근본적으로 개선하고 싶은 분',
+            '피부 재생력이 떨어진 분',
+        ],
+        steps: [
+            { title: '상담 및 피부 분석', desc: '흉터·모공 상태를 확인해 주입 계획을 세웁니다.' },
+            { title: '마취 크림 도포', desc: '시술 부위에 마취 크림을 도포합니다.' },
+            { title: '진피재생약침 주입', desc: '재생 한약 성분을 진피층에 주입합니다. 소요 시간 약 20~30분.' },
+            { title: '마무리 후 일상 복귀', desc: '당일 일상생활이 가능합니다.' },
+        ],
+        ctaTitle: '부천 진피재생약침 상담 예약하세요',
+        seo: `
+<h2>부천 진피재생약침이란?</h2>
+<p>진피재생약침은 <strong>진피층 재생 한약 성분을 피부에 직접 주입</strong>해 여드름 흉터·모공·피부 결을 근본적으로 개선합니다. 로아한의원 부천 <strong>상동역 3번 출구 도보 1분</strong>에서 받으실 수 있습니다.</p>
+
+<h2>자주 묻는 질문 (FAQ)</h2>
+<h3>Q. 부천 진피재생약침 가격이 얼마인가요?</h3>
+<p><strong>1cc 90,000원(VAT 별도)</strong>이며, 필요 용량은 상담 후 결정합니다.</p>
+
+<h3>Q. 몇 회 받아야 효과가 나나요?</h3>
+<p>보통 <strong>4~6회</strong> 이상 꾸준히 받으시면 여드름 흉터·모공 개선이 뚜렷해집니다.</p>
+
+<h3>Q. 진피재생약침으로 모공이 줄어드나요?</h3>
+<p>진피층 재생이 촉진되면서 피부 탄력이 높아지고 모공이 좁아지는 효과가 있습니다. 특히 여드름 흉터로 늘어난 모공 개선에 효과적입니다.</p>
+
+<h3>Q. 진피재생약침과 흉터새살침의 차이가 뭔가요?</h3>
+<p>흉터새살침은 특정 흉터 부위를 집중 타겟팅하고, 진피재생약침은 진피층 전반을 재생해 모공·피부결을 넓게 개선합니다. 두 시술을 병행하시면 더 효과적입니다.</p>
+
+<h3>Q. 진피재생약침이 엑소좀과 다른 점은 뭔가요?</h3>
+<p>엑소좀은 세포 재생 신호 물질을 주입하고, 진피재생약침은 한방 재생 성분을 주입합니다. 두 시술 모두 진피 재생에 도움을 주며 병행 시 시너지 효과가 있습니다.</p>
+
+<h3>Q. 진피재생약침 시술이 아픈가요?</h3>
+<p>마취 크림을 도포한 후 시술합니다. 주입 시 약간의 따끔함이 있을 수 있으나 대부분 불편함 없이 마치십니다.</p>
+
+<h3>Q. 진피재생약침 후 피부가 붉어지나요?</h3>
+<p>시술 후 일시적인 붉음·열감이 있을 수 있으나 보통 수 시간 내에 가라앉습니다.</p>
+
+<h3>Q. 얼굴 전체에 시술이 가능한가요?</h3>
+<p>볼, 이마, 코, 턱 등 얼굴 전체에 시술이 가능합니다. 모공·흉터가 집중된 부위를 우선 시술합니다.</p>
+
+<h3>Q. 당일 예약이 가능한가요?</h3>
+<p>당일 예약도 가능합니다. <strong>상동역 3번 출구 도보 1분</strong> 거리로 부천시청역·신중동·부평 어디서든 편리하게 오실 수 있습니다.</p>
+        `,
+    },
+
+    circulation: {
+        category: '다이어트',
+        name: '순환개선탕',
+        titleSeo: '부천 다이어트한약 한방다이어트 | 순환개선탕',
+        canonicalPath: '/부천-다이어트한약',
+        metaDesc: '상동역 로아한의원 한방 다이어트. 부천에서 다이어트한약·한방다이어트·다이어트약으로 체중 감량. 당일 상담 가능.',
+        keywords: '부천 다이어트한약, 부천 한방다이어트, 부천 다이어트한의원, 부천 한약다이어트, 부천 다이어트약, 부천 순환개선탕, 상동 다이어트한약, 상동역 다이어트한약, 신중동역 다이어트한약, 부천시청역 다이어트한약, 부천 한의원 다이어트, 부천 비만클리닉',
+        subtitle: '체내 순환을 개선해 체중 감량을 돕는 한방 처방',
+        desc: '체내 순환·대사를 개선하는 한약 처방으로 체중 감량과 체형 개선을 돕는 맞춤 한방 다이어트 프로그램입니다.',
+        img: 'images/program-circulation.png',
+        prices: [
+            { name: '순환개선탕 1개월', amount: '400,000' },
+            { name: '순환개선탕 3개월', amount: '1,020,000' },
+            { name: '순환개선탕 6개월', amount: '1,920,000' },
+        ],
+        priceNote: '* VAT 포함 · 체질 상담 후 맞춤 처방',
+        pointsTitle: '순환개선탕의 특징',
+        points: [
+            { icon: '🌿', title: '체질 맞춤 처방', desc: '개인 체질과 비만 유형에 맞게 한약을 처방해 효과 극대화' },
+            { icon: '🔄', title: '대사·순환 개선', desc: '체내 순환과 대사를 개선해 지방 축적 억제 및 분해 촉진' },
+            { icon: '💪', title: '장기 복용으로 요요 방지', desc: '3~6개월 꾸준한 복용으로 요요 없는 체중 감량' },
+        ],
+        targets: [
+            '다이어트를 해도 효과가 없는 분',
+            '부종·순환 문제로 살이 잘 빠지지 않는 분',
+            '요요 없이 장기적으로 체중 관리를 원하시는 분',
+        ],
+        steps: [
+            { title: '체질 상담 및 진단', desc: '체질·비만 유형을 분석해 맞춤 처방을 결정합니다.' },
+            { title: '한약 처방 및 복용 안내', desc: '맞춤 처방된 순환개선탕과 복용 방법을 안내합니다.' },
+            { title: '정기 모니터링', desc: '복용 중 변화를 모니터링하며 처방을 조정합니다.' },
+        ],
+        ctaTitle: '부천 한방 다이어트 상담 예약하세요',
+        seo: `
+<h2>부천 다이어트한약이란?</h2>
+<p>순환개선탕은 <strong>체내 순환·대사를 개선하는 맞춤 한약 처방</strong>으로 체중 감량과 체형 개선을 돕는 <strong>부천 한방다이어트</strong> 프로그램입니다. 로아한의원 부천 <strong>상동역 3번 출구 도보 1분</strong>에서 체질 상담 후 받으실 수 있습니다.</p>
+<p><strong>부천 다이어트한의원</strong>을 찾고 계신다면, 상동역 로아한의원에서 체질에 맞는 <strong>한약 다이어트·한방 다이어트약</strong>으로 요요 없는 체중 감량을 시작하세요.</p>
+
+<h2>자주 묻는 질문 (FAQ)</h2>
+<h3>Q. 부천 다이어트한약(한방다이어트) 가격이 얼마인가요?</h3>
+<p>순환개선탕 1개월 400,000원, 3개월 1,020,000원, 6개월 1,920,000원(VAT 포함)입니다.</p>
+
+<h3>Q. 순환개선탕은 누구에게 잘 맞나요?</h3>
+<p>부종이 심하거나 순환이 잘 안 되어 살이 잘 빠지지 않는 분, 다이어트를 해도 요요가 심한 분께 특히 효과적입니다.</p>
+
+<h3>Q. 부천 다이어트한약과 일반 다이어트약의 차이가 뭔가요?</h3>
+<p>일반 다이어트약은 식욕 억제·대사 촉진 등 단일 작용에 집중하는 경향이 있고, 한방 다이어트약(순환개선탕)은 <strong>체내 순환·대사·체질</strong>을 종합적으로 개선해 더 근본적인 체중 감량을 도모합니다.</p>
+
+<h3>Q. 한방 다이어트로 요요가 없나요?</h3>
+<p>체내 순환과 대사를 개선해 체중 감량하므로 단순 칼로리 제한보다 요요가 적습니다. 6개월 이상 꾸준히 복용하시면 더욱 안정적인 체중 유지에 도움이 됩니다.</p>
+
+<h3>Q. 부천 한방다이어트 상담은 어떻게 진행되나요?</h3>
+<p>체질 진단과 현재 체중·비만 유형을 분석한 후 맞춤 처방을 결정합니다. 상담 시간은 약 20~30분입니다.</p>
+
+<h3>Q. 다이어트한약을 먹으면서 운동도 해야 하나요?</h3>
+<p>운동과 병행하시면 더욱 효과적입니다. 한약이 대사를 높여주므로 가벼운 운동만으로도 더 좋은 결과를 기대할 수 있습니다.</p>
+
+<h3>Q. 부천 다이어트한의원 어디를 추천하나요?</h3>
+<p>로아한의원 부천 <strong>상동역 3번 출구 도보 1분</strong>에서 체질 상담 후 맞춤 한방다이어트 처방을 받으실 수 있습니다. 부천시청역·신중동역·부평역에서도 가깝습니다.</p>
+
+<h3>Q. 한약 다이어트 부작용이 있나요?</h3>
+<p>체질 상담 후 처방하므로 부작용이 최소화됩니다. 복용 중 불편함이 생기면 바로 내원해 처방을 조정합니다.</p>
+
+<h3>Q. 컬러환이나 미인환과 순환개선탕의 차이는 뭔가요?</h3>
+<p>순환개선탕은 탕약 형태로 흡수가 빠르고 효과가 강합니다. 컬러환·미인환은 환 형태로 복용이 간편하고 가격이 합리적입니다. 상담 시 체질에 맞는 제형을 추천해 드립니다.</p>
+
+<h3>Q. 당일 상담이 가능한가요?</h3>
+<p>당일 상담도 가능합니다. <strong>상동역 3번 출구 도보 1분</strong> 거리로 부천시청역·신중동·부평 어디서든 편리하게 오실 수 있습니다.</p>
+        `,
+    },
+
+    'color-pill': {
+        category: '다이어트',
+        name: '컬러환',
+        titleSeo: '부천 다이어트한약 컬러환 | 한방다이어트 환약',
+        canonicalPath: '/부천-컬러환',
+        metaDesc: '상동역 로아한의원 컬러환. 부천에서 한방 다이어트약·다이어트한의원 컬러환. 당일 상담 가능.',
+        keywords: '부천 컬러환, 상동 컬러환, 부천 다이어트환, 부천 한방다이어트, 부천 다이어트한약, 부천 다이어트한의원, 부천 다이어트약, 상동역 컬러환, 부천 한의원 다이어트환',
+        subtitle: '간편하게 복용하는 한방 다이어트 환약',
+        desc: '체중 감량과 식욕 조절을 돕는 한방 성분을 환 형태로 제조한 복용이 간편한 다이어트 한약입니다.',
+        img: 'images/program-color-pill.png',
+        prices: [
+            { name: '컬러환 1개월', amount: '180,000' },
+            { name: '컬러환 3개월', amount: '380,000' },
+        ],
+        priceNote: '* VAT 포함 · 체질 상담 후 처방',
+        pointsTitle: '컬러환의 특징',
+        points: [
+            { icon: '💊', title: '간편한 환 형태', desc: '탕약 대비 복용이 간편하고 휴대하기 쉬운 환 형태' },
+            { icon: '🌿', title: '한방 다이어트 성분', desc: '식욕 조절·대사 개선 한약 성분으로 체중 감량 지원' },
+            { icon: '💰', title: '합리적인 가격', desc: '탕약보다 합리적인 가격으로 한방 다이어트 시작 가능' },
+        ],
+        targets: [
+            '탕약보다 간편하게 다이어트 한약을 원하는 분',
+            '식욕 조절이 어려운 분',
+            '가벼운 체중 관리를 시작하고 싶은 분',
+        ],
+        steps: [
+            { title: '체질 상담', desc: '체질을 확인해 적합한 처방을 결정합니다.' },
+            { title: '컬러환 처방 및 복용 안내', desc: '처방된 컬러환과 복용 방법을 안내합니다.' },
+        ],
+        ctaTitle: '부천 컬러환 다이어트 상담 예약하세요',
+        seo: `
+<h2>부천 컬러환이란?</h2>
+<p>컬러환은 <strong>다이어트 한약 성분을 환 형태로 제조</strong>한 복용이 간편한 <strong>부천 한방 다이어트약</strong>입니다. 로아한의원 부천 <strong>상동역 3번 출구 도보 1분</strong>에서 체질 상담 후 받으실 수 있습니다.</p>
+<p><strong>부천 다이어트한약·한방다이어트·다이어트약</strong>을 찾고 계신다면, 컬러환으로 부담 없이 한방 다이어트를 시작해 보세요.</p>
+
+<h2>자주 묻는 질문 (FAQ)</h2>
+<h3>Q. 부천 컬러환(한방 다이어트환) 가격이 얼마인가요?</h3>
+<p>1개월 180,000원, 3개월 380,000원(VAT 포함)입니다.</p>
+
+<h3>Q. 컬러환과 순환개선탕(탕약)의 차이가 뭔가요?</h3>
+<p>순환개선탕은 탕약 형태로 효과가 강하고, 컬러환은 환 형태로 복용이 간편하고 가격이 합리적입니다. 처음 한방 다이어트를 시작하시는 분께는 컬러환이 좋은 입문 선택입니다.</p>
+
+<h3>Q. 컬러환은 매일 먹어야 하나요?</h3>
+<p>처방에 따라 하루 1~3회 복용합니다. 상담 시 복용 방법을 자세히 안내해 드립니다.</p>
+
+<h3>Q. 컬러환으로 얼마나 빠질 수 있나요?</h3>
+<p>개인 체질과 식습관에 따라 다릅니다. 식이 관리와 병행하시면 더욱 효과적이며, 3개월 이상 꾸준히 복용하시는 것을 권장합니다.</p>
+
+<h3>Q. 부천 다이어트한의원에서 컬러환을 처방받으려면 어떻게 하나요?</h3>
+<p>로아한의원 부천 <strong>상동역 3번 출구 도보 1분</strong>에서 체질 상담 후 처방받으실 수 있습니다. 당일 상담도 가능합니다.</p>
+
+<h3>Q. 컬러환 부작용이 있나요?</h3>
+<p>체질 상담 후 처방하므로 부작용이 최소화됩니다. 복용 중 불편함이 생기면 바로 내원해 처방을 조정합니다.</p>
+
+<h3>Q. 미인환과 컬러환 중 어느 게 맞을까요?</h3>
+<p>컬러환은 체중 감량·식욕 조절에 집중하고, 미인환은 다이어트와 피부 미용을 함께 개선합니다. 체질 상담 후 결정하시는 것을 권장합니다.</p>
+        `,
+    },
+
+    'beauty-pill': {
+        category: '다이어트',
+        name: '미인환',
+        titleSeo: '부천 다이어트한약 미인환 | 한방다이어트 미인 환약',
+        canonicalPath: '/부천-미인환',
+        metaDesc: '상동역 로아한의원 미인환. 부천에서 다이어트와 피부 미용을 동시에 잡는 한방 다이어트약. 당일 상담 가능.',
+        keywords: '부천 미인환, 상동 미인환, 부천 미인다이어트, 부천 한방다이어트, 부천 다이어트한약, 부천 다이어트한의원, 부천 다이어트약, 상동역 미인환, 부천 한의원 미인환',
+        subtitle: '피부 미용과 다이어트를 동시에 잡는 한방 환약',
+        desc: '체중 감량과 함께 피부 미용·탄력 개선 한약 성분이 포함된 미용·다이어트 복합 환약입니다.',
+        img: 'images/program-beauty-pill.png',
+        prices: [
+            { name: '미인환 1개월', amount: '160,000' },
+            { name: '미인환 3개월', amount: '320,000' },
+        ],
+        priceNote: '* VAT 포함 · 체질 상담 후 처방',
+        pointsTitle: '미인환의 특징',
+        points: [
+            { icon: '✨', title: '다이어트 + 피부 미용', desc: '체중 감량과 피부 미용 성분을 동시에 담은 복합 환약' },
+            { icon: '💊', title: '간편한 환 형태', desc: '매일 간편하게 복용 가능한 환 형태' },
+            { icon: '🌿', title: '한방 미용 성분', desc: '피부 탄력·미백을 돕는 한약 성분 포함' },
+        ],
+        targets: [
+            '다이어트와 피부 관리를 함께 원하는 분',
+            '간편하게 한방 미용·다이어트를 시작하고 싶은 분',
+        ],
+        steps: [
+            { title: '체질 상담', desc: '체질을 확인해 적합한 처방을 결정합니다.' },
+            { title: '미인환 처방 및 복용 안내', desc: '처방된 미인환과 복용 방법을 안내합니다.' },
+        ],
+        ctaTitle: '부천 미인환 다이어트 상담 예약하세요',
+        seo: `
+<h2>부천 미인환이란?</h2>
+<p>미인환은 <strong>다이어트와 피부 미용 한약 성분을 함께 담은 복합 환약</strong>입니다. <strong>부천 다이어트한약·한방다이어트</strong>를 찾고 계신다면, 체중 감량과 피부 미용을 동시에 원하시는 분께 미인환을 추천합니다. 로아한의원 부천 <strong>상동역 3번 출구 도보 1분</strong>에서 체질 상담 후 받으실 수 있습니다.</p>
+
+<h2>자주 묻는 질문 (FAQ)</h2>
+<h3>Q. 부천 미인환 가격이 얼마인가요?</h3>
+<p>1개월 160,000원, 3개월 320,000원(VAT 포함)입니다.</p>
+
+<h3>Q. 미인환이 다이어트약과 피부약이 섞인 건가요?</h3>
+<p>네, 체중 감량을 돕는 한방 다이어트 성분과 피부 미용·탄력 개선 성분을 함께 처방한 복합 환약입니다.</p>
+
+<h3>Q. 미인환 복용 중 피부도 좋아지나요?</h3>
+<p>미백·탄력·재생을 돕는 한약 성분이 포함되어 복용하면서 피부 톤과 탄력이 함께 개선되는 효과를 기대할 수 있습니다.</p>
+
+<h3>Q. 컬러환과 미인환 중 어느 게 다이어트 효과가 더 강한가요?</h3>
+<p>다이어트 효과는 두 제품 모두 비슷하나, 미인환은 피부 미용 성분이 추가되어 있습니다. 순수 다이어트에 집중한다면 컬러환, 피부 관리도 함께 원한다면 미인환을 권장합니다.</p>
+
+<h3>Q. 부천 한방다이어트 처방을 받으려면 어떻게 하나요?</h3>
+<p>로아한의원 부천 <strong>상동역 3번 출구 도보 1분</strong>에서 체질 상담 후 처방받으실 수 있습니다. 당일 상담도 가능합니다.</p>
+
+<h3>Q. 미인환과 피부과 시술(미백약침 등)을 병행해도 되나요?</h3>
+<p>네, 미인환(경구 복용)과 미백약침(피부 주입)을 병행하시면 내부와 외부에서 동시에 피부를 개선해 더욱 효과적입니다.</p>
+
+<h3>Q. 미인환 부작용이 있나요?</h3>
+<p>체질 상담 후 처방하므로 부작용이 최소화됩니다. 복용 중 불편함이 생기면 바로 내원해 처방을 조정합니다.</p>
+
+<h3>Q. 당일 상담이 가능한가요?</h3>
+<p>당일 상담도 가능합니다. <strong>상동역 3번 출구 도보 1분</strong> 거리로 부천시청역·신중동·부평 어디서든 편리하게 오실 수 있습니다.</p>
+        `,
+    },
+};
+
+function render() {
+    const id = new URLSearchParams(location.search).get('id') || 'ulthera';
+    const p = PROGRAMS[id];
+    if (!p) { document.body.innerHTML = '<p style="padding:4rem;text-align:center">페이지를 찾을 수 없습니다.</p>'; return; }
+
+    // Meta
+    const canonicalUrl = `https://shylifting.com${p.canonicalPath || '/program.html?id=' + id}`;
+    const fullTitle = p.type === 'event'
+        ? `${p.titleSeo} | 로아한의원 부천 상동역`
+        : `${p.titleSeo || p.name} | 로아한의원 부천 상동역`;
+    document.getElementById('pageTitle').textContent = fullTitle;
+    document.getElementById('pageDesc').content = p.metaDesc || `부천 로아한의원 ${p.name} — ${p.desc}`;
+    document.getElementById('ogTitle').content = `${p.titleSeo || p.name} | 로아한의원 부천`;
+    document.getElementById('ogDesc').content = p.metaDesc || `부천 로아한의원 ${p.name} — ${p.desc}`;
+    document.getElementById('ogImage').content = p.img;
+    document.getElementById('ogUrl').content = canonicalUrl;
+    document.getElementById('pageKeywords').content = p.keywords || '';
+
+    // Breadcrumb + MedicalProcedure 구조화 데이터
+    document.getElementById('ldJson').textContent = JSON.stringify({
+        "@context": "https://schema.org",
+        "@graph": [
+            {
+                "@type": "BreadcrumbList",
+                "itemListElement": [
+                    { "@type": "ListItem", "position": 1, "name": "로아한의원 부천", "item": "https://shylifting.com" },
+                    { "@type": "ListItem", "position": 2, "name": "이벤트·시술 안내", "item": "https://shylifting.com/events.html" },
+                    { "@type": "ListItem", "position": 3, "name": p.name, "item": canonicalUrl }
+                ]
+            },
+            {
+                "@type": "MedicalProcedure",
+                "name": p.name,
+                "description": p.metaDesc || p.desc,
+                "url": canonicalUrl,
+                "image": `https://shylifting.com/${p.img}`,
+                "procedureType": "https://schema.org/TherapeuticProcedure",
+                "followup": p.priceNote || "",
+                "performer": {
+                    "@type": "MedicalOrganization",
+                    "name": "로아한의원 부천",
+                    "url": "https://shylifting.com",
+                    "address": {
+                        "@type": "PostalAddress",
+                        "addressLocality": "부천시",
+                        "addressRegion": "경기도",
+                        "addressCountry": "KR"
+                    }
+                }
+            }
+        ]
+    });
+
+    // 이벤트 전용 페이지
+    if (p.type === 'event') {
+        document.getElementById('eventLayout').style.display = 'block';
+        document.getElementById('hero').style.display = 'none';
+        document.querySelectorAll('.section, .cta-band').forEach(el => el.style.display = 'none');
+        document.getElementById('seoSection').style.display = 'none';
+        const imgs = p.imgs || [p.img];
+        document.getElementById('eventImages').innerHTML = imgs.map(s =>
+            `<img src="${s}" alt="${p.name} | 로아한의원 부천">`
+        ).join('');
+        document.getElementById('eventSeo').innerHTML = p.seo || '';
+        return;
+    }
+
+    // Hero
+    const img = document.getElementById('heroImg');
+    img.src = p.img; img.alt = `${p.name} | 로아한의원 부천`;
+    document.getElementById('heroCategory').textContent = p.category;
+    document.getElementById('heroName').textContent = p.name + ' 이벤트';
+    document.getElementById('heroSubtitle').textContent = p.subtitle || '';
+    document.getElementById('heroDesc').textContent = p.desc;
+    document.getElementById('priceList').innerHTML = (p.prices || []).map(r =>
+        `<div class="price-row">
+            <span class="price-row-name">${r.name}</span>
+            <span class="price-row-amount">${r.amount}<span>원~</span></span>
+        </div>`
+    ).join('');
+    document.getElementById('heroPriceNote').textContent = p.priceNote || '';
+
+    // 시술 후기 사진 (Firebase에서 로드)
+    loadReviewPhotos(id);
+
+    // Points
+    document.getElementById('pointsTitle').textContent = p.pointsTitle;
+    document.getElementById('pointsGrid').innerHTML = p.points.map(pt =>
+        `<div class="point-card">
+            <div class="point-icon">${pt.icon}</div>
+            <div>
+                <div class="point-title">${pt.title}</div>
+                <div class="point-desc">${pt.desc}</div>
+            </div>
+        </div>`
+    ).join('');
+
+    // Targets
+    document.getElementById('targetList').innerHTML = p.targets.map(t =>
+        `<div class="target-item"><span class="target-check">✓</span><span class="target-text">${t}</span></div>`
+    ).join('');
+
+    // Steps
+    document.getElementById('stepsList').innerHTML = p.steps.map((s, i) =>
+        `<div class="step">
+            <div class="step-num">${i + 1}</div>
+            <div class="step-body">
+                <div class="step-title">${s.title}</div>
+                <div class="step-desc">${s.desc}</div>
+            </div>
+        </div>`
+    ).join('');
+
+    // CTA
+    document.getElementById('ctaTitle').textContent = p.ctaTitle;
+
+    // SEO
+    document.getElementById('seoSection').innerHTML = p.seo;
+}
+
+// 시술 후기 캐러셀
+let reviewIdx = 0;
+function reviewGoTo(i) {
+    const slides = document.querySelectorAll('.review-slide');
+    if (!slides.length) return;
+    reviewIdx = (i + slides.length) % slides.length;
+    document.getElementById('reviewTrack').style.transform = `translateX(-${reviewIdx * 100}%)`;
+    document.querySelectorAll('.review-dot').forEach((d, j) => d.classList.toggle('active', j === reviewIdx));
+}
+function reviewMove(dir) { reviewGoTo(reviewIdx + dir); }
+
+render();
+</script>
+</body>
+</html>

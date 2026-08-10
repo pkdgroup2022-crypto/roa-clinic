@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>이벤트 | 로아한의원 부천</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&family=Noto+Serif+KR:wght@400;600&display=swap" rel="stylesheet">
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+:root {
+    --dark: #0E0E0E; --gold: #B09060; --cream: #F4EFE6;
+    --warm: #FAF7F2; --red: #8B1A2A; --red-light: #fdf2f3;
+    --silver: #aaa; --mid: #666; --muted: #999; --border: #e8e0d8;
+}
+body { font-family: 'Noto Sans KR', sans-serif; background: #fff; color: var(--dark); }
+
+/* ─── Nav ─── */
+nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 0 2rem; height: 60px;
+    background: rgba(14,14,14,0.97); backdrop-filter: blur(8px);
+}
+.nav-logo { font-family: 'Noto Serif KR', serif; color: #fff; font-size: 1rem; font-weight: 600; text-decoration: none; }
+.nav-center { display: flex; gap: 2rem; list-style: none; }
+.nav-center a { color: #ccc; text-decoration: none; font-size: 0.88rem; transition: color 0.2s; }
+.nav-center a:hover, .nav-center a.active { color: #fff; }
+.hamburger { display: none; flex-direction: column; gap: 5px; background: none; border: none; cursor: pointer; padding: 4px; }
+.hamburger span { display: block; width: 22px; height: 2px; background: #fff; border-radius: 2px; }
+.mobile-menu {
+    display: none; flex-direction: column;
+    position: fixed; top: 60px; left: 0; right: 0; z-index: 99;
+    background: rgba(14,14,14,0.97); padding: 1rem 0;
+}
+.mobile-menu.open { display: flex; }
+.mobile-menu a { color: #ccc; text-decoration: none; padding: 0.85rem 2rem; font-size: 0.95rem; border-bottom: 1px solid #222; }
+.mobile-menu a:hover { color: #fff; background: #1a1a1a; }
+
+/* ─── Page Header ─── */
+.page-header {
+    margin-top: 60px; padding: 3rem 2rem 2rem;
+    text-align: center; background: var(--dark); color: #fff;
+}
+.page-header h1 { font-family: 'Noto Serif KR', serif; font-size: 2.2rem; font-weight: 600; letter-spacing: 0.15em; }
+.page-header p { color: #aaa; margin-top: 0.5rem; font-size: 0.9rem; }
+
+/* ─── Category Tabs ─── */
+.cat-wrap {
+    position: sticky; top: 60px; z-index: 50;
+    background: #fff; border-bottom: 2px solid var(--border);
+    overflow-x: auto; overflow-y: hidden;
+    -webkit-overflow-scrolling: touch; scrollbar-width: none;
+}
+.cat-wrap::-webkit-scrollbar { display: none; }
+.cat-tabs { display: flex; min-width: max-content; padding: 0 1.5rem; }
+.cat-tab {
+    padding: 1rem 1.4rem; font-size: 0.9rem; font-weight: 500;
+    color: var(--muted); border: none; background: none; cursor: pointer;
+    border-bottom: 3px solid transparent; white-space: nowrap;
+    transition: all 0.2s; margin-bottom: -2px;
+}
+.cat-tab:hover { color: var(--dark); }
+.cat-tab.active { color: var(--red); border-bottom-color: var(--red); font-weight: 700; }
+
+/* ─── Content Area ─── */
+.content-area { max-width: 1080px; margin: 0 auto; padding: 2.5rem 2rem 5rem; }
+
+/* ─── 이달의 이벤트 — 빨간 계열 ─── */
+.events-table { width: 100%; border-top: 2px solid var(--dark); }
+.event-row {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 1.3rem 0; border-bottom: 1px solid rgba(0,0,0,0.1);
+    gap: 2rem; transition: all 0.18s; cursor: default;
+}
+.event-row:hover { background: var(--red-light); padding-left: 1.4rem; padding-right: 1.4rem; margin: 0 -1.4rem; }
+.event-row-left { flex: 1; min-width: 0; }
+.event-row-name { font-family: 'Noto Serif KR', serif; font-size: clamp(1.1rem, 2vw, 1.45rem); font-weight: 600; color: var(--dark); line-height: 1.25; }
+.event-row-period { font-size: 0.82rem; font-weight: 600; letter-spacing: 0.04em; color: var(--mid); margin-top: 0.5rem; }
+.event-row-right { display: flex; align-items: center; gap: 0.9rem; flex-shrink: 0; flex-wrap: wrap; justify-content: flex-end; }
+.price-original { font-size: 0.88rem; color: var(--silver); text-decoration: line-through; }
+.price-arrow { color: var(--silver); font-size: 0.85rem; }
+.price-event { font-family: 'Noto Serif KR', serif; font-size: clamp(1.6rem, 2.8vw, 2.2rem); font-weight: 700; color: var(--red); }
+.vat-badge { font-size: 0.72rem; font-weight: 700; padding: 0.25rem 0.6rem; border-radius: 2px; letter-spacing: 0.04em; border: 1px solid; }
+.vat-badge.incl { color: #1a7a3f; border-color: #1a7a3f; background: #f0faf4; }
+.vat-badge.excl { color: var(--muted); border-color: var(--silver); background: transparent; }
+.price-badge { background: var(--red); color: #fff; font-size: 0.72rem; font-weight: 700; padding: 0.3rem 0.7rem; border-radius: 2px; letter-spacing: 0.04em; }
+
+/* ─── 프로그램 카드 그리드 ─── */
+.program-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.6rem; }
+.program-card {
+    background: #fff; border: 1px solid var(--border); border-radius: 12px;
+    overflow: hidden; cursor: pointer; transition: transform 0.2s, box-shadow 0.2s;
+    text-decoration: none; color: inherit; display: block;
+}
+.program-card:hover { transform: translateY(-4px); box-shadow: 0 12px 32px rgba(0,0,0,0.12); }
+.card-img {
+    width: 100%; aspect-ratio: 1 / 1; background: var(--cream);
+    display: flex; align-items: center; justify-content: center; overflow: hidden;
+}
+.card-img img { width: 100%; height: 100%; object-fit: contain; display: block; transition: transform 0.3s; }
+.program-card:hover .card-img img { transform: scale(1.05); }
+.card-img-placeholder {
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    width: 100%; height: 100%; color: #ccc; gap: 0.5rem; background: #f8f4f0;
+}
+.card-img-placeholder span { font-size: 2.5rem; }
+.card-img-placeholder p { font-size: 0.72rem; }
+.card-body { padding: 1rem 1.1rem 1.2rem; }
+.card-category { font-size: 0.7rem; color: var(--red); font-weight: 700; margin-bottom: 0.35rem; letter-spacing: 0.06em; }
+.card-name { font-size: 1.25rem; font-weight: 700; line-height: 1.4; color: var(--dark); font-family: 'Noto Serif KR', serif; }
+.card-desc { font-size: 0.8rem; color: var(--mid); margin-top: 0.4rem; line-height: 1.55; }
+.card-price-wrap { margin-top: 0.85rem; padding-top: 0.85rem; border-top: 1px solid var(--border); display: flex; align-items: baseline; gap: 0.4rem; }
+.card-price-from { font-size: 0.72rem; color: var(--muted); }
+.card-price { font-size: 1.2rem; font-weight: 800; color: var(--red); font-family: 'Noto Serif KR', serif; }
+.card-price-unit { font-size: 0.78rem; color: var(--mid); }
+
+/* ─── Empty / Loading ─── */
+.no-data { text-align: center; padding: 5rem 1rem; color: var(--muted); font-size: 0.9rem; }
+.empty-grid { grid-column: 1 / -1; text-align: center; padding: 5rem 1rem; color: var(--muted); }
+.empty-grid .icon { font-size: 2.5rem; margin-bottom: 0.8rem; }
+
+/* 탭 스크롤 힌트 화살표 */
+.cat-wrap { position: relative; }
+.cat-scroll-hint {
+    position: absolute; right: 0; top: 0; bottom: 0;
+    width: 2.5rem; pointer-events: none;
+    background: linear-gradient(to right, transparent, #fff 80%);
+    display: flex; align-items: center; justify-content: flex-end;
+    padding-right: 0.4rem; font-size: 1rem; color: #aaa;
+}
+
+/* ─── Lightbox ─── */
+.lightbox-overlay {
+    display: none; position: fixed; inset: 0; z-index: 200;
+    background: rgba(0,0,0,0.92);
+    align-items: flex-start; justify-content: center; cursor: pointer;
+    overflow-y: auto; padding: 3.5rem 0 2rem;
+}
+.lightbox-overlay.open { display: flex; }
+.lightbox-content { display: flex; flex-direction: column; gap: 1rem; cursor: default; }
+.lightbox-img { max-width: 92vw; object-fit: contain; border-radius: 8px; display: block; }
+.lightbox-close {
+    position: fixed; top: 1.2rem; right: 1.2rem;
+    background: rgba(255,255,255,0.15); border: none; color: #fff;
+    font-size: 1.6rem; width: 2.4rem; height: 2.4rem; border-radius: 50%;
+    cursor: pointer; display: flex; align-items: center; justify-content: center;
+    transition: background 0.2s;
+}
+.lightbox-close:hover { background: rgba(255,255,255,0.3); }
+
+/* ─── Mobile ─── */
+@media (max-width: 900px) {
+    .nav-center { display: none; }
+    .hamburger { display: flex; }
+    .program-grid { grid-template-columns: repeat(2, 1fr); gap: 1rem; }
+}
+@media (max-width: 540px) {
+    .page-header h1 { font-size: 1.6rem; }
+    .content-area { padding: 1.5rem 1rem 3rem; }
+    .cat-tab { padding: 0.85rem 1rem; font-size: 0.82rem; }
+    .event-row { flex-direction: column; align-items: flex-start; gap: 0.7rem; }
+    .event-row:hover { padding-left: 0; padding-right: 0; margin: 0; }
+    .event-row-right { justify-content: flex-start; gap: 0.6rem; }
+    .event-row-name { font-size: 1.05rem; }
+    .price-event { font-size: 1.3rem; }
+    .price-original { font-size: 0.75rem; }
+    .price-badge, .vat-badge { font-size: 0.62rem; padding: 0.2rem 0.45rem; }
+    /* 이달의 이벤트 - 모바일 1열, 이미지 크게 */
+    .event-cards-grid { grid-template-columns: 1fr !important; }
+    .event-cards-grid .card-img { aspect-ratio: 3 / 2; }
+}
+</style>
+</head>
+<body>
+
+<nav>
+    <a class="nav-logo" href="index.html">로아한의원 부천</a>
+    <ul class="nav-center">
+        <li><a href="events.html" class="active">시술메뉴/이벤트</a></li>
+        <li><a href="index.html#reviews">시술 후기</a></li>
+        <li><a href="index.html#impactStats">로아한의원 부천</a></li>
+        <li><a href="index.html#doctors">의료진 소개</a></li>
+        <li><a href="index.html#contact">오시는 길</a></li>
+    </ul>
+    <div class="nav-right">
+        <button class="hamburger" id="hamburger" aria-label="메뉴" onclick="toggleMenu()">
+            <span></span><span></span><span></span>
+        </button>
+    </div>
+</nav>
+
+<div class="mobile-menu" id="mobileMenu">
+    <a href="events.html" onclick="closeMenu()">시술메뉴/이벤트</a>
+    <a href="index.html#reviews" onclick="closeMenu()">시술 후기</a>
+    <a href="index.html#impactStats" onclick="closeMenu()">로아한의원 부천</a>
+    <a href="index.html#doctors" onclick="closeMenu()">의료진 소개</a>
+    <a href="index.html#contact" onclick="closeMenu()">오시는 길</a>
+</div>
+
+<div class="page-header">
+    <h1>E V E N T</h1>
+    <p>로아한의원 부천의 다양한 시술 이벤트를 확인해 보세요.</p>
+</div>
+
+<div class="cat-wrap" id="catWrap">
+    <div class="cat-tabs">
+        <button class="cat-tab active" data-cat="이달의 이벤트" onclick="selectCat(this)">이달의 이벤트</button>
+        <button class="cat-tab" data-cat="리프팅/탄력" onclick="selectCat(this)">리프팅/탄력</button>
+        <button class="cat-tab" data-cat="실리프팅" onclick="selectCat(this)">실리프팅</button>
+        <button class="cat-tab" data-cat="윤곽/지방제거" onclick="selectCat(this)">윤곽/지방제거</button>
+        <button class="cat-tab" data-cat="볼륨UP" onclick="selectCat(this)">볼륨UP</button>
+        <button class="cat-tab" data-cat="스킨부스터" onclick="selectCat(this)">스킨부스터</button>
+        <button class="cat-tab" data-cat="여드름/흉터" onclick="selectCat(this)">여드름/흉터</button>
+        <button class="cat-tab" data-cat="다이어트" onclick="selectCat(this)">다이어트</button>
+    </div>
+    <div class="cat-scroll-hint" id="scrollHint">›</div>
+</div>
+
+<div id="lightbox" class="lightbox-overlay" onclick="if(event.target===this||event.target.id==='lightbox')closeLightbox()">
+    <button class="lightbox-close" onclick="closeLightbox()">✕</button>
+    <div class="lightbox-content" id="lightboxContent"></div>
+</div>
+
+<div class="content-area" id="contentArea">
+    <p class="no-data">로딩 중…</p>
+</div>
+
+<script>
+const FIREBASE_URL = 'https://roa-clinic-default-rtdb.firebaseio.com/roa';
+
+const EVENT_CARDS = [
+    { id: 'event1', name: '⚡ 타임특가 이벤트',  desc: '한정 수량 타임특가 할인',   img: 'images/popup-event1-mo.png', imgs: ['images/popup-event1-mo.png'], price: '문의' },
+    { id: 'event2', name: '🌿 온다리프팅 이벤트', desc: '온다리프팅 특별 이벤트가',  img: 'images/popup-event2-mo.png', imgs: ['images/popup-event2-mo.png'], price: '문의' },
+    { id: 'event3', name: '🌟 8월 이벤트',       desc: '8월 한정 특별 이벤트',      img: 'images/popup-event3-mo.png', imgs: ['images/popup-event3-mo.png','images/popup-event4-mo.png'], price: '문의' },
+];
+
+const PROGRAMS = {
+    '리프팅/탄력': [
+        { id: 'ulthera',       name: '울쎄라피 프라임', desc: 'HIFU 고강도 집속 초음파 리프팅',        img: 'images/program-ulthera.png',       price: '590,000' },
+        { id: 'onda',          name: '온다리프팅',      desc: '마이크로파 에너지 심부 리프팅',          img: 'images/program-onda.png',          price: '220,000' },
+        { id: 'volnumer',      name: '볼뉴머',          desc: '고주파(RF) 콜라겐 재생 & 피부 탄력',    img: 'images/program-volnumer.png',      price: '300,000' },
+        { id: 'eye-volnumer',  name: '아이볼뉴머',      desc: '눈가 전용 고주파 탄력 개선',            img: 'images/program-eye-volnumer.png',  price: '280,000' },
+        { id: 'onsera',        name: '온쎄라',          desc: '온다+울쎄라 복합 리프팅',               img: 'images/program-onsera.png',        price: '750,000' },
+        { id: 'volsera',       name: '볼쎄라',          desc: '볼뉴머+울쎄라 복합 리프팅',             img: 'images/program-volsera.png',       price: '880,000' },
+    ],
+    '실리프팅': [
+        { id: 'oneday-silift', name: '원데이실리프팅',  desc: '수술 없이 당기는 프리미엄 실 리프팅',   img: 'images/program-oneday-silift.png', price: '720,000' },
+        { id: 'nose-silift',   name: '코 실리프팅',     desc: '수술 없이 콧대+코끝을 올리는 실리프팅', img: 'images/program-nose-silift.png',   price: '350,000' },
+        { id: 'nasolabial',    name: '팔자볼륨실',      desc: '팔자주름 개선 볼륨 실 리프팅',          img: 'images/program-nasolabial.png',    price: '340,000' },
+    ],
+    '윤곽/지방제거': [
+        { id: 'onda-body',     name: '온다리프팅',      desc: '마이크로파 에너지 바디 슬리밍',         img: 'images/program-onda.png',          price: '220,000' },
+        { id: 'slim-shot',     name: '슬림샷',          desc: '한약 성분 지방 분해 주사',              img: 'images/program-slim-shot.png',     price: '150,000' },
+        { id: 'body-slim',     name: '바디슬림샷',      desc: '바디 부위 집중 지방 분해',              img: 'images/program-body-slim.png',     price: '180,000' },
+        { id: 'slim-nose',     name: '슬림코약침',      desc: '코 부위 슬림 약침 (VAT별도)',            img: 'images/program-slim-nose.png',     price: '80,000' },
+    ],
+    '볼륨UP': [
+        { id: 'nasolabial2',   name: '팔자볼륨실',      desc: '팔자주름 개선 볼륨 실 리프팅',          img: 'images/program-nasolabial.png',    price: '340,000' },
+        { id: 'volume-shot',   name: '볼륨샷',          desc: '자가 콜라겐으로 만드는 입체 볼륨',      img: 'images/program-volume-shot.png',   price: '450,000' },
+    ],
+    '스킨부스터': [
+        { id: 'radiusse',      name: '라디쥬',          desc: '피부 수분·탄력 부스터 주사',            img: 'images/program-radiusse.png',      price: '220,000' },
+        { id: 'whitening',     name: '미백약침',        desc: '미백·피부톤 개선 약침',                 img: 'images/program-whitening.png',     price: '150,000' },
+        { id: 'exosome',       name: '엑소좀',          desc: '줄기세포 유래 피부 재생 치료',           img: 'images/program-exosome.png',       price: '220,000' },
+    ],
+    '여드름/흉터': [
+        { id: 'scar',          name: '흉터새살침',      desc: '흉터 재생 전문 약침',                   img: 'images/program-scar.png',          price: '130,000' },
+        { id: 'dermal',        name: '진피재생약침',    desc: '진피층 재생 촉진 약침',                 img: 'images/program-dermal.png',        price: '120,000' },
+        { id: 'anti-inflam',   name: '염증약침',        desc: '여드름 염증 진정 약침',                 img: 'images/program-anti-inflam.png',   price: '100,000' },
+        { id: 'radiusse2',     name: '라디쥬',          desc: '피부 진정·수분 부스터',                 img: 'images/program-radiusse.png',      price: '220,000' },
+    ],
+    '다이어트': [
+        { id: 'circulation',   name: '순환개선탕',      desc: '한방 순환 개선 다이어트 탕약 (1개월)',   img: 'images/program-circulation.png',   price: '400,000' },
+        { id: 'color-pill',    name: '컬러환',          desc: '한방 체중 관리 환약 (1개월)',           img: 'images/program-color-pill.png',    price: '180,000' },
+        { id: 'beauty-pill',   name: '미인환',          desc: '한방 미용 다이어트 환약 (1개월)',       img: 'images/program-beauty-pill.png',   price: '160,000' },
+    ],
+};
+
+let eventsData = [];
+let currentCat = '이달의 이벤트';
+
+function fmt(val) {
+    if (!val && val !== 0) return '';
+    const s = String(val).trim();
+    const n = parseInt(s.replace(/[^0-9]/g, ''));
+    if (isNaN(n) || !s.match(/^[\d,]+$/)) return s;
+    return n.toLocaleString('ko-KR') + '원';
+}
+function calcDiscount(orig, sale) {
+    const o = parseInt(String(orig).replace(/[^0-9]/g, ''));
+    const s = parseInt(String(sale).replace(/[^0-9]/g, ''));
+    if (!o || !s || o <= s) return '';
+    const pct = Math.round((1 - s / o) * 100);
+    return pct > 0 ? pct + '% OFF' : '';
+}
+function isOn(v) {
+    if (!v) return false;
+    return ['예','yes','true','1','on'].includes(String(v).toLowerCase().trim());
+}
+
+const TAB_TITLES = {
+    '이달의 이벤트':  '부천피부과 시술 한의원 | 로아한의원 부천 상동역',
+    '리프팅/탄력':   '상동피부과 시술 리프팅 탄력 | 로아한의원 부천',
+    '실리프팅':      '상동역피부과 시술 실리프팅 | 로아한의원 부천',
+    '윤곽/지방제거': '부천 피부과 윤곽 지방분해 시술 | 로아한의원 상동역',
+    '볼륨UP':       '상동 피부과 볼륨 시술 | 로아한의원 부천 상동역',
+    '스킨부스터':   '부천 피부과 스킨부스터 피부재생 | 로아한의원 상동역',
+    '여드름/흉터':  '부천 피부과 여드름 흉터 치료 | 로아한의원 상동역',
+    '다이어트':     '부천 다이어트 한의원 한방다이어트 | 로아한의원 상동역',
+};
+
+function setTabTitle(cat) {
+    document.title = TAB_TITLES[cat] || '이벤트 | 로아한의원 부천';
+}
+
+function selectCat(btn) {
+    document.querySelectorAll('.cat-tab').forEach(t => t.classList.remove('active'));
+    btn.classList.add('active');
+    currentCat = btn.dataset.cat;
+    sessionStorage.setItem('eventsTab', currentCat);
+    setTabTitle(currentCat);
+    render();
+}
+
+function openLightbox(srcs, alt) {
+    const arr = Array.isArray(srcs) ? srcs : [srcs];
+    document.getElementById('lightboxContent').innerHTML =
+        arr.map(s => `<img class="lightbox-img" src="${s}" alt="${alt}">`).join('');
+    const lb = document.getElementById('lightbox');
+    lb.scrollTop = 0;
+    lb.classList.add('open');
+    document.body.style.overflow = 'hidden';
+}
+function closeLightbox() {
+    document.getElementById('lightbox').classList.remove('open');
+    document.body.style.overflow = '';
+}
+
+(function initScrollHint() {
+    const wrap = document.getElementById('catWrap');
+    const hint = document.getElementById('scrollHint');
+    if (!wrap || !hint) return;
+    const update = () => {
+        const atEnd = wrap.scrollLeft + wrap.clientWidth >= wrap.scrollWidth - 4;
+        hint.style.opacity = atEnd ? '0' : '1';
+        hint.style.pointerEvents = atEnd ? 'none' : 'none';
+    };
+    wrap.addEventListener('scroll', update, { passive: true });
+    window.addEventListener('resize', update);
+    update();
+})();
+
+function render() {
+    const area = document.getElementById('contentArea');
+
+    if (currentCat === '이달의 이벤트') {
+        area.innerHTML = '<div class="program-grid event-cards-grid">' +
+            EVENT_CARDS.map(it => `
+                <a class="program-card" href="program.html?id=${it.id}">
+                    <div class="card-img">
+                        <img src="${it.img}" alt="${it.name} | 로아한의원 부천">
+                    </div>
+                    <div class="card-body">
+                        <div class="card-name">${it.name}</div>
+                        ${it.desc ? `<div class="card-desc">${it.desc}</div>` : ''}
+                        <div class="card-price-wrap">
+                            <span class="card-price-from">자세히 보기 →</span>
+                        </div>
+                    </div>
+                </a>`).join('') + '</div>';
+        return;
+    }
+
+    const items = PROGRAMS[currentCat] || [];
+    if (!items.length) {
+        area.innerHTML = `<div class="program-grid"><div class="empty-grid"><div class="icon">🗓️</div><p>프로그램이 곧 업로드됩니다.</p></div></div>`;
+        return;
+    }
+    area.innerHTML = '<div class="program-grid">' +
+        items.map(it => `
+            <a class="program-card" href="program.html?id=${it.id}" >
+                <div class="card-img">
+                    ${it.img
+                        ? `<img src="${it.img}" alt="${it.name} | 로아한의원 부천">`
+                        : `<div class="card-img-placeholder"><span>📷</span><p>이미지 준비 중</p></div>`
+                    }
+                </div>
+                <div class="card-body">
+                    <div class="card-name">${it.name}</div>
+                    ${it.desc ? `<div class="card-desc">${it.desc}</div>` : ''}
+                    <div class="card-price-wrap">
+                        <span class="card-price">${it.price}</span>
+                        <span class="card-price-unit">원~</span>
+                    </div>
+                </div>
+            </a>`).join('') + '</div>';
+}
+
+async function loadData() {
+    try {
+        const res = await fetch(FIREBASE_URL + '.json?shallow=false', { signal: AbortSignal.timeout(4000) });
+        const raw = await res.json();
+        if (raw && raw.events) {
+            const d = raw.events;
+            eventsData = Array.isArray(d) ? d : Object.values(d);
+        } else { eventsData = DEMO_EVENTS; }
+    } catch { eventsData = DEMO_EVENTS; }
+    render();
+}
+
+function toggleMenu() { document.getElementById('mobileMenu').classList.toggle('open'); }
+function closeMenu()   { document.getElementById('mobileMenu').classList.remove('open'); }
+
+// 뒤로가기 후 탭 복원
+(function restoreTab() {
+    const saved = sessionStorage.getItem('eventsTab');
+    if (saved && (PROGRAMS[saved] || saved === '이달의 이벤트')) {
+        currentCat = saved;
+        const btn = document.querySelector(`.cat-tab[data-cat="${saved}"]`);
+        if (btn) {
+            document.querySelectorAll('.cat-tab').forEach(t => t.classList.remove('active'));
+            btn.classList.add('active');
+        }
+    }
+    setTabTitle(currentCat);
+})();
+
+loadData();
+</script>
+</body>
+</html>
