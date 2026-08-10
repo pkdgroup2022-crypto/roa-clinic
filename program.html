@@ -48,8 +48,29 @@ nav {
 .mobile-menu a:hover { color: #fff; background: #1a1a1a; }
 
 /* ─── Hero ─── */
+/* ─── 시술메뉴 서브내비 ─── */
+.subnav {
+    margin-top: 60px; position: sticky; top: 60px; z-index: 90;
+    background: #fff; border-bottom: 1px solid var(--border);
+    overflow-x: auto; overflow-y: hidden; scrollbar-width: none;
+}
+.subnav::-webkit-scrollbar { display: none; }
+.subnav-inner {
+    display: flex; min-width: max-content; padding: 0 1.5rem;
+    width: 100%; justify-content: center;
+}
+.subnav-btn {
+    padding: 0.78rem 1.1rem; font-size: 0.84rem; font-weight: 500;
+    color: var(--muted); border: none; background: none; cursor: pointer;
+    border-bottom: 2px solid transparent; white-space: nowrap;
+    transition: all 0.18s; margin-bottom: -1px;
+    font-family: 'Noto Sans KR', sans-serif;
+}
+.subnav-btn:hover { color: var(--dark); }
+.subnav-btn.active { color: var(--red); border-bottom-color: var(--red); font-weight: 700; }
+
 .hero {
-    margin-top: 60px;
+    margin-top: 0;
     background: #fff;
     max-width: 860px; margin-left: auto; margin-right: auto;
     padding: 0 0 2.5rem;
@@ -58,11 +79,8 @@ nav {
     padding: 1.8rem 2rem 1.2rem;
     border-bottom: 1px solid var(--border);
 }
-.hero-img {
-    width: 100%; background: var(--cream);
-    display: flex; align-items: center; justify-content: center; overflow: hidden;
-}
-.hero-img img { width: 100%; max-height: 480px; object-fit: contain; display: block; }
+.hero-img { width: 100%; }
+.hero-img img { width: 100%; height: auto; display: block; }
 .hero-info { padding: 1.8rem 2rem 0; }
 .hero-category {
     display: inline-block; font-size: 0.72rem; color: var(--red);
@@ -179,17 +197,18 @@ nav {
 .seo-section strong { color: var(--dark); }
 
 /* ─── 시술 후기 사진 (홈페이지와 동일 스타일) ─── */
-.review-section { max-width: 860px; margin: 0 auto; padding: 0 0 2rem; }
-.review-section-title { font-family: 'Noto Serif KR', serif; font-size: 1.3rem; font-weight: 600; margin: 0 2rem 0.5rem; }
+.review-section { max-width: 860px; margin: 0 auto; padding: 0 2rem 2rem; }
+.review-section-title { font-family: 'Noto Serif KR', serif; font-size: 1.3rem; font-weight: 600; margin: 0 0 0.5rem; }
 .review-section-title span { color: var(--gold); }
-.review-guide { font-size: 0.82rem; color: var(--muted); margin: 0 2rem 1.2rem; }
+.review-guide { font-size: 0.82rem; color: var(--muted); margin: 0 0 1.2rem; }
 .review-carousel { position: relative; overflow: hidden; }
-.review-track { display: flex; transition: transform 0.4s cubic-bezier(.4,0,.2,1); }
-.review-slide { min-width: 100%; flex-shrink: 0; }
+.review-track { display: flex; width: 100%; transition: transform 0.4s cubic-bezier(.4,0,.2,1); }
+.review-slide { flex: 0 0 100%; width: 100%; min-width: 0; }
 .slide-header { padding: 1rem 2rem 0.6rem; }
-.slide-subtitle { font-size: 0.72rem; letter-spacing: 0.12em; color: var(--muted); text-transform: uppercase; margin-bottom: 0.2rem; }
-.slide-title { font-size: 0.88rem; font-weight: 600; color: var(--dark); }
-.slide-photos { display: flex; flex-shrink: 0; aspect-ratio: 2/1; }
+.slide-subtitle { font-size: 0.78rem; letter-spacing: 0.12em; color: var(--red); font-weight: 700; text-transform: uppercase; margin-bottom: 0.3rem; }
+.slide-title { font-size: 1.05rem; font-weight: 700; color: var(--dark); }
+.slide-note { font-size: 0.8rem; color: var(--mid); line-height: 1.6; padding: 0.6rem 2rem 0.2rem; white-space: pre-line; }
+.slide-photos { display: flex; width: 100%; aspect-ratio: 2/1; }
 .slide-photo { flex: 0 0 50%; width: 50%; overflow: hidden; background: #e8e8e8; }
 .slide-photo + .slide-photo { border-left: 1px solid #e0e0e0; }
 .slide-photo img { display: block; width: 100%; height: 100%; object-fit: cover; object-position: top center; }
@@ -214,7 +233,7 @@ nav {
 }
 
 /* ─── 이벤트 전용 레이아웃 ─── */
-#eventLayout { display: none; max-width: 860px; margin: 80px auto 0; padding-bottom: 4rem; }
+#eventLayout { display: none; max-width: 860px; margin: 0 auto; padding-bottom: 4rem; }
 .event-images { display: flex; flex-direction: column; gap: 0; }
 .event-images img { width: 100%; display: block; }
 .event-seo { padding: 3rem 2rem 1rem; }
@@ -228,7 +247,8 @@ nav {
 @media (max-width: 900px) {
     .nav-center { display: none; }
     .hamburger { display: flex; }
-    .hero { margin-top: 60px; }
+    .hero { margin-top: 0; }
+    .subnav { margin-top: 60px; }
     .hero-info { padding: 1.5rem 1.2rem 0; }
     .points-grid { grid-template-columns: 1fr; gap: 0.8rem; }
     .point-card { text-align: left; display: flex; align-items: flex-start; gap: 1rem; }
@@ -265,6 +285,20 @@ nav {
         <a href="index.html#contact">오시는 길</a>
     </div>
 </nav>
+
+<!-- 시술메뉴 서브내비 -->
+<div class="subnav">
+    <div class="subnav-inner">
+        <button class="subnav-btn" data-cat="이달의 이벤트" onclick="goToEvents('이달의 이벤트')">이달의 이벤트</button>
+        <button class="subnav-btn" data-cat="리프팅/탄력" onclick="goToEvents('리프팅/탄력')">리프팅/탄력</button>
+        <button class="subnav-btn" data-cat="실리프팅" onclick="goToEvents('실리프팅')">실리프팅</button>
+        <button class="subnav-btn" data-cat="윤곽/지방제거" onclick="goToEvents('윤곽/지방제거')">윤곽/지방제거</button>
+        <button class="subnav-btn" data-cat="볼륨UP" onclick="goToEvents('볼륨UP')">볼륨UP</button>
+        <button class="subnav-btn" data-cat="스킨부스터" onclick="goToEvents('스킨부스터')">스킨부스터</button>
+        <button class="subnav-btn" data-cat="여드름/흉터" onclick="goToEvents('여드름/흉터')">여드름/흉터</button>
+        <button class="subnav-btn" data-cat="다이어트" onclick="goToEvents('다이어트')">다이어트</button>
+    </div>
+</div>
 
 <!-- 이벤트 전용 레이아웃 -->
 <div id="eventLayout">
@@ -305,7 +339,10 @@ nav {
         <button class="review-nav next" onclick="reviewMove(1)">&#8250;</button>
     </div>
     <div class="review-dots" id="reviewDots"></div>
-    <p class="review-disclaimer">※ 시술 효과는 개인마다 상이할 수 있습니다. 사진은 실제 내원 고객의 후기입니다.</p>
+    <p class="review-disclaimer">※ 시술의 효과는 개별적으로 상이할 수 있으며, 특정한 효과를 보장하거나 일반화하지 않습니다.<br>
+        ※ 사진은 보정되지 않은 사진입니다.<br>
+        ※ 시술 후 일시적으로 붓기, 멍, 통증, 염증 등의 부작용이 발생할 수 있습니다.<br>
+        ※ 시술 여부 및 방법은 의료진과의 충분한 상담을 통해 결정되어야 하며, 부작용 가능성에 대해 사전에 설명을 받으시기 바랍니다.</p>
 </div>
 
 <!-- 효과 -->
@@ -395,6 +432,7 @@ async function loadReviewPhotos(id) {
         const afterUrl   = toDirectUrl(p['후사진URL'] || p.afterUrl  || '');
         const beforeDate = p['시술전날짜'] || p.beforeDate || '';
         const afterDate  = p['시술후날짜'] || p.afterDate  || '';
+        const note       = p['노트'] || p.note || '';
         return `<div class="review-slide">
             <div class="slide-header">
                 <div class="slide-subtitle">Before &amp; After</div>
@@ -412,6 +450,7 @@ async function loadReviewPhotos(id) {
                 <div class="slide-label-cell"><span class="photo-label before">Before</span><span class="photo-date">${beforeDate}</span></div>
                 <div class="slide-label-cell"><span class="photo-label after">After</span><span class="photo-date">${afterDate}</span></div>
             </div>
+            ${note ? `<div class="slide-note">${note}</div>` : ''}
         </div>`;
     }).join('');
 
@@ -2182,6 +2221,18 @@ function render() {
 
     // SEO
     document.getElementById('seoSection').innerHTML = p.seo;
+
+    // 서브내비 현재 카테고리 하이라이트
+    if (p.category) {
+        document.querySelectorAll('.subnav-btn').forEach(btn => {
+            btn.classList.toggle('active', btn.dataset.cat === p.category);
+        });
+    }
+}
+
+function goToEvents(cat) {
+    sessionStorage.setItem('eventsTab', cat);
+    location.href = 'events.html';
 }
 
 // 시술 후기 캐러셀
@@ -2190,7 +2241,8 @@ function reviewGoTo(i) {
     const slides = document.querySelectorAll('.review-slide');
     if (!slides.length) return;
     reviewIdx = (i + slides.length) % slides.length;
-    document.getElementById('reviewTrack').style.transform = `translateX(-${reviewIdx * 100}%)`;
+    const w = document.getElementById('reviewCarousel').offsetWidth;
+    document.getElementById('reviewTrack').style.transform = `translateX(-${reviewIdx * w}px)`;
     document.querySelectorAll('.review-dot').forEach((d, j) => d.classList.toggle('active', j === reviewIdx));
 }
 function reviewMove(dir) { reviewGoTo(reviewIdx + dir); }
