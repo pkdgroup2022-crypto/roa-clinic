@@ -2789,8 +2789,7 @@ function render(data) {
     renderInfo(info);
     renderClinicStats(data.clinicStats || {});
     renderEvents(events);
-    renderTreatmentSection('signatureContainer', 'Signature',      data.programs || []);
-    renderTreatmentSection('customContainer',    'Custom Lifting', data.programs || []);
+    renderTreatmentSection('signatureContainer', 'Signature', data.programs || []);
     renderGallery(data.photos      || []);
 }
 
