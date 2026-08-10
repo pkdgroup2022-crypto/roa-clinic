@@ -343,89 +343,92 @@ nav {
 const NAVER_BOOKING = 'https://booking.naver.com/booking/13/bizes/1064400953';
 
 /* 각 시술 ID → Firebase 사진의 시술명 필터 키워드 (복수 가능, OR 조건) */
+/* 시술 ID → Firebase 시술명 필터 키워드 */
 const REVIEW_KEYWORDS = {
-    ulthera:        ['울쎄라피 프라임'],
-    onda:           ['온다 리프팅'],
-    'oneday-silift':['원데이 실리프팅'],
-    'slim-shot':    ['슬림샷'],
-    'volume-shot':  ['볼륨샷'],
-    volsera:        ['울쎄라피 프라임', '볼륨샷'],
-    onsera:         ['울쎄라피 프라임', '온다 리프팅'],
-    nasolabial:     ['팔자주름'],
+    ulthera:         ['울쎄라피 프라임'],
+    onda:            ['온다 리프팅'],
+    onsera:          ['온다 리프팅', '울쎄라피 프라임'],
+    volsera:         ['울쎄라피 프라임'],
+    'oneday-silift': ['원데이 실리프팅'],
+    'nose-silift':   ['코 실리프팅'],
+    nasolabial:      ['팔자주름'],
+    'slim-shot':     ['슬림샷'],
+    'volume-shot':   ['볼륨샷'],
 };
 
 const FIREBASE_URL = 'https://roa-clinic-default-rtdb.firebaseio.com/roa';
 
-/* Firebase 사진 로드 후 해당 시술 후기만 표시 */
+function toDirectUrl(url) {
+    const m = url && url.match(/\/file\/d\/([^/]+)/);
+    return m ? `https://drive.google.com/thumbnail?id=${m[1]}&sz=w1000` : url;
+}
+
+function isPhotoOn(v) {
+    return v === undefined || v === true || v === 1 || v === '1' || v === 'true' || v === 'on' || v === '예';
+}
+
 async function loadReviewPhotos(id) {
     const keywords = REVIEW_KEYWORDS[id];
     const reviewSection = document.getElementById('reviewSection');
     if (!keywords) { reviewSection.style.display = 'none'; return; }
+
+    let photos = [];
     try {
         const res = await fetch(FIREBASE_URL + '.json?t=' + Date.now());
         const fb = await res.json();
         const toArr = v => Array.isArray(v) ? v : (v ? Object.values(v) : []);
-        const isOn = v => v === undefined || v === true || v === 1 || v === '1' || v === 'true' || v === 'on' || v === '예';
-        const toDirectUrl = url => {
-            const m = url && url.match(/\/file\/d\/([^/]+)/);
-            return m ? `https://drive.google.com/thumbnail?id=${m[1]}&sz=w1000` : url;
-        };
-        let photos = toArr(fb && fb.photos)
-            .filter(p => isOn(p['표시'] ?? p.show))
-            .filter(p => {
-                const name = p['시술명'] || p.title || '';
-                return keywords.some(k => name.includes(k));
-            });
-        buildReviewCarousel(photos, id);
+        photos = toArr(fb && fb.photos)
+            .filter(p => isPhotoOn(p['표시'] ?? p.show))
+            .filter(p => keywords.some(k => (p['시술명'] || p.title || '').includes(k)));
     } catch(e) {
         reviewSection.style.display = 'none';
         return;
     }
-    function buildReviewCarousel(photos, id) {
-        const reviewSection = document.getElementById('reviewSection');
-        if (!photos.length) { reviewSection.style.display = 'none'; return; }
-        reviewSection.style.display = 'block';
-        const track = document.getElementById('reviewTrack');
-        track.innerHTML = photos.map(p => {
-            const title = p['시술명'] || p.title || '';
-            const beforeUrl = toDirectUrl(p['전사진URL'] || p.beforeUrl || '');
-            const afterUrl  = toDirectUrl(p['후사진URL'] || p.afterUrl  || '');
-            const beforeDate = p['시술전날짜'] || p.beforeDate || '';
-            const afterDate  = p['시술후날짜'] || p.afterDate  || '';
-            return `<div class="review-slide">
-                <div class="slide-header">
-                    <div class="slide-subtitle">Before &amp; After</div>
-                    ${title ? `<div class="slide-title">${title}</div>` : ''}
-                </div>
-                <div class="slide-photos">
-                    <div class="slide-photo">
-                        ${beforeUrl ? `<img src="${beforeUrl}" alt="Before" loading="lazy">` : '<div style="background:#e8e8e8;width:100%;height:100%;display:flex;align-items:center;justify-content:center;color:#999;font-size:0.8rem;">사진 없음</div>'}
-                    </div>
-                    <div class="slide-photo">
-                        ${afterUrl ? `<img src="${afterUrl}" alt="After" loading="lazy">` : '<div style="background:#e8e8e8;width:100%;height:100%;display:flex;align-items:center;justify-content:center;color:#999;font-size:0.8rem;">사진 없음</div>'}
-                    </div>
-                </div>
-                <div class="slide-labels">
-                    <div class="slide-label-cell"><span class="photo-label before">Before</span><span class="photo-date">${beforeDate}</span></div>
-                    <div class="slide-label-cell"><span class="photo-label after">After</span><span class="photo-date">${afterDate}</span></div>
-                </div>
-            </div>`;
-        }).join('');
-        const dots = document.getElementById('reviewDots');
-        dots.innerHTML = photos.map((_, i) =>
-            `<button class="review-dot${i === 0 ? ' active' : ''}" onclick="reviewGoTo(${i})"></button>`
-        ).join('');
-        reviewGoTo(0);
 
-        // 터치 스와이프
-        const wrap = document.getElementById('reviewCarousel');
-        let tx = 0;
-        wrap.addEventListener('touchstart', e => { tx = e.touches[0].clientX; }, {passive:true});
-        wrap.addEventListener('touchend',   e => {
-            const diff = tx - e.changedTouches[0].clientX;
-            if (Math.abs(diff) > 45) reviewMove(diff > 0 ? 1 : -1);
-        });
-    }
+    if (!photos.length) { reviewSection.style.display = 'none'; return; }
+
+    reviewSection.style.display = 'block';
+    const track = document.getElementById('reviewTrack');
+    track.innerHTML = photos.map(p => {
+        const title      = p['시술명'] || p.title || '';
+        const beforeUrl  = toDirectUrl(p['전사진URL'] || p.beforeUrl || '');
+        const afterUrl   = toDirectUrl(p['후사진URL'] || p.afterUrl  || '');
+        const beforeDate = p['시술전날짜'] || p.beforeDate || '';
+        const afterDate  = p['시술후날짜'] || p.afterDate  || '';
+        return `<div class="review-slide">
+            <div class="slide-header">
+                <div class="slide-subtitle">Before &amp; After</div>
+                ${title ? `<div class="slide-title">${title}</div>` : ''}
+            </div>
+            <div class="slide-photos">
+                <div class="slide-photo">
+                    ${beforeUrl ? `<img src="${beforeUrl}" alt="Before" loading="lazy">` : '<div style="background:#e8e8e8;width:100%;height:100%;display:flex;align-items:center;justify-content:center;color:#999;font-size:0.8rem;">사진 없음</div>'}
+                </div>
+                <div class="slide-photo">
+                    ${afterUrl ? `<img src="${afterUrl}" alt="After" loading="lazy">` : '<div style="background:#e8e8e8;width:100%;height:100%;display:flex;align-items:center;justify-content:center;color:#999;font-size:0.8rem;">사진 없음</div>'}
+                </div>
+            </div>
+            <div class="slide-labels">
+                <div class="slide-label-cell"><span class="photo-label before">Before</span><span class="photo-date">${beforeDate}</span></div>
+                <div class="slide-label-cell"><span class="photo-label after">After</span><span class="photo-date">${afterDate}</span></div>
+            </div>
+        </div>`;
+    }).join('');
+
+    const dots = document.getElementById('reviewDots');
+    dots.innerHTML = photos.map((_, i) =>
+        `<button class="review-dot${i === 0 ? ' active' : ''}" onclick="reviewGoTo(${i})"></button>`
+    ).join('');
+    reviewGoTo(0);
+
+    // 터치 스와이프
+    const wrap = document.getElementById('reviewCarousel');
+    let tx = 0;
+    wrap.addEventListener('touchstart', e => { tx = e.touches[0].clientX; }, {passive:true});
+    wrap.addEventListener('touchend', e => {
+        const diff = tx - e.changedTouches[0].clientX;
+        if (Math.abs(diff) > 45) reviewMove(diff > 0 ? 1 : -1);
+    });
 }
 
 
