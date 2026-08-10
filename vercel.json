@@ -18,6 +18,8 @@
     { "source": "/부천-흉터새살침",      "destination": "/program.html?id=scar" },
     { "source": "/부천-염증약침",         "destination": "/program.html?id=anti-inflam" },
     { "source": "/부천-진피재생약침",     "destination": "/program.html?id=dermal" },
-    { "source": "/부천-다이어트한약",     "destination": "/program.html?id=circulation" }
+    { "source": "/부천-다이어트한약",     "destination": "/program.html?id=circulation" },
+    { "source": "/부천-컬러환",           "destination": "/program.html?id=color-pill" },
+    { "source": "/부천-미인환",           "destination": "/program.html?id=beauty-pill" }
   ]
 }
