@@ -207,7 +207,11 @@ nav {
 .slide-header { padding: 1rem 2rem 0.6rem; }
 .slide-subtitle { font-size: 0.78rem; letter-spacing: 0.12em; color: var(--red); font-weight: 700; text-transform: uppercase; margin-bottom: 0.3rem; }
 .slide-title { font-size: 1.05rem; font-weight: 700; color: var(--dark); }
-.slide-note { font-size: 0.8rem; color: var(--mid); line-height: 1.6; padding: 0.6rem 2rem 0.2rem; white-space: pre-line; }
+.slide-note { padding: 1rem 1.4rem 1.2rem; background: #fafafa; border-top: 1px solid #eee; }
+.slide-note-title { font-size: 0.78rem; font-weight: 700; letter-spacing: 0.15em; text-transform: uppercase; color: var(--red); margin-bottom: 0.6rem; }
+.slide-note-row { display: flex; gap: 0.8rem; align-items: baseline; font-size: 0.92rem; line-height: 1.7; color: #333; margin-bottom: 0.25rem; }
+.note-label { font-weight: 700; color: #555; flex-shrink: 0; min-width: 2.4rem; }
+.note-val { color: #333; }
 .slide-photos { display: flex; width: 100%; aspect-ratio: 2/1; }
 .slide-photo { flex: 0 0 50%; width: 50%; overflow: hidden; background: #e8e8e8; }
 .slide-photo + .slide-photo { border-left: 1px solid #e0e0e0; }
@@ -432,7 +436,10 @@ async function loadReviewPhotos(id) {
         const afterUrl   = toDirectUrl(p['후사진URL'] || p.afterUrl  || '');
         const beforeDate = p['시술전날짜'] || p.beforeDate || '';
         const afterDate  = p['시술후날짜'] || p.afterDate  || '';
-        const note       = p['노트'] || p.note || '';
+        const concern    = p['고민'] || '';
+        const cause      = p['원인'] || '';
+        const solution   = p['해결'] || '';
+        const hasNote    = concern || cause || solution;
         return `<div class="review-slide">
             <div class="slide-header">
                 <div class="slide-subtitle">Before &amp; After</div>
@@ -450,7 +457,12 @@ async function loadReviewPhotos(id) {
                 <div class="slide-label-cell"><span class="photo-label before">Before</span><span class="photo-date">${beforeDate}</span></div>
                 <div class="slide-label-cell"><span class="photo-label after">After</span><span class="photo-date">${afterDate}</span></div>
             </div>
-            ${note ? `<div class="slide-note">${note}</div>` : ''}
+            ${hasNote ? `<div class="slide-note">
+                <div class="slide-note-title">시술 노트</div>
+                ${concern  ? `<div class="slide-note-row"><span class="note-label">고민</span><span class="note-val">${concern}</span></div>` : ''}
+                ${cause    ? `<div class="slide-note-row"><span class="note-label">원인</span><span class="note-val">${cause}</span></div>` : ''}
+                ${solution ? `<div class="slide-note-row"><span class="note-label">해결</span><span class="note-val">${solution}</span></div>` : ''}
+            </div>` : ''}
         </div>`;
     }).join('');
 
