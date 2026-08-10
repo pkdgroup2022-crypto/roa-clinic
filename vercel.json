@@ -1,13 +1,23 @@
 {
-  "headers": [
-    {
-      "source": "/(.*)",
-      "headers": [
-        {
-          "key": "Referrer-Policy",
-          "value": "unsafe-url"
-        }
-      ]
-    }
+  "rewrites": [
+    { "source": "/부천-울쎄라",         "destination": "/program.html?id=ulthera" },
+    { "source": "/부천-온다리프팅",      "destination": "/program.html?id=onda" },
+    { "source": "/부천-볼뉴머",          "destination": "/program.html?id=volnumer" },
+    { "source": "/부천-아이볼뉴머",      "destination": "/program.html?id=eye-volnumer" },
+    { "source": "/부천-온쎄라",          "destination": "/program.html?id=onsera" },
+    { "source": "/부천-볼쎄라",          "destination": "/program.html?id=volsera" },
+    { "source": "/부천-원데이실리프팅",  "destination": "/program.html?id=oneday-silift" },
+    { "source": "/부천-코실리프팅",      "destination": "/program.html?id=nose-silift" },
+    { "source": "/부천-팔자볼륨실",      "destination": "/program.html?id=nasolabial" },
+    { "source": "/부천-슬림샷",          "destination": "/program.html?id=slim-shot" },
+    { "source": "/부천-바디슬림샷",      "destination": "/program.html?id=body-slim" },
+    { "source": "/부천-볼륨샷",          "destination": "/program.html?id=volume-shot" },
+    { "source": "/부천-라디쥬",          "destination": "/program.html?id=radiusse" },
+    { "source": "/부천-미백약침",         "destination": "/program.html?id=whitening" },
+    { "source": "/부천-엑소좀",          "destination": "/program.html?id=exosome" },
+    { "source": "/부천-흉터새살침",      "destination": "/program.html?id=scar" },
+    { "source": "/부천-염증약침",         "destination": "/program.html?id=anti-inflam" },
+    { "source": "/부천-진피재생약침",     "destination": "/program.html?id=dermal" },
+    { "source": "/부천-다이어트한약",     "destination": "/program.html?id=circulation" }
   ]
 }
