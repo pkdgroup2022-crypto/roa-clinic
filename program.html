@@ -2186,7 +2186,7 @@ function render() {
     const img = document.getElementById('heroImg');
     img.src = p.img; img.alt = `${p.name} | 로아한의원 부천`;
     document.getElementById('heroCategory').textContent = p.category;
-    document.getElementById('heroName').textContent = p.name + ' 이벤트';
+    document.getElementById('heroName').textContent = '부천 ' + p.name;
     document.getElementById('heroSubtitle').textContent = p.subtitle || '';
     document.getElementById('heroDesc').textContent = p.desc;
     document.getElementById('priceList').innerHTML = (p.prices || []).map(r =>
@@ -2233,6 +2233,27 @@ function render() {
 
     // SEO
     document.getElementById('seoSection').innerHTML = p.seo;
+
+    // FAQPage 구조화 데이터 — SEO 섹션 Q&A 자동 추출
+    const faqs = [];
+    document.querySelectorAll('#seoSection h3').forEach(h3 => {
+        if (h3.textContent.trim().startsWith('Q.')) {
+            const ans = h3.nextElementSibling;
+            if (ans && ans.tagName === 'P') {
+                faqs.push({
+                    '@type': 'Question',
+                    'name': h3.textContent.trim(),
+                    'acceptedAnswer': { '@type': 'Answer', 'text': ans.textContent.trim() }
+                });
+            }
+        }
+    });
+    if (faqs.length) {
+        const el = document.createElement('script');
+        el.type = 'application/ld+json';
+        el.textContent = JSON.stringify({ '@context': 'https://schema.org', '@type': 'FAQPage', 'mainEntity': faqs });
+        document.head.appendChild(el);
+    }
 
     // 서브내비 현재 카테고리 하이라이트
     if (p.category) {
