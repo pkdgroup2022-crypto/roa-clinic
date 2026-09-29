@@ -105,6 +105,7 @@ nav {
 }
 .price-row:first-child { border-top: 2px solid var(--dark); }
 .price-row-name { font-size: 0.95rem; color: var(--dark); font-weight: 500; flex: 1; }
+.price-row-note { font-size: 0.78rem; color: var(--muted); font-weight: 400; }
 .price-row-amount {
     font-family: 'Noto Serif KR', serif; font-size: 1.25rem;
     font-weight: 700; color: var(--red); flex-shrink: 0;
@@ -1734,9 +1735,10 @@ const PROGRAMS = {
         desc: '흉터 부위에 조직 재생을 촉진하는 한약 성분을 직접 주입해 흉터를 새살로 채우고 피부 표면을 개선하는 시술입니다.',
         img: 'images/program-scar.png',
         prices: [
-            { name: '흉터새살침 1개당', amount: '90,000' },
-            { name: '반명함 사이즈', amount: '180,000' },
-            { name: '명함 사이즈', amount: '270,000' },
+            { name: '흉터 1개 체험가', amount: '50,000' },
+            { name: '흉터 1부위 체험가', amount: '130,000' },
+            { name: '흉터 2부위 체험가', amount: '230,000' },
+            { name: '흉터패키지 새살침 1부위+라디쥬', amount: '266,000', note: '패키지 시 적용' },
         ],
         priceNote: '* VAT 별도 · 정확한 가격은 상담 후 확정',
         pointsTitle: '흉터새살침의 특징',
@@ -2192,7 +2194,7 @@ function render() {
     document.getElementById('heroDesc').textContent = p.desc;
     document.getElementById('priceList').innerHTML = (p.prices || []).map(r =>
         `<div class="price-row">
-            <span class="price-row-name">${r.name}</span>
+            <span class="price-row-name">${r.name}${r.note ? `<span class="price-row-note"> (${r.note})</span>` : ''}</span>
             <span class="price-row-amount">${r.amount}<span>원~</span></span>
         </div>`
     ).join('');
