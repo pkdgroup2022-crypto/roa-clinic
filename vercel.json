@@ -1,6 +1,8 @@
 {
   "rewrites": [
-    { "source": "/부천-피부과",           "destination": "/부천-피부과.html" },
+    { "source": "/부천-피부과",            "destination": "/부천-피부과.html" },
+    { "source": "/상동-피부과",            "destination": "/상동-피부과.html" },
+    { "source": "/부천시청-피부과",        "destination": "/부천시청-피부과.html" },
     { "source": "/부천-울쎄라",         "destination": "/부천-울쎄라.html" },
     { "source": "/부천-온다리프팅",      "destination": "/부천-온다리프팅.html" },
     { "source": "/부천-볼뉴머",          "destination": "/부천-볼뉴머.html" },
