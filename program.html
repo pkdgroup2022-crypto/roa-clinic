@@ -2254,10 +2254,10 @@ const PROGRAMS = {
 
 async function render() {
     const id = new URLSearchParams(location.search).get('id') || 'ulthera';
-    const p = PROGRAMS[id];
-    if (!p) { document.body.innerHTML = '<p style="padding:4rem;text-align:center">페이지를 찾을 수 없습니다.</p>'; return; }
+    let p = PROGRAMS[id];
 
     // Firebase programs에서 관리자가 설정한 썸네일·가격옵션 오버라이드
+    // PROGRAMS에 없는 id면 Firebase에서 직접 빌드
     try {
         const res = await fetch(FIREBASE_URL + '/programs.json', { signal: AbortSignal.timeout(4000) });
         const fb  = await res.json();
@@ -2266,6 +2266,23 @@ async function render() {
             for (const cat of pgArr) {
                 const found = (cat.items || []).find(i => i.id === id);
                 if (found) {
+                    if (!p) {
+                        // PROGRAMS에 없는 경우 Firebase 데이터로 기본 구조 생성
+                        p = {
+                            category: cat.cat || '',
+                            name: found.name || '',
+                            titleSeo: `부천 ${found.name || ''} | 로아한의원 부천`,
+                            desc: found.desc || '',
+                            img: found.img || '',
+                            prices: [],
+                            pointsTitle: `${found.name || ''} 안내`,
+                            points: [],
+                            targets: [],
+                            steps: [],
+                            ctaTitle: `부천 ${found.name || ''} 상담 예약하세요`,
+                            seo: '',
+                        };
+                    }
                     if (found.img)  p.img  = found.img;
                     if (found.name) p.name = found.name;
                     if (found.desc) p.desc = found.desc;
@@ -2275,12 +2292,16 @@ async function render() {
                             amount:     opt.salePrice ? Number(opt.salePrice).toLocaleString('ko-KR') : '',
                             origAmount: opt.origPrice  ? Number(opt.origPrice).toLocaleString('ko-KR')  : ''
                         }));
+                    } else if (found.price) {
+                        p.prices = [{ name: found.name, amount: Number(String(found.price).replace(/[^0-9]/g,'')).toLocaleString('ko-KR') }];
                     }
                     break;
                 }
             }
         }
     } catch(e) { /* 실패 시 기존 하드코딩 유지 */ }
+
+    if (!p) { document.body.innerHTML = '<p style="padding:4rem;text-align:center">페이지를 찾을 수 없습니다.</p>'; return; }
 
     // Meta
     const canonicalUrl = `https://shylifting.com${p.canonicalPath || '/program.html?id=' + id}`;
