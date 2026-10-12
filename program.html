@@ -183,6 +183,17 @@ nav {
 .step-desc { font-size: 0.82rem; color: var(--mid); line-height: 1.6; }
 
 /* ─── 예약 CTA ─── */
+.location-section { background: #f9f7f4; padding: 3.5rem 2rem; }
+.location-inner { max-width: 860px; margin: 0 auto; }
+.location-map { width: 100%; height: 260px; border-radius: 8px; overflow: hidden; margin-bottom: 1rem; }
+.location-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; }
+.loc-card { background: #fff; border: 1px solid #e8e0d6; border-radius: 8px; padding: 1.2rem 1.4rem; }
+.loc-label { font-size: 0.72rem; letter-spacing: 0.1em; color: var(--gold); font-weight: 700; margin-bottom: 0.5rem; }
+.loc-main { font-family: 'Noto Serif KR', serif; font-size: 1rem; font-weight: 600; color: #111; margin-bottom: 0.4rem; line-height: 1.6; }
+.loc-sub { font-size: 0.78rem; color: #888; line-height: 1.6; margin-bottom: 0.8rem; }
+.loc-link { font-size: 0.8rem; color: var(--gold); text-decoration: none; font-weight: 600; }
+@media (max-width: 640px) { .location-grid { grid-template-columns: 1fr; } .location-map { height: 200px; } }
+
 .cta-band {
     background: #fff; color: #111;
     text-align: center; padding: 3rem 2rem;
@@ -392,6 +403,50 @@ nav {
 <div class="section" style="padding-top:0">
     <h2 class="section-title">시술 과정</h2>
     <div class="steps" id="stepsList"></div>
+</div>
+
+<!-- 오시는 길 & 진료시간 -->
+<div class="location-section">
+    <div class="location-inner">
+        <div style="text-align:center;margin-bottom:2rem;">
+            <div style="font-size:0.78rem;letter-spacing:0.12em;color:var(--gold);margin-bottom:0.4rem;">Location &amp; Hours</div>
+            <h2 style="font-family:'Noto Serif KR',serif;font-size:1.3rem;font-weight:600;color:#111;">오시는 길 &amp; 진료시간</h2>
+        </div>
+        <div class="location-map">
+            <iframe src="https://maps.google.com/maps?q=37.5048028,126.7525319&z=17&output=embed&hl=ko"
+                width="100%" height="100%" style="border:0;" loading="lazy"
+                allowfullscreen referrerpolicy="no-referrer-when-downgrade"></iframe>
+        </div>
+        <div style="margin-bottom:1.5rem;">
+            <a href="https://map.kakao.com/?itemId=1810541223" target="_blank" rel="noopener"
+               style="display:inline-flex;align-items:center;gap:0.5rem;background:#FAE100;color:#3A1D1D;padding:0.6rem 1.2rem;border-radius:6px;font-size:0.85rem;font-weight:700;text-decoration:none;">
+                🗺️ 카카오맵으로 보기
+            </a>
+        </div>
+        <div class="location-grid">
+            <div class="loc-card">
+                <div class="loc-label">주소</div>
+                <div class="loc-main">경기 부천시 원미구<br>상동로 83 8층</div>
+                <div class="loc-sub">지하철 7호선 상동역 도보 3분<br>부천시청역·신중동역·부천역 인근</div>
+                <a href="https://map.naver.com/p/entry/place/1064400953?" class="loc-link" target="_blank" rel="noopener">네이버 지도 →</a>
+            </div>
+            <div class="loc-card">
+                <div class="loc-label">전화 예약</div>
+                <div class="loc-main">032-324-1118</div>
+                <div class="loc-sub">전화 또는 온라인 예약으로<br>간편하게 예약하세요</div>
+                <a href="tel:032-324-1118" class="loc-link">전화하기 →</a>
+            </div>
+            <div class="loc-card">
+                <div class="loc-label">진료시간</div>
+                <div style="font-size:0.85rem;line-height:2;color:#333;">
+                    <div><span style="color:#555;min-width:90px;display:inline-block;">월·화·목·금</span> 11:00 — 21:00</div>
+                    <div style="font-size:0.75rem;color:#999;margin-bottom:0.3rem;padding-left:90px;">점심 13:00 — 14:00</div>
+                    <div><span style="color:#555;min-width:90px;display:inline-block;">토·공휴일</span> 10:00 — 15:00</div>
+                    <div><span style="color:#c00;min-width:90px;display:inline-block;">수·일요일</span> 휴진</div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 
 <!-- CTA -->
