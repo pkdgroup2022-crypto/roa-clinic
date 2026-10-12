@@ -449,8 +449,8 @@
                     <div class="field"><label>제목</label>
                         <input type="text" id="pg-f-name" placeholder="울쎄라피 프라임">
                     </div>
-                    <div class="field"><label>시작가격 (숫자만, 예: 690000)</label>
-                        <input type="text" id="pg-f-price" placeholder="690000">
+                    <div class="field"><label>시작가격</label>
+                        <input type="text" id="pg-f-price" placeholder="690,000" oninput="pgFmtPrice(this)">
                     </div>
                     <div class="field"><label>부제목 / 설명</label>
                         <input type="text" id="pg-f-desc" placeholder="HIFU 고강도 집속 초음파 리프팅">
@@ -464,10 +464,10 @@
                     <input type="text" id="pg-opt-name" placeholder="예: 울쎄라피 프라임 300샷">
                 </div>
                 <div class="field" style="margin:0;"><label>판매가</label>
-                    <input type="number" id="pg-opt-sale" placeholder="690000">
+                    <input type="text" id="pg-opt-sale" placeholder="690,000" oninput="pgFmtPrice(this)">
                 </div>
                 <div class="field" style="margin:0;"><label>정상가 (선택)</label>
-                    <input type="number" id="pg-opt-orig" placeholder="1350000">
+                    <input type="text" id="pg-opt-orig" placeholder="1,350,000" oninput="pgFmtPrice(this)">
                 </div>
                 <button onclick="pgAddOption()" class="btn-save" style="width:auto;padding:0.62rem 1rem;">옵션 추가</button>
             </div>
@@ -1145,7 +1145,8 @@ function pgOpenEdit(ci, ii) {
     document.getElementById('pg-edit-view').style.display = 'block';
     document.getElementById('pg-edit-crumb').textContent = programsData[ci].cat + ' / ' + (item.name || '새 시술');
     document.getElementById('pg-f-name').value  = item.name || '';
-    document.getElementById('pg-f-price').value = item.price || '';
+    const rawPrice = Number(String(item.price||'').replace(/[^0-9]/g,''));
+    document.getElementById('pg-f-price').value = rawPrice ? rawPrice.toLocaleString('ko-KR') : '';
     document.getElementById('pg-f-desc').value  = item.desc || '';
     document.getElementById('pg-thumb-fname').textContent = '선택된 파일 없음';
     const box = document.getElementById('pg-thumb-box');
@@ -1175,15 +1176,24 @@ function renderPgOptions() {
                 <button class="pg-btn pg-btn-gray" style="padding:0.2rem 0.5rem;" onclick="pgMoveOpt(${i},1)">▼</button>
             </td>
             <td><input type="text" value="${esc(opt.name)}" oninput="programsData[pgEditCatIdx].items[pgEditItemIdx].options[${i}].name=this.value"></td>
-            <td style="text-align:right;"><input type="number" value="${opt.origPrice||''}" style="text-align:right;" placeholder="-" oninput="programsData[pgEditCatIdx].items[pgEditItemIdx].options[${i}].origPrice=this.value?Number(this.value):null"></td>
-            <td style="text-align:right;"><input type="number" value="${opt.salePrice||''}" style="text-align:right;" oninput="programsData[pgEditCatIdx].items[pgEditItemIdx].options[${i}].salePrice=this.value?Number(this.value):null"></td>
+            <td style="text-align:right;"><input type="text" value="${opt.origPrice ? Number(opt.origPrice).toLocaleString('ko-KR') : ''}" style="text-align:right;" placeholder="-" oninput="pgFmtPrice(this);programsData[pgEditCatIdx].items[pgEditItemIdx].options[${i}].origPrice=Number(this.value.replace(/[^0-9]/g,''))||null"></td>
+            <td style="text-align:right;"><input type="text" value="${opt.salePrice ? Number(opt.salePrice).toLocaleString('ko-KR') : ''}" style="text-align:right;" oninput="pgFmtPrice(this);programsData[pgEditCatIdx].items[pgEditItemIdx].options[${i}].salePrice=Number(this.value.replace(/[^0-9]/g,''))||0"></td>
             <td style="text-align:center;"><button class="pg-btn pg-btn-red" onclick="pgRemoveOpt(${i})">삭제</button></td>
         </tr>`).join('');
 }
+function pgFmtPrice(el) {
+    const raw = el.value.replace(/[^0-9]/g, '');
+    if (!raw) { el.value = ''; return; }
+    el.value = Number(raw).toLocaleString('ko-KR');
+}
+function pgParsePrice(el) {
+    return Number(el.value.replace(/[^0-9]/g, '')) || 0;
+}
+
 function pgAddOption() {
     const name = document.getElementById('pg-opt-name').value.trim();
-    const sale = Number(document.getElementById('pg-opt-sale').value) || 0;
-    const orig = Number(document.getElementById('pg-opt-orig').value) || null;
+    const sale = pgParsePrice(document.getElementById('pg-opt-sale'));
+    const orig = pgParsePrice(document.getElementById('pg-opt-orig')) || null;
     if (!name) { showToast('옵션 이름을 입력하세요.', true); return; }
     const item = programsData[pgEditCatIdx].items[pgEditItemIdx];
     if (!item.options) item.options = [];
@@ -1202,7 +1212,7 @@ function pgMoveOpt(i, dir) {
 async function pgSaveItem() {
     const item = programsData[pgEditCatIdx].items[pgEditItemIdx];
     item.name  = document.getElementById('pg-f-name').value.trim();
-    item.price = document.getElementById('pg-f-price').value.trim();
+    item.price = String(pgParsePrice(document.getElementById('pg-f-price')) || '');
     item.desc  = document.getElementById('pg-f-desc').value.trim();
     if (pgThumbFile) {
         showToast('이미지 업로드 중...');

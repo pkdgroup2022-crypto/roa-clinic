@@ -2118,10 +2118,35 @@ const PROGRAMS = {
     },
 };
 
-function render() {
+async function render() {
     const id = new URLSearchParams(location.search).get('id') || 'ulthera';
     const p = PROGRAMS[id];
     if (!p) { document.body.innerHTML = '<p style="padding:4rem;text-align:center">페이지를 찾을 수 없습니다.</p>'; return; }
+
+    // Firebase programs에서 관리자가 설정한 썸네일·가격옵션 오버라이드
+    try {
+        const res = await fetch(FIREBASE_URL + '.json?shallow=false', { signal: AbortSignal.timeout(4000) });
+        const fb  = await res.json();
+        if (fb && fb.programs) {
+            const pgArr = Array.isArray(fb.programs) ? fb.programs : Object.values(fb.programs);
+            for (const cat of pgArr) {
+                const found = (cat.items || []).find(i => i.id === id);
+                if (found) {
+                    if (found.img)  p.img  = found.img;
+                    if (found.name) p.name = found.name;
+                    if (found.desc) p.desc = found.desc;
+                    if (found.options && found.options.length) {
+                        p.prices = found.options.map(opt => ({
+                            name:       opt.name,
+                            amount:     opt.salePrice ? Number(opt.salePrice).toLocaleString('ko-KR') : '',
+                            origAmount: opt.origPrice  ? Number(opt.origPrice).toLocaleString('ko-KR')  : ''
+                        }));
+                    }
+                    break;
+                }
+            }
+        }
+    } catch(e) { /* 실패 시 기존 하드코딩 유지 */ }
 
     // Meta
     const canonicalUrl = `https://shylifting.com${p.canonicalPath || '/program.html?id=' + id}`;
@@ -2195,7 +2220,10 @@ function render() {
     document.getElementById('priceList').innerHTML = (p.prices || []).map(r =>
         `<div class="price-row">
             <span class="price-row-name">${r.name}${r.note ? `<span class="price-row-note"> (${r.note})</span>` : ''}</span>
-            <span class="price-row-amount">${r.amount}<span>원~</span></span>
+            <span class="price-row-amount">
+                ${r.origAmount ? `<span style="font-size:0.85rem;color:#aaa;text-decoration:line-through;margin-right:0.4rem;">${r.origAmount}원</span>` : ''}
+                ${r.amount}<span>원~</span>
+            </span>
         </div>`
     ).join('');
     document.getElementById('heroPriceNote').textContent = p.priceNote || '';
