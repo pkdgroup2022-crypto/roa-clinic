@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>시술 예약 | 로아한의원 부천</title>
+<link rel="icon" type="image/png" href="/images/og-main.png">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&family=Noto+Serif+KR:wght@400;600&display=swap" rel="stylesheet">
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-database-compat.js"></script>
+<script>
+firebase.initializeApp({
+    apiKey: "AIzaSyA4JBzlm8E47hkxEvL84zn4El73m_NUE4Y",
+    authDomain: "roa-clinic.firebaseapp.com",
+    databaseURL: "https://roa-clinic-default-rtdb.firebaseio.com",
+    projectId: "roa-clinic",
+    storageBucket: "roa-clinic.firebasestorage.app",
+    messagingSenderId: "366864915797",
+    appId: "1:366864915797:web:e5f0dab77bb6e19b99a3dc"
+});
+const db = firebase.database();
+</script>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+:root {
+    --dark: #0E0E0E; --red: #8B1A2A; --red-light: #fdf2f3;
+    --mid: #666; --muted: #999; --border: #e8e0d8; --warm: #FAF7F2; --cream: #F4EFE6;
+}
+body { font-family: 'Noto Sans KR', sans-serif; background: var(--warm); color: var(--dark); min-height: 100vh; }
+
+nav {
+    position: sticky; top: 0; z-index: 100;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 0 2rem; height: 56px;
+    background: rgba(14,14,14,0.97); backdrop-filter: blur(8px);
+}
+.nav-logo { font-family: 'Noto Serif KR', serif; color: #fff; font-size: 0.95rem; font-weight: 600; text-decoration: none; }
+.nav-back { color: #ccc; font-size: 0.82rem; text-decoration: none; }
+.nav-back:hover { color: #fff; }
+
+.page-title { text-align: center; padding: 1.8rem 1rem 1rem; font-family: 'Noto Serif KR', serif; font-size: 1.5rem; font-weight: 600; }
+
+.booking-grid {
+    display: grid;
+    grid-template-columns: 260px 1fr 320px;
+    gap: 1.2rem;
+    max-width: 1040px; margin: 0 auto; padding: 0 1.2rem 4rem;
+    align-items: start;
+}
+
+.bk-card {
+    background: #fff; border-radius: 12px; border: 1px solid var(--border);
+    overflow: hidden;
+}
+.bk-card-title {
+    padding: 1rem 1.2rem; font-weight: 700; font-size: 0.95rem;
+    border-bottom: 1px solid var(--border); background: #fafafa;
+}
+
+/* 선택한 시술 */
+.selected-item {
+    padding: 0.9rem 1.2rem; border-bottom: 1px solid var(--border);
+}
+.selected-item-name { font-size: 0.88rem; font-weight: 600; line-height: 1.4; }
+.selected-item-orig { font-size: 0.75rem; color: #bbb; text-decoration: line-through; margin-top: 0.15rem; }
+.selected-item-price { font-size: 1rem; font-weight: 700; color: var(--red); font-family: 'Noto Serif KR', serif; }
+.selected-total {
+    padding: 0.9rem 1.2rem;
+    display: flex; justify-content: space-between; align-items: baseline;
+    background: var(--red-light);
+}
+.selected-total-label { font-size: 0.82rem; font-weight: 600; }
+.selected-total-amt { font-family: 'Noto Serif KR', serif; font-size: 1.3rem; font-weight: 700; color: var(--red); }
+.selected-vat { font-size: 0.7rem; color: var(--muted); text-align: right; padding: 0.3rem 1.2rem 0.6rem; }
+
+/* 캘린더 */
+.cal-header {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 0.8rem 1rem; font-weight: 700; font-size: 0.95rem; color: var(--red);
+}
+.cal-nav { background: none; border: 1px solid var(--border); border-radius: 4px; width: 28px; height: 28px; cursor: pointer; font-size: 0.9rem; }
+.cal-nav:hover { background: var(--border); }
+.cal-grid { display: grid; grid-template-columns: repeat(7, 1fr); padding: 0 0.5rem 0.8rem; gap: 2px; }
+.cal-dow { text-align: center; font-size: 0.7rem; font-weight: 700; color: var(--muted); padding: 0.3rem 0; }
+.cal-dow:first-child { color: #c0392b; }
+.cal-dow:last-child { color: #2980b9; }
+.cal-day {
+    text-align: center; padding: 0.45rem 0.2rem; border-radius: 6px;
+    font-size: 0.82rem; cursor: pointer; transition: all 0.15s;
+}
+.cal-day:hover:not(.disabled):not(.closed) { background: var(--red-light); }
+.cal-day.today { font-weight: 700; color: var(--red); }
+.cal-day.selected { background: var(--red); color: #fff; font-weight: 700; }
+.cal-day.disabled, .cal-day.closed { color: #ddd; cursor: default; pointer-events: none; }
+.cal-day.closed { background: #fafafa; }
+.cal-day.sun { color: #c0392b; }
+.cal-day.sat { color: #2980b9; }
+.cal-day.other-month { opacity: 0.3; }
+
+.time-section { padding: 0.8rem 1rem 1rem; border-top: 1px solid var(--border); }
+.time-section-label { font-size: 0.75rem; font-weight: 700; color: var(--muted); letter-spacing: 0.08em; margin-bottom: 0.6rem; }
+.time-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 0.4rem; }
+.time-btn {
+    padding: 0.42rem 0; border: 1px solid var(--border); border-radius: 6px;
+    background: #fff; font-family: inherit; font-size: 0.78rem; font-weight: 500;
+    cursor: pointer; transition: all 0.15s; text-align: center;
+}
+.time-btn:hover { border-color: var(--red); color: var(--red); }
+.time-btn.selected { background: var(--red); color: #fff; border-color: var(--red); font-weight: 700; }
+.time-btn.disabled { opacity: 0.3; pointer-events: none; }
+
+/* 예약자 정보 */
+.form-body { padding: 1rem 1.2rem; }
+.form-field { margin-bottom: 1rem; }
+.form-field label { display: block; font-size: 0.72rem; font-weight: 700; letter-spacing: 0.1em; color: var(--muted); margin-bottom: 0.35rem; }
+.form-field label .req { color: var(--red); }
+.form-field input, .form-field textarea {
+    width: 100%; padding: 0.65rem 0.9rem; border: 1px solid var(--border);
+    border-radius: 6px; font-family: inherit; font-size: 0.9rem; outline: none;
+    transition: border-color 0.2s;
+}
+.form-field input:focus, .form-field textarea:focus { border-color: var(--red); }
+.form-field textarea { resize: vertical; min-height: 70px; line-height: 1.6; }
+.form-check { display: flex; align-items: flex-start; gap: 0.6rem; margin-bottom: 0.7rem; }
+.form-check input[type=checkbox] { margin-top: 2px; accent-color: var(--red); width: 16px; height: 16px; flex-shrink: 0; }
+.form-check label { font-size: 0.78rem; color: var(--mid); line-height: 1.5; cursor: pointer; }
+.form-check a { color: var(--red); text-decoration: underline; }
+.btn-submit {
+    width: 100%; padding: 1rem; background: var(--red); color: #fff;
+    border: none; border-radius: 8px; font-family: inherit; font-size: 1rem;
+    font-weight: 700; cursor: pointer; transition: opacity 0.2s; margin-top: 0.5rem;
+}
+.btn-submit:hover { opacity: 0.88; }
+.btn-submit:disabled { opacity: 0.45; cursor: not-allowed; }
+
+/* 완료 화면 */
+#doneScreen {
+    display: none; max-width: 480px; margin: 4rem auto; text-align: center;
+    background: #fff; border-radius: 16px; border: 1px solid var(--border); padding: 3rem 2rem;
+}
+.done-icon { font-size: 3rem; margin-bottom: 1rem; }
+.done-title { font-family: 'Noto Serif KR', serif; font-size: 1.5rem; font-weight: 600; margin-bottom: 0.8rem; }
+.done-desc { font-size: 0.9rem; color: var(--mid); line-height: 1.8; margin-bottom: 2rem; }
+.btn-done { display: inline-block; padding: 0.8rem 2rem; background: var(--dark); color: #fff; border-radius: 8px; text-decoration: none; font-weight: 700; font-size: 0.9rem; }
+
+@media (max-width: 900px) {
+    .booking-grid { grid-template-columns: 1fr; }
+}
+@media (max-width: 540px) {
+    nav { padding: 0 1rem; }
+    .page-title { font-size: 1.2rem; padding: 1.2rem 1rem 0.8rem; }
+    .booking-grid { padding: 0 0.8rem 3rem; }
+    .time-grid { grid-template-columns: repeat(3, 1fr); }
+}
+</style>
+</head>
+<body>
+
+<nav>
+    <a class="nav-logo" href="index.html">로아한의원 부천</a>
+    <a class="nav-back" href="javascript:history.back()">← 뒤로가기</a>
+</nav>
+
+<div id="mainScreen">
+    <div class="page-title">시술 예약</div>
+
+    <div class="booking-grid">
+
+        <!-- 선택한 시술 -->
+        <div class="bk-card" id="selectedCard">
+            <div class="bk-card-title">선택한 시술</div>
+            <div id="selectedList"></div>
+            <div class="selected-total">
+                <span class="selected-total-label">총 <span id="selectedCount">0</span>건</span>
+                <span class="selected-total-amt" id="selectedTotal">0원</span>
+            </div>
+            <div class="selected-vat">부가세 별도</div>
+        </div>
+
+        <!-- 날짜 & 시간 -->
+        <div class="bk-card">
+            <div class="bk-card-title">희망예약일 &amp; 시간 선택</div>
+            <div class="cal-header">
+                <button class="cal-nav" onclick="calMove(-1)">&#8249;</button>
+                <span id="calTitle"></span>
+                <button class="cal-nav" onclick="calMove(1)">&#8250;</button>
+            </div>
+            <div class="cal-grid" id="calGrid"></div>
+            <div class="time-section">
+                <div class="time-section-label">시간 선택</div>
+                <div class="time-grid" id="timeGrid"></div>
+            </div>
+        </div>
+
+        <!-- 예약자 정보 -->
+        <div class="bk-card">
+            <div class="bk-card-title">예약자 정보</div>
+            <div class="form-body">
+                <div class="form-field">
+                    <label>고객명 <span class="req">*</span></label>
+                    <input type="text" id="f-name" placeholder="이름을 입력하세요">
+                </div>
+                <div class="form-field">
+                    <label>휴대폰 번호 <span class="req">*</span></label>
+                    <input type="tel" id="f-phone" placeholder="-없이 숫자만 입력해 주세요" oninput="this.value=this.value.replace(/[^0-9]/g,'')">
+                </div>
+                <div class="form-field">
+                    <label>요청사항</label>
+                    <textarea id="f-note" placeholder="요청사항을 입력해 주세요."></textarea>
+                </div>
+                <div class="form-check">
+                    <input type="checkbox" id="chk-privacy">
+                    <label for="chk-privacy">개인정보수집 이용동의 <span class="req">*</span><br>
+                    <span style="font-size:0.72rem;color:var(--muted);">이름, 연락처를 예약 목적으로 수집·이용합니다.</span></label>
+                </div>
+                <div class="form-check">
+                    <input type="checkbox" id="chk-sns">
+                    <label for="chk-sns">SNS 수신 및 카톡 상담 등의</label>
+                </div>
+                <button class="btn-submit" id="btnSubmit" onclick="submitBooking()">로아한의원 부천점 시술 예약하기</button>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<div id="doneScreen">
+    <div class="done-icon">✅</div>
+    <div class="done-title">예약이 접수됐습니다</div>
+    <div class="done-desc" id="doneDesc"></div>
+    <a class="btn-done" href="events.html">← 시술 메뉴로 돌아가기</a>
+</div>
+
+<script>
+/* ── 예약 데이터 로드 ── */
+let bookingData = { programId: '', programName: '', options: [], totalPrice: 0 };
+try {
+    const s = sessionStorage.getItem('bookingData');
+    if (s) bookingData = JSON.parse(s);
+} catch(e) {}
+
+function fmtN(n) { return Number(n).toLocaleString('ko-KR'); }
+
+/* ── 선택 시술 렌더 ── */
+function renderSelected() {
+    const opts = bookingData.options || [];
+    const list = document.getElementById('selectedList');
+    if (!opts.length) {
+        list.innerHTML = `<div style="padding:1rem 1.2rem;font-size:0.88rem;color:var(--muted);">${bookingData.programName || '시술 정보 없음'}</div>`;
+        document.getElementById('selectedCount').textContent = '0';
+        document.getElementById('selectedTotal').textContent = '0원';
+    } else {
+        let total = 0;
+        list.innerHTML = opts.map(r => {
+            const price = Number((r.amount||'').replace(/[^0-9]/g,'')) || 0;
+            total += price;
+            return `<div class="selected-item">
+                <div class="selected-item-name">${r.name}</div>
+                ${r.origAmount ? `<div class="selected-item-orig">${r.origAmount}원</div>` : ''}
+                <div class="selected-item-price">${fmtN(price)}원</div>
+            </div>`;
+        }).join('');
+        document.getElementById('selectedCount').textContent = opts.length;
+        document.getElementById('selectedTotal').textContent = fmtN(total) + '원';
+    }
+}
+renderSelected();
+
+/* ── 캘린더 ── */
+const CLOSED_DOW = [0, 3]; // 일(0) 수(3) 휴진
+let calYear, calMonth, selectedDate = null, selectedTime = null;
+
+const TIMES_WEEKDAY = ['11:00','11:30','12:00','12:30','14:00','14:30','15:00','15:30','16:00','16:30','17:00','17:30','18:00','18:30','19:00','19:30','20:00','20:30'];
+const TIMES_SAT     = ['10:00','10:30','11:00','11:30','12:00','12:30','13:00','13:30','14:00','14:30'];
+
+function initCal() {
+    const now = new Date();
+    calYear = now.getFullYear(); calMonth = now.getMonth();
+    renderCal();
+}
+function calMove(d) { calMonth += d; if (calMonth < 0) { calMonth = 11; calYear--; } if (calMonth > 11) { calMonth = 0; calYear++; } renderCal(); }
+
+function renderCal() {
+    const today = new Date(); today.setHours(0,0,0,0);
+    const firstDay = new Date(calYear, calMonth, 1);
+    const lastDay  = new Date(calYear, calMonth + 1, 0);
+    document.getElementById('calTitle').textContent = `${calYear}년 ${calMonth + 1}월`;
+
+    let html = ['일','월','화','수','목','금','토'].map(d => `<div class="cal-dow">${d}</div>`).join('');
+    let startDow = firstDay.getDay();
+    for (let i = 0; i < startDow; i++) html += '<div class="cal-day other-month"></div>';
+    for (let d = 1; d <= lastDay.getDate(); d++) {
+        const date = new Date(calYear, calMonth, d);
+        const dow  = date.getDay();
+        const isPast   = date < today;
+        const isClosed = CLOSED_DOW.includes(dow);
+        const dateStr  = `${calYear}-${String(calMonth+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
+        const isSel    = selectedDate === dateStr;
+        const isToday  = date.getTime() === today.getTime();
+        let cls = 'cal-day';
+        if (dow === 0) cls += ' sun'; else if (dow === 6) cls += ' sat';
+        if (isPast || isClosed) cls += isPast ? ' disabled' : ' closed';
+        else if (isSel) cls += ' selected';
+        else if (isToday) cls += ' today';
+        html += `<div class="${cls}" onclick="selectDate('${dateStr}',${dow})">${d}${isClosed?'<br><span style="font-size:0.55rem;color:#bbb;">휴진</span>':''}</div>`;
+    }
+    document.getElementById('calGrid').innerHTML = html;
+    renderTimes();
+}
+
+function selectDate(dateStr, dow) {
+    selectedDate = dateStr; selectedTime = null;
+    renderCal();
+}
+
+function renderTimes() {
+    if (!selectedDate) { document.getElementById('timeGrid').innerHTML = '<div style="font-size:0.8rem;color:var(--muted);grid-column:1/-1;text-align:center;padding:0.5rem;">날짜를 먼저 선택하세요.</div>'; return; }
+    const dow = new Date(selectedDate).getDay();
+    const times = dow === 6 ? TIMES_SAT : TIMES_WEEKDAY;
+    document.getElementById('timeGrid').innerHTML = times.map(t =>
+        `<button class="time-btn${selectedTime===t?' selected':''}" onclick="selectTime('${t}')">${t}</button>`
+    ).join('');
+}
+
+function selectTime(t) { selectedTime = t; renderTimes(); }
+
+initCal();
+
+/* ── 제출 ── */
+async function submitBooking() {
+    const name  = document.getElementById('f-name').value.trim();
+    const phone = document.getElementById('f-phone').value.trim();
+    const note  = document.getElementById('f-note').value.trim();
+    const priv  = document.getElementById('chk-privacy').checked;
+
+    if (!name)        { alert('고객명을 입력해 주세요.'); return; }
+    if (!phone || phone.length < 10) { alert('휴대폰 번호를 올바르게 입력해 주세요.'); return; }
+    if (!selectedDate) { alert('예약 날짜를 선택해 주세요.'); return; }
+    if (!selectedTime) { alert('예약 시간을 선택해 주세요.'); return; }
+    if (!priv)        { alert('개인정보수집 이용동의가 필요합니다.'); return; }
+
+    const btn = document.getElementById('btnSubmit');
+    btn.disabled = true; btn.textContent = '예약 중...';
+
+    const opts  = bookingData.options || [];
+    const total = opts.reduce((s, r) => s + (Number((r.amount||'').replace(/[^0-9]/g,''))||0), 0);
+    const optNames = opts.length ? opts.map(o => o.name).join(', ') : (bookingData.programName || '미지정');
+
+    const reservation = {
+        date:        selectedDate,
+        time:        selectedTime,
+        name,
+        phone,
+        program:     bookingData.programName || '',
+        programId:   bookingData.programId   || '',
+        options:     opts,
+        optionNames: optNames,
+        totalPrice:  total,
+        note,
+        sns:         document.getElementById('chk-sns').checked,
+        status:      '예약대기',
+        createdAt:   Date.now()
+    };
+
+    try {
+        await db.ref('roa/reservations').push(reservation);
+        sessionStorage.removeItem('bookingData');
+        document.getElementById('mainScreen').style.display = 'none';
+        document.getElementById('doneScreen').style.display = 'block';
+        document.getElementById('doneDesc').innerHTML = `
+            <strong>${name}</strong>님의 예약이 접수됐습니다.<br>
+            <strong>${selectedDate} ${selectedTime}</strong><br>
+            ${optNames}<br><br>
+            로아한의원 부천 (032-324-1118)으로<br>예약 확인 연락을 드립니다.
+        `;
+    } catch(e) {
+        alert('예약 저장 중 오류가 발생했습니다. 다시 시도해 주세요.');
+        btn.disabled = false; btn.textContent = '로아한의원 부천점 시술 예약하기';
+    }
+}
+</script>
+</body>
+</html>

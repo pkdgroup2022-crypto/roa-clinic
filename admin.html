@@ -317,6 +317,7 @@
     <button class="tab-btn" onclick="switchTab('events')">🎁 이달의 이벤트</button>
     <button class="tab-btn" onclick="switchTab('photos')">🖼 전후 사진</button>
     <button class="tab-btn" onclick="switchTab('programs')">📋 시술 메뉴</button>
+    <button class="tab-btn" onclick="switchTab('reservations')">📅 예약일정</button>
 </div>
 
 <!-- ═══ 탭 1: 기본 정보 ═══ -->
@@ -402,6 +403,43 @@
     <div class="save-bar">
         <button class="btn-secondary" onclick="clearAllPhotos()">전체 삭제</button>
         <button class="btn-save" onclick="savePhotos()">💾 사진 저장</button>
+    </div>
+</div>
+
+<!-- ═══ 탭 6: 예약일정 ═══ -->
+<div id="tab-reservations" class="tab-panel">
+    <div class="container">
+        <div class="section-title" style="margin-bottom:0.3rem;">예약일정</div>
+        <p class="section-desc">홈페이지를 통해 접수된 예약 목록입니다.</p>
+        <!-- 상태 필터 -->
+        <div style="display:flex;gap:0.5rem;margin-bottom:1.2rem;flex-wrap:wrap;">
+            <button class="filter-chip active" onclick="rvFilter('전체',this)">전체</button>
+            <button class="filter-chip" style="background:none;border:1px solid #e0a000;color:#a07000;" onclick="rvFilter('예약대기',this)">예약 대기</button>
+            <button class="filter-chip" style="background:none;border:1px solid #1a7a3f;color:#1a7a3f;" onclick="rvFilter('예약완료',this)">예약 완료</button>
+            <button class="filter-chip" style="background:none;border:1px solid #999;color:#666;" onclick="rvFilter('지난예약',this)">지난 예약</button>
+            <button class="filter-chip" style="background:none;border:1px solid var(--red);color:var(--red);" onclick="rvFilter('취소',this)">취소</button>
+        </div>
+        <div id="rv-counts" style="display:flex;gap:0.7rem;margin-bottom:1rem;flex-wrap:wrap;font-size:0.82rem;"></div>
+        <!-- 테이블 -->
+        <div style="overflow-x:auto;">
+            <table style="width:100%;border-collapse:collapse;font-size:0.82rem;background:#fff;border:1px solid var(--border);border-radius:8px;overflow:hidden;">
+                <thead>
+                    <tr style="background:#f5f5f5;font-weight:700;text-align:left;">
+                        <th style="padding:0.7rem 0.8rem;white-space:nowrap;">예약일시</th>
+                        <th style="padding:0.7rem 0.8rem;white-space:nowrap;">이름</th>
+                        <th style="padding:0.7rem 0.8rem;white-space:nowrap;">연락처</th>
+                        <th style="padding:0.7rem 0.8rem;">선택 시술</th>
+                        <th style="padding:0.7rem 0.8rem;white-space:nowrap;text-align:right;">금액</th>
+                        <th style="padding:0.7rem 0.8rem;">요청사항</th>
+                        <th style="padding:0.7rem 0.8rem;white-space:nowrap;text-align:center;">상태</th>
+                        <th style="padding:0.7rem 0.8rem;white-space:nowrap;text-align:center;">관리</th>
+                    </tr>
+                </thead>
+                <tbody id="rv-tbody">
+                    <tr><td colspan="8" style="text-align:center;padding:3rem;color:var(--muted);">로딩 중...</td></tr>
+                </tbody>
+            </table>
+        </div>
     </div>
 </div>
 
@@ -996,6 +1034,108 @@ function clearAllPhotos() {
 }
 
 /* ════════════════════════════════
+   탭 6: 예약일정
+════════════════════════════════ */
+let allReservations = [];
+let rvCurrentFilter = '전체';
+
+async function loadReservations() {
+    try {
+        const snap = await db.ref('roa/reservations').get();
+        if (snap.exists()) {
+            const raw = snap.val();
+            allReservations = Object.entries(raw).map(([k, v]) => ({ _key: k, ...v }));
+            allReservations.sort((a, b) => (b.createdAt || 0) - (a.createdAt || 0));
+        } else { allReservations = []; }
+    } catch(e) { allReservations = []; }
+    renderReservations();
+}
+
+function rvFilter(f, btn) {
+    rvCurrentFilter = f;
+    document.querySelectorAll('#tab-reservations .filter-chip').forEach(c => c.classList.remove('active'));
+    if (btn) btn.classList.add('active');
+    renderReservations();
+}
+
+function rvStatusColor(s) {
+    if (s === '예약완료') return '#1a7a3f';
+    if (s === '취소')    return '#888';
+    if (s === '지난예약') return '#555';
+    return '#a07000'; // 예약대기
+}
+function rvStatusBg(s) {
+    if (s === '예약완료') return '#eafaf1';
+    if (s === '취소')    return '#f5f5f5';
+    if (s === '지난예약') return '#f0f0f0';
+    return '#fff8e0';
+}
+
+function rvGetStatus(rv) {
+    if (rv.status === '취소') return '취소';
+    if (rv.status === '예약완료') return '예약완료';
+    const now = new Date();
+    const dt  = new Date(rv.date + 'T' + rv.time);
+    if (dt < now) return '지난예약';
+    return rv.status || '예약대기';
+}
+
+function renderReservations() {
+    const today = new Date(); today.setHours(0,0,0,0);
+    const counts = { '예약대기': 0, '예약완료': 0, '지난예약': 0, '취소': 0 };
+    allReservations.forEach(rv => { const s = rvGetStatus(rv); if (counts[s] !== undefined) counts[s]++; });
+    document.getElementById('rv-counts').innerHTML = Object.entries(counts).map(([k, v]) =>
+        `<span style="background:${rvStatusBg(k)};color:${rvStatusColor(k)};padding:0.25rem 0.75rem;border-radius:999px;border:1px solid ${rvStatusColor(k)};font-weight:600;">${k} ${v}명</span>`
+    ).join('');
+
+    const filtered = rvCurrentFilter === '전체'
+        ? allReservations
+        : allReservations.filter(rv => rvGetStatus(rv) === rvCurrentFilter);
+
+    if (!filtered.length) {
+        document.getElementById('rv-tbody').innerHTML = `<tr><td colspan="8" style="text-align:center;padding:3rem;color:var(--muted);">예약이 없습니다.</td></tr>`;
+        return;
+    }
+
+    document.getElementById('rv-tbody').innerHTML = filtered.map(rv => {
+        const status = rvGetStatus(rv);
+        const total  = rv.totalPrice ? Number(rv.totalPrice).toLocaleString('ko-KR') + '원' : '-';
+        const phone  = rv.phone ? rv.phone.replace(/(\d{3})(\d{3,4})(\d{4})/, '$1-$2-$3') : '-';
+        const progTxt = rv.optionNames || rv.program || '-';
+        return `<tr style="border-top:1px solid var(--border);">
+            <td style="padding:0.65rem 0.8rem;white-space:nowrap;font-weight:600;">${rv.date||''} ${rv.time||''}</td>
+            <td style="padding:0.65rem 0.8rem;white-space:nowrap;">${esc(rv.name||'-')}</td>
+            <td style="padding:0.65rem 0.8rem;white-space:nowrap;">${esc(phone)}</td>
+            <td style="padding:0.65rem 0.8rem;max-width:200px;word-break:break-all;">${esc(progTxt)}</td>
+            <td style="padding:0.65rem 0.8rem;text-align:right;white-space:nowrap;font-weight:600;">${total}</td>
+            <td style="padding:0.65rem 0.8rem;max-width:140px;color:var(--mid);font-size:0.78rem;">${esc(rv.note||'-')}</td>
+            <td style="padding:0.65rem 0.8rem;text-align:center;">
+                <span style="background:${rvStatusBg(status)};color:${rvStatusColor(status)};padding:0.2rem 0.65rem;border-radius:4px;font-size:0.75rem;font-weight:700;">${status}</span>
+            </td>
+            <td style="padding:0.65rem 0.8rem;text-align:center;">
+                <select onchange="rvChangeStatus('${rv._key}',this.value)" style="border:1px solid var(--border);border-radius:4px;padding:0.3rem 0.4rem;font-family:inherit;font-size:0.75rem;cursor:pointer;">
+                    <option value="">상태 변경</option>
+                    <option value="예약대기">예약대기</option>
+                    <option value="예약완료">예약완료</option>
+                    <option value="취소">취소</option>
+                </select>
+            </td>
+        </tr>`;
+    }).join('');
+}
+
+async function rvChangeStatus(key, status) {
+    if (!status) return;
+    try {
+        await db.ref('roa/reservations/' + key + '/status').set(status);
+        const rv = allReservations.find(r => r._key === key);
+        if (rv) rv.status = status;
+        renderReservations();
+        showToast('✓ 상태 변경됐습니다.');
+    } catch(e) { showToast('오류: ' + e.message, true); }
+}
+
+/* ════════════════════════════════
    탭 5: 시술 메뉴
 ════════════════════════════════ */
 // programsData = [ { cat:'리프팅/탄력', hidden:false, collapsed:false, items:[ { id, name, hidden, img, desc, price, options:[] } ] }, ... ]
@@ -1267,6 +1407,7 @@ auth.onAuthStateChanged(function(user) {
         loadEvents();
         loadPhotos();
         loadPrograms();
+        loadReservations();
     } else {
         login.style.display = 'flex';
         admin.style.display = 'none';

@@ -403,7 +403,7 @@ function render() {
                     <div class="card-name">${it.name}</div>
                     ${it.desc ? `<div class="card-desc">${it.desc}</div>` : ''}
                     <div class="card-price-wrap">
-                        <span class="card-price">${it.price}</span>
+                        <span class="card-price">${it.price ? Number(String(it.price).replace(/[^0-9]/g,'')).toLocaleString('ko-KR') : ''}</span>
                         <span class="card-price-unit">원~</span>
                     </div>
                 </div>

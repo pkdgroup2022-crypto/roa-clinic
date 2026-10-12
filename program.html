@@ -97,21 +97,38 @@ nav {
 .hero-desc { color: var(--mid); font-size: 0.93rem; line-height: 1.7; margin-bottom: 1.8rem; }
 
 /* 가격 리스트 */
-.price-list { display: flex; flex-direction: column; gap: 0; margin-bottom: 1.8rem; }
+.price-list { display: flex; flex-direction: column; gap: 0; margin-bottom: 0.6rem; }
 .price-row {
     display: flex; align-items: center; justify-content: space-between;
-    padding: 1rem 0; border-bottom: 1px solid var(--border);
-    gap: 1rem;
+    padding: 0.9rem 0.7rem; border-bottom: 1px solid var(--border);
+    gap: 1rem; cursor: pointer; transition: background 0.15s; border-radius: 4px;
+    user-select: none;
 }
-.price-row:first-child { border-top: 2px solid var(--dark); }
+.price-row:first-of-type { border-top: 2px solid var(--dark); border-radius: 0; }
+.price-row:hover { background: var(--red-light); }
+.price-row.selected { background: var(--red-light); }
+.price-row-check {
+    width: 20px; height: 20px; border: 2px solid var(--border); border-radius: 4px;
+    flex-shrink: 0; display: flex; align-items: center; justify-content: center;
+    transition: all 0.15s;
+}
+.price-row.selected .price-row-check { background: var(--red); border-color: var(--red); }
+.price-row.selected .price-row-check::after { content: '✓'; color: #fff; font-size: 0.75rem; font-weight: 700; }
 .price-row-name { font-size: 0.95rem; color: var(--dark); font-weight: 500; flex: 1; }
 .price-row-note { font-size: 0.78rem; color: var(--muted); font-weight: 400; }
 .price-row-amount {
     font-family: 'Noto Serif KR', serif; font-size: 1.25rem;
-    font-weight: 700; color: var(--red); flex-shrink: 0;
+    font-weight: 700; color: var(--red); flex-shrink: 0; text-align: right;
 }
 .price-row-amount span { font-size: 0.8rem; color: var(--mid); font-family: 'Noto Sans KR'; font-weight: 400; }
-.price-note { font-size: 0.75rem; color: var(--muted); margin-top: -0.5rem; margin-bottom: 1.5rem; }
+.price-total-box {
+    display: flex; justify-content: space-between; align-items: baseline;
+    padding: 0.9rem 0.7rem; background: #fdf2f3; border-radius: 0 0 6px 6px;
+    margin-bottom: 0.4rem;
+}
+.price-total-label { font-size: 0.88rem; font-weight: 600; color: var(--dark); }
+.price-total-amount { font-family: 'Noto Serif KR', serif; font-size: 1.5rem; font-weight: 700; color: var(--red); }
+.price-note { font-size: 0.72rem; color: var(--muted); margin-bottom: 1.2rem; }
 
 .btn-booking {
     display: flex; align-items: center; justify-content: center; gap: 0.5rem;
@@ -328,10 +345,12 @@ nav {
     <div class="hero-info">
         <p class="hero-desc" id="heroDesc"></p>
         <div class="price-list" id="priceList"></div>
-        <p class="price-note" id="heroPriceNote"></p>
-        <a href="https://booking.naver.com/booking/13/bizes/1064400953" target="_blank" class="btn-booking">
-            📅 네이버 예약하기
-        </a>
+        <div class="price-total-box" id="priceTotalBox" style="display:none;">
+            <span class="price-total-label">예상금액</span>
+            <span class="price-total-amount" id="priceTotalAmt">0원</span>
+        </div>
+        <p class="price-note" id="heroPriceNote">* VAT 별도 · 정확한 가격은 상담 후 확인</p>
+        <button class="btn-booking" id="btnBooking" onclick="goToBooking()">📅 예약하기</button>
     </div>
 </section>
 
@@ -2217,16 +2236,12 @@ async function render() {
     document.getElementById('heroName').textContent = '부천 ' + p.name;
     document.getElementById('heroSubtitle').textContent = p.subtitle || '';
     document.getElementById('heroDesc').textContent = p.desc;
-    document.getElementById('priceList').innerHTML = (p.prices || []).map(r =>
-        `<div class="price-row">
-            <span class="price-row-name">${r.name}${r.note ? `<span class="price-row-note"> (${r.note})</span>` : ''}</span>
-            <span class="price-row-amount">
-                ${r.origAmount ? `<span style="font-size:0.85rem;color:#aaa;text-decoration:line-through;margin-right:0.4rem;">${r.origAmount}원</span>` : ''}
-                ${r.amount}<span>원~</span>
-            </span>
-        </div>`
-    ).join('');
-    document.getElementById('heroPriceNote').textContent = p.priceNote || '';
+    window._pgPrices = (p.prices || []);
+    window._pgName   = p.name;
+    window._pgId     = id;
+    window._pgSelectedIdx = new Set();
+    renderPriceList();
+    document.getElementById('heroPriceNote').textContent = p.priceNote || '* VAT 별도 · 정확한 가격은 상담 후 확인';
 
     // 시술 후기 사진 (Firebase에서 로드)
     loadReviewPhotos(id);
@@ -2292,6 +2307,58 @@ async function render() {
             btn.classList.toggle('active', btn.dataset.cat === p.category);
         });
     }
+}
+
+function renderPriceList() {
+    const prices = window._pgPrices || [];
+    const sel    = window._pgSelectedIdx || new Set();
+    const hasPrices = prices.length > 0;
+    document.getElementById('priceList').innerHTML = prices.map((r, i) => {
+        const isSel = sel.has(i);
+        return `<div class="price-row${isSel?' selected':''}" onclick="togglePriceRow(${i})">
+            <div class="price-row-check"></div>
+            <span class="price-row-name">${r.name}${r.note?`<span class="price-row-note"> (${r.note})</span>`:''}</span>
+            <span class="price-row-amount">
+                ${r.origAmount?`<div style="font-size:0.78rem;color:#bbb;text-decoration:line-through;">${r.origAmount}원</div>`:''}
+                ${r.amount?`<div>${Number(r.amount.replace(/[^0-9]/g,'')).toLocaleString('ko-KR')}<span>원</span></div>`:'-'}
+            </span>
+        </div>`;
+    }).join('') || (hasPrices ? '' : '');
+    updatePriceTotal();
+}
+
+function togglePriceRow(i) {
+    const sel = window._pgSelectedIdx;
+    if (sel.has(i)) sel.delete(i); else sel.add(i);
+    renderPriceList();
+}
+
+function updatePriceTotal() {
+    const prices = window._pgPrices || [];
+    const sel    = window._pgSelectedIdx || new Set();
+    let total = 0;
+    sel.forEach(i => {
+        const r = prices[i];
+        if (r && r.amount) total += Number(r.amount.replace(/[^0-9]/g,'')) || 0;
+    });
+    const box = document.getElementById('priceTotalBox');
+    if (box) {
+        box.style.display = (prices.length > 0) ? 'flex' : 'none';
+        document.getElementById('priceTotalAmt').textContent = total.toLocaleString('ko-KR') + '원';
+    }
+}
+
+function goToBooking() {
+    const prices = window._pgPrices || [];
+    const sel    = window._pgSelectedIdx || new Set();
+    const selectedOptions = prices.filter((_, i) => sel.has(i));
+    sessionStorage.setItem('bookingData', JSON.stringify({
+        programId:   window._pgId || '',
+        programName: window._pgName || '',
+        options:     selectedOptions,
+        totalPrice:  selectedOptions.reduce((s, r) => s + (Number((r.amount||'').replace(/[^0-9]/g,''))||0), 0)
+    }));
+    location.href = 'booking.html';
 }
 
 function goToEvents(cat) {
