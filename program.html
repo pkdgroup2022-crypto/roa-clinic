@@ -2267,21 +2267,27 @@ async function render() {
                 const found = (cat.items || []).find(i => i.id === id);
                 if (found) {
                     if (!p) {
-                        // PROGRAMS에 없는 경우 Firebase 데이터로 기본 구조 생성
-                        p = {
-                            category: cat.cat || '',
-                            name: found.name || '',
-                            titleSeo: `부천 ${found.name || ''} | 로아한의원 부천`,
-                            desc: found.desc || '',
-                            img: found.img || '',
-                            prices: [],
-                            pointsTitle: `${found.name || ''} 안내`,
-                            points: [],
-                            targets: [],
-                            steps: [],
-                            ctaTitle: `부천 ${found.name || ''} 상담 예약하세요`,
-                            seo: '',
-                        };
+                        // 이름으로 PROGRAMS 항목 찾기 (id 불일치시 이름 매칭)
+                        const nameMatch = Object.values(PROGRAMS).find(pg => pg.name === found.name);
+                        if (nameMatch) {
+                            p = Object.assign({}, nameMatch);
+                        } else {
+                            // PROGRAMS에 없는 경우 Firebase 데이터로 기본 구조 생성
+                            p = {
+                                category: cat.cat || '',
+                                name: found.name || '',
+                                titleSeo: `부천 ${found.name || ''} | 로아한의원 부천`,
+                                desc: found.desc || '',
+                                img: found.img || '',
+                                prices: [],
+                                pointsTitle: `${found.name || ''} 안내`,
+                                points: [],
+                                targets: [],
+                                steps: [],
+                                ctaTitle: `부천 ${found.name || ''} 상담 예약하세요`,
+                                seo: '',
+                            };
+                        }
                     }
                     if (found.img)  p.img  = found.img;
                     if (found.name) p.name = found.name;
