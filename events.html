@@ -412,14 +412,17 @@ function render() {
 
 async function loadData() {
     try {
-        const res = await fetch(FIREBASE_URL + '.json?shallow=false', { signal: AbortSignal.timeout(4000) });
-        const raw = await res.json();
-        if (raw && raw.events) {
-            const d = raw.events;
-            eventsData = Array.isArray(d) ? d : Object.values(d);
+        const [evRes, pgRes] = await Promise.all([
+            fetch(FIREBASE_URL + '/events.json', { signal: AbortSignal.timeout(4000) }),
+            fetch(FIREBASE_URL + '/programs.json', { signal: AbortSignal.timeout(4000) })
+        ]);
+        const evData = await evRes.json();
+        const pgData = await pgRes.json();
+        if (evData) {
+            eventsData = Array.isArray(evData) ? evData : Object.values(evData);
         } else { eventsData = DEMO_EVENTS; }
-        if (raw && raw.programs) {
-            const pgArr = Array.isArray(raw.programs) ? raw.programs : Object.values(raw.programs);
+        if (pgData) {
+            const pgArr = Array.isArray(pgData) ? pgData : Object.values(pgData);
             const rebuilt = {};
             pgArr.filter(c => !c.hidden).forEach(c => {
                 rebuilt[c.cat] = (c.items || []).filter(i => !i.hidden).map(i => ({

@@ -441,10 +441,10 @@ async function loadReviewPhotos(id) {
 
     let photos = [];
     try {
-        const res = await fetch(FIREBASE_URL + '.json?t=' + Date.now());
+        const res = await fetch(FIREBASE_URL + '/photos.json?t=' + Date.now());
         const fb = await res.json();
         const toArr = v => Array.isArray(v) ? v : (v ? Object.values(v) : []);
-        photos = toArr(fb && fb.photos)
+        photos = toArr(fb)
             .filter(p => isPhotoOn(p['표시'] ?? p.show))
             .filter(p => keywords.some(k => (p['시술명'] || p.title || '').includes(k)));
     } catch(e) {
@@ -2149,10 +2149,10 @@ async function render() {
 
     // Firebase programs에서 관리자가 설정한 썸네일·가격옵션 오버라이드
     try {
-        const res = await fetch(FIREBASE_URL + '.json?shallow=false', { signal: AbortSignal.timeout(4000) });
+        const res = await fetch(FIREBASE_URL + '/programs.json', { signal: AbortSignal.timeout(4000) });
         const fb  = await res.json();
-        if (fb && fb.programs) {
-            const pgArr = Array.isArray(fb.programs) ? fb.programs : Object.values(fb.programs);
+        if (fb) {
+            const pgArr = Array.isArray(fb) ? fb : Object.values(fb);
             for (const cat of pgArr) {
                 const found = (cat.items || []).find(i => i.id === id);
                 if (found) {
