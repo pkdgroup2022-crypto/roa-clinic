@@ -2268,9 +2268,11 @@ async function render() {
                 if (found) {
                     if (!p) {
                         // 이름으로 PROGRAMS 항목 찾기 (id 불일치시 이름 매칭)
-                        const nameMatch = Object.values(PROGRAMS).find(pg => pg.name === found.name);
+                        const nameMatchKey = Object.keys(PROGRAMS).find(k => PROGRAMS[k].name === found.name);
+                        const nameMatch = nameMatchKey ? PROGRAMS[nameMatchKey] : null;
                         if (nameMatch) {
                             p = Object.assign({}, nameMatch);
+                            p._reviewId = nameMatchKey; // 전후사진 키 저장
                         } else {
                             // PROGRAMS에 없는 경우 Firebase 데이터로 기본 구조 생성
                             p = {
@@ -2386,7 +2388,7 @@ async function render() {
     document.getElementById('heroPriceNote').textContent = p.priceNote || '* VAT 별도 · 정확한 가격은 상담 후 확인';
 
     // 시술 후기 사진 (Firebase에서 로드)
-    loadReviewPhotos(id);
+    loadReviewPhotos(p._reviewId || id);
 
     // Points
     document.getElementById('pointsTitle').textContent = p.pointsTitle;
