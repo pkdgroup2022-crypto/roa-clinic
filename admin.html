@@ -9,6 +9,7 @@
     <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-database-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-storage-compat.js"></script>
     <script>
         // Firebase 초기화
         firebase.initializeApp({
@@ -20,8 +21,9 @@
             messagingSenderId: "366864915797",
             appId: "1:366864915797:web:e5f0dab77bb6e19b99a3dc"
         });
-        const auth = firebase.auth();
-        const db   = firebase.database();
+        const auth    = firebase.auth();
+        const db      = firebase.database();
+        const storage = firebase.storage();
 
         // Firebase 쓰기 (인증 필요)
         async function fbSet(path, data) {
@@ -228,6 +230,36 @@
         }
         .card.dragging { opacity: 0.4; }
 
+        /* ─── 시술 메뉴 탭 ─── */
+        .pg-add-bar { display:flex; gap:0.6rem; align-items:center; margin-bottom:1.2rem; }
+        .pg-add-bar input { flex:1; padding:0.55rem 0.9rem; border:1px solid var(--border); border-radius:6px; font-family:inherit; font-size:0.88rem; outline:none; }
+        .pg-add-bar input:focus { border-color:var(--gold); }
+        .pg-cat-block { border:1px solid var(--border); border-radius:8px; margin-bottom:0.8rem; overflow:hidden; background:#fff; }
+        .pg-cat-header { display:flex; align-items:center; gap:0.5rem; padding:0.7rem 1rem; background:#f0ece6; }
+        .pg-cat-toggle { background:none; border:none; cursor:pointer; font-size:1rem; padding:0 0.2rem; color:var(--mid); }
+        .pg-cat-name-input { flex:1; padding:0.4rem 0.7rem; border:1px solid var(--border); border-radius:4px; font-family:inherit; font-size:0.88rem; font-weight:700; }
+        .pg-cat-body { padding:0.6rem 1rem 0.8rem 2.2rem; display:flex; flex-direction:column; gap:0.4rem; }
+        .pg-item-row { display:flex; align-items:center; gap:0.5rem; padding:0.45rem 0.8rem; background:#fafafa; border:1px solid var(--border); border-radius:6px; }
+        .pg-item-name-btn { flex:1; text-align:left; background:none; border:1px solid var(--border); border-radius:4px; padding:0.38rem 0.7rem; font-family:inherit; font-size:0.85rem; cursor:pointer; transition:border-color 0.15s; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+        .pg-item-name-btn:hover { border-color:var(--gold); color:var(--gold); }
+        .pg-btn { padding:0.32rem 0.7rem; border-radius:4px; font-size:0.72rem; font-weight:700; border:none; cursor:pointer; font-family:inherit; white-space:nowrap; }
+        .pg-btn-gray { background:#555; color:#fff; } .pg-btn-gray:hover { background:#333; }
+        .pg-btn-hide { background:#888; color:#fff; } .pg-btn-hide:hover { background:#666; }
+        .pg-btn-red  { background:var(--red); color:#fff; } .pg-btn-red:hover { background:#a93226; }
+        .pg-sub-add  { display:flex; gap:0.5rem; margin-top:0.6rem; }
+        .pg-sub-add input { flex:1; padding:0.38rem 0.7rem; border:1px solid var(--border); border-radius:4px; font-family:inherit; font-size:0.82rem; outline:none; }
+        .pg-sub-add input:focus { border-color:var(--gold); }
+        /* detail editor */
+        .pg-detail-back { background:#fff; border-bottom:1px solid var(--border); padding:0.8rem 1.5rem; display:flex; align-items:center; gap:1rem; position:sticky; top:96px; z-index:84; }
+        .pg-detail-back button { background:none; border:1px solid var(--border); border-radius:6px; padding:0.38rem 1rem; font-family:inherit; font-size:0.82rem; cursor:pointer; color:var(--mid); }
+        .pg-thumb-box { width:180px; height:180px; border:2px dashed var(--border); border-radius:8px; display:flex; align-items:center; justify-content:center; cursor:pointer; overflow:hidden; background:#f8f4f0; flex-shrink:0; }
+        .pg-thumb-box:hover { border-color:var(--gold); }
+        .pg-thumb-box img { width:100%; height:100%; object-fit:cover; }
+        .pg-opt-table { width:100%; border-collapse:collapse; border:1px solid var(--border); border-radius:8px; overflow:hidden; font-size:0.85rem; }
+        .pg-opt-table th { background:#f5f5f5; padding:0.6rem 0.8rem; font-size:0.75rem; font-weight:700; }
+        .pg-opt-table td { padding:0.5rem 0.7rem; border-top:1px solid var(--border); }
+        .pg-opt-table input { width:100%; border:1px solid var(--border); border-radius:4px; padding:0.35rem 0.55rem; font-family:inherit; font-size:0.83rem; }
+
         @media (max-width: 600px) {
             .row2, .row3 { grid-template-columns: 1fr; }
             .upload-row { grid-template-columns: 1fr; }
@@ -284,6 +316,7 @@
     <button class="tab-btn" onclick="switchTab('stats')">📊 수치 통계</button>
     <button class="tab-btn" onclick="switchTab('events')">🎁 이달의 이벤트</button>
     <button class="tab-btn" onclick="switchTab('photos')">🖼 전후 사진</button>
+    <button class="tab-btn" onclick="switchTab('programs')">📋 시술 메뉴</button>
 </div>
 
 <!-- ═══ 탭 1: 기본 정보 ═══ -->
@@ -369,6 +402,91 @@
     <div class="save-bar">
         <button class="btn-secondary" onclick="clearAllPhotos()">전체 삭제</button>
         <button class="btn-save" onclick="savePhotos()">💾 사진 저장</button>
+    </div>
+</div>
+
+<!-- ═══ 탭 5: 시술 메뉴 ═══ -->
+<div id="tab-programs" class="tab-panel">
+
+    <!-- ── 목록 뷰 ── -->
+    <div id="pg-list-view">
+        <div class="container">
+            <div class="section-title" style="margin-bottom:0.3rem;">시술 메뉴 관리</div>
+            <p class="section-desc">카테고리와 시술을 추가·삭제·순서변경합니다. 시술명을 클릭하면 상세 편집(썸네일·가격옵션)을 할 수 있습니다.</p>
+
+            <div class="pg-add-bar">
+                <input type="text" id="pg-new-cat" placeholder="대분류 이름 입력 (예: 리프팅/탄력)">
+                <button class="btn-save" style="width:auto;padding:0.55rem 1.2rem;" onclick="pgAddCat()">대분류 추가</button>
+            </div>
+
+            <div id="pg-cat-list"></div>
+        </div>
+        <div class="save-bar">
+            <button class="btn-save" onclick="savePrograms()">💾 전체 저장</button>
+        </div>
+    </div>
+
+    <!-- ── 상세 편집 뷰 ── -->
+    <div id="pg-edit-view" style="display:none;">
+        <div class="pg-detail-back">
+            <button onclick="pgBackToList()">← 목록으로</button>
+            <span id="pg-edit-crumb" style="font-size:0.88rem;font-weight:600;"></span>
+        </div>
+        <div class="container">
+            <div style="font-size:1rem;font-weight:700;margin-bottom:1.2rem;padding-bottom:0.7rem;border-bottom:2px solid var(--border);">카테고리 상세페이지 관리</div>
+
+            <div style="display:grid;grid-template-columns:200px 1fr;gap:2rem;margin-bottom:2rem;align-items:start;">
+                <div>
+                    <div style="font-size:0.7rem;font-weight:700;letter-spacing:0.1em;color:var(--muted);margin-bottom:0.5rem;">썸네일</div>
+                    <div class="pg-thumb-box" id="pg-thumb-box" onclick="document.getElementById('pg-thumb-input').click()">
+                        <span style="font-size:2.5rem;color:#ccc;">📷</span>
+                    </div>
+                    <input type="file" id="pg-thumb-input" accept="image/*" style="display:none;" onchange="pgHandleThumb(this)">
+                    <button onclick="document.getElementById('pg-thumb-input').click()" style="width:100%;margin-top:0.5rem;padding:0.42rem;border:1px solid var(--border);border-radius:6px;font-family:inherit;font-size:0.75rem;cursor:pointer;background:#fff;">파일 선택</button>
+                    <div id="pg-thumb-fname" style="font-size:0.7rem;color:var(--muted);margin-top:0.3rem;text-align:center;">선택된 파일 없음</div>
+                </div>
+                <div>
+                    <div class="field"><label>제목</label>
+                        <input type="text" id="pg-f-name" placeholder="울쎄라피 프라임">
+                    </div>
+                    <div class="field"><label>시작가격 (숫자만, 예: 690000)</label>
+                        <input type="text" id="pg-f-price" placeholder="690000">
+                    </div>
+                    <div class="field"><label>부제목 / 설명</label>
+                        <input type="text" id="pg-f-desc" placeholder="HIFU 고강도 집속 초음파 리프팅">
+                    </div>
+                </div>
+            </div>
+
+            <div style="font-size:1rem;font-weight:700;margin-bottom:0.8rem;padding-bottom:0.7rem;border-bottom:2px solid var(--border);">시술 선택 옵션</div>
+            <div style="display:grid;grid-template-columns:1fr 130px 130px auto;gap:0.7rem;align-items:flex-end;padding:0.9rem;background:#f9f6f2;border-radius:8px;border:1px solid var(--border);margin-bottom:0.6rem;">
+                <div class="field" style="margin:0;"><label>옵션 이름</label>
+                    <input type="text" id="pg-opt-name" placeholder="예: 울쎄라피 프라임 300샷">
+                </div>
+                <div class="field" style="margin:0;"><label>판매가</label>
+                    <input type="number" id="pg-opt-sale" placeholder="690000">
+                </div>
+                <div class="field" style="margin:0;"><label>정상가 (선택)</label>
+                    <input type="number" id="pg-opt-orig" placeholder="1350000">
+                </div>
+                <button onclick="pgAddOption()" class="btn-save" style="width:auto;padding:0.62rem 1rem;">옵션 추가</button>
+            </div>
+            <div style="font-size:0.72rem;color:var(--muted);margin-bottom:0.5rem;">정상가를 입력하면 홈페이지에 취소선으로 함께 표시됩니다. 옵션은 위에서부터 이 순서대로 노출됩니다.</div>
+            <table class="pg-opt-table">
+                <thead><tr>
+                    <th style="width:80px;text-align:center;">순서</th>
+                    <th style="text-align:left;">이름</th>
+                    <th style="width:130px;text-align:right;">정상가</th>
+                    <th style="width:130px;text-align:right;">판매가</th>
+                    <th style="width:60px;text-align:center;">삭제</th>
+                </tr></thead>
+                <tbody id="pg-opt-tbody"></tbody>
+            </table>
+        </div>
+        <div class="save-bar">
+            <button class="btn-secondary" onclick="pgBackToList()">취소</button>
+            <button class="btn-save" onclick="pgSaveItem()">💾 저장</button>
+        </div>
     </div>
 </div>
 
@@ -878,6 +996,236 @@ function clearAllPhotos() {
 }
 
 /* ════════════════════════════════
+   탭 5: 시술 메뉴
+════════════════════════════════ */
+// programsData = [ { cat:'리프팅/탄력', hidden:false, collapsed:false, items:[ { id, name, hidden, img, desc, price, options:[] } ] }, ... ]
+let programsData = [];
+let pgEditCatIdx = -1, pgEditItemIdx = -1;
+let pgThumbFile = null;
+
+const PG_DEFAULT = [
+    { cat:'리프팅/탄력', hidden:false, collapsed:false, items:[
+        { id:'ulthera',      name:'울쎄라피 프라임', hidden:false, img:'images/program-ulthera.png',      desc:'HIFU 고강도 집속 초음파 리프팅',       price:'690000', options:[] },
+        { id:'onda',         name:'온다리프팅',      hidden:false, img:'images/program-onda.png',         desc:'마이크로파 에너지 심부 리프팅',          price:'220000', options:[] },
+        { id:'volnumer',     name:'볼뉴머',          hidden:false, img:'images/program-volnumer.png',     desc:'고주파(RF) 콜라겐 재생 & 피부 탄력',    price:'320000', options:[] },
+        { id:'eye-volnumer', name:'아이볼뉴머',      hidden:false, img:'images/program-eye-volnumer.png', desc:'눈가 전용 고주파 탄력 개선',             price:'280000', options:[] },
+        { id:'onsera',       name:'온쎄라',          hidden:false, img:'images/program-onsera.png',       desc:'온다+울쎄라 복합 리프팅',               price:'850000', options:[] },
+        { id:'volsera',      name:'볼쎄라',          hidden:false, img:'images/program-volsera.png',      desc:'볼뉴머+울쎄라 복합 리프팅',             price:'980000', options:[] },
+    ]},
+    { cat:'실리프팅', hidden:false, collapsed:false, items:[
+        { id:'oneday-silift', name:'원데이실리프팅', hidden:false, img:'images/program-oneday-silift.png', desc:'수술 없이 당기는 프리미엄 실 리프팅',   price:'720000', options:[] },
+        { id:'nose-silift',   name:'코 실리프팅',   hidden:false, img:'images/program-nose-silift.png',   desc:'수술 없이 콧대+코끝을 올리는 실리프팅', price:'350000', options:[] },
+        { id:'nasolabial',    name:'팔자볼륨실',     hidden:false, img:'images/program-nasolabial.png',    desc:'팔자주름 개선 볼륨 실 리프팅',          price:'340000', options:[] },
+    ]},
+    { cat:'윤곽/지방제거', hidden:false, collapsed:false, items:[
+        { id:'slim-shot',  name:'슬림샷',    hidden:false, img:'images/program-slim-shot.png',  desc:'한약 성분 지방 분해 주사',    price:'150000', options:[] },
+        { id:'body-slim',  name:'바디슬림샷',hidden:false, img:'images/program-body-slim.png',  desc:'바디 부위 집중 지방 분해',    price:'180000', options:[] },
+        { id:'slim-nose',  name:'슬림코약침',hidden:false, img:'images/program-slim-nose.png',  desc:'코 부위 슬림 약침',           price:'80000',  options:[] },
+    ]},
+    { cat:'볼륨UP', hidden:false, collapsed:false, items:[
+        { id:'volume-shot', name:'볼륨샷',  hidden:false, img:'images/program-volume-shot.png', desc:'자가 콜라겐으로 만드는 입체 볼륨', price:'450000', options:[] },
+    ]},
+    { cat:'스킨부스터', hidden:false, collapsed:false, items:[
+        { id:'radiusse', name:'라디쥬',   hidden:false, img:'images/program-radiusse.png', desc:'피부 수분·탄력 부스터 주사',     price:'220000', options:[] },
+        { id:'whitening',name:'미백약침', hidden:false, img:'images/program-whitening.png',desc:'미백·피부톤 개선 약침',           price:'150000', options:[] },
+        { id:'exosome',  name:'엑소좀',   hidden:false, img:'images/program-exosome.png',  desc:'줄기세포 유래 피부 재생 치료',    price:'220000', options:[] },
+    ]},
+    { cat:'여드름/흉터', hidden:false, collapsed:false, items:[
+        { id:'scar',       name:'흉터새살침',   hidden:false, img:'images/program-scar.png',       desc:'흉터 재생 약침 · 1개 체험가',     price:'50000', options:[] },
+        { id:'dermal',     name:'진피재생약침', hidden:false, img:'images/program-dermal.png',     desc:'진피층 재생 촉진 약침 · 1cc',     price:'90000', options:[] },
+        { id:'anti-inflam',name:'염증약침',     hidden:false, img:'images/program-anti-inflam.png',desc:'여드름 염증 진정 약침 · 1부위',   price:'10000', options:[] },
+    ]},
+    { cat:'다이어트', hidden:false, collapsed:false, items:[
+        { id:'color-pill',  name:'컬러환',  hidden:false, img:'images/program-color-pill.png',  desc:'한방 체중 관리 환약',       price:'240000', options:[] },
+        { id:'beauty-pill', name:'미인환',  hidden:false, img:'images/program-beauty-pill.png', desc:'한방 미용 다이어트 환약',   price:'160000', options:[] },
+        { id:'circulation', name:'순환개선탕',hidden:false, img:'images/program-circulation.png',desc:'한방 순환 개선 다이어트 탕약', price:'400000', options:[] },
+    ]},
+];
+
+async function loadPrograms() {
+    try {
+        const fb = await fbGet('/programs');
+        if (fb) {
+            programsData = Array.isArray(fb) ? fb : Object.values(fb);
+            saveJSON('roa_programs', programsData);
+        } else {
+            programsData = loadJSON('roa_programs', null) || JSON.parse(JSON.stringify(PG_DEFAULT));
+        }
+    } catch(e) {
+        programsData = loadJSON('roa_programs', null) || JSON.parse(JSON.stringify(PG_DEFAULT));
+    }
+    renderPgCatList();
+}
+
+function renderPgCatList() {
+    const el = document.getElementById('pg-cat-list');
+    if (!programsData.length) { el.innerHTML = '<p style="color:var(--muted);text-align:center;padding:2rem;">카테고리가 없습니다. 대분류를 추가해주세요.</p>'; return; }
+    el.innerHTML = programsData.map((cat, ci) => `
+        <div class="pg-cat-block">
+            <div class="pg-cat-header">
+                <button class="pg-cat-toggle" onclick="pgToggleCat(${ci})">${cat.collapsed ? '▶' : '▼'}</button>
+                <input class="pg-cat-name-input" value="${esc(cat.cat)}" oninput="programsData[${ci}].cat=this.value" style="flex:1;">
+                <button class="pg-btn pg-btn-gray" style="padding:0.35rem 0.8rem;" onclick="pgSaveCatName(${ci})">저장</button>
+                <button class="pg-btn pg-btn-gray" onclick="pgMoveCat(${ci},-1)">▲</button>
+                <button class="pg-btn pg-btn-gray" onclick="pgMoveCat(${ci},1)">▼</button>
+                <button class="pg-btn pg-btn-hide" onclick="pgToggleCatHide(${ci})">${cat.hidden ? '보이기' : '숨김'}</button>
+                <button class="pg-btn pg-btn-red" onclick="pgRemoveCat(${ci})">삭제</button>
+            </div>
+            ${cat.collapsed ? '' : `
+            <div class="pg-cat-body">
+                ${(cat.items||[]).map((item, ii) => `
+                <div class="pg-item-row" style="${item.hidden ? 'opacity:0.45;' : ''}">
+                    <button class="pg-item-name-btn" onclick="pgOpenEdit(${ci},${ii})">${esc(item.name)||'(이름 없음)'}</button>
+                    <button class="pg-btn pg-btn-gray" onclick="pgMoveItem(${ci},${ii},-1)">▲</button>
+                    <button class="pg-btn pg-btn-gray" onclick="pgMoveItem(${ci},${ii},1)">▼</button>
+                    <button class="pg-btn pg-btn-hide" onclick="pgToggleItemHide(${ci},${ii})">${item.hidden ? '보이기' : '숨김'}</button>
+                    <button class="pg-btn pg-btn-red" onclick="pgRemoveItem(${ci},${ii})">삭제</button>
+                </div>`).join('')}
+                <div class="pg-sub-add">
+                    <input type="text" id="pg-new-item-${ci}" placeholder="중분류 이름 입력 (예: 울쎄라피 프라임)">
+                    <button class="pg-btn pg-btn-gray" style="padding:0.38rem 0.9rem;" onclick="pgAddItem(${ci})">중분류 추가</button>
+                </div>
+            </div>`}
+        </div>
+    `).join('');
+}
+
+function pgToggleCat(ci) {
+    programsData[ci].collapsed = !programsData[ci].collapsed;
+    renderPgCatList();
+}
+function pgSaveCatName(ci) { savePrograms(); }
+function pgMoveCat(ci, dir) {
+    const j = ci + dir;
+    if (j < 0 || j >= programsData.length) return;
+    [programsData[ci], programsData[j]] = [programsData[j], programsData[ci]];
+    renderPgCatList();
+}
+function pgToggleCatHide(ci) { programsData[ci].hidden = !programsData[ci].hidden; renderPgCatList(); }
+function pgRemoveCat(ci) {
+    if (!confirm(`"${programsData[ci].cat}" 카테고리와 모든 시술을 삭제할까요?`)) return;
+    programsData.splice(ci, 1); renderPgCatList();
+}
+function pgAddCat() {
+    const inp = document.getElementById('pg-new-cat');
+    const name = inp.value.trim();
+    if (!name) return;
+    programsData.push({ cat: name, hidden: false, collapsed: false, items: [] });
+    inp.value = '';
+    renderPgCatList();
+}
+function pgAddItem(ci) {
+    const inp = document.getElementById('pg-new-item-' + ci);
+    const name = inp.value.trim();
+    if (!name) return;
+    const id = name.replace(/\s+/g, '-').replace(/[^\w가-힣-]/g, '') + '_' + Date.now();
+    if (!programsData[ci].items) programsData[ci].items = [];
+    programsData[ci].items.push({ id, name, hidden: false, img: '', desc: '', price: '', options: [] });
+    inp.value = '';
+    renderPgCatList();
+}
+function pgMoveItem(ci, ii, dir) {
+    const items = programsData[ci].items;
+    const j = ii + dir;
+    if (j < 0 || j >= items.length) return;
+    [items[ii], items[j]] = [items[j], items[ii]];
+    renderPgCatList();
+}
+function pgToggleItemHide(ci, ii) { programsData[ci].items[ii].hidden = !programsData[ci].items[ii].hidden; renderPgCatList(); }
+function pgRemoveItem(ci, ii) {
+    if (!confirm(`"${programsData[ci].items[ii].name}" 시술을 삭제할까요?`)) return;
+    programsData[ci].items.splice(ii, 1); renderPgCatList();
+}
+
+/* 상세 편집 */
+function pgOpenEdit(ci, ii) {
+    pgEditCatIdx = ci; pgEditItemIdx = ii; pgThumbFile = null;
+    const item = programsData[ci].items[ii];
+    document.getElementById('pg-list-view').style.display = 'none';
+    document.getElementById('pg-edit-view').style.display = 'block';
+    document.getElementById('pg-edit-crumb').textContent = programsData[ci].cat + ' / ' + (item.name || '새 시술');
+    document.getElementById('pg-f-name').value  = item.name || '';
+    document.getElementById('pg-f-price').value = item.price || '';
+    document.getElementById('pg-f-desc').value  = item.desc || '';
+    document.getElementById('pg-thumb-fname').textContent = '선택된 파일 없음';
+    const box = document.getElementById('pg-thumb-box');
+    box.innerHTML = item.img ? `<img src="${esc(item.img)}">` : '<span style="font-size:2.5rem;color:#ccc;">📷</span>';
+    renderPgOptions();
+}
+function pgBackToList() {
+    document.getElementById('pg-edit-view').style.display = 'none';
+    document.getElementById('pg-list-view').style.display = 'block';
+}
+function pgHandleThumb(input) {
+    const file = input.files[0]; if (!file) return;
+    pgThumbFile = file;
+    document.getElementById('pg-thumb-fname').textContent = file.name;
+    const reader = new FileReader();
+    reader.onload = e => { document.getElementById('pg-thumb-box').innerHTML = `<img src="${e.target.result}">`; };
+    reader.readAsDataURL(file);
+}
+function renderPgOptions() {
+    const opts = (programsData[pgEditCatIdx]?.items[pgEditItemIdx]?.options) || [];
+    const tbody = document.getElementById('pg-opt-tbody');
+    if (!opts.length) { tbody.innerHTML = `<tr><td colspan="5" style="text-align:center;padding:1.2rem;color:var(--muted);">옵션이 없습니다.</td></tr>`; return; }
+    tbody.innerHTML = opts.map((opt, i) => `
+        <tr>
+            <td style="text-align:center;">
+                <button class="pg-btn pg-btn-gray" style="padding:0.2rem 0.5rem;" onclick="pgMoveOpt(${i},-1)">▲</button>
+                <button class="pg-btn pg-btn-gray" style="padding:0.2rem 0.5rem;" onclick="pgMoveOpt(${i},1)">▼</button>
+            </td>
+            <td><input type="text" value="${esc(opt.name)}" oninput="programsData[pgEditCatIdx].items[pgEditItemIdx].options[${i}].name=this.value"></td>
+            <td style="text-align:right;"><input type="number" value="${opt.origPrice||''}" style="text-align:right;" placeholder="-" oninput="programsData[pgEditCatIdx].items[pgEditItemIdx].options[${i}].origPrice=this.value?Number(this.value):null"></td>
+            <td style="text-align:right;"><input type="number" value="${opt.salePrice||''}" style="text-align:right;" oninput="programsData[pgEditCatIdx].items[pgEditItemIdx].options[${i}].salePrice=this.value?Number(this.value):null"></td>
+            <td style="text-align:center;"><button class="pg-btn pg-btn-red" onclick="pgRemoveOpt(${i})">삭제</button></td>
+        </tr>`).join('');
+}
+function pgAddOption() {
+    const name = document.getElementById('pg-opt-name').value.trim();
+    const sale = Number(document.getElementById('pg-opt-sale').value) || 0;
+    const orig = Number(document.getElementById('pg-opt-orig').value) || null;
+    if (!name) { showToast('옵션 이름을 입력하세요.', true); return; }
+    const item = programsData[pgEditCatIdx].items[pgEditItemIdx];
+    if (!item.options) item.options = [];
+    item.options.push({ name, salePrice: sale, origPrice: orig });
+    document.getElementById('pg-opt-name').value = '';
+    document.getElementById('pg-opt-sale').value = '';
+    document.getElementById('pg-opt-orig').value = '';
+    renderPgOptions();
+}
+function pgRemoveOpt(i) { programsData[pgEditCatIdx].items[pgEditItemIdx].options.splice(i,1); renderPgOptions(); }
+function pgMoveOpt(i, dir) {
+    const opts = programsData[pgEditCatIdx].items[pgEditItemIdx].options;
+    const j = i + dir; if (j < 0 || j >= opts.length) return;
+    [opts[i], opts[j]] = [opts[j], opts[i]]; renderPgOptions();
+}
+async function pgSaveItem() {
+    const item = programsData[pgEditCatIdx].items[pgEditItemIdx];
+    item.name  = document.getElementById('pg-f-name').value.trim();
+    item.price = document.getElementById('pg-f-price').value.trim();
+    item.desc  = document.getElementById('pg-f-desc').value.trim();
+    if (pgThumbFile) {
+        showToast('이미지 업로드 중...');
+        try {
+            const ext = pgThumbFile.name.split('.').pop();
+            const ref = storage.ref('programs/' + (item.id || 'item_' + Date.now()) + '/thumb.' + ext);
+            await ref.put(pgThumbFile);
+            item.img = await ref.getDownloadURL();
+            pgThumbFile = null;
+        } catch(e) { showToast('업로드 실패: ' + e.message, true); return; }
+    }
+    await savePrograms();
+    pgBackToList();
+}
+async function savePrograms() {
+    saveJSON('roa_programs', programsData);
+    try {
+        await fbSet('/programs', programsData);
+        showToast('✓ 시술 메뉴 저장됐습니다!');
+    } catch(e) { showToast('Firebase 오류: ' + e.message, true); }
+}
+
+/* ════════════════════════════════
    인증 & 초기화
 ════════════════════════════════ */
 function doLogin() {
@@ -908,6 +1256,7 @@ auth.onAuthStateChanged(function(user) {
         loadStats();
         loadEvents();
         loadPhotos();
+        loadPrograms();
     } else {
         login.style.display = 'flex';
         admin.style.display = 'none';

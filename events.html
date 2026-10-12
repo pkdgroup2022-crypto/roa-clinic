@@ -248,7 +248,7 @@ const EVENT_CARDS = [
     { id: 'event4', name: '💉 흉터새살침 이벤트', desc: '흉터 재생 약침 특별 이벤트', img: 'images/popup-event5-mo.png', imgs: ['images/popup-event5-mo.png'], price: '문의' },
 ];
 
-const PROGRAMS = {
+let PROGRAMS = {
     '리프팅/탄력': [
         { id: 'ulthera',       name: '울쎄라피 프라임', desc: 'HIFU 고강도 집속 초음파 리프팅',        img: 'images/program-ulthera.png',       price: '690,000' },
         { id: 'onda',          name: '온다리프팅',      desc: '마이크로파 에너지 심부 리프팅',          img: 'images/program-onda.png',          price: '220,000' },
@@ -418,6 +418,16 @@ async function loadData() {
             const d = raw.events;
             eventsData = Array.isArray(d) ? d : Object.values(d);
         } else { eventsData = DEMO_EVENTS; }
+        if (raw && raw.programs) {
+            const pgArr = Array.isArray(raw.programs) ? raw.programs : Object.values(raw.programs);
+            const rebuilt = {};
+            pgArr.filter(c => !c.hidden).forEach(c => {
+                rebuilt[c.cat] = (c.items || []).filter(i => !i.hidden).map(i => ({
+                    id: i.id, name: i.name, desc: i.desc, img: i.img, price: i.price ? String(i.price).replace(/[^0-9]/g,'') : ''
+                }));
+            });
+            if (Object.keys(rebuilt).length) PROGRAMS = rebuilt;
+        }
     } catch { eventsData = DEMO_EVENTS; }
     render();
 }
