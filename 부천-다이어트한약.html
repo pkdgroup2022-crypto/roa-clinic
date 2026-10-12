@@ -2223,7 +2223,7 @@ function render() {
     const img = document.getElementById('heroImg');
     img.src = p.img; img.alt = `${p.name} | 로아한의원 부천`;
     document.getElementById('heroCategory').textContent = p.category;
-    document.getElementById('heroName').textContent = p.name;
+    document.getElementById('heroName').textContent = '부천 ' + p.name;
     document.getElementById('heroSubtitle').textContent = p.subtitle || '';
     document.getElementById('heroDesc').textContent = p.desc;
     document.getElementById('priceList').innerHTML = (p.prices || []).map(r =>
