@@ -27,7 +27,7 @@
     { "source": "/부천-다이어트한약",     "destination": "/부천-다이어트한약.html" },
     { "source": "/부천-컬러환",           "destination": "/부천-컬러환.html" },
     { "source": "/부천-미인환",           "destination": "/부천-미인환.html" },
-    { "source": "/노트-온다리프팅",       "destination": "/노트-온다리프팅.html" },
-    { "source": "/노트-울쎄라",           "destination": "/노트-울쎄라.html" }
+    { "source": "/note-onda",             "destination": "/note-onda.html" },
+    { "source": "/note-ulthera",          "destination": "/note-ulthera.html" }
   ]
 }
