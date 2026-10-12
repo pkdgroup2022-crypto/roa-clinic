@@ -439,8 +439,20 @@ async function loadData() {
 function toggleMenu() { document.getElementById('mobileMenu').classList.toggle('open'); }
 function closeMenu()   { document.getElementById('mobileMenu').classList.remove('open'); }
 
-// 뒤로가기 후 탭 복원
-(function restoreTab() {
+// URL ?cat= 파라미터로 탭 지정
+(function initFromUrl() {
+    const params = new URLSearchParams(location.search);
+    const cat = params.get('cat');
+    if (cat && (PROGRAMS[cat] || cat === '이달의 이벤트')) {
+        currentCat = cat;
+        const btn = document.querySelector(`.cat-tab[data-cat="${cat}"]`);
+        if (btn) {
+            document.querySelectorAll('.cat-tab').forEach(t => t.classList.remove('active'));
+            btn.classList.add('active');
+        }
+        return;
+    }
+    // 뒤로가기 후 탭 복원
     const saved = sessionStorage.getItem('eventsTab');
     if (saved && (PROGRAMS[saved] || saved === '이달의 이벤트')) {
         currentCat = saved;
