@@ -2408,6 +2408,16 @@ async function render() {
         ).join('');
         document.getElementById('eventSeo').innerHTML = p.seo || '';
 
+        // goToBooking()이 읽는 공통 변수에 이벤트 데이터 세팅
+        window._pgId   = id;
+        window._pgName = p.name;
+        window._pgPrices = (p.items || []).map(it => ({
+            name:       it.name || '',
+            amount:     it.salePrice ? String(it.salePrice) : '',
+            origAmount: it.originalPrice ? String(it.originalPrice) : ''
+        }));
+        window._pgSelectedIdx = new Set();
+
         // 시술 항목 선택 UI
         const items = p.items || [];
         if (items.length) {
@@ -2418,29 +2428,26 @@ async function render() {
             const vatNote  = document.getElementById('evVatNote');
             priceBox.style.display = 'block';
             vatNote.textContent = '* VAT ' + (p.VAT === '포함' ? '포함' : '별도');
-            let selected = new Set();
-            function calcTotal() {
+            function calcEvTotal() {
                 let sum = 0;
-                selected.forEach(idx => { sum += Number(items[idx].salePrice || 0); });
+                window._pgSelectedIdx.forEach(idx => { sum += Number(items[idx].salePrice || 0); });
                 totalAmt.textContent = sum.toLocaleString() + '원';
-                totalBox.style.display = selected.size ? 'flex' : 'none';
+                totalBox.style.display = window._pgSelectedIdx.size ? 'flex' : 'none';
             }
             itemList.innerHTML = items.map((it, idx) => `
                 <div class="price-row" id="evpr-${idx}" onclick="(function(){
                     const el=document.getElementById('evpr-${idx}');
                     el.classList.toggle('selected');
-                    if(el.classList.contains('selected')) _evSel.add(${idx}); else _evSel.delete(${idx});
-                    _evCalc();
+                    if(el.classList.contains('selected')) window._pgSelectedIdx.add(${idx}); else window._pgSelectedIdx.delete(${idx});
+                    calcEvTotal();
                 })()">
-                    <div class="price-row-check">${''}</div>
+                    <div class="price-row-check"></div>
                     <span style="flex:1;font-size:0.9rem;">${it.name || ''}</span>
                     <div class="price-row-amount">
                         ${it.originalPrice ? `<del style="color:#aaa;font-size:0.8rem;">${Number(it.originalPrice).toLocaleString()}원</del>` : ''}
                         <span style="color:#c94070;font-weight:700;">${it.salePrice ? Number(it.salePrice).toLocaleString() + '원' : '문의'}</span>
                     </div>
                 </div>`).join('');
-            window._evSel = selected;
-            window._evCalc = calcTotal;
         }
         return;
     }
