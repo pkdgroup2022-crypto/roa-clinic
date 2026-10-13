@@ -344,6 +344,17 @@ nav {
 <!-- 이벤트 전용 레이아웃 -->
 <div id="eventLayout">
     <div class="event-images" id="eventImages"></div>
+    <div id="eventPriceBox" style="display:none;max-width:860px;margin:0 auto;padding:1.5rem 2rem 0;">
+        <div style="background:#fff;border:1px solid #e8e0d8;border-radius:10px;padding:1.4rem 1.6rem;">
+            <h3 style="font-family:'Noto Serif KR',serif;font-size:1rem;font-weight:700;margin:0 0 1rem;color:#222;">시술 선택</h3>
+            <div class="price-list" id="evItemList"></div>
+            <div class="price-total-box" id="evTotalBox" style="display:none;">
+                <span class="price-total-label">예상금액</span>
+                <span class="price-total-amount" id="evTotalAmt">0원</span>
+            </div>
+            <p class="price-note" id="evVatNote" style="margin-top:0.3rem;">* VAT 별도</p>
+        </div>
+    </div>
     <div class="event-cta">
         <button class="btn-booking" onclick="goToBooking()" style="font-size:1.1rem;padding:1.2rem 3rem;width:auto;min-width:260px;max-width:360px;">바로 예약하기 →</button>
     </div>
@@ -2306,6 +2317,35 @@ async function render() {
         }
     } catch(e) { /* 실패 시 기존 하드코딩 유지 */ }
 
+    // 이달의 이벤트 (ev0, ev1...) — Firebase events에서 로드
+    if (!p && id.startsWith('ev')) {
+        try {
+            const res = await fetch(FIREBASE_URL + '/events.json?t=' + Date.now(), { signal: AbortSignal.timeout(4000) });
+            const fb = await res.json();
+            if (fb) {
+                const arr = Array.isArray(fb) ? fb : Object.values(fb);
+                const visible = arr.filter(e => e.표시 !== '아니오' && e.이벤트명);
+                const idx = parseInt(id.replace('ev', ''), 10);
+                const ev = visible[idx];
+                if (ev) {
+                    const imgs = ev.imgs && ev.imgs.length ? ev.imgs : (ev.img ? [ev.img] : []);
+                    p = {
+                        type: 'event',
+                        name: ev.이벤트명,
+                        titleSeo: `부천 ${ev.이벤트명} | 로아한의원`,
+                        metaDesc: ev.소제목 || `로아한의원 부천 ${ev.이벤트명}`,
+                        canonicalPath: `/program.html?id=${id}`,
+                        imgs: imgs,
+                        img: imgs[0] || '',
+                        items: ev.items || [],
+                        VAT: ev.VAT || '별도',
+                        seo: ''
+                    };
+                }
+            }
+        } catch(e) { /* 실패 시 낙오 */ }
+    }
+
     if (!p) { document.body.innerHTML = '<p style="padding:4rem;text-align:center">페이지를 찾을 수 없습니다.</p>'; return; }
 
     // Meta
@@ -2362,11 +2402,46 @@ async function render() {
         document.getElementById('hero').style.display = 'none';
         document.querySelectorAll('.section, .cta-band').forEach(el => el.style.display = 'none');
         document.getElementById('seoSection').style.display = 'none';
-        const imgs = p.imgs || [p.img];
+        const imgs = p.imgs || (p.img ? [p.img] : []);
         document.getElementById('eventImages').innerHTML = imgs.map(s =>
             `<img src="${s}" alt="${p.name} | 로아한의원 부천">`
         ).join('');
         document.getElementById('eventSeo').innerHTML = p.seo || '';
+
+        // 시술 항목 선택 UI
+        const items = p.items || [];
+        if (items.length) {
+            const priceBox = document.getElementById('eventPriceBox');
+            const itemList = document.getElementById('evItemList');
+            const totalBox = document.getElementById('evTotalBox');
+            const totalAmt = document.getElementById('evTotalAmt');
+            const vatNote  = document.getElementById('evVatNote');
+            priceBox.style.display = 'block';
+            vatNote.textContent = '* VAT ' + (p.VAT === '포함' ? '포함' : '별도');
+            let selected = new Set();
+            function calcTotal() {
+                let sum = 0;
+                selected.forEach(idx => { sum += Number(items[idx].salePrice || 0); });
+                totalAmt.textContent = sum.toLocaleString() + '원';
+                totalBox.style.display = selected.size ? 'flex' : 'none';
+            }
+            itemList.innerHTML = items.map((it, idx) => `
+                <div class="price-row" id="evpr-${idx}" onclick="(function(){
+                    const el=document.getElementById('evpr-${idx}');
+                    el.classList.toggle('selected');
+                    if(el.classList.contains('selected')) _evSel.add(${idx}); else _evSel.delete(${idx});
+                    _evCalc();
+                })()">
+                    <div class="price-row-check">${''}</div>
+                    <span style="flex:1;font-size:0.9rem;">${it.name || ''}</span>
+                    <div class="price-row-amount">
+                        ${it.originalPrice ? `<del style="color:#aaa;font-size:0.8rem;">${Number(it.originalPrice).toLocaleString()}원</del>` : ''}
+                        <span style="color:#c94070;font-weight:700;">${it.salePrice ? Number(it.salePrice).toLocaleString() + '원' : '문의'}</span>
+                    </div>
+                </div>`).join('');
+            window._evSel = selected;
+            window._evCalc = calcTotal;
+        }
         return;
     }
 

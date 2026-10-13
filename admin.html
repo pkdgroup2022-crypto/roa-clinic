@@ -783,7 +783,10 @@ async function loadEvents() {
 }
 
 function renderEvents() {
-    document.getElementById('events-list').innerHTML = eventsData.map((e, i) => `
+    document.getElementById('events-list').innerHTML = eventsData.map((e, i) => {
+        const imgs = e.imgs || (e.img ? [e.img] : []);
+        const items = e.items || [];
+        return `
         <div class="card" id="ev-${i}" data-idx="${i}">
             <div class="card-head">
                 <div class="card-title-text">
@@ -799,42 +802,57 @@ function renderEvents() {
                     <button class="btn-remove" onclick="removeEvent(${i})">삭제</button>
                 </div>
             </div>
-            <div style="display:flex;gap:1rem;margin-bottom:0.8rem;align-items:flex-start;">
-                <div style="flex-shrink:0;">
-                    <label style="display:block;font-size:0.72rem;font-weight:700;letter-spacing:0.08em;color:var(--muted);margin-bottom:0.4rem;">썸네일 이미지</label>
-                    <label style="cursor:pointer;display:block;">
-                        ${e.img
-                            ? `<img src="${esc(e.img)}" style="width:100px;height:100px;object-fit:cover;border-radius:6px;border:1px solid #eee;" id="ev-thumb-${i}">`
-                            : `<div id="ev-thumb-${i}" style="width:100px;height:100px;border:2px dashed #ccc;border-radius:6px;display:flex;flex-direction:column;align-items:center;justify-content:center;font-size:0.72rem;color:#aaa;gap:4px;"><span style="font-size:1.4rem;">📷</span>이미지 추가</div>`}
+            <div style="display:flex;flex-direction:column;gap:0.6rem;margin-bottom:0.8rem;">
+                <div class="field" style="margin:0;"><label>이벤트명 (제목)</label>
+                    <input type="text" value="${esc(e.이벤트명)}" placeholder="⚡ 타임특가 이벤트"
+                        oninput="eventsData[${i}].이벤트명=this.value;updateEvTitle(${i})">
+                </div>
+                <div class="field" style="margin:0;"><label>소제목 (카드 설명)</label>
+                    <input type="text" value="${esc(e.소제목||'')}" placeholder="한정 수량 타임특가 할인"
+                        oninput="eventsData[${i}].소제목=this.value">
+                </div>
+            </div>
+            <div style="margin-bottom:0.8rem;">
+                <label style="display:block;font-size:0.72rem;font-weight:700;letter-spacing:0.08em;color:var(--muted);margin-bottom:0.5rem;">이미지 (여러 장 추가 가능)</label>
+                <div style="display:flex;flex-wrap:wrap;gap:0.6rem;align-items:flex-start;">
+                    ${imgs.map((url,j)=>`
+                    <div style="position:relative;width:90px;">
+                        <img src="${url}" style="width:90px;height:90px;object-fit:cover;border-radius:6px;border:1px solid #eee;">
+                        <button onclick="removeEvImg(${i},${j})"
+                            style="position:absolute;top:2px;right:2px;background:rgba(0,0,0,0.6);color:#fff;border:none;border-radius:50%;width:20px;height:20px;cursor:pointer;font-size:0.7rem;line-height:1;">✕</button>
+                    </div>`).join('')}
+                    <label style="width:90px;height:90px;border:2px dashed #ccc;border-radius:6px;display:flex;flex-direction:column;align-items:center;justify-content:center;cursor:pointer;gap:0.3rem;font-size:0.7rem;color:#999;">
+                        <span style="font-size:1.3rem;">＋</span>이미지 추가
                         <input type="file" accept="image/*" style="display:none;" onchange="uploadEvImg(${i},this)">
                     </label>
                 </div>
-                <div style="flex:1;display:flex;flex-direction:column;gap:0.6rem;">
-                    <div class="field" style="margin:0;"><label>이벤트명 (제목)</label>
-                        <input type="text" value="${esc(e.이벤트명)}" placeholder="⚡ 타임특가 이벤트"
-                            oninput="eventsData[${i}].이벤트명=this.value;updateEvTitle(${i})">
-                    </div>
-                    <div class="field" style="margin:0;"><label>소제목 (카드 설명)</label>
-                        <input type="text" value="${esc(e.소제목||'')}" placeholder="한정 수량 타임특가 할인"
-                            oninput="eventsData[${i}].소제목=this.value">
-                    </div>
+            </div>
+            <div style="margin-bottom:0.8rem;">
+                <label style="display:block;font-size:0.72rem;font-weight:700;letter-spacing:0.08em;color:var(--muted);margin-bottom:0.5rem;">시술 항목 (여러 개 추가 가능)</label>
+                <div id="ev-items-${i}">
+                    ${items.map((it,j)=>`
+                    <div style="display:flex;gap:0.4rem;align-items:center;margin-bottom:0.4rem;">
+                        <input type="text" value="${esc(it.name||'')}" placeholder="시술명"
+                            oninput="eventsData[${i}].items[${j}].name=this.value"
+                            style="flex:3;padding:0.4rem 0.6rem;border:1px solid #ddd;border-radius:5px;font-size:0.82rem;">
+                        <input type="number" value="${esc(it.originalPrice||'')}" placeholder="원가"
+                            oninput="eventsData[${i}].items[${j}].originalPrice=this.value"
+                            style="flex:1;padding:0.4rem 0.5rem;border:1px solid #ddd;border-radius:5px;font-size:0.82rem;min-width:0;">
+                        <input type="number" value="${esc(it.salePrice||'')}" placeholder="이벤트가"
+                            oninput="eventsData[${i}].items[${j}].salePrice=this.value"
+                            style="flex:1;padding:0.4rem 0.5rem;border:1px solid #ddd;border-radius:5px;font-size:0.82rem;min-width:0;">
+                        <button onclick="removeEvItem(${i},${j})"
+                            style="border:none;background:none;color:#c00;cursor:pointer;font-size:1rem;padding:0.2rem 0.3rem;flex-shrink:0;">✕</button>
+                    </div>`).join('')}
                 </div>
+                <button onclick="addEvItem(${i})"
+                    style="margin-top:0.3rem;padding:0.4rem 0.9rem;border:1px dashed #bbb;background:#fafafa;border-radius:5px;font-size:0.8rem;cursor:pointer;color:#555;">＋ 시술 항목 추가</button>
             </div>
             <div class="row3">
-                <div class="field"><label>원가 (숫자만)</label>
-                    <input type="number" value="${esc(e.원가)}" placeholder="690000"
-                        oninput="eventsData[${i}].원가=this.value">
-                </div>
-                <div class="field"><label>이벤트가격 (숫자만)</label>
-                    <input type="number" value="${esc(e.이벤트가격)}" placeholder="590000"
-                        oninput="eventsData[${i}].이벤트가격=this.value">
-                </div>
                 <div class="field"><label>기간/구분</label>
-                    <input type="text" value="${esc(e.기간)}" placeholder="이달의 체험가"
+                    <input type="text" value="${esc(e.기간||'')}" placeholder="이달의 체험가"
                         oninput="eventsData[${i}].기간=this.value">
                 </div>
-            </div>
-            <div class="row2">
                 <div class="field"><label>VAT 설정</label>
                     <select oninput="eventsData[${i}].VAT=this.value">
                         <option value="포함" ${(e.VAT||'포함')==='포함'?'selected':''}>VAT 포함</option>
@@ -842,7 +860,8 @@ function renderEvents() {
                     </select>
                 </div>
             </div>
-        </div>`).join('');
+        </div>`;
+    }).join('');
     initEventDrag();
 }
 
@@ -868,15 +887,34 @@ async function uploadEvImg(i, input) {
         const ref = storage.ref(`events/${Date.now()}.${ext}`);
         await ref.put(file);
         const url = await ref.getDownloadURL();
-        eventsData[i].img = url;
-        const thumb = document.getElementById(`ev-thumb-${i}`);
-        if (thumb) thumb.outerHTML = `<img src="${url}" style="width:100px;height:100px;object-fit:cover;border-radius:6px;border:1px solid #eee;" id="ev-thumb-${i}">`;
+        if (!eventsData[i].imgs) eventsData[i].imgs = [];
+        eventsData[i].imgs.push(url);
+        eventsData[i].img = eventsData[i].imgs[0];
+        renderEvents();
         showToast('✓ 업로드 완료! 저장 버튼을 눌러주세요.');
     } catch(e) { showToast('업로드 실패: ' + e.message, true); }
 }
 
+function removeEvImg(i, j) {
+    if (!eventsData[i].imgs) return;
+    eventsData[i].imgs.splice(j, 1);
+    eventsData[i].img = eventsData[i].imgs[0] || '';
+    renderEvents();
+}
+
+function addEvItem(i) {
+    if (!eventsData[i].items) eventsData[i].items = [];
+    eventsData[i].items.push({ name: '', originalPrice: '', salePrice: '' });
+    renderEvents();
+}
+
+function removeEvItem(i, j) {
+    eventsData[i].items.splice(j, 1);
+    renderEvents();
+}
+
 function addEvent() {
-    eventsData.push({ 이벤트명: '', 소제목: '', img: '', 원가: '', 이벤트가격: '', 기간: '이달의 체험가', 표시: '예' });
+    eventsData.push({ 이벤트명: '', 소제목: '', imgs: [], items: [], 기간: '이달의 체험가', 표시: '예' });
     renderEvents();
 }
 function removeEvent(i) {
