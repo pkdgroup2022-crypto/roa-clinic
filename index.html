@@ -2955,6 +2955,13 @@ function renderInfo(info) {
 }
 
 /* ──── 이달의 이벤트 ──── */
+const DEFAULT_EVENT_CARDS = [
+    { name: '⚡ 타임특가 이벤트',  desc: '한정 수량 타임특가 할인',        img: 'images/popup-event1-mo.png' },
+    { name: '🌿 온다리프팅 이벤트', desc: '온다리프팅 특별 이벤트가',       img: 'images/popup-event2-mo.png' },
+    { name: '🌟 10월의 이벤트',     desc: '10월 한정 특별 이벤트',          img: 'images/popup-event3-mo.png' },
+    { name: '💉 흉터새살침 이벤트', desc: '흉터 재생 약침 특별 이벤트',     img: 'images/popup-event5-mo.png' },
+];
+
 function renderEvents(list) {
     const visible = list.filter(r => isOn(r['표시'] ?? r.show));
     if (!visible.length) {
@@ -2962,23 +2969,18 @@ function renderEvents(list) {
         return;
     }
     const withImg = visible.filter(ev => ev.img);
-    if (!withImg.length) {
-        el('eventsGrid').innerHTML = '<p class="no-data">현재 진행 중인 이벤트가 없습니다.</p>';
-        return;
-    }
-    el('eventsGrid').innerHTML = '<div class="ev-card-grid">' + withImg.map(ev => {
-        const name = ev['이벤트명'] || ev.name || '';
-        const img  = ev.img;
-        return `<a class="ev-card-item" href="events.html">
+    const cards = withImg.length ? withImg.map(ev => ({ name: ev['이벤트명'] || ev.name || '', desc: ev['소제목'] || '', img: ev.img })) : DEFAULT_EVENT_CARDS;
+    el('eventsGrid').innerHTML = '<div class="ev-card-grid">' + cards.map(ev => `
+        <a class="ev-card-item" href="events.html">
             <div class="ev-card-img">
-                <img src="${img}" alt="${name}" loading="lazy">
+                <img src="${ev.img}" alt="${ev.name}" loading="lazy">
             </div>
             <div class="ev-card-body">
-                <div class="ev-card-name">${name}</div>
+                <div class="ev-card-name">${ev.name}</div>
+                ${ev.desc ? `<div class="ev-card-desc">${ev.desc}</div>` : ''}
                 <div class="ev-card-cta">자세히 보기 →</div>
             </div>
-        </a>`;
-    }).join('') + '</div>';
+        </a>`).join('') + '</div>';
 }
 
 /* ──── 시그니처 / 커스텀 리프팅 ──── */
