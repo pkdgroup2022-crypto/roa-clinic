@@ -1599,11 +1599,22 @@ async function loadPopup() {
     renderPopup();
 }
 
+function movePopup(i, dir) {
+    const j = i + dir;
+    if (j < 0 || j >= popupData.length) return;
+    [popupData[i], popupData[j]] = [popupData[j], popupData[i]];
+    renderPopup();
+}
+
 function renderPopup() {
     document.getElementById('popup-list').innerHTML = popupData.map((p, i) => `
     <div class="ev-card" id="pc-${i}" style="margin-bottom:1rem;background:#fff;border:1px solid #e8e0d8;border-radius:8px;padding:1.2rem;">
         <div style="display:flex;align-items:center;gap:0.8rem;margin-bottom:1rem;">
-            <span style="font-size:0.75rem;font-weight:700;color:#999;min-width:20px;">${i+1}</span>
+            <div style="display:flex;flex-direction:column;gap:2px;">
+                <button onclick="movePopup(${i},-1)" ${i===0?'disabled':''} style="border:1px solid #ddd;background:#f8f8f8;border-radius:4px;width:24px;height:24px;cursor:pointer;font-size:0.75rem;line-height:1;${i===0?'opacity:0.3;cursor:default;':''}">▲</button>
+                <button onclick="movePopup(${i},1)" ${i===popupData.length-1?'disabled':''} style="border:1px solid #ddd;background:#f8f8f8;border-radius:4px;width:24px;height:24px;cursor:pointer;font-size:0.75rem;line-height:1;${i===popupData.length-1?'opacity:0.3;cursor:default;':''}">▼</button>
+            </div>
+            <span style="font-size:0.75rem;font-weight:700;color:#999;min-width:16px;">${i+1}</span>
             <input type="text" value="${esc(p.name||'')}" placeholder="탭 이름 (예: 10월 이벤트)"
                 oninput="popupData[${i}].name=this.value"
                 style="flex:1;padding:0.5rem 0.8rem;border:1px solid #ddd;border-radius:6px;font-size:0.9rem;">
