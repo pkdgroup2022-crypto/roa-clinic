@@ -355,8 +355,8 @@ nav {
             <p class="price-note" id="evVatNote" style="margin-top:0.3rem;">* VAT 별도</p>
         </div>
     </div>
-    <div class="event-cta">
-        <button class="btn-booking" onclick="goToBooking()" style="font-size:1.1rem;padding:1.2rem 3rem;width:auto;min-width:260px;max-width:360px;">바로 예약하기 →</button>
+    <div class="event-cta" style="margin:2rem 2rem 0;">
+        <button class="btn-booking" onclick="goToBooking()" style="font-size:1.15rem;padding:1.3rem 2rem;">바로 예약하기 →</button>
     </div>
     <div class="event-seo" id="eventSeo"></div>
 </div>
@@ -2442,10 +2442,10 @@ async function render() {
                     calcEvTotal();
                 })()">
                     <div class="price-row-check"></div>
-                    <span style="flex:1;font-size:0.9rem;">${it.name || ''}</span>
+                    <span class="price-row-name">${it.name || ''}</span>
                     <div class="price-row-amount">
-                        ${it.originalPrice ? `<del style="color:#aaa;font-size:0.8rem;">${Number(it.originalPrice).toLocaleString()}원</del>` : ''}
-                        <span style="color:#c94070;font-weight:700;">${it.salePrice ? Number(it.salePrice).toLocaleString() + '원' : '문의'}</span>
+                        ${it.originalPrice ? `<del style="display:block;font-size:0.78rem;color:var(--muted);font-weight:400;font-family:'Noto Sans KR';">${Number(it.originalPrice).toLocaleString()}원</del>` : ''}
+                        ${it.salePrice ? Number(it.salePrice).toLocaleString() + '원' : '문의'}
                     </div>
                 </div>`).join('');
         }
