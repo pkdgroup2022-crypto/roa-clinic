@@ -2961,47 +2961,24 @@ function renderEvents(list) {
         el('eventsGrid').innerHTML = '<p class="no-data">현재 진행 중인 이벤트가 없습니다.</p>';
         return;
     }
-    const withImg = visible.filter(ev => ev.img || ev['img']);
-    if (withImg.length) {
-        el('eventsGrid').innerHTML = '<div class="ev-card-grid">' + withImg.map(ev => {
-            const name = ev['이벤트명'] || ev.name || '';
-            const desc = ev['소제목'] || ev.desc || '';
-            const img  = ev.img || '';
-            return `<a class="ev-card-item" href="events.html">
-                <div class="ev-card-img">
-                    ${img ? `<img src="${img}" alt="${name}" loading="lazy">` : `<div class="ev-card-img-placeholder">🎁</div>`}
-                </div>
-                <div class="ev-card-body">
-                    <div class="ev-card-name">${name}</div>
-                    ${desc ? `<div class="ev-card-desc">${desc}</div>` : ''}
-                    <div class="ev-card-cta">자세히 보기 →</div>
-                </div>
-            </a>`;
-        }).join('') + '</div>';
-    } else {
-        el('eventsGrid').innerHTML = visible.map(ev => {
-            const name   = ev['이벤트명']   || ev.name         || '';
-            const orig   = ev['원가']        || ev.originalPrice || '';
-            const sale   = ev['이벤트가격'] || ev.eventPrice    || '';
-            const period = ev['기간']        || ev.period        || '';
-            const vat    = ev['VAT']         || ev.vat           || '포함';
-            const pct    = calcDiscount(orig, sale);
-            const vatIncl = vat === '포함';
-            return `<div class="event-row">
-                <div class="event-row-left">
-                    <div class="event-row-name">${name}</div>
-                    ${period ? `<div class="event-row-period">${period}</div>` : ''}
-                </div>
-                <div class="event-row-right">
-                    ${orig ? `<span class="price-original">${fmt(orig)}</span>` : ''}
-                    ${orig ? `<span class="price-arrow">→</span>` : ''}
-                    <span class="price-event">${fmt(sale)}</span>
-                    ${pct  ? `<span class="price-badge">${pct}</span>` : ''}
-                    <span class="vat-badge ${vatIncl ? 'incl' : 'excl'}">VAT ${vat}</span>
-                </div>
-            </div>`;
-        }).join('');
+    const withImg = visible.filter(ev => ev.img);
+    if (!withImg.length) {
+        el('eventsGrid').innerHTML = '<p class="no-data">현재 진행 중인 이벤트가 없습니다.</p>';
+        return;
     }
+    el('eventsGrid').innerHTML = '<div class="ev-card-grid">' + withImg.map(ev => {
+        const name = ev['이벤트명'] || ev.name || '';
+        const img  = ev.img;
+        return `<a class="ev-card-item" href="events.html">
+            <div class="ev-card-img">
+                <img src="${img}" alt="${name}" loading="lazy">
+            </div>
+            <div class="ev-card-body">
+                <div class="ev-card-name">${name}</div>
+                <div class="ev-card-cta">자세히 보기 →</div>
+            </div>
+        </a>`;
+    }).join('') + '</div>';
 }
 
 /* ──── 시그니처 / 커스텀 리프팅 ──── */
