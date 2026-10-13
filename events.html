@@ -420,7 +420,21 @@ async function loadData() {
         const evData = await evRes.json();
         const pgData = await pgRes.json();
         if (evData) {
-            eventsData = Array.isArray(evData) ? evData : Object.values(evData);
+            const arr = Array.isArray(evData) ? evData : Object.values(evData);
+            eventsData = arr;
+            // 이미지·소제목 있는 항목을 이달의 이벤트 카드로 교체
+            const cards = arr.filter(e => e.표시 !== '아니오' && e.이벤트명 && e.img);
+            if (cards.length) {
+                EVENT_CARDS.length = 0;
+                cards.forEach((e, idx) => EVENT_CARDS.push({
+                    id: e.id || ('ev' + idx),
+                    name: e.이벤트명,
+                    desc: e.소제목 || '',
+                    img: e.img,
+                    imgs: [e.img],
+                    price: e.이벤트가격 || '문의'
+                }));
+            }
         } else { eventsData = DEMO_EVENTS; }
         if (pgData) {
             const pgArr = Array.isArray(pgData) ? pgData : Object.values(pgData);
