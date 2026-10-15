@@ -2334,29 +2334,29 @@ function closeEvPopup() {
         const arr = Array.isArray(data) ? data : Object.values(data);
         return arr.filter(p => p.visible !== false && p.imgs && p.imgs.length);
     }
-    // 캐시된 데이터로 즉시 표시
-    try {
-        const cached = JSON.parse(localStorage.getItem('roa_popup_cache') || 'null');
-        if (cached && cached.length) {
-            POPUP_EVENTS = cached;
-            cached.forEach(p => (p.imgs || []).forEach(src => { const i = new Image(); i.src = src; }));
-        }
-    } catch(e) {}
-    document.addEventListener('DOMContentLoaded', () => initEvPopup());
+    // Firebase에서 최신 데이터 로드 후 팝업 초기화 (캐시는 fallback)
+    document.addEventListener('DOMContentLoaded', () => {
+        fetch(FIREBASE_URL + '/popup.json?t=' + Date.now())
+            .then(r => r.json())
+            .then(data => {
+                if (data && !data.error) {
+                    const visible = parsePopup(data);
+                    if (visible && visible.length) {
+                        POPUP_EVENTS = visible;
+                        try { localStorage.setItem('roa_popup_cache', JSON.stringify(visible)); } catch(e) {}
+                    }
+                }
+            })
+            .catch(() => {
+                // 네트워크 실패 시 캐시 사용
+                try {
+                    const cached = JSON.parse(localStorage.getItem('roa_popup_cache') || 'null');
+                    if (cached && cached.length) POPUP_EVENTS = cached;
+                } catch(e) {}
+            })
+            .finally(() => initEvPopup());
+    });
 
-    // 백그라운드에서 최신 데이터 fetch & 캐시 갱신
-    fetch(FIREBASE_URL + '/popup.json?t=' + Date.now())
-        .then(r => r.json())
-        .then(data => {
-            if (data && data.error) return;
-            const visible = parsePopup(data);
-            if (visible && visible.length) {
-                try { localStorage.setItem('roa_popup_cache', JSON.stringify(visible)); } catch(e) {}
-                POPUP_EVENTS = visible;
-                visible.forEach(p => (p.imgs || []).forEach(src => { const i = new Image(); i.src = src; }));
-            }
-        })
-        .catch(() => {});
 })();
 </script>
 
