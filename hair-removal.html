@@ -108,7 +108,28 @@ nav {
     font-weight: 700; color: var(--red); flex-shrink: 0;
 }
 .price-row-amount span { font-size: 0.8rem; color: var(--mid); font-family: 'Noto Sans KR'; font-weight: 400; }
-.price-note { font-size: 0.75rem; color: var(--muted); margin-top: -0.5rem; margin-bottom: 1.5rem; }
+.price-note { font-size: 0.75rem; color: var(--muted); margin-top: 0.5rem; margin-bottom: 1.5rem; }
+
+/* 체크박스 옵션 행 */
+.option-row {
+    display: flex; align-items: center; gap: 0.75rem;
+    padding: 1rem 0; border-bottom: 1px solid var(--border);
+    cursor: pointer;
+}
+.option-row:first-child { border-top: 2px solid var(--dark); }
+.opt-chk { width: 1.1rem; height: 1.1rem; accent-color: var(--red); flex-shrink: 0; cursor: pointer; }
+.opt-name { flex: 1; font-size: 0.95rem; color: var(--dark); font-weight: 500; }
+.opt-price { font-size: 1rem; font-weight: 700; color: var(--red); flex-shrink: 0; }
+
+/* 예상금액 */
+.total-row {
+    display: flex; justify-content: space-between; align-items: center;
+    background: #fff0f3; border-radius: 8px;
+    padding: 1rem 1.2rem; margin: 1rem 0 0.5rem;
+    font-weight: 700;
+}
+.total-label { font-size: 0.95rem; color: var(--dark); }
+.total-amount { font-size: 1.3rem; color: var(--red); font-family: 'Noto Serif KR', serif; }
 
 /* 가격 카테고리 탭 */
 .price-cat-tabs {
@@ -271,9 +292,13 @@ nav {
                 <div class="price-row-amount">900<span>원~</span></div>
             </div>
         </div>
-        <p class="price-note" id="priceNote">* 부가세 별도 · 자세한 가격은 상담 후 안내</p>
+        <div class="total-row">
+            <span class="total-label">예상금액</span>
+            <span class="total-amount" id="totalAmount">0원</span>
+        </div>
+        <p class="price-note" id="priceNote">* VAT 별도 · 정확한 가격은 상담 후 확정</p>
         <button class="btn-booking" id="btnBooking" onclick="goToBooking()">
-            📅 바로 예약하기
+            바로 예약하기 →
         </button>
     </div>
 </section>
@@ -402,57 +427,60 @@ function renderPage() {
 
     document.getElementById('priceCatTabs').innerHTML = '';
 
-    // 가격 리스트
+    // 체크박스 가격 리스트 (실리프팅 스타일)
     const pl = document.getElementById('priceList');
-    if (showItems.length) {
-        pl.innerHTML = showItems.map(it => {
-            const opts = it.options
-                ? (Array.isArray(it.options) ? it.options : Object.values(it.options))
-                : [];
-            const firstOpt = opts[0];
-            const price = firstOpt ? firstOpt.amount : (it.startPrice || it.price || '');
-            const origPrice = firstOpt ? firstOpt.origAmount : '';
-            return `<div class="price-row">
-                <div class="price-row-name">${it.name}<br>
-                    <span class="price-row-note">${it.subtitle || it.desc || ''}</span>
-                </div>
-                <div style="text-align:right;">
-                    ${origPrice ? `<span style="font-size:0.78rem;color:var(--muted);text-decoration:line-through;display:block;">${fmt(origPrice)}원</span>` : ''}
-                    <div class="price-row-amount">${price ? fmt(price) : '문의'}<span>${price ? '원~' : ''}</span></div>
-                </div>
-            </div>`;
-        }).join('');
-    } else {
-        pl.innerHTML = '<div class="price-row"><div class="price-row-name">가격 문의</div><div class="price-row-amount">문의</div></div>';
-    }
-
-    // 예약 데이터 저장용 (현재 탭 시술)
-    window._currentHRItems = showItems;
-}
-
-function goToBooking() {
-    const items = window._currentHRItems || [];
-    const catName = '레이저 제모';
-
-    const options = items.map(it => {
+    // 각 item의 options를 펼쳐서 체크박스 행으로 표시
+    const rows = [];
+    showItems.forEach(it => {
         const opts = it.options
             ? (Array.isArray(it.options) ? it.options : Object.values(it.options))
             : [];
-        const firstOpt = opts[0];
-        return {
-            name: it.name,
-            amount: firstOpt ? String(firstOpt.amount || '') : String(it.startPrice || it.price || '')
-        };
-    }).filter(o => o.name);
+        if (opts.length) {
+            opts.forEach((o, oi) => {
+                rows.push({ id: it.id + '_' + oi, name: o.name || it.name, amount: o.amount || '', origAmount: o.origAmount || '' });
+            });
+        } else {
+            rows.push({ id: it.id || it.name, name: it.name, amount: it.startPrice || it.price || '', origAmount: '' });
+        }
+    });
 
-    const firstPrice = options.length && options[0].amount ? Number(options[0].amount) : 0;
+    if (rows.length) {
+        pl.innerHTML = rows.map(r => {
+            const price = r.amount ? Number(r.amount) : 0;
+            return `<label class="option-row" onclick="calcTotal()">
+                <input type="checkbox" class="opt-chk" data-price="${price}" data-name="${r.name.replace(/"/g,'&quot;')}">
+                <span class="opt-name">${r.name}</span>
+                <span class="opt-price">${price ? fmt(price) + '원' : '문의'}</span>
+            </label>`;
+        }).join('');
+    } else {
+        pl.innerHTML = '<div class="price-row"><div class="price-row-name">가격 문의</div></div>';
+    }
 
+    calcTotal();
+    window._currentHRRows = rows;
+}
+
+function calcTotal() {
+    let total = 0;
+    document.querySelectorAll('.opt-chk:checked').forEach(cb => { total += Number(cb.dataset.price) || 0; });
+    document.getElementById('totalAmount').textContent = fmt(total) + '원';
+}
+
+function goToBooking() {
+    const selected = [];
+    document.querySelectorAll('.opt-chk:checked').forEach(cb => {
+        selected.push({ name: cb.dataset.name, amount: cb.dataset.price });
+    });
+    const total = selected.reduce((s, o) => s + (Number(o.amount) || 0), 0);
+    const rows = window._currentHRRows || [];
+    const options = selected.length ? selected : rows.map(r => ({ name: r.name, amount: String(r.amount) }));
     try {
         sessionStorage.setItem('bookingData', JSON.stringify({
             programId:   'hair-removal',
-            programName: catName,
+            programName: '레이저 제모',
             options:     options,
-            totalPrice:  firstPrice
+            totalPrice:  total
         }));
     } catch(e) {}
     location.href = 'booking.html';
