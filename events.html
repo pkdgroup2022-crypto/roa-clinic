@@ -407,7 +407,7 @@ function render() {
         }
         area.innerHTML = '<div class="program-grid">' +
             hrItems.map(it => `
-                <a class="program-card" href="hair-removal.html?id=${encodeURIComponent(it.id || it.name)}">
+                <a class="program-card" href="program.html?id=${encodeURIComponent(it.id || it.name)}">
                     <div class="card-img">
                         ${it.img
                             ? `<img src="${it.img}" alt="${it.name} 제모 | 로아한의원 부천">`
@@ -495,20 +495,19 @@ async function loadData() {
                 renderCatTabs(pgArr);
             }
         }
-        // 제모 카테고리 데이터 로드
+        // 제모 카테고리: programs의 제모 카테고리에서 로드
         try {
-            const hrRes = await fetch(FIREBASE_URL + '/hair-removal.json', { signal: AbortSignal.timeout(6000) });
-            const hrData = await hrRes.json();
-            if (hrData && hrData.categories && hrData.catImages) {
-                const cats = Array.isArray(hrData.categories) ? hrData.categories : Object.values(hrData.categories);
-                PROGRAMS['제모'] = cats.filter(c => !c.hidden).map(c => ({
-                    id: 'hr_cat_' + c.id,
-                    name: c.name,
-                    desc: c.desc || '',
-                    img: hrData.catImages?.[c.id] || hrData.catImages?.[c.name] || '',
-                    price: '',
-                    isHrCat: true
-                }));
+            const pgRes = await fetch(FIREBASE_URL + '/programs.json', { signal: AbortSignal.timeout(6000) });
+            const pgRaw = await pgRes.json();
+            if (pgRaw) {
+                const pgArr2 = Array.isArray(pgRaw) ? pgRaw : Object.values(pgRaw);
+                const hairCat = pgArr2.find(c => c.cat === '제모');
+                if (hairCat && hairCat.items) {
+                    const items = Array.isArray(hairCat.items) ? hairCat.items : Object.values(hairCat.items);
+                    PROGRAMS['제모'] = items.filter(i => !i.hidden).map(i => ({
+                        id: i.id, name: i.name, desc: i.desc || '', img: i.img || '', price: i.price || ''
+                    }));
+                }
             }
         } catch(e) {}
     } catch { eventsData = DEMO_EVENTS; }
