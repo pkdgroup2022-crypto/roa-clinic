@@ -1402,12 +1402,7 @@ function renderPgCatList() {
                 <button class="pg-btn pg-btn-hide" onclick="pgToggleCatHide(${ci})">${cat.hidden ? '보이기' : '숨김'}</button>
                 <button class="pg-btn pg-btn-red" onclick="pgRemoveCat(${ci})">삭제</button>
             </div>
-            ${cat.collapsed ? '' : cat.cat === '제모' ? `
-            <div class="pg-cat-body">
-                <div style="padding:0.5rem 0 0.8rem;font-size:0.82rem;color:var(--muted);">
-                    제모 상세 관리는 <button onclick="switchTab('hairremoval')" style="background:none;border:none;color:var(--red);cursor:pointer;font-size:0.82rem;font-weight:700;padding:0;">✂️ 제모 관리 탭</button>에서 하세요.
-                </div>
-            </div>` : `
+            ${cat.collapsed ? '' : `
             <div class="pg-cat-body">
                 ${(cat.items||[]).map((item, ii) => `
                 <div class="pg-item-row" style="${item.hidden ? 'opacity:0.45;' : ''}">
