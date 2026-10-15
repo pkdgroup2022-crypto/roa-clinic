@@ -317,7 +317,6 @@
     <button class="tab-btn" onclick="switchTab('events')">🎁 이달의 이벤트</button>
     <button class="tab-btn owner-only" onclick="switchTab('photos')">🖼 전후 사진</button>
     <button class="tab-btn" onclick="switchTab('popup')">📢 팝업 관리</button>
-    <button class="tab-btn" onclick="switchTab('hairremoval')">✂️ 제모 관리</button>
     <button class="tab-btn" onclick="switchTab('programs')">📋 시술 메뉴</button>
     <button class="tab-btn" onclick="switchTab('reservations')">📅 예약일정</button>
     <button class="tab-btn owner-only" onclick="switchTab('accounts')">👥 직원 계정</button>
@@ -420,28 +419,6 @@
     <div class="save-bar">
         <button class="btn-secondary" onclick="loadPopup()">초기화</button>
         <button class="btn-save" onclick="savePopup()">💾 팝업 저장</button>
-    </div>
-</div>
-
-<!-- ═══ 제모 관리 탭 ═══ -->
-<div id="tab-hairremoval" class="tab-panel">
-    <div class="container">
-        <div class="section-title">제모 관리</div>
-        <p class="section-desc">제모 시술 부위별 가격과 이미지를 관리합니다. <a href="hair-removal.html" target="_blank" style="color:var(--red);">제모 페이지 보기 →</a></p>
-
-        <!-- 카테고리 이미지 -->
-        <div style="margin-bottom:1.5rem;">
-            <div style="font-size:0.85rem;font-weight:700;letter-spacing:0.08em;color:var(--muted);margin-bottom:0.8rem;">카테고리별 이미지</div>
-            <div style="display:flex;gap:1rem;flex-wrap:wrap;" id="hr-cat-images"></div>
-        </div>
-
-        <!-- 부위 목록 -->
-        <div id="hr-parts-list"></div>
-        <button class="btn-add" onclick="hrAddPart()">＋ 부위 추가</button>
-    </div>
-    <div class="save-bar">
-        <button class="btn-secondary" onclick="loadHairRemoval()">초기화</button>
-        <button class="btn-save" onclick="saveHairRemoval()">💾 제모 저장</button>
     </div>
 </div>
 
@@ -619,6 +596,11 @@ function switchTab(name) {
     document.getElementById('tab-' + name).classList.add('active');
     const btn = document.querySelector(`.tab-btn[onclick*="'${name}'"]`);
     if (btn) btn.classList.add('active');
+    // 시술메뉴 탭 전환 시 제모 카테고리가 펼쳐져 있으면 renderHairRemoval 호출
+    if (name === 'programs') {
+        const hrCat = programsData.find(c => c.cat === '제모');
+        if (hrCat && !hrCat.collapsed) setTimeout(renderHairRemoval, 50);
+    }
 }
 
 /* ════════════════════════════════
@@ -1395,7 +1377,20 @@ function renderPgCatList() {
                 <button class="pg-btn pg-btn-hide" onclick="pgToggleCatHide(${ci})">${cat.hidden ? '보이기' : '숨김'}</button>
                 <button class="pg-btn pg-btn-red" onclick="pgRemoveCat(${ci})">삭제</button>
             </div>
-            ${cat.collapsed ? '' : `
+            ${cat.collapsed ? '' : cat.cat === '제모' ? `
+            <div class="pg-cat-body">
+                <div style="padding:0.5rem 0 0.8rem;">
+                    <a href="hair-removal.html" target="_blank" style="font-size:0.8rem;color:var(--red);">제모 페이지 보기 →</a>
+                </div>
+                <div style="font-size:0.82rem;font-weight:700;color:var(--muted);margin-bottom:0.6rem;">카테고리 이미지</div>
+                <div style="display:flex;gap:1rem;flex-wrap:wrap;margin-bottom:1.2rem;" id="hr-cat-images"></div>
+                <div id="hr-parts-list"></div>
+                <button class="btn-add" style="margin-top:0.5rem;" onclick="hrAddPart()">＋ 부위 추가</button>
+                <div style="margin-top:1rem;">
+                    <button class="btn-save" style="width:auto;padding:0.55rem 1.5rem;" onclick="saveHairRemoval()">💾 제모 저장</button>
+                    <button class="btn-secondary" style="margin-left:0.5rem;" onclick="loadHairRemoval()">초기화</button>
+                </div>
+            </div>` : `
             <div class="pg-cat-body">
                 ${(cat.items||[]).map((item, ii) => `
                 <div class="pg-item-row" style="${item.hidden ? 'opacity:0.45;' : ''}">
@@ -1417,6 +1412,7 @@ function renderPgCatList() {
 function pgToggleCat(ci) {
     programsData[ci].collapsed = !programsData[ci].collapsed;
     renderPgCatList();
+    if (!programsData[ci].collapsed && programsData[ci].cat === '제모') renderHairRemoval();
 }
 function pgSaveCatName(ci) { savePrograms(); }
 function pgMoveCat(ci, dir) {
