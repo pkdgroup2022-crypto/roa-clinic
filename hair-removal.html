@@ -127,6 +127,13 @@ nav {
 .price-total-label { font-size: 0.88rem; font-weight: 600; color: var(--dark); }
 .price-total-amount { font-family: 'Noto Serif KR', serif; font-size: 1.5rem; font-weight: 700; color: var(--red); }
 .price-note { font-size: 0.72rem; color: var(--muted); margin-bottom: 1.2rem; }
+.price-group { margin-bottom: 1.6rem; }
+.price-group-title {
+    font-size: 0.82rem; font-weight: 700; color: var(--muted);
+    letter-spacing: 0.05em; text-transform: uppercase;
+    padding: 0.4rem 0.2rem; margin-bottom: 0.2rem;
+    border-bottom: 1.5px solid var(--border);
+}
 
 .btn-booking {
     display: flex; align-items: center; justify-content: center; gap: 0.6rem;
@@ -399,78 +406,95 @@ function renderPage() {
 
     document.getElementById('priceCatTabs').innerHTML = '';
 
-    // Firebase programs 제모 items → price rows (program.html 동일 방식)
-    const prices = [];
+    // 항목별로 각자의 options만 표시 (합치지 않음)
+    // _allGroups: [{itemName, prices:[{name,amount,origAmount}]}]
+    const allGroups = [];
+    let globalIdx = 0;
     showItems.forEach(it => {
         const opts = it.options
             ? (Array.isArray(it.options) ? it.options : Object.values(it.options))
             : [];
-        if (opts.length) {
-            opts.filter(o => o.salePrice || o.amount).forEach(o => {
-                prices.push({
-                    name:       o.name || it.name,
-                    amount:     o.salePrice ? String(o.salePrice) : String(o.amount),
-                    origAmount: o.origPrice ? String(o.origPrice) : (o.origAmount ? String(o.origAmount) : '')
-                });
-            });
+        const validOpts = opts.filter(o => o.salePrice || o.amount);
+        if (validOpts.length) {
+            const prices = validOpts.map((o, oi) => ({
+                globalIdx: globalIdx++,
+                name:       o.name || it.name,
+                amount:     o.salePrice ? String(o.salePrice) : String(o.amount),
+                origAmount: o.origPrice ? String(o.origPrice) : (o.origAmount ? String(o.origAmount) : '')
+            }));
+            allGroups.push({ itemName: it.name, prices });
         } else if (it.price || it.startPrice) {
-            prices.push({
-                name:       it.name,
-                amount:     it.price ? String(it.price) : String(it.startPrice),
+            allGroups.push({ itemName: it.name, prices: [{
+                globalIdx: globalIdx++,
+                name: it.name,
+                amount: it.price ? String(it.price) : String(it.startPrice),
                 origAmount: ''
-            });
+            }]});
         }
     });
 
-    window._pgPrices      = prices;
+    window._allGroups     = allGroups;
     window._pgName        = '레이저 제모';
     window._pgId          = 'hair-removal';
     window._pgSelectedIdx = new Set();
 
     renderPriceList();
-    const box = document.getElementById('priceTotalBox');
-    if (box) box.style.display = prices.length ? 'flex' : 'none';
+    document.getElementById('priceTotalBox').style.display = allGroups.length ? 'flex' : 'none';
 }
 
 function renderPriceList() {
-    const prices = window._pgPrices || [];
+    const groups = window._allGroups || [];
     const sel    = window._pgSelectedIdx || new Set();
-    document.getElementById('priceList').innerHTML = prices.map((r, i) => {
-        const isSel = sel.has(i);
-        return `<div class="price-row${isSel?' selected':''}" onclick="togglePriceRow(${i})">
-            <div class="price-row-check"></div>
-            <span class="price-row-name">${r.name}</span>
-            <span class="price-row-amount">
-                ${r.origAmount ? `<div style="font-size:0.78rem;color:#bbb;text-decoration:line-through;">${Number(r.origAmount).toLocaleString('ko-KR')}원</div>` : ''}
-                ${r.amount ? `<div>${Number(r.amount).toLocaleString('ko-KR')}<span>원</span></div>` : '<div>문의</div>'}
-            </span>
+    const pl = document.getElementById('priceList');
+
+    pl.innerHTML = groups.map(g => {
+        const rows = g.prices.map(r => {
+            const isSel = sel.has(r.globalIdx);
+            return `<div class="price-row${isSel?' selected':''}" onclick="togglePriceRow(${r.globalIdx})">
+                <div class="price-row-check"></div>
+                <span class="price-row-name">${r.name}</span>
+                <span class="price-row-amount">
+                    ${r.origAmount ? `<div style="font-size:0.78rem;color:#bbb;text-decoration:line-through;">${Number(r.origAmount).toLocaleString('ko-KR')}원</div>` : ''}
+                    ${r.amount ? `<div>${Number(r.amount).toLocaleString('ko-KR')}<span>원</span></div>` : '<div>문의</div>'}
+                </span>
+            </div>`;
+        }).join('');
+        return `<div class="price-group">
+            <div class="price-group-title">${g.itemName}</div>
+            ${rows}
         </div>`;
     }).join('');
+
     updatePriceTotal();
 }
 
-function togglePriceRow(i) {
+function togglePriceRow(globalIdx) {
     const sel = window._pgSelectedIdx;
-    if (sel.has(i)) sel.delete(i); else sel.add(i);
+    if (sel.has(globalIdx)) sel.delete(globalIdx); else sel.add(globalIdx);
     renderPriceList();
 }
 
 function updatePriceTotal() {
-    const prices = window._pgPrices || [];
+    const groups = window._allGroups || [];
     const sel    = window._pgSelectedIdx || new Set();
     let total = 0;
-    sel.forEach(i => { if (prices[i] && prices[i].amount) total += Number(prices[i].amount) || 0; });
+    groups.forEach(g => g.prices.forEach(r => {
+        if (sel.has(r.globalIdx) && r.amount) total += Number(r.amount) || 0;
+    }));
     const box = document.getElementById('priceTotalBox');
     if (box) {
-        box.style.display = prices.length ? 'flex' : 'none';
+        box.style.display = groups.length ? 'flex' : 'none';
         document.getElementById('priceTotalAmt').textContent = total.toLocaleString('ko-KR') + '원';
     }
 }
 
 function goToBooking() {
-    const prices = window._pgPrices || [];
+    const groups = window._allGroups || [];
     const sel    = window._pgSelectedIdx || new Set();
-    const selectedOptions = prices.filter((_, i) => sel.has(i));
+    const selectedOptions = [];
+    groups.forEach(g => g.prices.forEach(r => {
+        if (sel.has(r.globalIdx)) selectedOptions.push({ name: r.name, amount: r.amount, origAmount: r.origAmount });
+    }));
     const total = selectedOptions.reduce((s, r) => s + (Number(r.amount) || 0), 0);
     try {
         sessionStorage.setItem('bookingData', JSON.stringify({
