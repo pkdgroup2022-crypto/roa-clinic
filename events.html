@@ -435,8 +435,8 @@ function render() {
 async function loadData() {
     try {
         const [evRes, pgRes] = await Promise.all([
-            fetch(FIREBASE_URL + '/events.json', { signal: AbortSignal.timeout(4000) }),
-            fetch(FIREBASE_URL + '/programs.json', { signal: AbortSignal.timeout(4000) })
+            fetch(FIREBASE_URL + '/events.json', { signal: AbortSignal.timeout(6000) }),
+            fetch(FIREBASE_URL + '/programs.json', { signal: AbortSignal.timeout(6000) })
         ]);
         const evData = await evRes.json();
         const pgData = await pgRes.json();
@@ -459,6 +459,8 @@ async function loadData() {
                         VAT: e.VAT || '별도',
                         price: e.이벤트가격 || '문의'
                     });
+                    // 첫 번째 이미지 미리 로드
+                    if (imgs[0]) { const im = new Image(); im.src = imgs[0]; }
                 });
             }
         } else { eventsData = DEMO_EVENTS; }

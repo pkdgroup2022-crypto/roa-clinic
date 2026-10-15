@@ -2337,11 +2337,15 @@ document.addEventListener('DOMContentLoaded', () => {
                 const arr = Array.isArray(data) ? data : Object.values(data);
                 const visible = arr.filter(p => p.visible !== false && p.imgs && p.imgs.length);
                 console.log('[팝업] 표시할 팝업 수:', visible.length);
-                if (visible.length) POPUP_EVENTS = visible;
+                if (visible.length) {
+                    POPUP_EVENTS = visible;
+                    // 이미지 미리 로드
+                    visible.forEach(p => (p.imgs || []).forEach(src => { const i = new Image(); i.src = src; }));
+                }
             }
         })
         .catch(e => console.error('[팝업] fetch 실패:', e))
-        .finally(() => setTimeout(initEvPopup, 500));
+        .finally(() => initEvPopup());
 });
 </script>
 
