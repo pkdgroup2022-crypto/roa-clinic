@@ -94,64 +94,49 @@ nav {
 .hero-desc { color: var(--mid); font-size: 0.93rem; line-height: 1.7; margin-bottom: 1.8rem; }
 
 /* 가격 리스트 */
-.price-list { display: flex; flex-direction: column; gap: 0; margin-bottom: 1.8rem; }
+/* 가격 리스트 — program.html과 동일 */
+.price-list { display: flex; flex-direction: column; gap: 0; margin-bottom: 0.6rem; }
 .price-row {
     display: flex; align-items: center; justify-content: space-between;
-    padding: 1rem 0; border-bottom: 1px solid var(--border);
-    gap: 1rem;
+    padding: 0.9rem 0.7rem; border-bottom: 1px solid var(--border);
+    gap: 1rem; cursor: pointer; transition: background 0.15s; border-radius: 4px;
+    user-select: none;
 }
-.price-row:first-child { border-top: 2px solid var(--dark); }
+.price-row:first-of-type { border-top: 2px solid var(--dark); border-radius: 0; }
+.price-row:hover { background: #fdf2f3; }
+.price-row.selected { background: #fdf2f3; }
+.price-row-check {
+    width: 20px; height: 20px; border: 2px solid var(--border); border-radius: 4px;
+    flex-shrink: 0; display: flex; align-items: center; justify-content: center;
+    transition: all 0.15s;
+}
+.price-row.selected .price-row-check { background: var(--red); border-color: var(--red); }
+.price-row.selected .price-row-check::after { content: '✓'; color: #fff; font-size: 0.75rem; font-weight: 700; }
 .price-row-name { font-size: 0.95rem; color: var(--dark); font-weight: 500; flex: 1; }
 .price-row-note { font-size: 0.78rem; color: var(--muted); font-weight: 400; }
 .price-row-amount {
     font-family: 'Noto Serif KR', serif; font-size: 1.25rem;
-    font-weight: 700; color: var(--red); flex-shrink: 0;
+    font-weight: 700; color: var(--red); flex-shrink: 0; text-align: right;
 }
 .price-row-amount span { font-size: 0.8rem; color: var(--mid); font-family: 'Noto Sans KR'; font-weight: 400; }
-.price-note { font-size: 0.75rem; color: var(--muted); margin-top: 0.5rem; margin-bottom: 1.5rem; }
-
-/* 체크박스 옵션 행 */
-.option-row {
-    display: flex; align-items: center; gap: 0.75rem;
-    padding: 1rem 0; border-bottom: 1px solid var(--border);
-    cursor: pointer;
+.price-total-box {
+    display: flex; justify-content: space-between; align-items: baseline;
+    padding: 0.9rem 0.7rem; background: #fdf2f3; border-radius: 0 0 6px 6px;
+    margin-bottom: 0.4rem;
 }
-.option-row:first-child { border-top: 2px solid var(--dark); }
-.opt-chk { width: 1.1rem; height: 1.1rem; accent-color: var(--red); flex-shrink: 0; cursor: pointer; }
-.opt-name { flex: 1; font-size: 0.95rem; color: var(--dark); font-weight: 500; }
-.opt-price { font-size: 1rem; font-weight: 700; color: var(--red); flex-shrink: 0; }
-
-/* 예상금액 */
-.total-row {
-    display: flex; justify-content: space-between; align-items: center;
-    background: #fff0f3; border-radius: 8px;
-    padding: 1rem 1.2rem; margin: 1rem 0 0.5rem;
-    font-weight: 700;
-}
-.total-label { font-size: 0.95rem; color: var(--dark); }
-.total-amount { font-size: 1.3rem; color: var(--red); font-family: 'Noto Serif KR', serif; }
-
-/* 가격 카테고리 탭 */
-.price-cat-tabs {
-    display: flex; gap: 0.5rem; flex-wrap: wrap; margin-bottom: 1.2rem;
-}
-.price-cat-tab {
-    padding: 0.42rem 1.1rem; border-radius: 50px;
-    border: 1.5px solid var(--border); background: #fff;
-    font-size: 0.82rem; font-weight: 600; cursor: pointer;
-    transition: all 0.18s; color: var(--mid);
-    font-family: 'Noto Sans KR', sans-serif;
-}
-.price-cat-tab.active { background: var(--dark); border-color: var(--dark); color: #fff; }
-.price-cat-tab:hover:not(.active) { border-color: var(--dark); color: var(--dark); }
+.price-total-label { font-size: 0.88rem; font-weight: 600; color: var(--dark); }
+.price-total-amount { font-family: 'Noto Serif KR', serif; font-size: 1.5rem; font-weight: 700; color: var(--red); }
+.price-note { font-size: 0.72rem; color: var(--muted); margin-bottom: 1.2rem; }
 
 .btn-booking {
-    display: flex; align-items: center; justify-content: center; gap: 0.5rem;
-    background: #03C75A; color: #fff; text-decoration: none;
-    padding: 1rem 2rem; border-radius: 8px; font-size: 1rem; font-weight: 700;
-    transition: opacity 0.2s; width: 100%;
+    display: flex; align-items: center; justify-content: center; gap: 0.6rem;
+    background: linear-gradient(135deg, #e8536a, #c94070);
+    color: #fff; border: none; text-decoration: none;
+    padding: 1.1rem 2rem; border-radius: 6px; font-size: 1rem; font-weight: 700;
+    letter-spacing: 0.06em; transition: all 0.25s; width: 100%;
+    font-family: 'Noto Serif KR', serif; cursor: pointer;
 }
-.btn-booking:hover { opacity: 0.88; }
+.btn-booking:hover { background: linear-gradient(135deg, #d4405a, #b02f5e); opacity: 1; }
 
 /* ─── 효과/대상 섹션 ─── */
 .section { max-width: 860px; margin: 0 auto; padding: 4rem 2rem; }
@@ -278,23 +263,10 @@ nav {
     <div class="hero-info">
         <p class="hero-desc" id="heroDesc">레이저로 모낭을 직접 파괴해 반영구적으로 털을 제거합니다. 왁싱·제모크림과 달리 반복 관리가 줄어들고 피부 자극이 적습니다.</p>
         <div class="price-cat-tabs" id="priceCatTabs"></div>
-        <div class="price-list" id="priceList">
-            <div class="price-row">
-                <div class="price-row-name">인중<br><span class="price-row-note">첫 체험 1회</span></div>
-                <div class="price-row-amount">900<span>원~</span></div>
-            </div>
-            <div class="price-row">
-                <div class="price-row-name">앞턱<br><span class="price-row-note">첫 체험 1회</span></div>
-                <div class="price-row-amount">900<span>원~</span></div>
-            </div>
-            <div class="price-row">
-                <div class="price-row-name">구렛나루<br><span class="price-row-note">첫 체험 1회</span></div>
-                <div class="price-row-amount">900<span>원~</span></div>
-            </div>
-        </div>
-        <div class="total-row">
-            <span class="total-label">예상금액</span>
-            <span class="total-amount" id="totalAmount">0원</span>
+        <div class="price-list" id="priceList"></div>
+        <div class="price-total-box" id="priceTotalBox" style="display:none">
+            <span class="price-total-label">예상금액</span>
+            <span class="price-total-amount" id="priceTotalAmt">0원</span>
         </div>
         <p class="price-note" id="priceNote">* VAT 별도 · 정확한 가격은 상담 후 확정</p>
         <button class="btn-booking" id="btnBooking" onclick="goToBooking()">
@@ -427,59 +399,84 @@ function renderPage() {
 
     document.getElementById('priceCatTabs').innerHTML = '';
 
-    // 체크박스 가격 리스트 (실리프팅 스타일)
-    const pl = document.getElementById('priceList');
-    // 각 item의 options를 펼쳐서 체크박스 행으로 표시
-    const rows = [];
+    // Firebase programs 제모 items → price rows (program.html 동일 방식)
+    const prices = [];
     showItems.forEach(it => {
         const opts = it.options
             ? (Array.isArray(it.options) ? it.options : Object.values(it.options))
             : [];
         if (opts.length) {
-            opts.forEach((o, oi) => {
-                rows.push({ id: it.id + '_' + oi, name: o.name || it.name, amount: o.amount || '', origAmount: o.origAmount || '' });
+            opts.forEach(o => {
+                prices.push({
+                    name:       o.name || it.name,
+                    amount:     o.amount ? String(o.amount) : '',
+                    origAmount: o.origAmount ? String(o.origAmount) : ''
+                });
             });
         } else {
-            rows.push({ id: it.id || it.name, name: it.name, amount: it.startPrice || it.price || '', origAmount: '' });
+            prices.push({
+                name:       it.name,
+                amount:     it.startPrice ? String(it.startPrice) : (it.price ? String(it.price) : ''),
+                origAmount: ''
+            });
         }
     });
 
-    if (rows.length) {
-        pl.innerHTML = rows.map(r => {
-            const price = r.amount ? Number(r.amount) : 0;
-            return `<label class="option-row" onclick="calcTotal()">
-                <input type="checkbox" class="opt-chk" data-price="${price}" data-name="${r.name.replace(/"/g,'&quot;')}">
-                <span class="opt-name">${r.name}</span>
-                <span class="opt-price">${price ? fmt(price) + '원' : '문의'}</span>
-            </label>`;
-        }).join('');
-    } else {
-        pl.innerHTML = '<div class="price-row"><div class="price-row-name">가격 문의</div></div>';
-    }
+    window._pgPrices      = prices;
+    window._pgName        = '레이저 제모';
+    window._pgId          = 'hair-removal';
+    window._pgSelectedIdx = new Set();
 
-    calcTotal();
-    window._currentHRRows = rows;
+    renderPriceList();
+    const box = document.getElementById('priceTotalBox');
+    if (box) box.style.display = prices.length ? 'flex' : 'none';
 }
 
-function calcTotal() {
+function renderPriceList() {
+    const prices = window._pgPrices || [];
+    const sel    = window._pgSelectedIdx || new Set();
+    document.getElementById('priceList').innerHTML = prices.map((r, i) => {
+        const isSel = sel.has(i);
+        return `<div class="price-row${isSel?' selected':''}" onclick="togglePriceRow(${i})">
+            <div class="price-row-check"></div>
+            <span class="price-row-name">${r.name}</span>
+            <span class="price-row-amount">
+                ${r.origAmount ? `<div style="font-size:0.78rem;color:#bbb;text-decoration:line-through;">${Number(r.origAmount).toLocaleString('ko-KR')}원</div>` : ''}
+                ${r.amount ? `<div>${Number(r.amount).toLocaleString('ko-KR')}<span>원</span></div>` : '<div>문의</div>'}
+            </span>
+        </div>`;
+    }).join('');
+    updatePriceTotal();
+}
+
+function togglePriceRow(i) {
+    const sel = window._pgSelectedIdx;
+    if (sel.has(i)) sel.delete(i); else sel.add(i);
+    renderPriceList();
+}
+
+function updatePriceTotal() {
+    const prices = window._pgPrices || [];
+    const sel    = window._pgSelectedIdx || new Set();
     let total = 0;
-    document.querySelectorAll('.opt-chk:checked').forEach(cb => { total += Number(cb.dataset.price) || 0; });
-    document.getElementById('totalAmount').textContent = fmt(total) + '원';
+    sel.forEach(i => { if (prices[i] && prices[i].amount) total += Number(prices[i].amount) || 0; });
+    const box = document.getElementById('priceTotalBox');
+    if (box) {
+        box.style.display = prices.length ? 'flex' : 'none';
+        document.getElementById('priceTotalAmt').textContent = total.toLocaleString('ko-KR') + '원';
+    }
 }
 
 function goToBooking() {
-    const selected = [];
-    document.querySelectorAll('.opt-chk:checked').forEach(cb => {
-        selected.push({ name: cb.dataset.name, amount: cb.dataset.price });
-    });
-    const total = selected.reduce((s, o) => s + (Number(o.amount) || 0), 0);
-    const rows = window._currentHRRows || [];
-    const options = selected.length ? selected : rows.map(r => ({ name: r.name, amount: String(r.amount) }));
+    const prices = window._pgPrices || [];
+    const sel    = window._pgSelectedIdx || new Set();
+    const selectedOptions = prices.filter((_, i) => sel.has(i));
+    const total = selectedOptions.reduce((s, r) => s + (Number(r.amount) || 0), 0);
     try {
         sessionStorage.setItem('bookingData', JSON.stringify({
-            programId:   'hair-removal',
-            programName: '레이저 제모',
-            options:     options,
+            programId:   window._pgId || 'hair-removal',
+            programName: window._pgName || '레이저 제모',
+            options:     selectedOptions,
             totalPrice:  total
         }));
     } catch(e) {}
