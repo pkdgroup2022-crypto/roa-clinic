@@ -369,24 +369,34 @@ nav {
 <script>
 const FIREBASE_URL = 'https://roa-clinic-default-rtdb.firebaseio.com/roa';
 let currentCat = '얼굴';
-let hrData = null;
+let pgData = null; // programs 데이터
 
 async function loadData() {
     try {
-        const res = await fetch(FIREBASE_URL + '/hair-removal.json?t=' + Date.now());
-        hrData = await res.json();
+        const res = await fetch(FIREBASE_URL + '/programs.json?t=' + Date.now());
+        const raw = await res.json();
+        if (raw) pgData = Array.isArray(raw) ? raw : Object.values(raw);
     } catch(e) {}
 
     // URL 파라미터로 카테고리 자동 선택
     const urlCat = new URLSearchParams(location.search).get('cat');
-    if (urlCat) {
-        currentCat = urlCat;
-        document.querySelectorAll('.subnav-btn').forEach(b => {
-            b.classList.toggle('active', b.dataset.cat === urlCat);
-        });
-    }
+    if (urlCat) currentCat = urlCat;
 
+    buildSubnav();
     renderPage();
+}
+
+function buildSubnav() {
+    // programs에서 제모 카테고리 찾기
+    const hairCat = pgData && pgData.find(c => c.cat === '제모');
+    if (!hairCat || !hairCat.items) return;
+
+    // 서브내비: 얼굴/상체/하체 고정 또는 items 기반
+    const nav = document.getElementById('subnavInner');
+    // 기본 탭 유지 (얼굴/상체/하체)
+    nav.querySelectorAll('.subnav-btn').forEach(b => {
+        b.classList.toggle('active', b.dataset.cat === currentCat);
+    });
 }
 
 function selectCat(btn) {
@@ -403,54 +413,60 @@ function fmt(n) {
 }
 
 function renderPage() {
-    if (!hrData) return;
-
-    // 카테고리 정보
-    const cats = hrData.categories
-        ? (Array.isArray(hrData.categories) ? hrData.categories : Object.values(hrData.categories))
+    // programs에서 제모 카테고리 항목 중 현재 탭(얼굴/상체/하체) 이름 포함하는 것 필터
+    const hairCat = pgData && pgData.find(c => c.cat === '제모');
+    const allItems = hairCat && hairCat.items
+        ? (Array.isArray(hairCat.items) ? hairCat.items : Object.values(hairCat.items))
+            .filter(it => !it.hidden)
         : [];
-    const catInfo = cats.find(c => c.id === currentCat || c.name === currentCat);
 
-    // 헤어 이름 업데이트
-    document.getElementById('heroName').textContent = (currentCat) + ' 레이저 제모';
+    // 현재 탭에 해당하는 항목 (이름에 탭명 포함하거나, 전체 표시)
+    const items = allItems.filter(it => {
+        const name = (it.name || '').toLowerCase();
+        return name.includes(currentCat.toLowerCase()) || currentCat === '전체';
+    });
+    // 매칭 없으면 전체 표시
+    const showItems = items.length ? items : allItems;
 
-    // 카테고리 이미지
-    const catImgs = (hrData.catImages || {})[currentCat];
-    const imgUrl = Array.isArray(catImgs) ? (catImgs[0] || '') : (catImgs || '');
+    document.getElementById('heroName').textContent = currentCat + ' 레이저 제모';
+
+    // 썸네일 이미지 (첫 항목 이미지 사용)
+    const firstImg = showItems.length && showItems[0].img;
     const imgWrap = document.getElementById('heroImgWrap');
     const imgEl = document.getElementById('heroImg');
-    if (imgUrl) {
-        imgEl.src = imgUrl;
+    if (firstImg) {
+        imgEl.src = firstImg;
         imgEl.alt = currentCat + ' 레이저 제모';
         imgWrap.style.display = '';
     } else {
         imgWrap.style.display = 'none';
     }
 
-    // 부위 목록
-    const parts = hrData.parts
-        ? (Array.isArray(hrData.parts) ? hrData.parts : Object.values(hrData.parts))
-            .filter(p => (p.category === currentCat) && p.visible !== false)
-        : [];
-
-    // 부제목 업데이트
-    if (parts.length) {
-        document.getElementById('heroSubtitle').textContent = parts.map(p => p.name).join(' · ');
+    // 부제목
+    if (showItems.length) {
+        document.getElementById('heroSubtitle').textContent = showItems.map(it => it.name).join(' · ');
     }
 
-    // 가격 탭 (서브카테고리 없으므로 숨김)
     document.getElementById('priceCatTabs').innerHTML = '';
 
     // 가격 리스트
     const pl = document.getElementById('priceList');
-    if (parts.length) {
-        pl.innerHTML = parts.map(p => `
-            <div class="price-row">
-                <div class="price-row-name">${p.name}<br>
-                    <span class="price-row-note">첫 체험 1회 · 5회 패키지 · 1년 무제한</span>
+    if (showItems.length) {
+        pl.innerHTML = showItems.map(it => {
+            const opts = it.options
+                ? (Array.isArray(it.options) ? it.options : Object.values(it.options))
+                : [];
+            const firstOpt = opts[0];
+            const price = firstOpt ? firstOpt.amount : (it.startPrice || '');
+            return `<div class="price-row">
+                <div class="price-row-name">${it.name}<br>
+                    <span class="price-row-note">${it.subtitle || ''}</span>
                 </div>
-                <div class="price-row-amount">${fmt(p.firstPrice)}<span>원~</span></div>
-            </div>`).join('');
+                <div class="price-row-amount">${price ? fmt(price) : '문의'}<span>원~</span></div>
+            </div>`;
+        }).join('');
+    } else {
+        pl.innerHTML = '<div class="price-row"><div class="price-row-name">가격 문의</div><div class="price-row-amount">문의</div></div>';
     }
 }
 
