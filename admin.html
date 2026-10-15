@@ -1762,19 +1762,44 @@ async function loadHairRemoval() {
     renderHairRemoval();
 }
 
+function getCatImgsAdmin(catId) {
+    const v = (hrData.catImages || {})[catId];
+    if (!v) return [];
+    if (Array.isArray(v)) return v.filter(Boolean);
+    if (typeof v === 'string' && v) return [v];
+    return [];
+}
+
 function renderHairRemoval() {
-    // 카테고리 이미지
-    document.getElementById('hr-cat-images').innerHTML = hrData.categories.map(c => `
-        <div style="text-align:center;">
-            <div style="font-size:0.75rem;font-weight:700;color:var(--muted);margin-bottom:0.4rem;">${c.name}</div>
-            ${hrData.catImages[c.id]
-                ? `<img src="${esc(hrData.catImages[c.id])}" style="width:80px;height:100px;object-fit:cover;border-radius:6px;border:1px solid #eee;display:block;margin-bottom:0.3rem;">`
-                : `<div style="width:80px;height:100px;border:2px dashed #ccc;border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:0.7rem;color:#aaa;margin-bottom:0.3rem;">없음</div>`}
-            <label style="font-size:0.72rem;cursor:pointer;color:var(--red);border:1px solid var(--red);border-radius:4px;padding:0.2rem 0.5rem;">
-                📷 변경
-                <input type="file" accept="image/*" style="display:none;" onchange="uploadHrCatImg('${c.id}',this)">
-            </label>
-        </div>`).join('');
+    // 카테고리 이미지 (배열 지원: 앞면/뒷면 등 여러 장)
+    const IMG_LABELS = ['앞면', '뒷면', '측면', '기타'];
+    document.getElementById('hr-cat-images').innerHTML = hrData.categories.map(c => {
+        const imgs = getCatImgsAdmin(c.id);
+        const slots = Math.max(imgs.length + 1, 2); // 항상 빈 슬롯 1개 여유
+        const slotsArr = Array.from({ length: slots }, (_, i) => i);
+        return `<div style="border:1px solid var(--border);border-radius:8px;padding:0.8rem;min-width:160px;">
+            <div style="font-size:0.78rem;font-weight:700;margin-bottom:0.6rem;">${c.icon||''} ${c.name}</div>
+            <div style="display:flex;gap:0.5rem;flex-wrap:wrap;">
+                ${slotsArr.map(idx => {
+                    const url = imgs[idx] || '';
+                    const label = IMG_LABELS[idx] || ('이미지'+(idx+1));
+                    return `<div style="text-align:center;">
+                        <div style="font-size:0.68rem;color:var(--muted);margin-bottom:0.2rem;">${label}</div>
+                        ${url
+                            ? `<div style="position:relative;display:inline-block;">
+                                <img src="${esc(url)}" style="width:72px;height:90px;object-fit:cover;border-radius:5px;border:1px solid #eee;display:block;">
+                                <button onclick="removeHrCatImg('${c.id}',${idx})" style="position:absolute;top:2px;right:2px;width:18px;height:18px;border-radius:50%;background:rgba(192,57,43,0.85);border:none;color:#fff;font-size:0.7rem;cursor:pointer;line-height:1;padding:0;">✕</button>
+                               </div>`
+                            : `<div style="width:72px;height:90px;border:2px dashed #ccc;border-radius:5px;display:flex;align-items:center;justify-content:center;font-size:0.65rem;color:#bbb;">없음</div>`}
+                        <label style="font-size:0.68rem;cursor:pointer;color:var(--red);display:block;margin-top:0.3rem;border:1px solid var(--red);border-radius:4px;padding:0.15rem 0.3rem;">
+                            📷 ${url ? '교체' : '추가'}
+                            <input type="file" accept="image/*" style="display:none;" onchange="uploadHrCatImg('${c.id}',${idx},this)">
+                        </label>
+                    </div>`;
+                }).join('')}
+            </div>
+        </div>`;
+    }).join('');
 
     // 부위 목록 (카테고리별 그룹)
     const list = document.getElementById('hr-parts-list');
@@ -1831,6 +1856,12 @@ function renderHairRemoval() {
                         <input type="number" value="${p.origPriceU||''}" placeholder="(선택)"
                             oninput="hrData.parts[${i}].origPriceU=this.value?Number(this.value):''">
                     </div>
+                    <div class="field" style="margin:0;"><label>마커 이미지 (앞면=0, 뒷면=1)</label>
+                        <select onchange="hrData.parts[${i}].imgIndex=Number(this.value)">
+                            <option value="0" ${(p.imgIndex||0)===0?'selected':''}>0 — 앞면</option>
+                            <option value="1" ${(p.imgIndex||0)===1?'selected':''}>1 — 뒷면</option>
+                        </select>
+                    </div>
                     <div class="field" style="margin:0;"><label>마커 X위치 (%)</label>
                         <input type="number" value="${p.x||50}" min="0" max="100" placeholder="50"
                             oninput="hrData.parts[${i}].x=Number(this.value)">
@@ -1852,7 +1883,7 @@ function hrToggle(i) {
 }
 
 function hrAddPart() {
-    hrData.parts.push({ id: 'p' + Date.now(), category: '얼굴', name: '', desc: '', firstPrice: 900, price5: 9900, origPrice5: '', priceUnlimited: 19000, origPriceU: '', x: 50, y: 50, visible: true });
+    hrData.parts.push({ id: 'p' + Date.now(), category: '얼굴', name: '', desc: '', firstPrice: 900, price5: 9900, origPrice5: '', priceUnlimited: 19000, origPriceU: '', imgIndex: 0, x: 50, y: 50, visible: true });
     renderHairRemoval();
 }
 
@@ -1862,19 +1893,32 @@ function hrRemovePart(i) {
     renderHairRemoval();
 }
 
-async function uploadHrCatImg(catId, input) {
+async function uploadHrCatImg(catId, imgIdx, input) {
     const file = input.files[0];
     if (!file) return;
     showToast('이미지 업로드 중...');
     try {
         const ext = file.name.split('.').pop();
-        const ref = storage.ref(`hair-removal/cat-${catId}-${Date.now()}.${ext}`);
+        const ref = storage.ref(`hair-removal/cat-${catId}-${imgIdx}-${Date.now()}.${ext}`);
         await ref.put(file);
         const url = await ref.getDownloadURL();
-        hrData.catImages[catId] = url;
+        if (!Array.isArray(hrData.catImages[catId])) {
+            const old = hrData.catImages[catId];
+            hrData.catImages[catId] = old ? [old] : [];
+        }
+        hrData.catImages[catId][imgIdx] = url;
         renderHairRemoval();
         showToast('✓ 업로드 완료!');
     } catch(e) { showToast('업로드 실패: ' + e.message, true); }
+}
+
+function removeHrCatImg(catId, imgIdx) {
+    if (!Array.isArray(hrData.catImages[catId])) {
+        const old = hrData.catImages[catId];
+        hrData.catImages[catId] = old ? [old] : [];
+    }
+    hrData.catImages[catId].splice(imgIdx, 1);
+    renderHairRemoval();
 }
 
 async function saveHairRemoval() {

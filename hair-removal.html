@@ -11,9 +11,8 @@
 <style>
 * { margin: 0; padding: 0; box-sizing: border-box; }
 :root {
-    --dark: #0E0E0E; --gold: #B09060; --cream: #F4EFE6;
-    --warm: #FAF7F2; --red: #8B1A2A;
-    --mid: #666; --muted: #999; --border: #e8e0d8;
+    --dark: #0E0E0E;
+    --mid: #666; --muted: #999; --border: #e8e0d8; --warm: #FAF7F2;
     --pink: #e8536a; --pink2: #c94070; --pink-light: #fdf0f2;
 }
 body { font-family: 'Noto Sans KR', sans-serif; background: #fff; color: var(--dark); padding-top: 60px; }
@@ -43,44 +42,34 @@ nav {
 .hero-banner {
     position: relative; overflow: hidden;
     background: linear-gradient(135deg, #f9d4db 0%, #fce8ed 50%, #f5c2cc 100%);
-    min-height: 280px; display: flex; align-items: center;
+    min-height: 260px; display: flex; align-items: center;
 }
 .hero-banner-img {
     position: absolute; right: 0; top: 0; height: 100%; max-width: 55%;
     object-fit: cover; object-position: center top;
-}
-.hero-banner-img-placeholder {
-    position: absolute; right: 0; top: 0; height: 100%; width: 50%;
-    background: linear-gradient(135deg, #f0b8c4, #e8536a22);
 }
 .hero-text {
     position: relative; z-index: 2;
     padding: 2.5rem 2.5rem 2.5rem 3rem; max-width: 50%;
 }
 .hero-kicker {
-    font-size: 0.82rem; font-weight: 700; letter-spacing: 0.15em;
-    color: var(--pink); margin-bottom: 0.7rem;
-    background: #fff; display: inline-block; padding: 0.25rem 0.8rem; border-radius: 50px;
+    font-size: 0.8rem; font-weight: 700; letter-spacing: 0.15em;
+    color: var(--pink); background: #fff;
+    display: inline-block; padding: 0.22rem 0.8rem; border-radius: 50px; margin-bottom: 0.7rem;
 }
 .hero-title {
     font-family: 'Noto Serif KR', serif;
-    font-size: 2.4rem; font-weight: 600; line-height: 1.25;
-    color: var(--dark); margin-bottom: 0.8rem;
+    font-size: 2.3rem; font-weight: 600; line-height: 1.25; color: var(--dark); margin-bottom: 0.7rem;
 }
-.hero-sub { font-size: 0.9rem; color: var(--mid); line-height: 1.7; }
+.hero-sub { font-size: 0.88rem; color: var(--mid); line-height: 1.7; }
 
 /* ─── 가격 안내 섹션 ─── */
-.price-section { max-width: 980px; margin: 0 auto; padding: 2.5rem 1.5rem 0; }
-.section-heading {
-    font-family: 'Noto Serif KR', serif;
-    font-size: 1.5rem; font-weight: 600; margin-bottom: 0.4rem; color: var(--dark);
-}
-.section-sub { font-size: 0.88rem; color: var(--muted); margin-bottom: 1.5rem; }
+.price-section { max-width: 1000px; margin: 0 auto; padding: 2.5rem 1.5rem 0; }
+.section-heading { font-family: 'Noto Serif KR', serif; font-size: 1.45rem; font-weight: 600; margin-bottom: 0.4rem; }
+.section-sub { font-size: 0.87rem; color: var(--muted); margin-bottom: 1.5rem; }
 
 /* ─── 카테고리 탭 ─── */
-.cat-tabs {
-    display: flex; gap: 0.7rem; margin-bottom: 1.8rem; flex-wrap: wrap;
-}
+.cat-tabs { display: flex; gap: 0.7rem; margin-bottom: 2rem; flex-wrap: wrap; }
 .cat-tab {
     display: flex; align-items: center; gap: 0.4rem;
     padding: 0.6rem 1.5rem; border-radius: 50px;
@@ -91,139 +80,119 @@ nav {
 .cat-tab.active { background: var(--pink); border-color: var(--pink); color: #fff; }
 .cat-tab:hover:not(.active) { border-color: var(--pink); color: var(--pink); }
 
-/* ─── 메인 레이아웃 ─── */
-.main-grid {
-    display: grid; grid-template-columns: 1fr 1fr; gap: 2.5rem; align-items: start;
+/* ─── 이미지 영역 (싱글/듀얼 자동 전환) ─── */
+.images-area {
+    margin-bottom: 0.8rem;
+}
+/* 싱글: 좌우 그리드 */
+.layout-single {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; align-items: start;
+    margin-bottom: 0;
+}
+/* 듀얼: 이미지 2장 나란히, 가격패널 아래 */
+.layout-dual { display: block; }
+.dual-imgs {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 1.2rem; margin-bottom: 1.5rem;
 }
 
-/* ─── 이미지 + 마커 ─── */
-.image-col { position: relative; }
 .image-wrap {
-    position: relative; border-radius: 16px; overflow: hidden;
-    background: #f5f0eb; box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+    position: relative; border-radius: 14px; overflow: hidden;
+    background: #f5f0eb; box-shadow: 0 3px 14px rgba(0,0,0,0.07);
 }
-.cat-image { width: 100%; display: block; aspect-ratio: 3/4; object-fit: cover; }
+.cat-image { width: 100%; display: block; aspect-ratio: 2/3; object-fit: cover; }
 .cat-image-placeholder {
-    width: 100%; aspect-ratio: 3/4;
-    display: flex; align-items: center; justify-content: center;
-    flex-direction: column; gap: 0.8rem;
-    font-size: 0.85rem; color: #bbb; background: #f5f0eb;
+    width: 100%; aspect-ratio: 2/3;
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    gap: 0.6rem; font-size: 0.8rem; color: #bbb; background: #f5f0eb;
 }
+.img-label {
+    position: absolute; top: 0.7rem; left: 50%; transform: translateX(-50%);
+    background: rgba(0,0,0,0.45); color: #fff;
+    font-size: 0.72rem; font-weight: 700; padding: 0.2rem 0.7rem; border-radius: 50px;
+}
+
+/* 마커 */
 .part-marker {
     position: absolute; transform: translate(-50%, -50%);
-    width: 32px; height: 32px; border-radius: 50%;
+    width: 30px; height: 30px; border-radius: 50%;
     background: rgba(232,83,106,0.2); border: 2.5px solid var(--pink);
     cursor: pointer; transition: all 0.2s;
     display: flex; align-items: center; justify-content: center;
 }
-.part-marker::after {
-    content: ''; width: 11px; height: 11px; border-radius: 50%;
-    background: var(--pink);
-}
+.part-marker::after { content: ''; width: 11px; height: 11px; border-radius: 50%; background: var(--pink); }
 .part-marker:hover { background: rgba(232,83,106,0.4); transform: translate(-50%,-50%) scale(1.15); }
 .part-marker.active { background: var(--pink); transform: translate(-50%,-50%) scale(1.2); }
 .part-marker.active::after { background: #fff; }
 .marker-label {
-    position: absolute; transform: translateX(-50%);
-    bottom: calc(100% + 5px); left: 50%;
+    position: absolute; bottom: calc(100% + 5px); left: 50%; transform: translateX(-50%);
     background: var(--dark); color: #fff;
-    font-size: 0.7rem; font-weight: 700; padding: 0.18rem 0.5rem;
+    font-size: 0.68rem; font-weight: 700; padding: 0.15rem 0.45rem;
     border-radius: 4px; white-space: nowrap; pointer-events: none;
     opacity: 0; transition: opacity 0.15s;
 }
-.part-marker:hover .marker-label,
-.part-marker.active .marker-label { opacity: 1; }
-.image-note {
-    text-align: center; padding: 0.6rem;
-    font-size: 0.76rem; color: var(--muted);
-    background: #fafafa; border-top: 1px solid var(--border);
-}
+.part-marker:hover .marker-label, .part-marker.active .marker-label { opacity: 1; }
+
+.image-note { font-size: 0.75rem; color: var(--muted); padding: 0.5rem 0 0.3rem; }
 
 /* ─── 정보 패널 ─── */
-.info-col { display: flex; flex-direction: column; gap: 0; }
-
 .info-hint {
     background: var(--warm); border-radius: 12px;
     padding: 2rem; text-align: center;
     border: 1.5px dashed var(--border);
-    color: var(--muted); font-size: 0.88rem; line-height: 1.7;
+    color: var(--muted); font-size: 0.88rem; line-height: 1.8;
 }
-.info-hint .hint-icon { font-size: 2rem; display: block; margin-bottom: 0.5rem; }
-
-.part-info { display: none; }
+.info-hint .hi { font-size: 1.8rem; display: block; margin-bottom: 0.5rem; }
+.part-info { display: none; border-radius: 12px; overflow: hidden; border: 1.5px solid var(--border); }
 .part-info.visible { display: block; }
 
 .part-name-bar {
     background: linear-gradient(135deg, #2b0f17, #4a1525);
-    border-radius: 12px 12px 0 0;
-    padding: 1.4rem 1.6rem;
+    padding: 1.3rem 1.6rem;
 }
-.part-name-bar h2 {
-    font-family: 'Noto Serif KR', serif;
-    color: #fff; font-size: 1.45rem; font-weight: 600; margin-bottom: 0.3rem;
-}
-.part-name-bar p { color: #ddd; font-size: 0.84rem; line-height: 1.6; }
+.part-name-bar h2 { font-family: 'Noto Serif KR', serif; color: #fff; font-size: 1.4rem; font-weight: 600; margin-bottom: 0.3rem; }
+.part-name-bar p { color: #ddd; font-size: 0.83rem; line-height: 1.6; }
 
-.price-card {
-    background: #fff; border: 1.5px solid var(--border);
-    border-top: none; border-radius: 0 0 12px 12px; overflow: hidden;
-}
-.price-rows { padding: 0 1.4rem; }
+.price-rows { padding: 0 1.4rem; background: #fff; }
 .price-row {
     display: flex; justify-content: space-between; align-items: center;
-    padding: 1rem 0; border-bottom: 1px solid #f0ebe5;
+    padding: 0.95rem 0; border-bottom: 1px solid #f0ebe5;
 }
 .price-row:last-child { border-bottom: none; }
-.price-row-label { font-size: 0.9rem; font-weight: 600; color: var(--dark); }
-.price-row-sub { font-size: 0.76rem; color: var(--muted); margin-top: 0.15rem; }
-.price-row-right { text-align: right; }
-.price-orig { font-size: 0.76rem; color: var(--muted); text-decoration: line-through; }
-.price-sale { font-family: 'Noto Serif KR', serif; font-size: 1.3rem; font-weight: 600; color: var(--dark); }
+.price-row-label { font-size: 0.9rem; font-weight: 600; }
+.price-orig { font-size: 0.75rem; color: var(--muted); text-decoration: line-through; display: block; text-align: right; }
+.price-sale { font-family: 'Noto Serif KR', serif; font-size: 1.25rem; font-weight: 600; color: var(--dark); }
 
 .first-price-banner {
-    margin: 0 1.4rem 0;
     background: var(--pink-light); border-top: 1px solid #f5d0d8;
-    padding: 1.1rem 1.2rem;
+    padding: 1.1rem 1.4rem;
     display: flex; justify-content: space-between; align-items: center;
 }
 .first-price-tag {
     display: inline-block; background: var(--pink); color: #fff;
-    font-size: 0.72rem; font-weight: 700; padding: 0.2rem 0.6rem;
+    font-size: 0.7rem; font-weight: 700; padding: 0.18rem 0.55rem;
     border-radius: 50px; margin-bottom: 0.3rem;
 }
-.first-price-name { font-size: 0.88rem; font-weight: 600; color: var(--dark); }
-.first-price-amount {
-    font-family: 'Noto Serif KR', serif;
-    font-size: 1.7rem; font-weight: 700; color: var(--pink);
-}
-
-.vat-note { padding: 0.5rem 1.4rem 0.8rem; font-size: 0.72rem; color: var(--muted); }
-
+.first-price-name { font-size: 0.87rem; font-weight: 600; }
+.first-price-amount { font-family: 'Noto Serif KR', serif; font-size: 1.7rem; font-weight: 700; color: var(--pink); }
+.vat-note { padding: 0.45rem 1.4rem 0.8rem; font-size: 0.72rem; color: var(--muted); background: #fff; }
 .btn-book {
     display: block; width: calc(100% - 2.8rem); margin: 0 1.4rem 1.4rem;
     background: linear-gradient(135deg, var(--pink), var(--pink2));
-    color: #fff; border: none; padding: 1.1rem;
+    color: #fff; border: none; padding: 1.05rem;
     border-radius: 8px; font-size: 1rem; font-weight: 700;
-    font-family: 'Noto Serif KR', serif; cursor: pointer;
-    letter-spacing: 0.04em; transition: opacity 0.2s;
-    text-align: center;
+    font-family: 'Noto Serif KR', serif; cursor: pointer; letter-spacing: 0.04em;
+    transition: opacity 0.2s;
 }
 .btn-book:hover { opacity: 0.88; }
 
-/* ─── 부위 버튼 그리드 ─── */
-.parts-section {
-    max-width: 980px; margin: 0 auto;
-    padding: 2rem 1.5rem 4rem;
-}
-.parts-title {
-    font-size: 0.82rem; font-weight: 700; letter-spacing: 0.1em;
-    color: var(--muted); margin-bottom: 0.8rem;
-    text-transform: uppercase;
-}
-.parts-grid {
-    display: grid; grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));
-    gap: 0.55rem;
-}
+/* 듀얼 레이아웃의 가격패널: 가로로 펼치기 */
+.dual-price-panel { margin-top: 0; }
+.dual-price-panel .part-info { border-radius: 12px; }
+
+/* ─── 부위 버튼 ─── */
+.parts-section { max-width: 1000px; margin: 0 auto; padding: 1.5rem 1.5rem 4rem; }
+.parts-label { font-size: 0.8rem; font-weight: 700; letter-spacing: 0.1em; color: var(--muted); margin-bottom: 0.8rem; text-transform: uppercase; }
+.parts-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(110px, 1fr)); gap: 0.55rem; }
 .part-btn {
     padding: 0.75rem 0.5rem; border-radius: 8px;
     border: 1.5px solid var(--border); background: #fff;
@@ -233,34 +202,32 @@ nav {
 .part-btn:hover { border-color: var(--pink); color: var(--pink); background: var(--pink-light); }
 .part-btn.active { border-color: var(--pink); background: var(--pink); color: #fff; font-weight: 700; }
 
-/* ─── 고정 예약 CTA ─── */
+/* ─── 모바일 고정 CTA ─── */
 .sticky-cta {
     position: fixed; bottom: 0; left: 0; right: 0; z-index: 80;
     background: rgba(255,255,255,0.97); border-top: 1px solid var(--border);
-    padding: 0.8rem 1.5rem; display: none;
+    padding: 0.75rem 1.2rem; display: none;
 }
 .sticky-cta button {
     width: 100%; background: linear-gradient(135deg, var(--pink), var(--pink2));
-    color: #fff; border: none; padding: 1rem;
-    border-radius: 8px; font-size: 1rem; font-weight: 700;
+    color: #fff; border: none; padding: 0.95rem;
+    border-radius: 8px; font-size: 0.97rem; font-weight: 700;
     font-family: 'Noto Serif KR', serif; cursor: pointer;
 }
 
-/* ─── Mobile ─── */
+/* ─── 반응형 ─── */
+@media (max-width: 860px) { .nav-links { display: none; } .hamburger { display: flex; } }
 @media (max-width: 700px) {
     .hero-title { font-size: 1.7rem; }
-    .hero-text { padding: 2rem 1rem 2rem 1.5rem; }
-    .main-grid { grid-template-columns: 1fr; gap: 1rem; }
+    .hero-text { padding: 1.8rem 1rem 1.8rem 1.5rem; }
+    .layout-single { grid-template-columns: 1fr; }
+    .dual-imgs { grid-template-columns: 1fr 1fr; gap: 0.7rem; }
     .parts-grid { grid-template-columns: repeat(3, 1fr); }
     .sticky-cta { display: block; }
     body { padding-bottom: 70px; }
-    .price-section { padding-top: 1.8rem; }
-    .hero-banner { min-height: 220px; }
-    .hero-title { font-size: 1.6rem; }
 }
-@media (max-width: 860px) {
-    .nav-links { display: none; }
-    .hamburger { display: flex; }
+@media (max-width: 420px) {
+    .dual-imgs { grid-template-columns: 1fr 1fr; }
 }
 </style>
 <!-- Firebase -->
@@ -275,7 +242,6 @@ firebase.initializeApp({
     storageBucket: "roa-clinic.firebasestorage.app",
     appId: "1:882805829481:web:bb50ea888b1f0e2dc2e7a0"
 });
-const db = firebase.database();
 </script>
 </head>
 <body>
@@ -300,8 +266,7 @@ const db = firebase.database();
 </nav>
 
 <!-- 히어로 배너 -->
-<div class="hero-banner" id="heroBanner">
-    <div class="hero-banner-img-placeholder" id="heroBannerPlaceholder"></div>
+<div class="hero-banner">
     <img class="hero-banner-img" id="heroBannerImg" src="" alt="레이저 제모" style="display:none;">
     <div class="hero-text">
         <span class="hero-kicker">LASER HAIR REMOVAL</span>
@@ -314,75 +279,54 @@ const db = firebase.database();
 <div class="price-section">
     <h2 class="section-heading" id="sectionHeading">레이저 제모 부위별 가격 안내</h2>
     <p class="section-sub">원하시는 부위를 선택하시면 해당 부위의 시술 정보를 확인하실 수 있습니다.</p>
-
-    <!-- 카테고리 탭 -->
     <div class="cat-tabs" id="catTabs"></div>
 
-    <!-- 이미지 + 정보 패널 -->
-    <div class="main-grid">
-        <!-- 좌: 이미지 -->
-        <div class="image-col">
-            <div class="image-wrap" id="imageWrap">
-                <div class="cat-image-placeholder" id="imagePlaceholder">
-                    <span style="font-size:2.5rem;">📷</span>
-                    <span>관리자에서 이미지를 등록해주세요</span>
-                </div>
-                <img class="cat-image" id="catImage" src="" alt="" style="display:none;">
-                <div id="markerLayer"></div>
-            </div>
-            <div class="image-note">● 원하시는 부위를 선택하면 표시됩니다.</div>
-        </div>
+    <!-- 이미지 영역 (JS가 싱글/듀얼로 교체) -->
+    <div id="imagesArea"></div>
 
-        <!-- 우: 정보 패널 -->
-        <div class="info-col">
-            <div class="info-hint" id="infoHint">
-                <span class="hint-icon">👆</span>
-                부위 버튼 또는 이미지의 마커를 클릭해<br>시술 정보를 확인하세요.
+    <!-- 가격 패널 (싱글 레이아웃에선 이미지 옆, 듀얼에선 이미지 아래) -->
+    <div id="pricePanel">
+        <div class="info-hint" id="infoHint">
+            <span class="hi">👆</span>
+            부위 버튼 또는 이미지의 마커를 클릭해<br>시술 정보를 확인하세요.
+        </div>
+        <div class="part-info" id="partInfo">
+            <div class="part-name-bar">
+                <h2 id="partName"></h2>
+                <p id="partDesc"></p>
             </div>
-            <div class="part-info" id="partInfo">
-                <div class="part-name-bar">
-                    <h2 id="partName"></h2>
-                    <p id="partDesc"></p>
+            <div class="price-rows">
+                <div class="price-row">
+                    <div class="price-row-label">5회 패키지</div>
+                    <div>
+                        <span class="price-orig" id="origPrice5"></span>
+                        <span class="price-sale" id="salePrice5"></span>
+                    </div>
                 </div>
-                <div class="price-card">
-                    <div class="price-rows">
-                        <div class="price-row">
-                            <div>
-                                <div class="price-row-label">5회 패키지</div>
-                            </div>
-                            <div class="price-row-right">
-                                <div class="price-orig" id="origPrice5"></div>
-                                <div class="price-sale" id="salePrice5"></div>
-                            </div>
-                        </div>
-                        <div class="price-row">
-                            <div>
-                                <div class="price-row-label">1년 무제한</div>
-                            </div>
-                            <div class="price-row-right">
-                                <div class="price-orig" id="origPriceU"></div>
-                                <div class="price-sale" id="salePriceU"></div>
-                            </div>
-                        </div>
+                <div class="price-row">
+                    <div class="price-row-label">1년 무제한</div>
+                    <div>
+                        <span class="price-orig" id="origPriceU"></span>
+                        <span class="price-sale" id="salePriceU"></span>
                     </div>
-                    <div class="first-price-banner">
-                        <div>
-                            <span class="first-price-tag">첫 체험</span>
-                            <div class="first-price-name">인증 1회 체험가</div>
-                        </div>
-                        <div class="first-price-amount" id="firstPrice"></div>
-                    </div>
-                    <p class="vat-note">* 부가세 별도 · 첫 방문 고객 첫 체험 시 적용</p>
-                    <button class="btn-book" onclick="goToBooking()">바로 예약하기 →</button>
                 </div>
             </div>
+            <div class="first-price-banner">
+                <div>
+                    <span class="first-price-tag">첫 체험</span>
+                    <div class="first-price-name">인증 1회 체험가</div>
+                </div>
+                <div class="first-price-amount" id="firstPrice"></div>
+            </div>
+            <p class="vat-note">* 부가세 별도 · 첫 방문 고객 첫 체험 시 적용</p>
+            <button class="btn-book" onclick="goToBooking()">바로 예약하기 →</button>
         </div>
     </div>
 </div>
 
-<!-- 부위 버튼 그리드 -->
+<!-- 부위 버튼 -->
 <div class="parts-section">
-    <div class="parts-title" id="partsSectionTitle">부위 선택</div>
+    <div class="parts-label" id="partsLabel">부위 선택</div>
     <div class="parts-grid" id="partsGrid"></div>
 </div>
 
@@ -401,15 +345,16 @@ const DEFAULT_DATA = {
         { id: '상체', name: '상체', icon: '👕' },
         { id: '하체', name: '하체', icon: '👖' }
     ],
+    // catImages: { 카테고리id: [이미지url, ...] } 배열 형태 (앞면/뒷면 등)
     catImages: {},
     bannerImg: '',
     parts: [
-        { id: 'p1', category: '얼굴', name: '앞턱', desc: '턱 밑에서 자라는 불필요한 털을 제거합니다.', firstPrice: 900, price5: 9900, origPrice5: '', priceUnlimited: 19000, origPriceU: '', x: 50, y: 78, visible: true },
-        { id: 'p2', category: '얼굴', name: '인중', desc: '코와 입술 사이 인중 부위 제모입니다.', firstPrice: 900, price5: 9900, origPrice5: '', priceUnlimited: 19000, origPriceU: '', x: 50, y: 65, visible: true },
-        { id: 'p3', category: '얼굴', name: '눈썹 위', desc: '눈썹 상단 잡털을 정리합니다.', firstPrice: 900, price5: 9900, origPrice5: '', priceUnlimited: 19000, origPriceU: '', x: 34, y: 43, visible: true },
-        { id: 'p4', category: '얼굴', name: '눈썹 아래', desc: '눈썹 하단을 정리합니다.', firstPrice: 900, price5: 9900, origPrice5: '', priceUnlimited: 19000, origPriceU: '', x: 34, y: 50, visible: true },
-        { id: 'p5', category: '얼굴', name: '구렛나루', desc: '귀 앞 구렛나루 부위 제모입니다.', firstPrice: 900, price5: 9900, origPrice5: '', priceUnlimited: 19000, origPriceU: '', x: 18, y: 62, visible: true },
-        { id: 'p6', category: '얼굴', name: '헤어라인', desc: '이마 헤어라인을 정리합니다.', firstPrice: 900, price5: 9900, origPrice5: '', priceUnlimited: 19000, origPriceU: '', x: 50, y: 14, visible: true }
+        { id: 'p1', category: '얼굴', name: '앞턱', desc: '턱 밑에서 자라는 불필요한 털을 제거합니다.', firstPrice: 900, price5: 9900, origPrice5: '', priceUnlimited: 19000, origPriceU: '', imgIndex: 0, x: 50, y: 78, visible: true },
+        { id: 'p2', category: '얼굴', name: '인중', desc: '코와 입술 사이 인중 부위 제모입니다.', firstPrice: 900, price5: 9900, origPrice5: '', priceUnlimited: 19000, origPriceU: '', imgIndex: 0, x: 50, y: 65, visible: true },
+        { id: 'p3', category: '얼굴', name: '눈썹 위', desc: '눈썹 상단 잡털을 정리합니다.', firstPrice: 900, price5: 9900, origPrice5: '', priceUnlimited: 19000, origPriceU: '', imgIndex: 0, x: 34, y: 43, visible: true },
+        { id: 'p4', category: '얼굴', name: '눈썹 아래', desc: '눈썹 하단을 정리합니다.', firstPrice: 900, price5: 9900, origPrice5: '', priceUnlimited: 19000, origPriceU: '', imgIndex: 0, x: 34, y: 50, visible: true },
+        { id: 'p5', category: '얼굴', name: '구렛나루', desc: '귀 앞 구렛나루 부위 제모입니다.', firstPrice: 900, price5: 9900, origPrice5: '', priceUnlimited: 19000, origPriceU: '', imgIndex: 0, x: 18, y: 62, visible: true },
+        { id: 'p6', category: '얼굴', name: '헤어라인', desc: '이마 헤어라인을 정리합니다.', firstPrice: 900, price5: 9900, origPrice5: '', priceUnlimited: 19000, origPriceU: '', imgIndex: 0, x: 50, y: 14, visible: true }
     ]
 };
 
@@ -420,6 +365,15 @@ let selectedPart = null;
 function fmt(n) {
     if (!n && n !== 0) return '문의';
     return Number(n).toLocaleString('ko-KR') + '원';
+}
+
+// catImages 값을 항상 배열로 반환
+function getCatImgs(catId) {
+    const v = (hrData.catImages || {})[catId];
+    if (!v) return [];
+    if (Array.isArray(v)) return v.filter(Boolean);
+    if (typeof v === 'string' && v) return [v];
+    return [];
 }
 
 async function loadData() {
@@ -443,19 +397,14 @@ async function loadData() {
 }
 
 function render() {
-    renderBanner();
-    renderCatTabs();
-    renderImage();
-    renderParts();
-}
-
-function renderBanner() {
+    // 배너
     if (hrData.bannerImg) {
-        const img = document.getElementById('heroBannerImg');
-        img.src = hrData.bannerImg;
-        img.style.display = 'block';
-        document.getElementById('heroBannerPlaceholder').style.display = 'none';
+        const bi = document.getElementById('heroBannerImg');
+        bi.src = hrData.bannerImg; bi.style.display = 'block';
     }
+    renderCatTabs();
+    renderLayout();
+    renderParts();
 }
 
 function renderCatTabs() {
@@ -468,36 +417,82 @@ function renderCatTabs() {
 function selectCat(catId) {
     currentCat = catId;
     selectedPart = null;
-    document.getElementById('partInfo').classList.remove('visible');
-    document.getElementById('infoHint').style.display = '';
     renderCatTabs();
-    renderImage();
+    renderLayout();
     renderParts();
     const cat = hrData.categories.find(c => c.id === catId);
     document.getElementById('sectionHeading').textContent = (cat ? cat.name + ' ' : '') + '레이저 제모 부위별 가격 안내';
+    showInfoHint();
 }
 
-function renderImage() {
-    const imgUrl = (hrData.catImages || {})[currentCat];
-    const img = document.getElementById('catImage');
-    const ph = document.getElementById('imagePlaceholder');
-    if (imgUrl) {
-        img.src = imgUrl; img.alt = currentCat + ' 제모';
-        img.style.display = 'block'; ph.style.display = 'none';
+// 이미지 개수에 따라 싱글(좌우)/듀얼(이미지위+가격아래) 레이아웃 전환
+function renderLayout() {
+    const imgs = getCatImgs(currentCat);
+    const area = document.getElementById('imagesArea');
+    const panel = document.getElementById('pricePanel');
+
+    if (imgs.length <= 1) {
+        // 싱글: 좌 이미지, 우 가격패널
+        area.innerHTML = `<div class="layout-single">
+            <div id="imageCol">
+                ${renderImageWrapHTML(imgs[0] || '', 0)}
+                <p class="image-note">● 원하시는 부위를 선택하면 표시됩니다.</p>
+            </div>
+            <div id="pricePanelSlot"></div>
+        </div>`;
+        // 가격 패널을 우측 슬롯으로 이동
+        document.getElementById('pricePanelSlot').appendChild(panel);
     } else {
-        img.style.display = 'none'; ph.style.display = 'flex';
+        // 듀얼: 이미지 2장 나란히, 가격패널 아래
+        const labels = ['앞면', '뒷면', '측면', '기타'];
+        area.innerHTML = `<div class="layout-dual">
+            <div class="dual-imgs">
+                ${imgs.map((url, i) => `<div>
+                    ${renderImageWrapHTML(url, i)}
+                </div>`).join('')}
+            </div>
+            <p class="image-note" style="margin-bottom:1.2rem;">● 원하시는 부위를 선택하면 표시됩니다.</p>
+            <div id="pricePanelSlot"></div>
+        </div>`;
+        document.getElementById('pricePanelSlot').appendChild(panel);
     }
     renderMarkers();
 }
 
+function renderImageWrapHTML(url, imgIdx) {
+    if (url) {
+        return `<div class="image-wrap" id="imgWrap${imgIdx}">
+            <img class="cat-image" src="${url}" alt="${currentCat} 제모" onload="renderMarkers()">
+            <div class="marker-layer" id="markerLayer${imgIdx}"></div>
+        </div>`;
+    }
+    return `<div class="image-wrap" id="imgWrap${imgIdx}">
+        <div class="cat-image-placeholder"><span style="font-size:2rem;">📷</span><span>이미지 준비 중</span></div>
+        <div class="marker-layer" id="markerLayer${imgIdx}"></div>
+    </div>`;
+}
+
 function renderMarkers() {
+    const imgs = getCatImgs(currentCat);
+    const imgCount = Math.max(imgs.length, 1);
+    // 각 이미지별 마커 레이어 초기화
+    for (let i = 0; i < imgCount; i++) {
+        const layer = document.getElementById('markerLayer' + i);
+        if (layer) layer.innerHTML = '';
+    }
     const parts = hrData.parts.filter(p => p.category === currentCat && p.visible !== false);
-    document.getElementById('markerLayer').innerHTML = parts.map(p => `
-        <div class="part-marker ${selectedPart && selectedPart.id === p.id ? 'active' : ''}"
-            style="left:${p.x}%;top:${p.y}%;"
-            onclick="selectPart('${p.id}')">
-            <span class="marker-label">${p.name}</span>
-        </div>`).join('');
+    parts.forEach(p => {
+        const idx = p.imgIndex || 0;
+        const layer = document.getElementById('markerLayer' + idx);
+        if (!layer) return;
+        const div = document.createElement('div');
+        div.className = 'part-marker' + (selectedPart && selectedPart.id === p.id ? ' active' : '');
+        div.style.left = (p.x || 50) + '%';
+        div.style.top = (p.y || 50) + '%';
+        div.innerHTML = `<span class="marker-label">${p.name}</span>`;
+        div.onclick = () => selectPart(p.id);
+        layer.appendChild(div);
+    });
 }
 
 function renderParts() {
@@ -506,7 +501,12 @@ function renderParts() {
         <button class="part-btn ${selectedPart && selectedPart.id === p.id ? 'active' : ''}"
             onclick="selectPart('${p.id}')">${p.name}</button>`).join('');
     const cat = hrData.categories.find(c => c.id === currentCat);
-    document.getElementById('partsSectionTitle').textContent = (cat ? cat.name : currentCat) + ' 부위 선택';
+    document.getElementById('partsLabel').textContent = (cat ? cat.name : currentCat) + ' 부위 선택';
+}
+
+function showInfoHint() {
+    document.getElementById('infoHint').style.display = '';
+    document.getElementById('partInfo').classList.remove('visible');
 }
 
 function selectPart(partId) {
@@ -541,7 +541,6 @@ function goToBooking() {
     location.href = 'booking.html';
 }
 
-// URL ?cat= 파라미터로 카테고리 자동 선택
 const _hrUrlCat = new URLSearchParams(location.search).get('cat');
 if (_hrUrlCat) currentCat = _hrUrlCat;
 
