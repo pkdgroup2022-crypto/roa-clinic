@@ -426,13 +426,13 @@ function renderPage() {
         const opts = it.options
             ? (Array.isArray(it.options) ? it.options : Object.values(it.options))
             : [];
-        const validOpts = opts.filter(o => o.salePrice || o.amount);
+        const validOpts = opts.filter(o => o.salePrice || o.origPrice || o.amount);
         if (validOpts.length) {
             const prices = validOpts.map((o, oi) => ({
                 globalIdx: globalIdx++,
                 name:       o.name || it.name,
-                amount:     o.salePrice ? String(o.salePrice) : String(o.amount),
-                origAmount: o.origPrice ? String(o.origPrice) : (o.origAmount ? String(o.origAmount) : '')
+                amount:     o.salePrice ? String(o.salePrice) : (o.amount ? String(o.amount) : (o.origPrice ? String(o.origPrice) : '')),
+                origAmount: (o.salePrice && o.origPrice) ? String(o.origPrice) : ''
             }));
             allGroups.push({ itemName: it.name, prices });
         } else if (it.price || it.startPrice) {
