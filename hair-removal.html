@@ -4,18 +4,25 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <link rel="icon" type="image/png" href="/images/og-main.png">
-<title>레이저 제모 | 로아한의원 부천</title>
-<meta name="description" content="로아한의원 부천 레이저 제모. 얼굴·상체·하체 부위별 제모 이벤트가. 첫 시술 체험가 900원부터.">
+<link rel="apple-touch-icon" href="/images/og-main.png">
+<title>부천 레이저 제모 | 로아한의원 상동역</title>
+<meta name="description" content="상동역 로아한의원 부천점의 레이저 제모. 얼굴·상체·하체 부위별 제모. 첫 체험 900원부터, 당일 예약 가능.">
+<meta property="og:title" content="부천 레이저 제모 | 로아한의원 상동역">
+<meta property="og:description" content="상동역 로아한의원 부천점의 레이저 제모. 얼굴·상체·하체 부위별 제모. 첫 체험 900원부터.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://shylifting.com/hair-removal">
+<meta name="keywords" content="부천 레이저 제모, 상동역 제모, 부천 제모, 부천 얼굴 제모, 부천 겨드랑이 제모, 상동 제모, 부천시청역 제모, 신중동역 제모, 부천 인중 제모, 부천 왁싱 대신 레이저, 부천 영구 제모">
+<link rel="canonical" href="https://shylifting.com/hair-removal">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&family=Noto+Serif+KR:wght@400;600&display=swap" rel="stylesheet">
 <style>
 * { margin: 0; padding: 0; box-sizing: border-box; }
 :root {
-    --dark: #0E0E0E;
-    --mid: #666; --muted: #999; --border: #e8e0d8; --warm: #FAF7F2;
-    --pink: #e8536a; --pink2: #c94070; --pink-light: #fdf0f2;
+    --dark: #0E0E0E; --gold: #B09060; --cream: #F4EFE6;
+    --warm: #FAF7F2; --red: #8B1A2A; --red-light: #fdf2f3;
+    --silver: #aaa; --mid: #666; --muted: #999; --border: #e8e0d8;
 }
-body { font-family: 'Noto Sans KR', sans-serif; background: #fff; color: var(--dark); padding-top: 60px; }
+body { font-family: 'Noto Sans KR', sans-serif; background: #fff; color: var(--dark); }
 
 /* ─── Nav ─── */
 nav {
@@ -25,9 +32,9 @@ nav {
     background: rgba(14,14,14,0.97); backdrop-filter: blur(8px);
 }
 .nav-logo { font-family: 'Noto Serif KR', serif; color: #fff; font-size: 1rem; font-weight: 600; text-decoration: none; }
-.nav-links { display: flex; gap: 2rem; list-style: none; }
-.nav-links a { color: #ccc; text-decoration: none; font-size: 0.88rem; transition: color 0.2s; }
-.nav-links a:hover, .nav-links a.active { color: #fff; }
+.nav-center { display: flex; gap: 2rem; list-style: none; }
+.nav-center a { color: #ccc; text-decoration: none; font-size: 0.88rem; transition: color 0.2s; }
+.nav-center a:hover, .nav-center a.active { color: #fff; }
 .hamburger { display: none; flex-direction: column; gap: 5px; background: none; border: none; cursor: pointer; padding: 4px; }
 .hamburger span { display: block; width: 22px; height: 2px; background: #fff; border-radius: 2px; }
 .mobile-menu {
@@ -37,224 +44,196 @@ nav {
 }
 .mobile-menu.open { display: flex; }
 .mobile-menu a { color: #ccc; text-decoration: none; padding: 0.85rem 2rem; font-size: 0.95rem; border-bottom: 1px solid #222; }
+.mobile-menu a:hover { color: #fff; background: #1a1a1a; }
 
-/* ─── 히어로 배너 ─── */
-.hero-banner {
-    position: relative; overflow: hidden;
-    background: linear-gradient(135deg, #f9d4db 0%, #fce8ed 50%, #f5c2cc 100%);
-    min-height: 260px; display: flex; align-items: center;
+/* ─── 서브내비 ─── */
+.subnav {
+    margin-top: 60px; position: sticky; top: 60px; z-index: 90;
+    background: #fff; border-bottom: 1px solid var(--border);
+    overflow-x: auto; overflow-y: hidden; scrollbar-width: none;
 }
-.hero-banner-img {
-    position: absolute; right: 0; top: 0; height: 100%; max-width: 55%;
-    object-fit: cover; object-position: center top;
+.subnav::-webkit-scrollbar { display: none; }
+.subnav-inner {
+    display: flex; min-width: max-content; padding: 0 1.5rem;
+    width: 100%; justify-content: center;
 }
-.hero-text {
-    position: relative; z-index: 2;
-    padding: 2.5rem 2.5rem 2.5rem 3rem; max-width: 50%;
+.subnav-btn {
+    padding: 0.78rem 1.1rem; font-size: 0.84rem; font-weight: 500;
+    color: var(--muted); border: none; background: none; cursor: pointer;
+    border-bottom: 2px solid transparent; white-space: nowrap;
+    transition: all 0.18s; margin-bottom: -1px;
+    font-family: 'Noto Sans KR', sans-serif;
 }
-.hero-kicker {
-    font-size: 0.8rem; font-weight: 700; letter-spacing: 0.15em;
-    color: var(--pink); background: #fff;
-    display: inline-block; padding: 0.22rem 0.8rem; border-radius: 50px; margin-bottom: 0.7rem;
+.subnav-btn:hover { color: var(--dark); }
+.subnav-btn.active { color: var(--red); border-bottom-color: var(--red); font-weight: 700; }
+
+/* ─── Hero ─── */
+.hero {
+    margin-top: 0; background: #fff;
+    max-width: 860px; margin-left: auto; margin-right: auto;
+    padding: 0 0 2.5rem;
 }
-.hero-title {
+.hero-title-area {
+    padding: 1.8rem 2rem 1.2rem;
+    border-bottom: 1px solid var(--border);
+}
+.hero-img { width: 100%; }
+.hero-img img { width: 100%; height: auto; display: block; }
+.hero-info { padding: 1.8rem 2rem 0; }
+.hero-category {
+    display: inline-block; font-size: 0.72rem; color: var(--red);
+    letter-spacing: 0.08em; font-weight: 700; margin-bottom: 0.7rem;
+    border: 1px solid var(--red); padding: 0.2rem 0.7rem; border-radius: 20px;
+}
+.hero-name {
     font-family: 'Noto Serif KR', serif;
-    font-size: 2.3rem; font-weight: 600; line-height: 1.25; color: var(--dark); margin-bottom: 0.7rem;
+    font-size: clamp(1.5rem, 3vw, 2.2rem); font-weight: 600;
+    line-height: 1.25; margin-bottom: 0.4rem; color: var(--dark);
 }
-.hero-sub { font-size: 0.88rem; color: var(--mid); line-height: 1.7; }
+.hero-subtitle { font-size: 0.88rem; color: var(--muted); }
+.hero-desc { color: var(--mid); font-size: 0.93rem; line-height: 1.7; margin-bottom: 1.8rem; }
 
-/* ─── 가격 안내 섹션 ─── */
-.price-section { max-width: 1000px; margin: 0 auto; padding: 2.5rem 1.5rem 0; }
-.section-heading { font-family: 'Noto Serif KR', serif; font-size: 1.45rem; font-weight: 600; margin-bottom: 0.4rem; }
-.section-sub { font-size: 0.87rem; color: var(--muted); margin-bottom: 1.5rem; }
-
-/* ─── 카테고리 탭 ─── */
-.cat-tabs { display: flex; gap: 0.7rem; margin-bottom: 2rem; flex-wrap: wrap; }
-.cat-tab {
-    display: flex; align-items: center; gap: 0.4rem;
-    padding: 0.6rem 1.5rem; border-radius: 50px;
-    border: 1.5px solid var(--border); background: #fff;
-    font-size: 0.92rem; font-weight: 600; cursor: pointer;
-    transition: all 0.2s; color: var(--mid);
-}
-.cat-tab.active { background: var(--pink); border-color: var(--pink); color: #fff; }
-.cat-tab:hover:not(.active) { border-color: var(--pink); color: var(--pink); }
-
-/* ─── 이미지 영역 (싱글/듀얼 자동 전환) ─── */
-.images-area {
-    margin-bottom: 0.8rem;
-}
-/* 싱글: 좌우 그리드 */
-.layout-single {
-    display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; align-items: start;
-    margin-bottom: 0;
-}
-/* 듀얼: 이미지 2장 나란히, 가격패널 아래 */
-.layout-dual { display: block; }
-.dual-imgs {
-    display: grid; grid-template-columns: 1fr 1fr; gap: 1.2rem; margin-bottom: 1.5rem;
-}
-
-.image-wrap {
-    position: relative; border-radius: 14px; overflow: hidden;
-    background: #f5f0eb; box-shadow: 0 3px 14px rgba(0,0,0,0.07);
-}
-.cat-image { width: 100%; display: block; aspect-ratio: 2/3; object-fit: cover; }
-.cat-image-placeholder {
-    width: 100%; aspect-ratio: 2/3;
-    display: flex; flex-direction: column; align-items: center; justify-content: center;
-    gap: 0.6rem; font-size: 0.8rem; color: #bbb; background: #f5f0eb;
-}
-.img-label {
-    position: absolute; top: 0.7rem; left: 50%; transform: translateX(-50%);
-    background: rgba(0,0,0,0.45); color: #fff;
-    font-size: 0.72rem; font-weight: 700; padding: 0.2rem 0.7rem; border-radius: 50px;
-}
-
-/* 마커 */
-.part-marker {
-    position: absolute; transform: translate(-50%, -50%);
-    width: 30px; height: 30px; border-radius: 50%;
-    background: rgba(232,83,106,0.2); border: 2.5px solid var(--pink);
-    cursor: pointer; transition: all 0.2s;
-    display: flex; align-items: center; justify-content: center;
-}
-.part-marker::after { content: ''; width: 11px; height: 11px; border-radius: 50%; background: var(--pink); }
-.part-marker:hover { background: rgba(232,83,106,0.4); transform: translate(-50%,-50%) scale(1.15); }
-.part-marker.active { background: var(--pink); transform: translate(-50%,-50%) scale(1.2); }
-.part-marker.active::after { background: #fff; }
-.marker-label {
-    position: absolute; bottom: calc(100% + 5px); left: 50%; transform: translateX(-50%);
-    background: var(--dark); color: #fff;
-    font-size: 0.68rem; font-weight: 700; padding: 0.15rem 0.45rem;
-    border-radius: 4px; white-space: nowrap; pointer-events: none;
-    opacity: 0; transition: opacity 0.15s;
-}
-.part-marker:hover .marker-label, .part-marker.active .marker-label { opacity: 1; }
-
-.image-note { font-size: 0.75rem; color: var(--muted); padding: 0.5rem 0 0.3rem; }
-
-/* ─── 정보 패널 ─── */
-.info-hint {
-    background: var(--warm); border-radius: 12px;
-    padding: 2rem; text-align: center;
-    border: 1.5px dashed var(--border);
-    color: var(--muted); font-size: 0.88rem; line-height: 1.8;
-}
-.info-hint .hi { font-size: 1.8rem; display: block; margin-bottom: 0.5rem; }
-.part-info { display: none; border-radius: 12px; overflow: hidden; border: 1.5px solid var(--border); }
-.part-info.visible { display: block; }
-
-.part-name-bar {
-    background: linear-gradient(135deg, #2b0f17, #4a1525);
-    padding: 1.3rem 1.6rem;
-}
-.part-name-bar h2 { font-family: 'Noto Serif KR', serif; color: #fff; font-size: 1.4rem; font-weight: 600; margin-bottom: 0.3rem; }
-.part-name-bar p { color: #ddd; font-size: 0.83rem; line-height: 1.6; }
-
-.price-rows { padding: 0 1.4rem; background: #fff; }
+/* 가격 리스트 */
+.price-list { display: flex; flex-direction: column; gap: 0; margin-bottom: 1.8rem; }
 .price-row {
-    display: flex; justify-content: space-between; align-items: center;
-    padding: 0.95rem 0; border-bottom: 1px solid #f0ebe5;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 1rem 0; border-bottom: 1px solid var(--border);
+    gap: 1rem;
 }
-.price-row:last-child { border-bottom: none; }
-.price-row-label { font-size: 0.9rem; font-weight: 600; }
-.price-orig { font-size: 0.75rem; color: var(--muted); text-decoration: line-through; display: block; text-align: right; }
-.price-sale { font-family: 'Noto Serif KR', serif; font-size: 1.25rem; font-weight: 600; color: var(--dark); }
+.price-row:first-child { border-top: 2px solid var(--dark); }
+.price-row-name { font-size: 0.95rem; color: var(--dark); font-weight: 500; flex: 1; }
+.price-row-note { font-size: 0.78rem; color: var(--muted); font-weight: 400; }
+.price-row-amount {
+    font-family: 'Noto Serif KR', serif; font-size: 1.25rem;
+    font-weight: 700; color: var(--red); flex-shrink: 0;
+}
+.price-row-amount span { font-size: 0.8rem; color: var(--mid); font-family: 'Noto Sans KR'; font-weight: 400; }
+.price-note { font-size: 0.75rem; color: var(--muted); margin-top: -0.5rem; margin-bottom: 1.5rem; }
 
-.first-price-banner {
-    background: var(--pink-light); border-top: 1px solid #f5d0d8;
-    padding: 1.1rem 1.4rem;
-    display: flex; justify-content: space-between; align-items: center;
+/* 가격 카테고리 탭 */
+.price-cat-tabs {
+    display: flex; gap: 0.5rem; flex-wrap: wrap; margin-bottom: 1.2rem;
 }
-.first-price-tag {
-    display: inline-block; background: var(--pink); color: #fff;
-    font-size: 0.7rem; font-weight: 700; padding: 0.18rem 0.55rem;
-    border-radius: 50px; margin-bottom: 0.3rem;
-}
-.first-price-name { font-size: 0.87rem; font-weight: 600; }
-.first-price-amount { font-family: 'Noto Serif KR', serif; font-size: 1.7rem; font-weight: 700; color: var(--pink); }
-.vat-note { padding: 0.45rem 1.4rem 0.8rem; font-size: 0.72rem; color: var(--muted); background: #fff; }
-.btn-book {
-    display: block; width: calc(100% - 2.8rem); margin: 0 1.4rem 1.4rem;
-    background: linear-gradient(135deg, var(--pink), var(--pink2));
-    color: #fff; border: none; padding: 1.05rem;
-    border-radius: 8px; font-size: 1rem; font-weight: 700;
-    font-family: 'Noto Serif KR', serif; cursor: pointer; letter-spacing: 0.04em;
-    transition: opacity 0.2s;
-}
-.btn-book:hover { opacity: 0.88; }
-
-/* 듀얼 레이아웃의 가격패널: 가로로 펼치기 */
-.dual-price-panel { margin-top: 0; }
-.dual-price-panel .part-info { border-radius: 12px; }
-
-/* ─── 부위 버튼 ─── */
-.parts-section { max-width: 1000px; margin: 0 auto; padding: 1.5rem 1.5rem 4rem; }
-.parts-label { font-size: 0.8rem; font-weight: 700; letter-spacing: 0.1em; color: var(--muted); margin-bottom: 0.8rem; text-transform: uppercase; }
-.parts-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(110px, 1fr)); gap: 0.55rem; }
-.part-btn {
-    padding: 0.75rem 0.5rem; border-radius: 8px;
+.price-cat-tab {
+    padding: 0.42rem 1.1rem; border-radius: 50px;
     border: 1.5px solid var(--border); background: #fff;
-    font-size: 0.88rem; font-weight: 500; cursor: pointer;
-    transition: all 0.15s; color: var(--dark); text-align: center;
+    font-size: 0.82rem; font-weight: 600; cursor: pointer;
+    transition: all 0.18s; color: var(--mid);
+    font-family: 'Noto Sans KR', sans-serif;
 }
-.part-btn:hover { border-color: var(--pink); color: var(--pink); background: var(--pink-light); }
-.part-btn.active { border-color: var(--pink); background: var(--pink); color: #fff; font-weight: 700; }
+.price-cat-tab.active { background: var(--dark); border-color: var(--dark); color: #fff; }
+.price-cat-tab:hover:not(.active) { border-color: var(--dark); color: var(--dark); }
 
-/* ─── 모바일 고정 CTA ─── */
-.sticky-cta {
-    position: fixed; bottom: 0; left: 0; right: 0; z-index: 80;
-    background: rgba(255,255,255,0.97); border-top: 1px solid var(--border);
-    padding: 0.75rem 1.2rem; display: none;
+.btn-booking {
+    display: flex; align-items: center; justify-content: center; gap: 0.5rem;
+    background: #03C75A; color: #fff; text-decoration: none;
+    padding: 1rem 2rem; border-radius: 8px; font-size: 1rem; font-weight: 700;
+    transition: opacity 0.2s; width: 100%;
 }
-.sticky-cta button {
-    width: 100%; background: linear-gradient(135deg, var(--pink), var(--pink2));
-    color: #fff; border: none; padding: 0.95rem;
-    border-radius: 8px; font-size: 0.97rem; font-weight: 700;
-    font-family: 'Noto Serif KR', serif; cursor: pointer;
+.btn-booking:hover { opacity: 0.88; }
+
+/* ─── 효과/대상 섹션 ─── */
+.section { max-width: 860px; margin: 0 auto; padding: 4rem 2rem; }
+.section-title {
+    font-family: 'Noto Serif KR', serif; font-size: 1.5rem; font-weight: 600;
+    color: var(--dark); margin-bottom: 2rem; padding-bottom: 0.8rem;
+    border-bottom: 2px solid var(--dark);
+}
+.points-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; }
+.point-card {
+    background: var(--warm); border-radius: 12px; padding: 1.6rem 1.4rem;
+    text-align: center;
+}
+.point-icon { font-size: 2rem; margin-bottom: 0.7rem; }
+.point-title { font-weight: 700; font-size: 0.95rem; margin-bottom: 0.4rem; color: var(--dark); }
+.point-desc { font-size: 0.8rem; color: var(--mid); line-height: 1.6; }
+
+.target-list { display: flex; flex-direction: column; gap: 0.8rem; }
+.target-item {
+    display: flex; align-items: flex-start; gap: 0.8rem;
+    padding: 1rem 1.2rem; background: var(--warm); border-radius: 8px;
+}
+.target-check { color: var(--red); font-weight: 700; flex-shrink: 0; margin-top: 0.1rem; }
+.target-text { font-size: 0.92rem; color: var(--dark); line-height: 1.55; }
+
+.steps { display: flex; flex-direction: column; gap: 0; }
+.step {
+    display: flex; gap: 1.5rem; align-items: flex-start;
+    padding: 1.4rem 0; border-bottom: 1px solid var(--border);
+}
+.step:last-child { border-bottom: none; }
+.step-num {
+    width: 36px; height: 36px; border-radius: 50%; background: var(--dark);
+    color: #fff; font-size: 0.82rem; font-weight: 700;
+    display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+}
+.step-body { flex: 1; }
+.step-title { font-weight: 700; font-size: 0.95rem; margin-bottom: 0.3rem; }
+.step-desc { font-size: 0.82rem; color: var(--mid); line-height: 1.6; }
+
+/* ─── CTA 밴드 ─── */
+.cta-band {
+    background: var(--dark); color: #fff;
+    text-align: center; padding: 4rem 2rem;
+}
+.cta-band h2 { font-family: 'Noto Serif KR', serif; font-size: 1.6rem; margin-bottom: 0.5rem; }
+.cta-band p { color: #aaa; font-size: 0.9rem; margin-bottom: 2rem; }
+.cta-btns { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; }
+.btn-naver {
+    display: inline-flex; align-items: center; gap: 0.5rem;
+    background: #03C75A; color: #fff; text-decoration: none;
+    padding: 1rem 2.5rem; border-radius: 8px; font-size: 1rem; font-weight: 700;
+}
+.btn-call {
+    display: inline-flex; align-items: center; gap: 0.5rem;
+    background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2);
+    color: #fff; text-decoration: none;
+    padding: 1rem 2.5rem; border-radius: 8px; font-size: 1rem; font-weight: 600;
 }
 
-/* ─── 반응형 ─── */
-@media (max-width: 860px) { .nav-links { display: none; } .hamburger { display: flex; } }
-@media (max-width: 700px) {
-    .hero-title { font-size: 1.7rem; }
-    .hero-text { padding: 1.8rem 1rem 1.8rem 1.5rem; }
-    .layout-single { grid-template-columns: 1fr; }
-    .dual-imgs { grid-template-columns: 1fr 1fr; gap: 0.7rem; }
-    .parts-grid { grid-template-columns: repeat(3, 1fr); }
-    .sticky-cta { display: block; }
-    body { padding-bottom: 70px; }
+/* ─── SEO 줄글 ─── */
+.seo-section {
+    max-width: 860px; margin: 0 auto; padding: 4rem 2rem 6rem;
+    border-top: 1px solid var(--border);
 }
-@media (max-width: 420px) {
-    .dual-imgs { grid-template-columns: 1fr 1fr; }
+.seo-section h2 {
+    font-family: 'Noto Serif KR', serif; font-size: 1.3rem; font-weight: 600;
+    color: var(--dark); margin: 2.5rem 0 0.8rem;
+}
+.seo-section h2:first-child { margin-top: 0; }
+.seo-section h3 { font-size: 1.05rem; font-weight: 700; color: var(--dark); margin: 1.8rem 0 0.6rem; }
+.seo-section p { font-size: 0.92rem; color: var(--mid); line-height: 1.85; margin-bottom: 0.8rem; }
+.seo-section strong { color: var(--dark); }
+
+/* ─── Mobile ─── */
+@media (max-width: 900px) {
+    .nav-center { display: none; }
+    .hamburger { display: flex; }
+    .hero-info { padding: 1.5rem 1.2rem 0; }
+    .points-grid { grid-template-columns: 1fr; gap: 0.8rem; }
+    .point-card { text-align: left; display: flex; align-items: flex-start; gap: 1rem; }
+    .point-icon { font-size: 1.5rem; margin-bottom: 0; flex-shrink: 0; }
+}
+@media (max-width: 540px) {
+    .hero-name { font-size: 1.5rem; }
+    .price-row-name { font-size: 0.88rem; }
+    .price-row-amount { font-size: 1.1rem; }
+    .cta-btns { flex-direction: column; align-items: center; }
+    .btn-naver, .btn-call { width: 100%; max-width: 320px; justify-content: center; }
 }
 </style>
-<!-- Firebase -->
-<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
-<script>
-firebase.initializeApp({
-    apiKey: "AIzaSyCm6a-BjPUfT1_0CfS-qnR-LJT1I_ZqYxQ",
-    authDomain: "roa-clinic.firebaseapp.com",
-    databaseURL: "https://roa-clinic-default-rtdb.firebaseio.com",
-    projectId: "roa-clinic",
-    storageBucket: "roa-clinic.firebasestorage.app",
-    appId: "1:882805829481:web:bb50ea888b1f0e2dc2e7a0"
-});
-</script>
 </head>
 <body>
 
 <nav>
-    <a class="nav-logo" href="index.html">로아한의원 부천</a>
-    <ul class="nav-links">
+    <a href="index.html" class="nav-logo">로아한의원 부천</a>
+    <ul class="nav-center">
         <li><a href="events.html" class="active">시술메뉴/이벤트</a></li>
         <li><a href="index.html#reviews">시술 후기</a></li>
         <li><a href="index.html#impactStats">로아한의원 부천</a></li>
         <li><a href="index.html#contact">오시는 길</a></li>
     </ul>
-    <button class="hamburger" onclick="document.querySelector('.mobile-menu').classList.toggle('open')">
+    <button class="hamburger" onclick="this.nextElementSibling.classList.toggle('open')">
         <span></span><span></span><span></span>
     </button>
     <div class="mobile-menu">
@@ -265,284 +244,215 @@ firebase.initializeApp({
     </div>
 </nav>
 
-<!-- 히어로 배너 -->
-<div class="hero-banner">
-    <img class="hero-banner-img" id="heroBannerImg" src="" alt="레이저 제모" style="display:none;">
-    <div class="hero-text">
-        <span class="hero-kicker">LASER HAIR REMOVAL</span>
-        <h1 class="hero-title">레이저<br>제모 시술</h1>
-        <p class="hero-sub">부위별 특성을 고려한<br>맞춤 레이저 제모</p>
+<!-- 서브내비: 부위 탭 -->
+<div class="subnav">
+    <div class="subnav-inner" id="subnavInner">
+        <button class="subnav-btn active" data-cat="얼굴" onclick="selectCat(this)">😊 얼굴</button>
+        <button class="subnav-btn" data-cat="상체" onclick="selectCat(this)">👕 상체</button>
+        <button class="subnav-btn" data-cat="하체" onclick="selectCat(this)">👖 하체</button>
     </div>
 </div>
 
-<!-- 가격 안내 섹션 -->
-<div class="price-section">
-    <h2 class="section-heading" id="sectionHeading">레이저 제모 부위별 가격 안내</h2>
-    <p class="section-sub">원하시는 부위를 선택하시면 해당 부위의 시술 정보를 확인하실 수 있습니다.</p>
-    <div class="cat-tabs" id="catTabs"></div>
-
-    <!-- 이미지 영역 (JS가 싱글/듀얼로 교체) -->
-    <div id="imagesArea"></div>
-
-    <!-- 가격 패널 (싱글 레이아웃에선 이미지 옆, 듀얼에선 이미지 아래) -->
-    <div id="pricePanel">
-        <div class="info-hint" id="infoHint">
-            <span class="hi">👆</span>
-            부위 버튼 또는 이미지의 마커를 클릭해<br>시술 정보를 확인하세요.
+<!-- Hero / 가격 -->
+<section class="hero" id="hero">
+    <div class="hero-title-area">
+        <div class="hero-category">레이저 제모</div>
+        <h1 class="hero-name" id="heroName">얼굴 레이저 제모</h1>
+        <p class="hero-subtitle" id="heroSubtitle">인중 · 앞턱 · 구렛나루 · 눈썹 · 헤어라인</p>
+    </div>
+    <div class="hero-img" id="heroImgWrap" style="display:none">
+        <img id="heroImg" src="" alt="제모 시술">
+    </div>
+    <div class="hero-info">
+        <p class="hero-desc" id="heroDesc">레이저로 모낭을 직접 파괴해 반영구적으로 털을 제거합니다. 왁싱·제모크림과 달리 반복 관리가 줄어들고 피부 자극이 적습니다.</p>
+        <div class="price-cat-tabs" id="priceCatTabs"></div>
+        <div class="price-list" id="priceList">
+            <div class="price-row">
+                <div class="price-row-name">인중<br><span class="price-row-note">첫 체험 1회</span></div>
+                <div class="price-row-amount">900<span>원~</span></div>
+            </div>
+            <div class="price-row">
+                <div class="price-row-name">앞턱<br><span class="price-row-note">첫 체험 1회</span></div>
+                <div class="price-row-amount">900<span>원~</span></div>
+            </div>
+            <div class="price-row">
+                <div class="price-row-name">구렛나루<br><span class="price-row-note">첫 체험 1회</span></div>
+                <div class="price-row-amount">900<span>원~</span></div>
+            </div>
         </div>
-        <div class="part-info" id="partInfo">
-            <div class="part-name-bar">
-                <h2 id="partName"></h2>
-                <p id="partDesc"></p>
-            </div>
-            <div class="price-rows">
-                <div class="price-row">
-                    <div class="price-row-label">5회 패키지</div>
-                    <div>
-                        <span class="price-orig" id="origPrice5"></span>
-                        <span class="price-sale" id="salePrice5"></span>
-                    </div>
-                </div>
-                <div class="price-row">
-                    <div class="price-row-label">1년 무제한</div>
-                    <div>
-                        <span class="price-orig" id="origPriceU"></span>
-                        <span class="price-sale" id="salePriceU"></span>
-                    </div>
-                </div>
-            </div>
-            <div class="first-price-banner">
-                <div>
-                    <span class="first-price-tag">첫 체험</span>
-                    <div class="first-price-name">인증 1회 체험가</div>
-                </div>
-                <div class="first-price-amount" id="firstPrice"></div>
-            </div>
-            <p class="vat-note">* 부가세 별도 · 첫 방문 고객 첫 체험 시 적용</p>
-            <button class="btn-book" onclick="goToBooking()">바로 예약하기 →</button>
-        </div>
+        <p class="price-note">* 부가세 별도 · 첫 방문 고객 첫 체험 시 적용 · 자세한 가격은 상담 후 안내</p>
+        <a href="https://booking.naver.com/booking/13/bizes/1064400953" target="_blank" class="btn-booking">
+            📅 네이버 예약하기
+        </a>
+    </div>
+</section>
+
+<!-- 효과 -->
+<div class="section">
+    <h2 class="section-title">레이저 제모, 이런 점이 좋습니다</h2>
+    <div class="points-grid">
+        <div class="point-card"><div class="point-icon">✂️</div><div class="point-title">반영구적 효과</div><div class="point-desc">모낭을 직접 파괴해 반복 관리 횟수가 크게 줄어듭니다.</div></div>
+        <div class="point-card"><div class="point-icon">🌿</div><div class="point-title">피부 자극 최소화</div><div class="point-desc">왁싱·제모크림보다 피부 자극이 적고 피부결이 정돈됩니다.</div></div>
+        <div class="point-card"><div class="point-icon">⚡</div><div class="point-title">빠른 시술</div><div class="point-desc">소부위는 수분 이내, 일상생활에 바로 복귀 가능합니다.</div></div>
+        <div class="point-card"><div class="point-icon">💰</div><div class="point-title">첫 체험 900원~</div><div class="point-desc">첫 방문 체험가로 부담 없이 효과를 직접 확인해 보세요.</div></div>
+        <div class="point-card"><div class="point-icon">📍</div><div class="point-title">부위별 맞춤</div><div class="point-desc">얼굴 소부위부터 팔·다리 대부위까지 부위별 가격 적용.</div></div>
+        <div class="point-card"><div class="point-icon">🗓️</div><div class="point-title">당일 예약 가능</div><div class="point-desc">네이버 예약으로 빈 시간 바로 확인, 당일 방문 가능.</div></div>
     </div>
 </div>
 
-<!-- 부위 버튼 -->
-<div class="parts-section">
-    <div class="parts-label" id="partsLabel">부위 선택</div>
-    <div class="parts-grid" id="partsGrid"></div>
+<!-- 이런 분께 추천 -->
+<div class="section" style="padding-top:0">
+    <h2 class="section-title">이런 분께 추천드려요</h2>
+    <div class="target-list">
+        <div class="target-item"><span class="target-check">✓</span><span class="target-text">인중·앞턱 잔털이 신경 쓰여 매달 왁싱·제모크림을 반복하시는 분</span></div>
+        <div class="target-item"><span class="target-check">✓</span><span class="target-text">겨드랑이·팔·다리 제모를 좀 더 위생적·반영구적으로 해결하고 싶은 분</span></div>
+        <div class="target-item"><span class="target-check">✓</span><span class="target-text">왁싱 후 피부 트러블이나 피부 자극이 걱정되시는 분</span></div>
+        <div class="target-item"><span class="target-check">✓</span><span class="target-text">헤어라인·눈썹 주변 잔털을 정리해 인상을 깔끔하게 정돈하고 싶은 분</span></div>
+        <div class="target-item"><span class="target-check">✓</span><span class="target-text">저렴한 첫 체험가로 레이저 제모 효과를 먼저 확인해 보고 싶은 분</span></div>
+    </div>
 </div>
 
-<!-- 모바일 고정 CTA -->
-<div class="sticky-cta">
-    <button onclick="goToBooking()">빠른 예약 신청 →</button>
+<!-- 시술 과정 -->
+<div class="section" style="padding-top:0">
+    <h2 class="section-title">시술 과정</h2>
+    <div class="steps">
+        <div class="step"><div class="step-num">1</div><div class="step-body"><div class="step-title">상담 및 부위 확인</div><div class="step-desc">원하시는 제모 부위와 피부 상태를 확인하고 시술 방법을 안내해 드립니다.</div></div></div>
+        <div class="step"><div class="step-num">2</div><div class="step-body"><div class="step-title">필요시 마취 크림 도포</div><div class="step-desc">통증이 걱정되시는 부위는 미리 마취 크림을 도포해 편안하게 시술받으실 수 있습니다.</div></div></div>
+        <div class="step"><div class="step-num">3</div><div class="step-body"><div class="step-title">레이저 시술</div><div class="step-desc">모낭에 레이저 에너지를 조사해 모근을 파괴합니다. 소부위는 수분 이내에 완료됩니다.</div></div></div>
+        <div class="step"><div class="step-num">4</div><div class="step-body"><div class="step-title">쿨링 및 마무리</div><div class="step-desc">시술 후 쿨링으로 피부를 진정시킵니다. 당일 일상생활 복귀 가능합니다.</div></div></div>
+    </div>
+</div>
+
+<!-- CTA -->
+<div class="cta-band">
+    <h2>레이저 제모, 지금 바로 예약하세요</h2>
+    <p>상동역 3번 출구 도보 1분 · 로아한의원 부천</p>
+    <div class="cta-btns">
+        <a href="https://booking.naver.com/booking/13/bizes/1064400953" target="_blank" class="btn-naver">📅 네이버 예약</a>
+        <a href="tel:032-000-0000" class="btn-call">📞 전화 상담</a>
+    </div>
+</div>
+
+<!-- SEO 줄글 -->
+<div class="seo-section">
+<h2>부천 레이저 제모 — 어떻게 다른가요?</h2>
+<p><strong>레이저 제모</strong>는 특정 파장의 레이저 에너지를 모낭의 멜라닌에 흡수시켜 모근을 영구적으로 파괴하는 방식입니다. 왁싱이나 제모크림처럼 일시적으로 털을 제거하는 것과 달리, 시술을 반복할수록 털이 점점 얇아지고 성장이 억제되어 <strong>반영구적인 효과</strong>를 기대할 수 있습니다.</p>
+<p>로아한의원 부천은 <strong>상동역 도보 1분</strong> 거리에 위치해 신중동역·부천시청역·부평역 인근에서 편리하게 방문하실 수 있습니다. 얼굴 소부위(인중·앞턱·구렛나루·눈썹·헤어라인)부터 겨드랑이·팔·다리 등 상하체 대부위까지 <strong>부위별 맞춤 가격</strong>으로 제공합니다.</p>
+
+<h2>레이저 제모 효과 — 몇 회가 필요할까요?</h2>
+<p>털의 성장 주기(성장기·퇴행기·휴지기) 때문에 한 번의 시술로 모든 모발을 제거하기는 어렵습니다. 일반적으로 <strong>4~8회 정도</strong>를 권장하며, 부위와 털 상태에 따라 횟수는 달라질 수 있습니다. 로아한의원에서는 5회 패키지와 1년 무제한 플랜을 제공해 지속적인 관리가 편리합니다.</p>
+
+<h2>레이저 제모 시술 후 주의사항</h2>
+<p>시술 후 <strong>24~48시간</strong>은 뜨거운 물 샤워·사우나·격렬한 운동을 삼가고, 자외선 차단제를 꼼꼼히 발라주세요. 일시적으로 약간의 붉음이 나타날 수 있으나 대부분 수시간~1일 내에 가라앉습니다. 시술 부위 면도는 가능하지만 왁싱이나 족집게 제모는 피해주세요.</p>
+
+<h2>자주 묻는 질문 (FAQ)</h2>
+
+<h3>Q. 첫 체험 900원은 어떻게 적용되나요?</h3>
+<p>처음 방문하시는 고객을 대상으로 특정 소부위 1회 체험을 <strong>900원(VAT 별도)</strong>에 제공합니다. 인중·앞턱·눈썹 하단 등 얼굴 소부위에 적용 가능하며, 방문 전 네이버 예약 또는 전화로 확인해 주세요.</p>
+
+<h3>Q. 레이저 제모는 아픈가요?</h3>
+<p>부위와 개인 통증 감수성에 따라 다르지만, 고무줄로 튕기는 듯한 약한 따끔거림이 느껴지는 정도입니다. 통증이 걱정되시는 분은 마취 크림을 미리 도포하면 더욱 편안하게 시술받으실 수 있습니다.</p>
+
+<h3>Q. 왁싱이랑 뭐가 다른가요?</h3>
+<p>왁싱은 털을 물리적으로 뽑아 일시적으로 제거합니다. 레이저 제모는 모근 자체를 파괴해 <strong>반영구적인 감모(減毛) 효과</strong>를 냅니다. 반복할수록 털이 가늘어지고 성장 속도가 느려져 장기적으로 관리 비용과 불편함을 줄일 수 있습니다.</p>
+
+<h3>Q. 피부 타입에 따라 제모가 안 되는 경우도 있나요?</h3>
+<p>레이저는 멜라닌에 반응하므로 털 색이 매우 밝거나 피부색이 매우 어두운 경우 효과가 제한될 수 있습니다. 방문 전 상담에서 피부·털 상태를 확인 후 적합한 시술 여부를 안내해 드립니다.</p>
+
+<h3>Q. 부천에서 레이저 제모 당일 예약이 가능한가요?</h3>
+<p>네이버 예약에서 빈 시간을 확인하신 후 당일 방문도 가능합니다. <strong>상동역 3번 출구 도보 1분</strong> 거리로, 부천시청역·신중동역·부평역 어디서든 편리하게 오실 수 있습니다.</p>
+
+<h3>Q. 제모 후 인그로운 헤어(매몰모)가 생기지 않나요?</h3>
+<p>왁싱과 달리 레이저 제모는 모근을 파괴하는 방식이므로 <strong>인그로운 헤어 발생 가능성이 낮습니다.</strong> 오히려 반복 시술을 통해 기존 인그로운 헤어가 개선되는 경우도 있습니다.</p>
 </div>
 
 <script>
 const FIREBASE_URL = 'https://roa-clinic-default-rtdb.firebaseio.com/roa';
-const NAVER_BOOKING = 'https://booking.naver.com/booking/13/bizes/1064400953';
-
-const DEFAULT_DATA = {
-    categories: [
-        { id: '얼굴', name: '얼굴', icon: '😊' },
-        { id: '상체', name: '상체', icon: '👕' },
-        { id: '하체', name: '하체', icon: '👖' }
-    ],
-    // catImages: { 카테고리id: [이미지url, ...] } 배열 형태 (앞면/뒷면 등)
-    catImages: {},
-    bannerImg: '',
-    parts: [
-        { id: 'p1', category: '얼굴', name: '앞턱', desc: '턱 밑에서 자라는 불필요한 털을 제거합니다.', firstPrice: 900, price5: 9900, origPrice5: '', priceUnlimited: 19000, origPriceU: '', imgIndex: 0, x: 50, y: 78, visible: true },
-        { id: 'p2', category: '얼굴', name: '인중', desc: '코와 입술 사이 인중 부위 제모입니다.', firstPrice: 900, price5: 9900, origPrice5: '', priceUnlimited: 19000, origPriceU: '', imgIndex: 0, x: 50, y: 65, visible: true },
-        { id: 'p3', category: '얼굴', name: '눈썹 위', desc: '눈썹 상단 잡털을 정리합니다.', firstPrice: 900, price5: 9900, origPrice5: '', priceUnlimited: 19000, origPriceU: '', imgIndex: 0, x: 34, y: 43, visible: true },
-        { id: 'p4', category: '얼굴', name: '눈썹 아래', desc: '눈썹 하단을 정리합니다.', firstPrice: 900, price5: 9900, origPrice5: '', priceUnlimited: 19000, origPriceU: '', imgIndex: 0, x: 34, y: 50, visible: true },
-        { id: 'p5', category: '얼굴', name: '구렛나루', desc: '귀 앞 구렛나루 부위 제모입니다.', firstPrice: 900, price5: 9900, origPrice5: '', priceUnlimited: 19000, origPriceU: '', imgIndex: 0, x: 18, y: 62, visible: true },
-        { id: 'p6', category: '얼굴', name: '헤어라인', desc: '이마 헤어라인을 정리합니다.', firstPrice: 900, price5: 9900, origPrice5: '', priceUnlimited: 19000, origPriceU: '', imgIndex: 0, x: 50, y: 14, visible: true }
-    ]
-};
-
-let hrData = JSON.parse(JSON.stringify(DEFAULT_DATA));
 let currentCat = '얼굴';
-let selectedPart = null;
-
-function fmt(n) {
-    if (!n && n !== 0) return '문의';
-    return Number(n).toLocaleString('ko-KR') + '원';
-}
-
-// catImages 값을 항상 배열로 반환
-function getCatImgs(catId) {
-    const v = (hrData.catImages || {})[catId];
-    if (!v) return [];
-    if (Array.isArray(v)) return v.filter(Boolean);
-    if (typeof v === 'string' && v) return [v];
-    return [];
-}
+let hrData = null;
 
 async function loadData() {
     try {
         const res = await fetch(FIREBASE_URL + '/hair-removal.json?t=' + Date.now());
-        const fb = await res.json();
-        if (fb) {
-            if (fb.categories) {
-                const arr = Array.isArray(fb.categories) ? fb.categories : Object.values(fb.categories);
-                if (arr.length) hrData.categories = arr;
-            }
-            if (fb.catImages) hrData.catImages = fb.catImages;
-            if (fb.bannerImg) hrData.bannerImg = fb.bannerImg;
-            if (fb.parts) {
-                const arr = Array.isArray(fb.parts) ? fb.parts : Object.values(fb.parts);
-                if (arr.length) hrData.parts = arr;
-            }
-        }
+        hrData = await res.json();
     } catch(e) {}
-    render();
-}
 
-function render() {
-    // 배너
-    if (hrData.bannerImg) {
-        const bi = document.getElementById('heroBannerImg');
-        bi.src = hrData.bannerImg; bi.style.display = 'block';
+    // URL 파라미터로 카테고리 자동 선택
+    const urlCat = new URLSearchParams(location.search).get('cat');
+    if (urlCat) {
+        currentCat = urlCat;
+        document.querySelectorAll('.subnav-btn').forEach(b => {
+            b.classList.toggle('active', b.dataset.cat === urlCat);
+        });
     }
-    renderCatTabs();
-    renderLayout();
-    renderParts();
+
+    renderPage();
 }
 
-function renderCatTabs() {
-    document.getElementById('catTabs').innerHTML = hrData.categories.map(c => `
-        <button class="cat-tab ${c.id === currentCat ? 'active' : ''}" onclick="selectCat('${c.id}')">
-            ${c.icon ? `<span>${c.icon}</span>` : ''}${c.name}
-        </button>`).join('');
+function selectCat(btn) {
+    document.querySelectorAll('.subnav-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    currentCat = btn.dataset.cat;
+    renderPage();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
-function selectCat(catId) {
-    currentCat = catId;
-    selectedPart = null;
-    renderCatTabs();
-    renderLayout();
-    renderParts();
-    const cat = hrData.categories.find(c => c.id === catId);
-    document.getElementById('sectionHeading').textContent = (cat ? cat.name + ' ' : '') + '레이저 제모 부위별 가격 안내';
-    showInfoHint();
+function fmt(n) {
+    if (!n && n !== 0) return '문의';
+    return Number(n).toLocaleString('ko-KR');
 }
 
-// 이미지 개수에 따라 싱글(좌우)/듀얼(이미지위+가격아래) 레이아웃 전환
-function renderLayout() {
-    const imgs = getCatImgs(currentCat);
-    const area = document.getElementById('imagesArea');
-    const panel = document.getElementById('pricePanel');
+function renderPage() {
+    if (!hrData) return;
 
-    if (imgs.length <= 1) {
-        // 싱글: 좌 이미지, 우 가격패널
-        area.innerHTML = `<div class="layout-single">
-            <div id="imageCol">
-                ${renderImageWrapHTML(imgs[0] || '', 0)}
-                <p class="image-note">● 원하시는 부위를 선택하면 표시됩니다.</p>
-            </div>
-            <div id="pricePanelSlot"></div>
-        </div>`;
-        // 가격 패널을 우측 슬롯으로 이동
-        document.getElementById('pricePanelSlot').appendChild(panel);
+    // 카테고리 정보
+    const cats = hrData.categories
+        ? (Array.isArray(hrData.categories) ? hrData.categories : Object.values(hrData.categories))
+        : [];
+    const catInfo = cats.find(c => c.id === currentCat || c.name === currentCat);
+
+    // 헤어 이름 업데이트
+    document.getElementById('heroName').textContent = (currentCat) + ' 레이저 제모';
+
+    // 카테고리 이미지
+    const catImgs = (hrData.catImages || {})[currentCat];
+    const imgUrl = Array.isArray(catImgs) ? (catImgs[0] || '') : (catImgs || '');
+    const imgWrap = document.getElementById('heroImgWrap');
+    const imgEl = document.getElementById('heroImg');
+    if (imgUrl) {
+        imgEl.src = imgUrl;
+        imgEl.alt = currentCat + ' 레이저 제모';
+        imgWrap.style.display = '';
     } else {
-        // 듀얼: 이미지 2장 나란히, 가격패널 아래
-        const labels = ['앞면', '뒷면', '측면', '기타'];
-        area.innerHTML = `<div class="layout-dual">
-            <div class="dual-imgs">
-                ${imgs.map((url, i) => `<div>
-                    ${renderImageWrapHTML(url, i)}
-                </div>`).join('')}
-            </div>
-            <p class="image-note" style="margin-bottom:1.2rem;">● 원하시는 부위를 선택하면 표시됩니다.</p>
-            <div id="pricePanelSlot"></div>
-        </div>`;
-        document.getElementById('pricePanelSlot').appendChild(panel);
+        imgWrap.style.display = 'none';
     }
-    renderMarkers();
-}
 
-function renderImageWrapHTML(url, imgIdx) {
-    if (url) {
-        return `<div class="image-wrap" id="imgWrap${imgIdx}">
-            <img class="cat-image" src="${url}" alt="${currentCat} 제모" onload="renderMarkers()">
-            <div class="marker-layer" id="markerLayer${imgIdx}"></div>
-        </div>`;
+    // 부위 목록
+    const parts = hrData.parts
+        ? (Array.isArray(hrData.parts) ? hrData.parts : Object.values(hrData.parts))
+            .filter(p => (p.category === currentCat) && p.visible !== false)
+        : [];
+
+    // 부제목 업데이트
+    if (parts.length) {
+        document.getElementById('heroSubtitle').textContent = parts.map(p => p.name).join(' · ');
     }
-    return `<div class="image-wrap" id="imgWrap${imgIdx}">
-        <div class="cat-image-placeholder"><span style="font-size:2rem;">📷</span><span>이미지 준비 중</span></div>
-        <div class="marker-layer" id="markerLayer${imgIdx}"></div>
-    </div>`;
-}
 
-function renderMarkers() {
-    const imgs = getCatImgs(currentCat);
-    const imgCount = Math.max(imgs.length, 1);
-    // 각 이미지별 마커 레이어 초기화
-    for (let i = 0; i < imgCount; i++) {
-        const layer = document.getElementById('markerLayer' + i);
-        if (layer) layer.innerHTML = '';
-    }
-    const parts = hrData.parts.filter(p => p.category === currentCat && p.visible !== false);
-    parts.forEach(p => {
-        const idx = p.imgIndex || 0;
-        const layer = document.getElementById('markerLayer' + idx);
-        if (!layer) return;
-        const div = document.createElement('div');
-        div.className = 'part-marker' + (selectedPart && selectedPart.id === p.id ? ' active' : '');
-        div.style.left = (p.x || 50) + '%';
-        div.style.top = (p.y || 50) + '%';
-        div.innerHTML = `<span class="marker-label">${p.name}</span>`;
-        div.onclick = () => selectPart(p.id);
-        layer.appendChild(div);
-    });
-}
+    // 가격 탭 (서브카테고리 없으므로 숨김)
+    document.getElementById('priceCatTabs').innerHTML = '';
 
-function renderParts() {
-    const parts = hrData.parts.filter(p => p.category === currentCat && p.visible !== false);
-    document.getElementById('partsGrid').innerHTML = parts.map(p => `
-        <button class="part-btn ${selectedPart && selectedPart.id === p.id ? 'active' : ''}"
-            onclick="selectPart('${p.id}')">${p.name}</button>`).join('');
-    const cat = hrData.categories.find(c => c.id === currentCat);
-    document.getElementById('partsLabel').textContent = (cat ? cat.name : currentCat) + ' 부위 선택';
-}
-
-function showInfoHint() {
-    document.getElementById('infoHint').style.display = '';
-    document.getElementById('partInfo').classList.remove('visible');
-}
-
-function selectPart(partId) {
-    selectedPart = hrData.parts.find(p => p.id === partId) || null;
-    if (!selectedPart) return;
-    document.getElementById('infoHint').style.display = 'none';
-    const info = document.getElementById('partInfo');
-    info.classList.add('visible');
-    document.getElementById('partName').textContent = selectedPart.name;
-    document.getElementById('partDesc').textContent = selectedPart.desc || '';
-    document.getElementById('salePrice5').textContent = fmt(selectedPart.price5);
-    document.getElementById('origPrice5').textContent = selectedPart.origPrice5 ? fmt(selectedPart.origPrice5) : '';
-    document.getElementById('salePriceU').textContent = fmt(selectedPart.priceUnlimited);
-    document.getElementById('origPriceU').textContent = selectedPart.origPriceU ? fmt(selectedPart.origPriceU) : '';
-    document.getElementById('firstPrice').textContent = fmt(selectedPart.firstPrice);
-    renderMarkers();
-    renderParts();
-    if (window.innerWidth <= 700) {
-        info.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    // 가격 리스트
+    const pl = document.getElementById('priceList');
+    if (parts.length) {
+        pl.innerHTML = parts.map(p => `
+            <div class="price-row">
+                <div class="price-row-name">${p.name}<br>
+                    <span class="price-row-note">첫 체험 1회 · 5회 패키지 · 1년 무제한</span>
+                </div>
+                <div class="price-row-amount">${fmt(p.firstPrice)}<span>원~</span></div>
+            </div>`).join('');
     }
 }
-
-function goToBooking() {
-    const name = selectedPart ? selectedPart.name + ' 제모' : '제모 시술';
-    const price = selectedPart ? selectedPart.firstPrice : 0;
-    sessionStorage.setItem('bookingData', JSON.stringify({
-        programId: 'hair-removal',
-        programName: name,
-        options: selectedPart ? [{ name: name + ' 첫 체험 1회', amount: String(price) }] : [],
-        totalPrice: price
-    }));
-    location.href = 'booking.html';
-}
-
-const _hrUrlCat = new URLSearchParams(location.search).get('cat');
-if (_hrUrlCat) currentCat = _hrUrlCat;
 
 loadData();
 </script>
