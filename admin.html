@@ -441,6 +441,7 @@
             <table style="width:100%;border-collapse:collapse;font-size:0.82rem;background:#fff;border:1px solid var(--border);border-radius:8px;overflow:hidden;">
                 <thead>
                     <tr style="background:#f5f5f5;font-weight:700;text-align:left;">
+                        <th style="padding:0.7rem 0.8rem;white-space:nowrap;">신청일시</th>
                         <th style="padding:0.7rem 0.8rem;white-space:nowrap;">예약일시</th>
                         <th style="padding:0.7rem 0.8rem;white-space:nowrap;">이름</th>
                         <th style="padding:0.7rem 0.8rem;white-space:nowrap;">연락처</th>
@@ -452,7 +453,7 @@
                     </tr>
                 </thead>
                 <tbody id="rv-tbody">
-                    <tr><td colspan="8" style="text-align:center;padding:3rem;color:var(--muted);">로딩 중...</td></tr>
+                    <tr><td colspan="9" style="text-align:center;padding:3rem;color:var(--muted);">로딩 중...</td></tr>
                 </tbody>
             </table>
         </div>
@@ -1254,7 +1255,7 @@ function renderReservations() {
         : allReservations.filter(rv => rvGetStatus(rv) === rvCurrentFilter);
 
     if (!filtered.length) {
-        document.getElementById('rv-tbody').innerHTML = `<tr><td colspan="8" style="text-align:center;padding:3rem;color:var(--muted);">예약이 없습니다.</td></tr>`;
+        document.getElementById('rv-tbody').innerHTML = `<tr><td colspan="9" style="text-align:center;padding:3rem;color:var(--muted);">예약이 없습니다.</td></tr>`;
         return;
     }
 
@@ -1263,7 +1264,14 @@ function renderReservations() {
         const total  = rv.totalPrice ? Number(rv.totalPrice).toLocaleString('ko-KR') + '원' : '-';
         const phone  = rv.phone ? rv.phone.replace(/(\d{3})(\d{3,4})(\d{4})/, '$1-$2-$3') : '-';
         const progTxt = rv.optionNames || rv.program || '-';
+        let submittedAt = '-';
+        if (rv.createdAt) {
+            const d = new Date(rv.createdAt);
+            const pad = n => String(n).padStart(2, '0');
+            submittedAt = `${d.getFullYear()}.${pad(d.getMonth()+1)}.${pad(d.getDate())}<br><span style="color:var(--muted)">${pad(d.getHours())}:${pad(d.getMinutes())}</span>`;
+        }
         return `<tr style="border-top:1px solid var(--border);">
+            <td style="padding:0.65rem 0.8rem;white-space:nowrap;font-size:0.78rem;">${submittedAt}</td>
             <td style="padding:0.65rem 0.8rem;white-space:nowrap;font-weight:600;">${rv.date||''} ${rv.time||''}</td>
             <td style="padding:0.65rem 0.8rem;white-space:nowrap;">${esc(rv.name||'-')}</td>
             <td style="padding:0.65rem 0.8rem;white-space:nowrap;">${esc(phone)}</td>
