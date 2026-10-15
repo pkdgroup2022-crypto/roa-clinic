@@ -244,20 +244,11 @@ nav {
     </div>
 </nav>
 
-<!-- 서브내비: 부위 탭 -->
-<div class="subnav">
-    <div class="subnav-inner" id="subnavInner">
-        <button class="subnav-btn active" data-cat="얼굴" onclick="selectCat(this)">😊 얼굴</button>
-        <button class="subnav-btn" data-cat="상체" onclick="selectCat(this)">👕 상체</button>
-        <button class="subnav-btn" data-cat="하체" onclick="selectCat(this)">👖 하체</button>
-    </div>
-</div>
-
 <!-- Hero / 가격 -->
 <section class="hero" id="hero">
     <div class="hero-title-area">
         <div class="hero-category">레이저 제모</div>
-        <h1 class="hero-name" id="heroName">얼굴 레이저 제모</h1>
+        <h1 class="hero-name" id="heroName">레이저 제모</h1>
         <p class="hero-subtitle" id="heroSubtitle">인중 · 앞턱 · 구렛나루 · 눈썹 · 헤어라인</p>
     </div>
     <div class="hero-img" id="heroImgWrap" style="display:none">
@@ -368,7 +359,6 @@ nav {
 
 <script>
 const FIREBASE_URL = 'https://roa-clinic-default-rtdb.firebaseio.com/roa';
-let currentCat = '얼굴';
 let pgData = null; // programs 데이터
 
 async function loadData() {
@@ -378,33 +368,7 @@ async function loadData() {
         if (raw) pgData = Array.isArray(raw) ? raw : Object.values(raw);
     } catch(e) {}
 
-    // URL 파라미터로 카테고리 자동 선택
-    const urlCat = new URLSearchParams(location.search).get('cat');
-    if (urlCat) currentCat = urlCat;
-
-    buildSubnav();
     renderPage();
-}
-
-function buildSubnav() {
-    // programs에서 제모 카테고리 찾기
-    const hairCat = pgData && pgData.find(c => c.cat === '제모');
-    if (!hairCat || !hairCat.items) return;
-
-    // 서브내비: 얼굴/상체/하체 고정 또는 items 기반
-    const nav = document.getElementById('subnavInner');
-    // 기본 탭 유지 (얼굴/상체/하체)
-    nav.querySelectorAll('.subnav-btn').forEach(b => {
-        b.classList.toggle('active', b.dataset.cat === currentCat);
-    });
-}
-
-function selectCat(btn) {
-    document.querySelectorAll('.subnav-btn').forEach(b => b.classList.remove('active'));
-    btn.classList.add('active');
-    currentCat = btn.dataset.cat;
-    renderPage();
-    window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
 function fmt(n) {
@@ -413,22 +377,11 @@ function fmt(n) {
 }
 
 function renderPage() {
-    // programs에서 제모 카테고리 항목 중 현재 탭(얼굴/상체/하체) 이름 포함하는 것 필터
     const hairCat = pgData && pgData.find(c => c.cat === '제모');
-    const allItems = hairCat && hairCat.items
+    const showItems = hairCat && hairCat.items
         ? (Array.isArray(hairCat.items) ? hairCat.items : Object.values(hairCat.items))
             .filter(it => !it.hidden)
         : [];
-
-    // 현재 탭에 해당하는 항목 (이름에 탭명 포함하거나, 전체 표시)
-    const items = allItems.filter(it => {
-        const name = (it.name || '').toLowerCase();
-        return name.includes(currentCat.toLowerCase()) || currentCat === '전체';
-    });
-    // 매칭 없으면 전체 표시
-    const showItems = items.length ? items : allItems;
-
-    document.getElementById('heroName').textContent = currentCat + ' 레이저 제모';
 
     // 썸네일 이미지 (첫 항목 이미지 사용)
     const firstImg = showItems.length && showItems[0].img;
@@ -436,7 +389,7 @@ function renderPage() {
     const imgEl = document.getElementById('heroImg');
     if (firstImg) {
         imgEl.src = firstImg;
-        imgEl.alt = currentCat + ' 레이저 제모';
+        imgEl.alt = '레이저 제모';
         imgWrap.style.display = '';
     } else {
         imgWrap.style.display = 'none';
@@ -479,7 +432,7 @@ function renderPage() {
 
 function goToBooking() {
     const items = window._currentHRItems || [];
-    const catName = currentCat + ' 레이저 제모';
+    const catName = '레이저 제모';
 
     const options = items.map(it => {
         const opts = it.options
@@ -496,7 +449,7 @@ function goToBooking() {
 
     try {
         sessionStorage.setItem('bookingData', JSON.stringify({
-            programId:   'hair-removal-' + currentCat,
+            programId:   'hair-removal',
             programName: catName,
             options:     options,
             totalPrice:  firstPrice
