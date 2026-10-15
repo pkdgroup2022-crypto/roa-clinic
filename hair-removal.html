@@ -409,14 +409,14 @@ function renderPage() {
             opts.forEach(o => {
                 prices.push({
                     name:       o.name || it.name,
-                    amount:     o.amount ? String(o.amount) : '',
-                    origAmount: o.origAmount ? String(o.origAmount) : ''
+                    amount:     o.salePrice ? String(o.salePrice) : (o.amount ? String(o.amount) : ''),
+                    origAmount: o.origPrice ? String(o.origPrice) : (o.origAmount ? String(o.origAmount) : '')
                 });
             });
         } else {
             prices.push({
                 name:       it.name,
-                amount:     it.startPrice ? String(it.startPrice) : (it.price ? String(it.price) : ''),
+                amount:     it.price ? String(it.price) : (it.startPrice ? String(it.startPrice) : ''),
                 origAmount: ''
             });
         }
