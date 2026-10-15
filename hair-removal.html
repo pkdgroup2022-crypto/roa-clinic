@@ -382,25 +382,37 @@ function fmt(n) {
 
 function renderPage() {
     const hairCat = pgData && pgData.find(c => c.cat === '제모');
-    const showItems = hairCat && hairCat.items
+    const allItems = hairCat && hairCat.items
         ? (Array.isArray(hairCat.items) ? hairCat.items : Object.values(hairCat.items))
             .filter(it => !it.hidden)
         : [];
 
-    // 썸네일 이미지 (첫 항목 이미지 사용)
-    const firstImg = showItems.length && showItems[0].img;
+    // URL ?id=xxx → 해당 항목 하나만, 없으면 전체
+    const urlId = new URLSearchParams(location.search).get('id');
+    const showItems = urlId
+        ? allItems.filter(it => it.id === urlId)
+        : allItems;
+
+    // 특정 항목이면 제목/이미지/부제목을 해당 항목으로
+    const singleItem = showItems.length === 1 ? showItems[0] : null;
+    if (singleItem) {
+        document.getElementById('heroName').textContent = singleItem.name;
+        document.getElementById('heroSubtitle').textContent = singleItem.subtitle || singleItem.desc || '';
+        window._pgName = singleItem.name;
+    }
+
+    const firstImg = showItems.length && (showItems[0].img);
     const imgWrap = document.getElementById('heroImgWrap');
     const imgEl = document.getElementById('heroImg');
     if (firstImg) {
         imgEl.src = firstImg;
-        imgEl.alt = '레이저 제모';
+        imgEl.alt = singleItem ? singleItem.name : '레이저 제모';
         imgWrap.style.display = '';
     } else {
         imgWrap.style.display = 'none';
     }
 
-    // 부제목
-    if (showItems.length) {
+    if (!singleItem && showItems.length) {
         document.getElementById('heroSubtitle').textContent = showItems.map(it => it.name).join(' · ');
     }
 
@@ -459,8 +471,9 @@ function renderPriceList() {
                 </span>
             </div>`;
         }).join('');
+        const showTitle = groups.length > 1;
         return `<div class="price-group">
-            <div class="price-group-title">${g.itemName}</div>
+            ${showTitle ? `<div class="price-group-title">${g.itemName}</div>` : ''}
             ${rows}
         </div>`;
     }).join('');
