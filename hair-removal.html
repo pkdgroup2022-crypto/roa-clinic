@@ -406,17 +406,17 @@ function renderPage() {
             ? (Array.isArray(it.options) ? it.options : Object.values(it.options))
             : [];
         if (opts.length) {
-            opts.forEach(o => {
+            opts.filter(o => o.salePrice || o.amount).forEach(o => {
                 prices.push({
                     name:       o.name || it.name,
-                    amount:     o.salePrice ? String(o.salePrice) : (o.amount ? String(o.amount) : ''),
+                    amount:     o.salePrice ? String(o.salePrice) : String(o.amount),
                     origAmount: o.origPrice ? String(o.origPrice) : (o.origAmount ? String(o.origAmount) : '')
                 });
             });
-        } else {
+        } else if (it.price || it.startPrice) {
             prices.push({
                 name:       it.name,
-                amount:     it.price ? String(it.price) : (it.startPrice ? String(it.startPrice) : ''),
+                amount:     it.price ? String(it.price) : String(it.startPrice),
                 origAmount: ''
             });
         }
