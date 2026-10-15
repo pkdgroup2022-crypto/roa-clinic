@@ -446,6 +446,10 @@ function goToBooking() {
     location.href = 'booking.html';
 }
 
+// URL ?cat= 파라미터로 카테고리 자동 선택
+const _hrUrlCat = new URLSearchParams(location.search).get('cat');
+if (_hrUrlCat) currentCat = _hrUrlCat;
+
 loadData();
 </script>
 </body>

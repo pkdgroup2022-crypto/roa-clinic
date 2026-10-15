@@ -328,23 +328,14 @@ function setTabTitle(cat) {
     document.title = TAB_TITLES[cat] || '이벤트 | 로아한의원 부천';
 }
 
-// 제모 카테고리 이름 (hair-removal.html로 연결)
-const HAIR_REMOVAL_CATS = ['제모'];
-
 function renderCatTabs(pgArr) {
     const tabsEl = document.querySelector('.cat-tabs');
     if (!tabsEl) return;
-    // 기존 탭 중 이달의 이벤트는 유지, 나머지는 Firebase 순서로 재생성
     const fbCats = pgArr.filter(c => !c.hidden).map(c => c.cat);
-    // 중복 없이 기존 고정 탭 + Firebase 신규 탭
     const fixedCats = ['이달의 이벤트'];
     const allCats = [...fixedCats, ...fbCats.filter(c => !fixedCats.includes(c))];
     tabsEl.innerHTML = allCats.map(cat => {
         const isActive = cat === currentCat;
-        const isHairRemoval = HAIR_REMOVAL_CATS.includes(cat);
-        if (isHairRemoval) {
-            return `<button class="cat-tab${isActive?' active':''}" data-cat="${cat}" onclick="location.href='hair-removal.html'">${cat}</button>`;
-        }
         return `<button class="cat-tab${isActive?' active':''}" data-cat="${cat}" onclick="selectCat(this)">${cat}</button>`;
     }).join('');
 }
@@ -398,6 +389,33 @@ function render() {
                     </div>
                     <div class="card-body">
                         <div class="card-name">${it.name}</div>
+                        ${it.desc ? `<div class="card-desc">${it.desc}</div>` : ''}
+                        <div class="card-price-wrap">
+                            <span class="card-price-from">자세히 보기 →</span>
+                        </div>
+                    </div>
+                </a>`).join('') + '</div>';
+        return;
+    }
+
+    // 제모 카테고리: hair-removal 데이터로 부위 카드 표시
+    if (currentCat === '제모') {
+        const hrItems = PROGRAMS['제모'] || [];
+        if (!hrItems.length) {
+            area.innerHTML = `<div class="program-grid"><div class="empty-grid"><div class="icon">✂️</div><p>부위 정보를 불러오는 중입니다.</p></div></div>`;
+            return;
+        }
+        area.innerHTML = '<div class="program-grid">' +
+            hrItems.map(it => `
+                <a class="program-card" href="hair-removal.html?cat=${encodeURIComponent(it.name)}">
+                    <div class="card-img">
+                        ${it.img
+                            ? `<img src="${it.img}" alt="${it.name} 제모 | 로아한의원 부천">`
+                            : `<div class="card-img-placeholder"><span>✂️</span><p>이미지 준비 중</p></div>`
+                        }
+                    </div>
+                    <div class="card-body">
+                        <div class="card-name">${it.name} 제모</div>
                         ${it.desc ? `<div class="card-desc">${it.desc}</div>` : ''}
                         <div class="card-price-wrap">
                             <span class="card-price-from">자세히 보기 →</span>
@@ -477,6 +495,22 @@ async function loadData() {
                 renderCatTabs(pgArr);
             }
         }
+        // 제모 카테고리 데이터 로드
+        try {
+            const hrRes = await fetch(FIREBASE_URL + '/hair-removal.json', { signal: AbortSignal.timeout(6000) });
+            const hrData = await hrRes.json();
+            if (hrData && hrData.categories && hrData.catImages) {
+                const cats = Array.isArray(hrData.categories) ? hrData.categories : Object.values(hrData.categories);
+                PROGRAMS['제모'] = cats.filter(c => !c.hidden).map(c => ({
+                    id: 'hr_cat_' + c.id,
+                    name: c.name,
+                    desc: c.desc || '',
+                    img: hrData.catImages?.[c.id] || hrData.catImages?.[c.name] || '',
+                    price: '',
+                    isHrCat: true
+                }));
+            }
+        } catch(e) {}
     } catch { eventsData = DEMO_EVENTS; }
     render();
 }
