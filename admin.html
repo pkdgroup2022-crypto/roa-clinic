@@ -317,6 +317,7 @@
     <button class="tab-btn" onclick="switchTab('events')">🎁 이달의 이벤트</button>
     <button class="tab-btn owner-only" onclick="switchTab('photos')">🖼 전후 사진</button>
     <button class="tab-btn" onclick="switchTab('popup')">📢 팝업 관리</button>
+    <button class="tab-btn" onclick="switchTab('hairremoval')">✂️ 제모 관리</button>
     <button class="tab-btn" onclick="switchTab('programs')">📋 시술 메뉴</button>
     <button class="tab-btn" onclick="switchTab('reservations')">📅 예약일정</button>
     <button class="tab-btn owner-only" onclick="switchTab('accounts')">👥 직원 계정</button>
@@ -419,6 +420,28 @@
     <div class="save-bar">
         <button class="btn-secondary" onclick="loadPopup()">초기화</button>
         <button class="btn-save" onclick="savePopup()">💾 팝업 저장</button>
+    </div>
+</div>
+
+<!-- ═══ 제모 관리 탭 ═══ -->
+<div id="tab-hairremoval" class="tab-panel">
+    <div class="container">
+        <div class="section-title">제모 관리</div>
+        <p class="section-desc">제모 시술 부위별 가격과 이미지를 관리합니다. <a href="hair-removal.html" target="_blank" style="color:var(--red);">제모 페이지 보기 →</a></p>
+
+        <!-- 카테고리 이미지 -->
+        <div style="margin-bottom:1.5rem;">
+            <div style="font-size:0.85rem;font-weight:700;letter-spacing:0.08em;color:var(--muted);margin-bottom:0.8rem;">카테고리별 이미지</div>
+            <div style="display:flex;gap:1rem;flex-wrap:wrap;" id="hr-cat-images"></div>
+        </div>
+
+        <!-- 부위 목록 -->
+        <div id="hr-parts-list"></div>
+        <button class="btn-add" onclick="hrAddPart()">＋ 부위 추가</button>
+    </div>
+    <div class="save-bar">
+        <button class="btn-secondary" onclick="loadHairRemoval()">초기화</button>
+        <button class="btn-save" onclick="saveHairRemoval()">💾 제모 저장</button>
     </div>
 </div>
 
@@ -1721,6 +1744,150 @@ async function savePopup() {
     }
 }
 
+/* ═══ 제모 관리 ═══ */
+const HR_CATEGORIES = ['얼굴', '상체', '하체'];
+const HR_ICONS = { '얼굴': '😊', '상체': '👕', '하체': '👖' };
+let hrData = {
+    categories: HR_CATEGORIES.map(n => ({ id: n, name: n, icon: HR_ICONS[n] || '' })),
+    catImages: {},
+    parts: []
+};
+
+async function loadHairRemoval() {
+    try {
+        const snap = await db.ref('roa/hair-removal').once('value');
+        const val = snap.val();
+        if (val) {
+            if (val.categories) hrData.categories = Array.isArray(val.categories) ? val.categories : Object.values(val.categories);
+            if (val.catImages) hrData.catImages = val.catImages;
+            if (val.parts) hrData.parts = Array.isArray(val.parts) ? val.parts : Object.values(val.parts);
+        }
+    } catch(e) { showToast('로드 실패: ' + e.message, true); }
+    renderHairRemoval();
+}
+
+function renderHairRemoval() {
+    // 카테고리 이미지
+    document.getElementById('hr-cat-images').innerHTML = hrData.categories.map(c => `
+        <div style="text-align:center;">
+            <div style="font-size:0.75rem;font-weight:700;color:var(--muted);margin-bottom:0.4rem;">${c.name}</div>
+            ${hrData.catImages[c.id]
+                ? `<img src="${esc(hrData.catImages[c.id])}" style="width:80px;height:100px;object-fit:cover;border-radius:6px;border:1px solid #eee;display:block;margin-bottom:0.3rem;">`
+                : `<div style="width:80px;height:100px;border:2px dashed #ccc;border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:0.7rem;color:#aaa;margin-bottom:0.3rem;">없음</div>`}
+            <label style="font-size:0.72rem;cursor:pointer;color:var(--red);border:1px solid var(--red);border-radius:4px;padding:0.2rem 0.5rem;">
+                📷 변경
+                <input type="file" accept="image/*" style="display:none;" onchange="uploadHrCatImg('${c.id}',this)">
+            </label>
+        </div>`).join('');
+
+    // 부위 목록 (카테고리별 그룹)
+    const list = document.getElementById('hr-parts-list');
+    list.innerHTML = hrData.categories.map(c => {
+        const parts = hrData.parts.filter(p => p.category === c.id);
+        return `
+        <div style="margin-bottom:1.5rem;">
+            <div style="font-size:0.85rem;font-weight:700;letter-spacing:0.06em;color:var(--muted);margin-bottom:0.5rem;padding:0.4rem 0;border-bottom:2px solid var(--border);">${c.name} 부위</div>
+            ${parts.map((p, _) => {
+                const i = hrData.parts.indexOf(p);
+                return `
+            <div class="card" id="hrp-${i}" style="margin-bottom:0.6rem;">
+                <div class="card-head">
+                    <div class="card-title-text">${esc(p.name) || '(이름 없음)'}</div>
+                    <div style="display:flex;gap:0.5rem;align-items:center;">
+                        <div class="toggle-wrap">
+                            <button class="toggle ${p.visible!==false?'on':''}" onclick="hrToggle(${i})"></button>
+                            <span style="font-size:0.75rem;color:var(--mid);">${p.visible!==false?'표시':'숨김'}</span>
+                        </div>
+                        <button class="btn-remove" onclick="hrRemovePart(${i})">삭제</button>
+                    </div>
+                </div>
+                <div style="display:grid;grid-template-columns:1fr 1fr;gap:0.5rem 1rem;">
+                    <div class="field" style="margin:0;"><label>부위 이름</label>
+                        <input type="text" value="${esc(p.name||'')}" placeholder="앞턱"
+                            oninput="hrData.parts[${i}].name=this.value;document.querySelector('#hrp-${i} .card-title-text').textContent=this.value||'(이름 없음)'">
+                    </div>
+                    <div class="field" style="margin:0;"><label>카테고리</label>
+                        <select onchange="hrData.parts[${i}].category=this.value;renderHairRemoval()">
+                            ${hrData.categories.map(c2=>`<option value="${c2.id}" ${p.category===c2.id?'selected':''}>${c2.name}</option>`).join('')}
+                        </select>
+                    </div>
+                    <div class="field" style="margin:0;grid-column:1/-1;"><label>설명</label>
+                        <input type="text" value="${esc(p.desc||'')}" placeholder="부위 설명"
+                            oninput="hrData.parts[${i}].desc=this.value">
+                    </div>
+                    <div class="field" style="margin:0;"><label>첫 체험가 (원)</label>
+                        <input type="number" value="${p.firstPrice||''}" placeholder="900"
+                            oninput="hrData.parts[${i}].firstPrice=Number(this.value)">
+                    </div>
+                    <div class="field" style="margin:0;"><label>5회 가격 (원)</label>
+                        <input type="number" value="${p.price5||''}" placeholder="9900"
+                            oninput="hrData.parts[${i}].price5=Number(this.value)">
+                    </div>
+                    <div class="field" style="margin:0;"><label>5회 정가 (취소선)</label>
+                        <input type="number" value="${p.origPrice5||''}" placeholder="(선택)"
+                            oninput="hrData.parts[${i}].origPrice5=this.value?Number(this.value):''">
+                    </div>
+                    <div class="field" style="margin:0;"><label>1년 무제한 (원)</label>
+                        <input type="number" value="${p.priceUnlimited||''}" placeholder="19000"
+                            oninput="hrData.parts[${i}].priceUnlimited=Number(this.value)">
+                    </div>
+                    <div class="field" style="margin:0;"><label>무제한 정가 (취소선)</label>
+                        <input type="number" value="${p.origPriceU||''}" placeholder="(선택)"
+                            oninput="hrData.parts[${i}].origPriceU=this.value?Number(this.value):''">
+                    </div>
+                    <div class="field" style="margin:0;"><label>마커 X위치 (%)</label>
+                        <input type="number" value="${p.x||50}" min="0" max="100" placeholder="50"
+                            oninput="hrData.parts[${i}].x=Number(this.value)">
+                    </div>
+                    <div class="field" style="margin:0;"><label>마커 Y위치 (%)</label>
+                        <input type="number" value="${p.y||50}" min="0" max="100" placeholder="50"
+                            oninput="hrData.parts[${i}].y=Number(this.value)">
+                    </div>
+                </div>
+            </div>`;
+            }).join('')}
+        </div>`;
+    }).join('');
+}
+
+function hrToggle(i) {
+    hrData.parts[i].visible = hrData.parts[i].visible === false ? true : false;
+    renderHairRemoval();
+}
+
+function hrAddPart() {
+    hrData.parts.push({ id: 'p' + Date.now(), category: '얼굴', name: '', desc: '', firstPrice: 900, price5: 9900, origPrice5: '', priceUnlimited: 19000, origPriceU: '', x: 50, y: 50, visible: true });
+    renderHairRemoval();
+}
+
+function hrRemovePart(i) {
+    if (!confirm('이 부위를 삭제할까요?')) return;
+    hrData.parts.splice(i, 1);
+    renderHairRemoval();
+}
+
+async function uploadHrCatImg(catId, input) {
+    const file = input.files[0];
+    if (!file) return;
+    showToast('이미지 업로드 중...');
+    try {
+        const ext = file.name.split('.').pop();
+        const ref = storage.ref(`hair-removal/cat-${catId}-${Date.now()}.${ext}`);
+        await ref.put(file);
+        const url = await ref.getDownloadURL();
+        hrData.catImages[catId] = url;
+        renderHairRemoval();
+        showToast('✓ 업로드 완료!');
+    } catch(e) { showToast('업로드 실패: ' + e.message, true); }
+}
+
+async function saveHairRemoval() {
+    try {
+        await db.ref('roa/hair-removal').set(hrData);
+        showToast('✓ 제모 데이터 저장 완료!');
+    } catch(e) { showToast('저장 실패: ' + e.message, true); }
+}
+
 auth.onAuthStateChanged(async function(user) {
     const login = document.getElementById('loginScreen');
     const admin = document.getElementById('adminContent');
@@ -1733,6 +1900,7 @@ auth.onAuthStateChanged(async function(user) {
         loadPrograms();
         loadReservations();
         loadPopup();
+        loadHairRemoval();
         if (currentRole === 'owner') {
             loadStats();
             loadPhotos();

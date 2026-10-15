@@ -1,0 +1,452 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" type="image/png" href="/images/og-main.png">
+<title>제모 시술 안내 | 로아한의원 부천</title>
+<meta name="description" content="로아한의원 부천 제모 시술. 얼굴·상체·하체 부위별 제모 이벤트가. 첫 시술 체험가 900원부터.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&family=Noto+Serif+KR:wght@400;600&display=swap" rel="stylesheet">
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+:root {
+    --dark: #0E0E0E; --gold: #B09060; --cream: #F4EFE6;
+    --warm: #FAF7F2; --red: #8B1A2A; --red-light: #fdf2f3;
+    --mid: #666; --muted: #999; --border: #e8e0d8;
+    --pink: #e8536a; --pink-light: #fdf0f2;
+}
+body { font-family: 'Noto Sans KR', sans-serif; background: #fff; color: var(--dark); padding-top: 60px; }
+
+/* ─── Nav ─── */
+nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 0 2rem; height: 60px;
+    background: rgba(14,14,14,0.97); backdrop-filter: blur(8px);
+}
+.nav-logo { font-family: 'Noto Serif KR', serif; color: #fff; font-size: 1rem; font-weight: 600; text-decoration: none; }
+.nav-center { display: flex; gap: 2rem; list-style: none; }
+.nav-center a { color: #ccc; text-decoration: none; font-size: 0.88rem; transition: color 0.2s; }
+.nav-center a:hover { color: #fff; }
+.hamburger { display: none; flex-direction: column; gap: 5px; background: none; border: none; cursor: pointer; padding: 4px; }
+.hamburger span { display: block; width: 22px; height: 2px; background: #fff; border-radius: 2px; }
+.mobile-menu {
+    display: none; flex-direction: column;
+    position: fixed; top: 60px; left: 0; right: 0; z-index: 99;
+    background: rgba(14,14,14,0.97); padding: 1rem 0;
+}
+.mobile-menu.open { display: flex; }
+.mobile-menu a { color: #ccc; text-decoration: none; padding: 0.85rem 2rem; font-size: 0.95rem; border-bottom: 1px solid #222; }
+.mobile-menu a:hover { color: #fff; }
+
+/* ─── 헤더 ─── */
+.page-header {
+    background: linear-gradient(135deg, #1a0a0e, #2d1018);
+    padding: 2.5rem 2rem 2rem;
+    text-align: center;
+}
+.page-header h1 {
+    font-family: 'Noto Serif KR', serif;
+    color: #fff; font-size: 1.8rem; font-weight: 600; margin-bottom: 0.5rem;
+}
+.page-header p { color: #ccc; font-size: 0.9rem; }
+
+/* ─── 카테고리 탭 ─── */
+.cat-tabs {
+    display: flex; gap: 0.8rem; justify-content: center;
+    padding: 1.5rem 2rem 0; flex-wrap: wrap;
+}
+.cat-tab {
+    display: flex; align-items: center; gap: 0.5rem;
+    padding: 0.65rem 1.6rem; border-radius: 50px;
+    border: 2px solid var(--border); background: #fff;
+    font-size: 0.95rem; font-weight: 600; cursor: pointer;
+    transition: all 0.2s; color: var(--mid);
+}
+.cat-tab.active {
+    background: var(--pink); border-color: var(--pink); color: #fff;
+}
+.cat-tab:hover:not(.active) { border-color: var(--pink); color: var(--pink); }
+.cat-icon { font-size: 1.1rem; }
+
+/* ─── 메인 레이아웃 ─── */
+.main-layout {
+    max-width: 960px; margin: 0 auto;
+    padding: 1.5rem 1.5rem 4rem;
+    display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; align-items: start;
+}
+
+/* ─── 이미지 + 마커 ─── */
+.image-wrap {
+    position: relative; border-radius: 12px; overflow: hidden;
+    background: #f5f0eb;
+}
+.cat-image {
+    width: 100%; display: block;
+    aspect-ratio: 3/4; object-fit: cover;
+}
+.cat-image-placeholder {
+    width: 100%; aspect-ratio: 3/4;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 0.85rem; color: #bbb; flex-direction: column; gap: 0.5rem;
+    background: #f5f0eb;
+}
+.part-marker {
+    position: absolute; transform: translate(-50%, -50%);
+    width: 28px; height: 28px; border-radius: 50%;
+    background: rgba(232,83,106,0.25); border: 2px solid var(--pink);
+    cursor: pointer; transition: all 0.2s;
+    display: flex; align-items: center; justify-content: center;
+}
+.part-marker::after {
+    content: ''; width: 10px; height: 10px; border-radius: 50%;
+    background: var(--pink);
+}
+.part-marker:hover, .part-marker.active {
+    background: rgba(232,83,106,0.5); transform: translate(-50%,-50%) scale(1.2);
+}
+.part-marker.active { background: var(--pink); }
+.part-marker.active::after { background: #fff; }
+.marker-tooltip {
+    position: absolute; transform: translateX(-50%);
+    bottom: calc(100% + 6px); left: 50%;
+    background: var(--dark); color: #fff;
+    font-size: 0.72rem; font-weight: 700; padding: 0.2rem 0.5rem;
+    border-radius: 4px; white-space: nowrap; pointer-events: none;
+}
+.image-guide {
+    text-align: center; padding: 0.7rem;
+    font-size: 0.78rem; color: var(--muted);
+    background: #fafafa; border-top: 1px solid var(--border);
+}
+
+/* ─── 부위 정보 패널 ─── */
+.info-panel {
+    display: flex; flex-direction: column; gap: 1rem;
+}
+.info-hint {
+    background: var(--warm); border-radius: 8px;
+    padding: 1rem 1.2rem; font-size: 0.85rem; color: var(--mid);
+    text-align: center; border: 1px dashed var(--border);
+}
+.part-info {
+    background: #fff; border: 1px solid var(--border); border-radius: 10px;
+    overflow: hidden; display: none;
+}
+.part-info.visible { display: block; }
+.part-info-head {
+    background: linear-gradient(135deg, #2d1018, #4a1525);
+    padding: 1.2rem 1.4rem;
+}
+.part-info-head h2 {
+    font-family: 'Noto Serif KR', serif;
+    color: #fff; font-size: 1.3rem; font-weight: 600; margin-bottom: 0.3rem;
+}
+.part-info-head p { color: #ddd; font-size: 0.85rem; line-height: 1.6; }
+.price-rows { padding: 1rem 1.4rem; display: flex; flex-direction: column; gap: 0; }
+.price-row-item {
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 0.85rem 0; border-bottom: 1px solid var(--border);
+}
+.price-row-item:last-child { border-bottom: none; }
+.price-label { font-size: 0.88rem; font-weight: 500; color: var(--dark); }
+.price-sub { font-size: 0.75rem; color: var(--muted); }
+.price-val { text-align: right; }
+.price-val .sale { font-family: 'Noto Serif KR', serif; font-size: 1.25rem; font-weight: 700; color: var(--pink); }
+.price-val .orig { font-size: 0.78rem; color: var(--muted); text-decoration: line-through; display: block; }
+.first-price-box {
+    margin: 0 1.4rem 1.2rem;
+    background: var(--pink-light); border-radius: 8px; border: 1px solid var(--pink);
+    padding: 0.9rem 1.2rem;
+    display: flex; justify-content: space-between; align-items: center;
+}
+.first-price-label { font-size: 0.85rem; font-weight: 700; color: var(--pink); }
+.first-price-val { font-family: 'Noto Serif KR', serif; font-size: 1.4rem; font-weight: 700; color: var(--pink); }
+.first-price-note { font-size: 0.72rem; color: var(--muted); padding: 0 1.4rem 1rem; }
+.btn-booking {
+    display: flex; align-items: center; justify-content: center;
+    background: linear-gradient(135deg, #e8536a, #c94070);
+    color: #fff; border: none; padding: 1.1rem 2rem; border-radius: 6px;
+    font-size: 1rem; font-weight: 700; letter-spacing: 0.06em;
+    font-family: 'Noto Serif KR', serif; cursor: pointer; width: 100%;
+    transition: all 0.25s; text-decoration: none;
+}
+.btn-booking:hover { background: linear-gradient(135deg, #d4405a, #b02f5e); }
+.booking-wrap { padding: 0 1.4rem 1.4rem; }
+
+/* ─── 부위 버튼 그리드 ─── */
+.parts-section { max-width: 960px; margin: 0 auto; padding: 0 1.5rem 3rem; }
+.parts-section h3 {
+    font-family: 'Noto Serif KR', serif;
+    font-size: 1rem; font-weight: 600; color: var(--dark);
+    margin-bottom: 1rem; padding-bottom: 0.5rem; border-bottom: 1px solid var(--border);
+}
+.parts-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); gap: 0.6rem; }
+.part-btn {
+    padding: 0.7rem 0.5rem; border-radius: 8px;
+    border: 1.5px solid var(--border); background: #fff;
+    font-size: 0.88rem; font-weight: 500; cursor: pointer;
+    transition: all 0.15s; color: var(--dark); text-align: center;
+}
+.part-btn:hover { border-color: var(--pink); color: var(--pink); background: var(--pink-light); }
+.part-btn.active { border-color: var(--pink); background: var(--pink); color: #fff; }
+
+/* ─── Mobile ─── */
+@media (max-width: 700px) {
+    .main-layout { grid-template-columns: 1fr; gap: 1rem; padding: 1rem 1rem 2rem; }
+    .page-header h1 { font-size: 1.4rem; }
+    .price-val .sale { font-size: 1.1rem; }
+    .first-price-val { font-size: 1.2rem; }
+    .parts-grid { grid-template-columns: repeat(3, 1fr); }
+}
+@media (max-width: 900px) {
+    .nav-center { display: none; }
+    .hamburger { display: flex; }
+}
+</style>
+<!-- Firebase -->
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
+<script>
+firebase.initializeApp({
+    apiKey: "AIzaSyCm6a-BjPUfT1_0CfS-qnR-LJT1I_ZqYxQ",
+    authDomain: "roa-clinic.firebaseapp.com",
+    databaseURL: "https://roa-clinic-default-rtdb.firebaseio.com",
+    projectId: "roa-clinic",
+    storageBucket: "roa-clinic.firebasestorage.app",
+    appId: "1:882805829481:web:bb50ea888b1f0e2dc2e7a0"
+});
+const db = firebase.database();
+</script>
+</head>
+<body>
+
+<nav>
+    <a class="nav-logo" href="index.html">로아한의원 부천</a>
+    <ul class="nav-center">
+        <li><a href="events.html" class="active">시술메뉴/이벤트</a></li>
+        <li><a href="index.html#reviews">시술 후기</a></li>
+        <li><a href="index.html#impactStats">로아한의원 부천</a></li>
+        <li><a href="index.html#contact">오시는 길</a></li>
+    </ul>
+    <button class="hamburger" onclick="document.querySelector('.mobile-menu').classList.toggle('open')">
+        <span></span><span></span><span></span>
+    </button>
+    <div class="mobile-menu">
+        <a href="events.html">시술메뉴/이벤트</a>
+        <a href="index.html#reviews">시술 후기</a>
+        <a href="index.html#impactStats">로아한의원 부천</a>
+        <a href="index.html#contact">오시는 길</a>
+    </div>
+</nav>
+
+<div class="page-header">
+    <h1>제모 이벤트</h1>
+    <p>부위를 선택하시면 해당 부위의 시술 정보 및 이벤트가를 확인하실 수 있습니다.</p>
+</div>
+
+<div class="cat-tabs" id="catTabs"></div>
+
+<div class="main-layout">
+    <div>
+        <div class="image-wrap" id="imageWrap">
+            <div class="cat-image-placeholder" id="imagePlaceholder">
+                <span style="font-size:2rem;">📷</span>
+                <span>관리자에서 이미지를 등록해주세요</span>
+            </div>
+            <img class="cat-image" id="catImage" src="" alt="" style="display:none;">
+            <div id="markerLayer"></div>
+        </div>
+        <div class="image-guide" id="imageGuide">ℹ️ 원하시는 부위를 선택하시면 표시됩니다.</div>
+    </div>
+
+    <div class="info-panel">
+        <div class="info-hint" id="infoHint">부위 버튼 또는 이미지의 마커를 클릭해 시술 정보를 확인하세요.</div>
+        <div class="part-info" id="partInfo">
+            <div class="part-info-head">
+                <h2 id="partName"></h2>
+                <p id="partDesc"></p>
+            </div>
+            <div class="price-rows">
+                <div class="price-row-item">
+                    <div>
+                        <div class="price-label">5회 패키지</div>
+                    </div>
+                    <div class="price-val">
+                        <span class="orig" id="origPrice5"></span>
+                        <span class="sale" id="salePrice5"></span>
+                    </div>
+                </div>
+                <div class="price-row-item">
+                    <div>
+                        <div class="price-label">1년 무제한</div>
+                    </div>
+                    <div class="price-val">
+                        <span class="orig" id="origPriceU"></span>
+                        <span class="sale" id="salePriceU"></span>
+                    </div>
+                </div>
+            </div>
+            <div class="first-price-box">
+                <span class="first-price-label">첫 시술 체험가 1회</span>
+                <span class="first-price-val" id="firstPrice"></span>
+            </div>
+            <p class="first-price-note">* 부가세 별도 · 첫 체험 시 적용</p>
+            <div class="booking-wrap">
+                <button class="btn-booking" onclick="goToBooking()">바로 예약하기 →</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="parts-section">
+    <h3 id="partsSectionTitle">부위 선택</h3>
+    <div class="parts-grid" id="partsGrid"></div>
+</div>
+
+<script>
+const FIREBASE_URL = 'https://roa-clinic-default-rtdb.firebaseio.com/roa';
+const NAVER_BOOKING = 'https://booking.naver.com/booking/13/bizes/1064400953';
+
+const DEFAULT_DATA = {
+    categories: [
+        { id: '얼굴', name: '얼굴', icon: '😊' },
+        { id: '상체', name: '상체', icon: '👕' },
+        { id: '하체', name: '하체', icon: '👖' }
+    ],
+    catImages: {},
+    parts: [
+        { id: 'p1', category: '얼굴', name: '앞턱', desc: '턱 밑에서 자라는 불필요한 털을 제거합니다.', firstPrice: 900, price5: 9900, origPrice5: '', priceUnlimited: 19000, origPriceU: '', x: 50, y: 78, visible: true },
+        { id: 'p2', category: '얼굴', name: '인중', desc: '코와 입술 사이 인중 부위 제모입니다.', firstPrice: 900, price5: 9900, origPrice5: '', priceUnlimited: 19000, origPriceU: '', x: 50, y: 65, visible: true },
+        { id: 'p3', category: '얼굴', name: '눈썹 위', desc: '눈썹 상단 잡털을 정리합니다.', firstPrice: 900, price5: 9900, origPrice5: '', priceUnlimited: 19000, origPriceU: '', x: 34, y: 43, visible: true },
+        { id: 'p4', category: '얼굴', name: '눈썹 아래', desc: '눈썹 하단을 정리합니다.', firstPrice: 900, price5: 9900, origPrice5: '', priceUnlimited: 19000, origPriceU: '', x: 34, y: 50, visible: true },
+        { id: 'p5', category: '얼굴', name: '구렛나루', desc: '귀 앞 구렛나루 부위 제모입니다.', firstPrice: 900, price5: 9900, origPrice5: '', priceUnlimited: 19000, origPriceU: '', x: 18, y: 62, visible: true },
+        { id: 'p6', category: '얼굴', name: '헤어라인', desc: '이마 헤어라인을 정리합니다.', firstPrice: 900, price5: 9900, origPrice5: '', priceUnlimited: 19000, origPriceU: '', x: 50, y: 14, visible: true }
+    ]
+};
+
+let hrData = JSON.parse(JSON.stringify(DEFAULT_DATA));
+let currentCat = '얼굴';
+let selectedPart = null;
+
+function fmt(n) {
+    if (!n && n !== 0) return '문의';
+    return Number(n).toLocaleString('ko-KR') + '원';
+}
+
+async function loadData() {
+    try {
+        const res = await fetch(FIREBASE_URL + '/hair-removal.json?t=' + Date.now());
+        const fb = await res.json();
+        if (fb) {
+            if (fb.categories && fb.categories.length) hrData.categories = fb.categories;
+            if (fb.catImages) hrData.catImages = fb.catImages;
+            if (fb.parts) {
+                const arr = Array.isArray(fb.parts) ? fb.parts : Object.values(fb.parts);
+                if (arr.length) hrData.parts = arr;
+            }
+        }
+    } catch(e) {}
+    render();
+}
+
+function render() {
+    renderCatTabs();
+    renderImage();
+    renderParts();
+}
+
+function renderCatTabs() {
+    const cats = hrData.categories;
+    document.getElementById('catTabs').innerHTML = cats.map(c => `
+        <button class="cat-tab ${c.id === currentCat ? 'active' : ''}" onclick="selectCat('${c.id}')">
+            <span class="cat-icon">${c.icon || ''}</span>${c.name}
+        </button>`).join('');
+}
+
+function selectCat(catId) {
+    currentCat = catId;
+    selectedPart = null;
+    document.getElementById('partInfo').classList.remove('visible');
+    document.getElementById('infoHint').style.display = '';
+    renderCatTabs();
+    renderImage();
+    renderParts();
+}
+
+function renderImage() {
+    const imgUrl = (hrData.catImages || {})[currentCat];
+    const img = document.getElementById('catImage');
+    const placeholder = document.getElementById('imagePlaceholder');
+    if (imgUrl) {
+        img.src = imgUrl;
+        img.alt = currentCat + ' 제모';
+        img.style.display = 'block';
+        placeholder.style.display = 'none';
+    } else {
+        img.style.display = 'none';
+        placeholder.style.display = 'flex';
+    }
+    renderMarkers();
+}
+
+function renderMarkers() {
+    const layer = document.getElementById('markerLayer');
+    const parts = hrData.parts.filter(p => p.category === currentCat && p.visible !== false);
+    layer.innerHTML = parts.map(p => `
+        <div class="part-marker ${selectedPart && selectedPart.id === p.id ? 'active' : ''}"
+            style="left:${p.x}%;top:${p.y}%;"
+            onclick="selectPart('${p.id}')"
+            title="${p.name}">
+            <div class="marker-tooltip">${p.name}</div>
+        </div>`).join('');
+}
+
+function renderParts() {
+    const parts = hrData.parts.filter(p => p.category === currentCat && p.visible !== false);
+    const grid = document.getElementById('partsGrid');
+    grid.innerHTML = parts.map(p => `
+        <button class="part-btn ${selectedPart && selectedPart.id === p.id ? 'active' : ''}"
+            onclick="selectPart('${p.id}')">${p.name}</button>`).join('');
+    const cat = hrData.categories.find(c => c.id === currentCat);
+    document.getElementById('partsSectionTitle').textContent = (cat ? cat.name : currentCat) + ' 부위 선택';
+}
+
+function selectPart(partId) {
+    selectedPart = hrData.parts.find(p => p.id === partId) || null;
+    if (!selectedPart) return;
+    document.getElementById('infoHint').style.display = 'none';
+    const info = document.getElementById('partInfo');
+    info.classList.add('visible');
+    document.getElementById('partName').textContent = selectedPart.name;
+    document.getElementById('partDesc').textContent = selectedPart.desc || '';
+    document.getElementById('salePrice5').textContent = fmt(selectedPart.price5);
+    document.getElementById('origPrice5').textContent = selectedPart.origPrice5 ? fmt(selectedPart.origPrice5) : '';
+    document.getElementById('salePriceU').textContent = fmt(selectedPart.priceUnlimited);
+    document.getElementById('origPriceU').textContent = selectedPart.origPriceU ? fmt(selectedPart.origPriceU) : '';
+    document.getElementById('firstPrice').textContent = fmt(selectedPart.firstPrice);
+    renderMarkers();
+    renderParts();
+    // 모바일: 정보 패널로 스크롤
+    if (window.innerWidth <= 700) {
+        info.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    }
+}
+
+function goToBooking() {
+    const name = selectedPart ? selectedPart.name + ' 제모' : '제모 시술';
+    const price = selectedPart ? selectedPart.firstPrice : 0;
+    sessionStorage.setItem('bookingData', JSON.stringify({
+        programId: 'hair-removal',
+        programName: name,
+        options: selectedPart ? [{ name: name + ' 첫 체험 1회', amount: String(price) }] : [],
+        totalPrice: price
+    }));
+    location.href = 'booking.html';
+}
+
+loadData();
+</script>
+</body>
+</html>
