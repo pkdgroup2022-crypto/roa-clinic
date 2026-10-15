@@ -280,10 +280,10 @@ nav {
                 <div class="price-row-amount">900<span>원~</span></div>
             </div>
         </div>
-        <p class="price-note">* 부가세 별도 · 첫 방문 고객 첫 체험 시 적용 · 자세한 가격은 상담 후 안내</p>
-        <a href="https://booking.naver.com/booking/13/bizes/1064400953" target="_blank" class="btn-booking">
-            📅 네이버 예약하기
-        </a>
+        <p class="price-note" id="priceNote">* 부가세 별도 · 자세한 가격은 상담 후 안내</p>
+        <button class="btn-booking" id="btnBooking" onclick="goToBooking()">
+            📅 바로 예약하기
+        </button>
     </div>
 </section>
 
@@ -328,7 +328,7 @@ nav {
     <h2>레이저 제모, 지금 바로 예약하세요</h2>
     <p>상동역 3번 출구 도보 1분 · 로아한의원 부천</p>
     <div class="cta-btns">
-        <a href="https://booking.naver.com/booking/13/bizes/1064400953" target="_blank" class="btn-naver">📅 네이버 예약</a>
+        <button onclick="goToBooking()" class="btn-naver" style="border:none;cursor:pointer;">📅 바로 예약하기</button>
         <a href="tel:032-000-0000" class="btn-call">📞 전화 상담</a>
     </div>
 </div>
@@ -457,17 +457,52 @@ function renderPage() {
                 ? (Array.isArray(it.options) ? it.options : Object.values(it.options))
                 : [];
             const firstOpt = opts[0];
-            const price = firstOpt ? firstOpt.amount : (it.startPrice || '');
+            const price = firstOpt ? firstOpt.amount : (it.startPrice || it.price || '');
+            const origPrice = firstOpt ? firstOpt.origAmount : '';
             return `<div class="price-row">
                 <div class="price-row-name">${it.name}<br>
-                    <span class="price-row-note">${it.subtitle || ''}</span>
+                    <span class="price-row-note">${it.subtitle || it.desc || ''}</span>
                 </div>
-                <div class="price-row-amount">${price ? fmt(price) : '문의'}<span>원~</span></div>
+                <div style="text-align:right;">
+                    ${origPrice ? `<span style="font-size:0.78rem;color:var(--muted);text-decoration:line-through;display:block;">${fmt(origPrice)}원</span>` : ''}
+                    <div class="price-row-amount">${price ? fmt(price) : '문의'}<span>${price ? '원~' : ''}</span></div>
+                </div>
             </div>`;
         }).join('');
     } else {
         pl.innerHTML = '<div class="price-row"><div class="price-row-name">가격 문의</div><div class="price-row-amount">문의</div></div>';
     }
+
+    // 예약 데이터 저장용 (현재 탭 시술)
+    window._currentHRItems = showItems;
+}
+
+function goToBooking() {
+    const items = window._currentHRItems || [];
+    const catName = currentCat + ' 레이저 제모';
+
+    const options = items.map(it => {
+        const opts = it.options
+            ? (Array.isArray(it.options) ? it.options : Object.values(it.options))
+            : [];
+        const firstOpt = opts[0];
+        return {
+            name: it.name,
+            amount: firstOpt ? String(firstOpt.amount || '') : String(it.startPrice || it.price || '')
+        };
+    }).filter(o => o.name);
+
+    const firstPrice = options.length && options[0].amount ? Number(options[0].amount) : 0;
+
+    try {
+        sessionStorage.setItem('bookingData', JSON.stringify({
+            programId:   'hair-removal-' + currentCat,
+            programName: catName,
+            options:     options,
+            totalPrice:  firstPrice
+        }));
+    } catch(e) {}
+    location.href = 'booking.html';
 }
 
 loadData();
