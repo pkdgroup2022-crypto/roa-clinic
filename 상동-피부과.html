@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="ko">
 <head>
 <meta charset="UTF-8">
@@ -245,51 +245,51 @@ nav {
 const FIREBASE_URL = 'https://roa-clinic-default-rtdb.firebaseio.com/roa';
 
 const EVENT_CARDS = [
-    { id: 'event1', name: '⚡ 타임특가 이벤트',  desc: '한정 수량 타임특가 할인',   img: 'images/popup-event1-mo.png', imgs: ['images/popup-event1-mo.png'], price: '문의' },
-    { id: 'event2', name: '🌿 온다리프팅 이벤트', desc: '온다리프팅 특별 이벤트가',  img: 'images/popup-event2-mo.png', imgs: ['images/popup-event2-mo.png'], price: '문의' },
-    { id: 'event3', name: '🌟 10월의 이벤트',     desc: '10월 한정 특별 이벤트',     img: 'images/popup-event3-mo.png', imgs: ['images/popup-event3-mo.png','images/popup-event4-mo.png'], price: '문의' },
-    { id: 'event4', name: '💉 흉터새살침 이벤트', desc: '흉터 재생 약침 특별 이벤트', img: 'images/popup-event5-mo.png', imgs: ['images/popup-event5-mo.png'], price: '문의' },
+    { id: 'event1', name: '⚡ 타임특가 이벤트',  desc: '한정 수량 타임특가 할인',   img: 'images/popup-event1-mo.jpg', imgs: ['images/popup-event1-mo.jpg'], price: '문의' },
+    { id: 'event2', name: '🌿 온다리프팅 이벤트', desc: '온다리프팅 특별 이벤트가',  img: 'images/popup-event2-mo.jpg', imgs: ['images/popup-event2-mo.jpg'], price: '문의' },
+    { id: 'event3', name: '🌟 10월의 이벤트',     desc: '10월 한정 특별 이벤트',     img: 'images/popup-event3-mo.jpg', imgs: ['images/popup-event3-mo.jpg','images/popup-event4-mo.jpg'], price: '문의' },
+    { id: 'event4', name: '💉 흉터새살침 이벤트', desc: '흉터 재생 약침 특별 이벤트', img: 'images/popup-event5-mo.jpg', imgs: ['images/popup-event5-mo.jpg'], price: '문의' },
 ];
 
 const PROGRAMS = {
     '리프팅/탄력': [
-        { id: 'ulthera',       name: '울쎄라피 프라임', desc: 'HIFU 고강도 집속 초음파 리프팅',        img: 'images/program-ulthera.png',       price: '590,000' },
-        { id: 'onda',          name: '온다리프팅',      desc: '마이크로파 에너지 심부 리프팅',          img: 'images/program-onda.png',          price: '220,000' },
-        { id: 'volnumer',      name: '볼뉴머',          desc: '고주파(RF) 콜라겐 재생 & 피부 탄력',    img: 'images/program-volnumer.png',      price: '320,000' },
-        { id: 'eye-volnumer',  name: '아이볼뉴머',      desc: '눈가 전용 고주파 탄력 개선',            img: 'images/program-eye-volnumer.png',  price: '280,000' },
-        { id: 'onsera',        name: '온쎄라',          desc: '온다+울쎄라 복합 리프팅',               img: 'images/program-onsera.png',        price: '750,000' },
-        { id: 'volsera',       name: '볼쎄라',          desc: '볼뉴머+울쎄라 복합 리프팅',             img: 'images/program-volsera.png',       price: '880,000' },
+        { id: 'ulthera',       name: '울쎄라피 프라임', desc: 'HIFU 고강도 집속 초음파 리프팅',        img: 'images/program-ulthera.jpg',       price: '590,000' },
+        { id: 'onda',          name: '온다리프팅',      desc: '마이크로파 에너지 심부 리프팅',          img: 'images/program-onda.jpg',          price: '220,000' },
+        { id: 'volnumer',      name: '볼뉴머',          desc: '고주파(RF) 콜라겐 재생 & 피부 탄력',    img: 'images/program-volnumer.jpg',      price: '320,000' },
+        { id: 'eye-volnumer',  name: '아이볼뉴머',      desc: '눈가 전용 고주파 탄력 개선',            img: 'images/program-eye-volnumer.jpg',  price: '280,000' },
+        { id: 'onsera',        name: '온쎄라',          desc: '온다+울쎄라 복합 리프팅',               img: 'images/program-onsera.jpg',        price: '750,000' },
+        { id: 'volsera',       name: '볼쎄라',          desc: '볼뉴머+울쎄라 복합 리프팅',             img: 'images/program-volsera.jpg',       price: '880,000' },
     ],
     '실리프팅': [
-        { id: 'oneday-silift', name: '원데이실리프팅',  desc: '수술 없이 당기는 프리미엄 실 리프팅',   img: 'images/program-oneday-silift.png', price: '720,000' },
-        { id: 'nose-silift',   name: '코 실리프팅',     desc: '수술 없이 콧대+코끝을 올리는 실리프팅', img: 'images/program-nose-silift.png',   price: '350,000' },
-        { id: 'nasolabial',    name: '팔자볼륨실',      desc: '팔자주름 개선 볼륨 실 리프팅',          img: 'images/program-nasolabial.png',    price: '340,000' },
+        { id: 'oneday-silift', name: '원데이실리프팅',  desc: '수술 없이 당기는 프리미엄 실 리프팅',   img: 'images/program-oneday-silift.jpg', price: '720,000' },
+        { id: 'nose-silift',   name: '코 실리프팅',     desc: '수술 없이 콧대+코끝을 올리는 실리프팅', img: 'images/program-nose-silift.jpg',   price: '350,000' },
+        { id: 'nasolabial',    name: '팔자볼륨실',      desc: '팔자주름 개선 볼륨 실 리프팅',          img: 'images/program-nasolabial.jpg',    price: '340,000' },
     ],
     '윤곽/지방제거': [
-        { id: 'onda-body',     name: '온다리프팅',      desc: '마이크로파 에너지 바디 슬리밍',         img: 'images/program-onda.png',          price: '220,000' },
-        { id: 'slim-shot',     name: '슬림샷',          desc: '한약 성분 지방 분해 주사',              img: 'images/program-slim-shot.png',     price: '150,000' },
-        { id: 'body-slim',     name: '바디슬림샷',      desc: '바디 부위 집중 지방 분해',              img: 'images/program-body-slim.png',     price: '180,000' },
-        { id: 'slim-nose',     name: '슬림코약침',      desc: '코 부위 슬림 약침 (VAT별도)',            img: 'images/program-slim-nose.png',     price: '80,000' },
+        { id: 'onda-body',     name: '온다리프팅',      desc: '마이크로파 에너지 바디 슬리밍',         img: 'images/program-onda.jpg',          price: '220,000' },
+        { id: 'slim-shot',     name: '슬림샷',          desc: '한약 성분 지방 분해 주사',              img: 'images/program-slim-shot.jpg',     price: '150,000' },
+        { id: 'body-slim',     name: '바디슬림샷',      desc: '바디 부위 집중 지방 분해',              img: 'images/program-body-slim.jpg',     price: '180,000' },
+        { id: 'slim-nose',     name: '슬림코약침',      desc: '코 부위 슬림 약침 (VAT별도)',            img: 'images/program-slim-nose.jpg',     price: '80,000' },
     ],
     '볼륨UP': [
-        { id: 'nasolabial',    name: '팔자볼륨실',      desc: '팔자주름 개선 볼륨 실 리프팅',          img: 'images/program-nasolabial.png',    price: '340,000' },
-        { id: 'volume-shot',   name: '볼륨샷',          desc: '자가 콜라겐으로 만드는 입체 볼륨',      img: 'images/program-volume-shot.png',   price: '450,000' },
+        { id: 'nasolabial',    name: '팔자볼륨실',      desc: '팔자주름 개선 볼륨 실 리프팅',          img: 'images/program-nasolabial.jpg',    price: '340,000' },
+        { id: 'volume-shot',   name: '볼륨샷',          desc: '자가 콜라겐으로 만드는 입체 볼륨',      img: 'images/program-volume-shot.jpg',   price: '450,000' },
     ],
     '스킨부스터': [
-        { id: 'radiusse',      name: '라디쥬',          desc: '피부 수분·탄력 부스터 주사',            img: 'images/program-radiusse.png',      price: '220,000' },
-        { id: 'whitening',     name: '미백약침',        desc: '미백·피부톤 개선 약침',                 img: 'images/program-whitening.png',     price: '150,000' },
-        { id: 'exosome',       name: '엑소좀',          desc: '줄기세포 유래 피부 재생 치료',           img: 'images/program-exosome.png',       price: '220,000' },
+        { id: 'radiusse',      name: '라디쥬',          desc: '피부 수분·탄력 부스터 주사',            img: 'images/program-radiusse.jpg',      price: '220,000' },
+        { id: 'whitening',     name: '미백약침',        desc: '미백·피부톤 개선 약침',                 img: 'images/program-whitening.jpg',     price: '150,000' },
+        { id: 'exosome',       name: '엑소좀',          desc: '줄기세포 유래 피부 재생 치료',           img: 'images/program-exosome.jpg',       price: '220,000' },
     ],
     '여드름/흉터': [
-        { id: 'scar',          name: '흉터새살침',      desc: '흉터 재생 약침 · 1개 체험가',           img: 'images/program-scar.png',          price: '50,000' },
-        { id: 'dermal',        name: '진피재생약침',    desc: '진피층 재생 촉진 약침 · 1cc',            img: 'images/program-dermal.png',        price: '90,000' },
-        { id: 'anti-inflam',   name: '염증약침',        desc: '여드름 염증 진정 약침 · 1부위',         img: 'images/program-anti-inflam.png',   price: '10,000' },
-        { id: 'radiusse',      name: '라디쥬',          desc: '피부 진정·수분 부스터',                 img: 'images/program-radiusse.png',      price: '220,000' },
+        { id: 'scar',          name: '흉터새살침',      desc: '흉터 재생 약침 · 1개 체험가',           img: 'images/program-scar.jpg',          price: '50,000' },
+        { id: 'dermal',        name: '진피재생약침',    desc: '진피층 재생 촉진 약침 · 1cc',            img: 'images/program-dermal.jpg',        price: '90,000' },
+        { id: 'anti-inflam',   name: '염증약침',        desc: '여드름 염증 진정 약침 · 1부위',         img: 'images/program-anti-inflam.jpg',   price: '10,000' },
+        { id: 'radiusse',      name: '라디쥬',          desc: '피부 진정·수분 부스터',                 img: 'images/program-radiusse.jpg',      price: '220,000' },
     ],
     '다이어트': [
-        { id: 'circulation',   name: '순환개선탕',      desc: '한방 순환 개선 다이어트 탕약 (1개월)',   img: 'images/program-circulation.png',   price: '400,000' },
-        { id: 'color-pill',    name: '컬러환',          desc: '한방 체중 관리 환약 · 1개월 24만 / 3개월 50만', img: 'images/program-color-pill.png',    price: '240,000' },
-        { id: 'beauty-pill',   name: '미인환',          desc: '한방 미용 다이어트 환약 (1개월)',       img: 'images/program-beauty-pill.png',   price: '160,000' },
+        { id: 'circulation',   name: '순환개선탕',      desc: '한방 순환 개선 다이어트 탕약 (1개월)',   img: 'images/program-circulation.jpg',   price: '400,000' },
+        { id: 'color-pill',    name: '컬러환',          desc: '한방 체중 관리 환약 · 1개월 24만 / 3개월 50만', img: 'images/program-color-pill.jpg',    price: '240,000' },
+        { id: 'beauty-pill',   name: '미인환',          desc: '한방 미용 다이어트 환약 (1개월)',       img: 'images/program-beauty-pill.jpg',   price: '160,000' },
     ],
 };
 
