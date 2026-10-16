@@ -30,6 +30,7 @@
     <link rel="preload" as="image" href="/images/popup-event1-mo.png">
     <link rel="preload" as="image" href="/images/popup-event2-mo.png">
     <link rel="preload" as="image" href="/images/popup-event3-mo.png">
+    <link rel="preload" as="image" href="/images/popup-event4-mo.png">
     <link rel="preload" as="image" href="/images/popup-event5-mo.png">
 
     <!-- Open Graph -->
@@ -2304,6 +2305,8 @@ function selectEvTab(idx) {
     _evTabIdx = idx;
     _evImgIdx = 0;
     document.querySelectorAll('.ev-popup-tab').forEach((t, i) => t.classList.toggle('active', i === idx));
+    // 다른 탭 이미지 미리 로드
+    POPUP_EVENTS.forEach((ev, i) => { if (i !== idx) ev.imgs.forEach(s => { const im = new Image(); im.src = s; }); });
     renderEvImage();
 }
 
