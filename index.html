@@ -27,11 +27,11 @@
     <link rel="canonical" href="https://shylifting.com/">
 
     <!-- 이벤트 카드 이미지 프리로드 -->
-    <link rel="preload" as="image" href="/images/popup-event1-mo.jpg">
-    <link rel="preload" as="image" href="/images/popup-event2-mo.jpg">
-    <link rel="preload" as="image" href="/images/popup-event3-mo.jpg">
-    <link rel="preload" as="image" href="/images/popup-event4-mo.jpg">
-    <link rel="preload" as="image" href="/images/popup-event5-mo.jpg">
+    <link rel="preload" as="image" href="images/popup-event1-mo.jpg">
+    <link rel="preload" as="image" href="images/popup-event2-mo.jpg">
+    <link rel="preload" as="image" href="images/popup-event3-mo.jpg">
+    <link rel="preload" as="image" href="images/popup-event4-mo.jpg">
+    <link rel="preload" as="image" href="images/popup-event5-mo.jpg">
 
     <!-- Open Graph -->
     <meta property="og:type" content="website">
@@ -2707,9 +2707,22 @@ const SIG_IMAGES = {
 const FIREBASE_URL = 'https://roa-clinic-default-rtdb.firebaseio.com/roa';
 const NAVER_PLACE  = 'https://booking.naver.com/booking/13/bizes/865921/';
 
-// PNG→JPG 변환 (Firebase 이미지 URL 호환)
+// Firebase Storage URL → 로컬 이미지 매핑 + PNG→JPG 변환
+const FB_IMG_MAP = {
+    'programs%2Foneday-silift': 'images/program-oneday-silift.jpg',
+    'programs%2F%EC%97%AC%EC%84%B1-%EC%A0%9C%EB%AA%A8_': 'images/program-jemo-women-face.jpg',
+    'programs%2F%EC%97%AC%EC%84%B1-%EB%B0%94%EB%94%94-%EC%A0%9C%EB%AA%A8_': 'images/program-jemo-women-body.jpg',
+    'programs%2F%EB%82%A8%EC%84%B1-%EC%A0%9C%EB%AA%A8_': 'images/program-jemo-men-face.jpg',
+    'programs%2F%EB%82%A8%EC%84%B1-%EB%B0%94%EB%94%94-%EC%A0%9C%EB%AA%A8_': 'images/program-jemo-men-body.jpg',
+    'programs%2F%ED%8C%94%EC%9E%90%EC%A3%BC%EB%A6%84-%ED%8C%A8%ED%82%A4%EC%A7%80_': 'images/program-nasolabial-pkg.jpg',
+};
 function fixImgUrl(url) {
     if (!url) return url;
+    if (url.includes('firebasestorage.googleapis.com')) {
+        for (const [key, local] of Object.entries(FB_IMG_MAP)) {
+            if (url.includes(key)) return local;
+        }
+    }
     return url.replace(/(images\/(?:program-|popup-event)[^"'\s]+)\.png/g, '$1.jpg');
 }
 const NAVER_MAP    = 'https://map.naver.com/p/entry/place/1064400953?';
