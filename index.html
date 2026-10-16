@@ -2806,13 +2806,14 @@ const DEMO = {
 
 /* ──── 데이터 로드 (Firebase Realtime Database) ──── */
 async function loadData() {
+    // DEMO 데이터 즉시 렌더링 (이미지 바로 표시)
+    render(DEMO);
+
     try {
         const res = await fetch(FIREBASE_URL + '.json?t=' + Date.now());
         const fb = await res.json();
-        if (!fb) { render(DEMO); return; }
+        if (!fb) return;
 
-        // Firebase 데이터 + DEMO 기본값 병합
-        // (Firebase에 없는 항목은 DEMO 값 사용)
         const toArr = v => Array.isArray(v) ? v : (v ? Object.values(v) : []);
 
         const data = {
@@ -2820,12 +2821,11 @@ async function loadData() {
             clinicStats: { ...DEMO.clinicStats,  ...(fb.stats || {}) },
             events:      toArr(fb.events).length  ? toArr(fb.events)  : DEMO.events,
             photos:      toArr(fb.photos).length  ? toArr(fb.photos)  : DEMO.photos,
-            programs:    DEMO.programs  // 시그니처/커스텀리프팅은 항상 DEMO 사용
+            programs:    DEMO.programs
         };
         render(data);
     } catch(e) {
         console.warn('Firebase 로드 실패, DEMO 데이터 사용:', e);
-        render(DEMO);
     }
 }
 
@@ -2991,7 +2991,7 @@ function renderEvents(list) {
     el('eventsGrid').innerHTML = '<div class="ev-card-grid">' + cards.map(ev => `
         <a class="ev-card-item" href="events.html">
             <div class="ev-card-img">
-                <img src="${ev.img}" alt="${ev.name}" loading="lazy">
+                <img src="${ev.img}" alt="${ev.name}" loading="eager">
             </div>
             <div class="ev-card-body">
                 <div class="ev-card-name">${ev.name}</div>
