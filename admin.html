@@ -25,14 +25,35 @@
         const db      = firebase.database();
         const storage = firebase.storage();
 
-        // Firebase 쓰기 (인증 필요)
+        // 섹션별 로드 시각 기록 (충돌 감지용)
+        const _loadedAt = {};
+
+        // Firebase 쓰기 (인증 필요) + 충돌 감지
         async function fbSet(path, data) {
             const user = auth.currentUser;
             if (!user) throw new Error('로그인이 필요합니다.');
+
+            // 충돌 감지: 내가 로드한 이후 다른 사람이 저장했는지 확인
+            const metaSnap = await db.ref('roa/_savedAt' + path).get();
+            const remoteSavedAt = metaSnap.exists() ? metaSnap.val() : 0;
+            const myLoadedAt = _loadedAt[path] || 0;
+
+            if (remoteSavedAt > myLoadedAt) {
+                const go = confirm(
+                    '⚠️ 저장 충돌\n\n다른 사용자가 방금 이 항목을 저장했습니다.\n\n[확인] 내 내용으로 덮어쓰기\n[취소] 저장 취소 후 새로고침 권장'
+                );
+                if (!go) throw new Error('저장 취소됨');
+            }
+
             await db.ref('roa' + path).set(data);
+            // 저장 시각 기록
+            await db.ref('roa/_savedAt' + path).set(Date.now());
+            _loadedAt[path] = Date.now();
         }
         async function fbGet(path) {
             const snap = await db.ref('roa' + path).get();
+            // 로드 시각 기록
+            _loadedAt[path] = Date.now();
             return snap.exists() ? snap.val() : null;
         }
     </script>
