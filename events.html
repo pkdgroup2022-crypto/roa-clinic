@@ -393,7 +393,7 @@ function render() {
             EVENT_CARDS.map(it => `
                 <a class="program-card" href="program.html?id=${it.id}">
                     <div class="card-img">
-                        <img src="${it.img}" alt="${it.name} | 로아한의원 부천">
+                        <img src="${it.img}" alt="${it.name} | 로아한의원 부천" loading="eager">
                     </div>
                     <div class="card-body">
                         <div class="card-name">${it.name}</div>
@@ -463,7 +463,7 @@ function render() {
             }" >
                 <div class="card-img">
                     ${it.img
-                        ? `<img src="${it.img}" alt="${it.name} | 로아한의원 부천">`
+                        ? `<img src="${it.img}" alt="${it.name} | 로아한의원 부천" loading="eager">`
                         : `<div class="card-img-placeholder"><span>📷</span><p>이미지 준비 중</p></div>`
                     }
                 </div>
@@ -479,6 +479,9 @@ function render() {
 }
 
 async function loadData() {
+    // DEMO 데이터 즉시 렌더링 (이미지 바로 표시)
+    render();
+
     try {
         const [evRes, pgRes] = await Promise.all([
             fetch(FIREBASE_URL + '/events.json', { signal: AbortSignal.timeout(6000) }),
@@ -486,10 +489,10 @@ async function loadData() {
         ]);
         const evData = await evRes.json();
         const pgData = await pgRes.json();
+        let updated = false;
         if (evData) {
             const arr = Array.isArray(evData) ? evData : Object.values(evData);
             eventsData = arr;
-            // 이미지·소제목 있는 항목을 이달의 이벤트 카드로 교체
             const cards = arr.filter(e => e.표시 !== '아니오' && e.이벤트명 && (e.imgs?.length || e.img));
             if (cards.length) {
                 EVENT_CARDS.length = 0;
@@ -505,11 +508,11 @@ async function loadData() {
                         VAT: e.VAT || '별도',
                         price: e.이벤트가격 || '문의'
                     });
-                    // 첫 번째 이미지 미리 로드
                     if (imgs[0]) { const im = new Image(); im.src = imgs[0]; }
                 });
+                updated = true;
             }
-        } else { eventsData = DEMO_EVENTS; }
+        }
         if (pgData) {
             const pgArr = Array.isArray(pgData) ? pgData : Object.values(pgData);
             const rebuilt = {};
@@ -518,28 +521,22 @@ async function loadData() {
                     id: i.id, name: i.name, desc: i.desc, img: i.img, price: i.price ? String(i.price).replace(/[^0-9]/g,'') : ''
                 }));
             });
+            // 제모 카테고리 처리 (이중 fetch 제거 - pgData에서 바로 추출)
+            const hairCat = pgArr.find(c => c.cat === '제모');
+            if (hairCat && hairCat.items) {
+                const items = Array.isArray(hairCat.items) ? hairCat.items : Object.values(hairCat.items);
+                rebuilt['제모'] = items.filter(i => !i.hidden).map(i => ({
+                    id: i.id, name: i.name, desc: i.desc || '', img: i.img || '', price: i.price || ''
+                }));
+            }
             if (Object.keys(rebuilt).length) {
                 PROGRAMS = rebuilt;
                 renderCatTabs(pgArr);
+                updated = true;
             }
         }
-        // 제모 카테고리: programs의 제모 카테고리에서 로드
-        try {
-            const pgRes = await fetch(FIREBASE_URL + '/programs.json', { signal: AbortSignal.timeout(6000) });
-            const pgRaw = await pgRes.json();
-            if (pgRaw) {
-                const pgArr2 = Array.isArray(pgRaw) ? pgRaw : Object.values(pgRaw);
-                const hairCat = pgArr2.find(c => c.cat === '제모');
-                if (hairCat && hairCat.items) {
-                    const items = Array.isArray(hairCat.items) ? hairCat.items : Object.values(hairCat.items);
-                    PROGRAMS['제모'] = items.filter(i => !i.hidden).map(i => ({
-                        id: i.id, name: i.name, desc: i.desc || '', img: i.img || '', price: i.price || ''
-                    }));
-                }
-            }
-        } catch(e) {}
-    } catch { eventsData = DEMO_EVENTS; }
-    render();
+        if (updated) render();
+    } catch(e) {}
 }
 
 function toggleMenu() { document.getElementById('mobileMenu').classList.toggle('open'); }
@@ -570,6 +567,11 @@ function closeMenu()   { document.getElementById('mobileMenu').classList.remove(
     }
     setTabTitle(currentCat);
 })();
+
+// 이미지 프리로드 - 페이지 로드 시 모든 이벤트 카드 이미지 미리 캐싱
+EVENT_CARDS.forEach(it => {
+    it.imgs && it.imgs.forEach(src => { const im = new Image(); im.src = src; });
+});
 
 loadData();
 </script>
