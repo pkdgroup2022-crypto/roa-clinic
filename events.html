@@ -261,6 +261,12 @@ nav {
 <script>
 const FIREBASE_URL = 'https://roa-clinic-default-rtdb.firebaseio.com/roa';
 
+// PNG→JPG 변환 (Firebase 이미지 URL 호환)
+function fixImgUrl(url) {
+    if (!url) return url;
+    return url.replace(/(images\/(?:program-|popup-event)[^"'\s]+)\.png/g, '$1.jpg');
+}
+
 const EVENT_CARDS = [
     { id: 'event1', name: '⚡ 타임특가 이벤트',  desc: '한정 수량 타임특가 할인',   img: 'images/popup-event1-mo.jpg', imgs: ['images/popup-event1-mo.jpg'], price: '문의' },
     { id: 'event2', name: '🌿 온다리프팅 이벤트', desc: '온다리프팅 특별 이벤트가',  img: 'images/popup-event2-mo.jpg', imgs: ['images/popup-event2-mo.jpg'], price: '문의' },
@@ -509,7 +515,7 @@ async function loadData() {
             if (cards.length) {
                 EVENT_CARDS.length = 0;
                 cards.forEach((e, idx) => {
-                    const imgs = e.imgs && e.imgs.length ? e.imgs : (e.img ? [e.img] : []);
+                    const imgs = (e.imgs && e.imgs.length ? e.imgs : (e.img ? [e.img] : [])).map(fixImgUrl);
                     EVENT_CARDS.push({
                         id: e.id || ('ev' + idx),
                         name: e.이벤트명,
@@ -530,7 +536,7 @@ async function loadData() {
             const rebuilt = {};
             pgArr.filter(c => !c.hidden).forEach(c => {
                 rebuilt[c.cat] = (c.items || []).filter(i => !i.hidden).map(i => ({
-                    id: i.id, name: i.name, desc: i.desc, img: i.img, price: i.price ? String(i.price).replace(/[^0-9]/g,'') : ''
+                    id: i.id, name: i.name, desc: i.desc, img: fixImgUrl(i.img), price: i.price ? String(i.price).replace(/[^0-9]/g,'') : ''
                 }));
             });
             // 제모 카테고리 처리 (이중 fetch 제거 - pgData에서 바로 추출)
@@ -538,7 +544,7 @@ async function loadData() {
             if (hairCat && hairCat.items) {
                 const items = Array.isArray(hairCat.items) ? hairCat.items : Object.values(hairCat.items);
                 rebuilt['제모'] = items.filter(i => !i.hidden).map(i => ({
-                    id: i.id, name: i.name, desc: i.desc || '', img: i.img || '', price: i.price || ''
+                    id: i.id, name: i.name, desc: i.desc || '', img: fixImgUrl(i.img) || '', price: i.price || ''
                 }));
             }
             if (Object.keys(rebuilt).length) {

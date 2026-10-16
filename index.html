@@ -2706,6 +2706,12 @@ const SIG_IMAGES = {
 ================================================================ */
 const FIREBASE_URL = 'https://roa-clinic-default-rtdb.firebaseio.com/roa';
 const NAVER_PLACE  = 'https://booking.naver.com/booking/13/bizes/865921/';
+
+// PNG→JPG 변환 (Firebase 이미지 URL 호환)
+function fixImgUrl(url) {
+    if (!url) return url;
+    return url.replace(/(images\/(?:program-|popup-event)[^"'\s]+)\.png/g, '$1.jpg');
+}
 const NAVER_MAP    = 'https://map.naver.com/p/entry/place/1064400953?';
 
 /* ──── 데모 데이터 ──── */
@@ -2996,7 +3002,7 @@ function renderEvents(list) {
         return;
     }
     const withImg = visible.filter(ev => ev.img);
-    const cards = withImg.length ? withImg.map(ev => ({ name: ev['이벤트명'] || ev.name || '', desc: ev['소제목'] || '', img: ev.img })) : DEFAULT_EVENT_CARDS;
+    const cards = withImg.length ? withImg.map(ev => ({ name: ev['이벤트명'] || ev.name || '', desc: ev['소제목'] || '', img: fixImgUrl(ev.img) })) : DEFAULT_EVENT_CARDS;
     el('eventsGrid').innerHTML = '<div class="ev-card-grid">' + cards.map(ev => `
         <a class="ev-card-item" href="events.html">
             <div class="ev-card-img">
