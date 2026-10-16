@@ -1553,7 +1553,12 @@ function doLogin() {
     const errEl = document.getElementById('loginError');
     errEl.style.display = 'none';
     auth.signInWithEmailAndPassword(email, pw)
-        .catch(() => { errEl.style.display = 'block'; });
+        .catch((e) => {
+            errEl.style.display = 'block';
+            errEl.textContent = e.code === 'auth/user-not-found' || e.code === 'auth/wrong-password' || e.code === 'auth/invalid-credential'
+                ? '이메일 또는 비밀번호가 틀렸습니다.'
+                : ('로그인 오류: ' + (e.code || e.message));
+        });
 }
 function doLogout() {
     auth.signOut();
