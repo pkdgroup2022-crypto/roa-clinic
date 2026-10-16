@@ -444,7 +444,23 @@ function render() {
     }
     area.innerHTML = '<div class="program-grid">' +
         items.map(it => `
-            <a class="program-card" href="program.html?id=${it.id}" >
+            <a class="program-card" href="${
+                it.id === 'ulthera'        ? '부천-울쎄라.html' :
+                it.id === 'onda'           ? '부천-온다리프팅.html' :
+                it.id === 'onda-body'      ? '부천-온다리프팅.html' :
+                it.id === 'volnumer'       ? '부천-볼뉴머.html' :
+                it.id === 'eye-volnumer'   ? '부천-아이볼뉴머.html' :
+                it.id === 'onsera'         ? '부천-온쎄라.html' :
+                it.id === 'volsera'        ? '부천-볼쎄라.html' :
+                it.id === 'oneday-silift'  ? '부천-실리프팅.html' :
+                it.id === 'nose-silift'    ? '부천-코실리프팅.html' :
+                it.id === 'nasolabial'     ? '부천-팔자주름.html' :
+                it.id === 'nasolabial-pkg' ? '부천-팔자주름.html' :
+                it.id === 'volume-shot'    ? '부천-볼륨샷.html' :
+                it.id === 'slim-shot'      ? '부천-슬림샷.html' :
+                it.id === 'body-slim'      ? '부천-바디슬림샷.html' :
+                'program.html?id=' + it.id
+            }" >
                 <div class="card-img">
                     ${it.img
                         ? `<img src="${it.img}" alt="${it.name} | 로아한의원 부천">`
