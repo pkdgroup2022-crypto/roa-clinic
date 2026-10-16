@@ -3299,7 +3299,13 @@ function buildCarousel(list) {
 function loadLocalPhotos() {
     try {
         const saved = localStorage.getItem('roa_photos');
-        return saved ? JSON.parse(saved) : [];
+        if (!saved) return [];
+        const list = JSON.parse(saved);
+        // data: URL(base64) 포함된 항목 제외 - 메인 스레드 블로킹 방지
+        return list.filter(p =>
+            !String(p.전사진URL || '').startsWith('data:') &&
+            !String(p.후사진URL || '').startsWith('data:')
+        );
     } catch(e) { return []; }
 }
 

@@ -1180,7 +1180,7 @@ async function savePhotos() {
             후사진URL: p.후사진URL?.startsWith('data:') ? '' : (p.후사진URL || '')
         }));
     try {
-        saveJSON('roa_photos', photosData); // 로컬엔 원본 유지
+        saveJSON('roa_photos', toSave); // data: URL 제거 후 저장
         await fbSet('/photos', toSave);
         showToast('✓ 사진 저장됐습니다! (직접 업로드 사진은 URL 사용 권장)');
     } catch(e) {
