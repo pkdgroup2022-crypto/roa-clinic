@@ -493,6 +493,25 @@ const REVIEW_KEYWORDS = {
 
 const FIREBASE_URL = 'https://roa-clinic-default-rtdb.firebaseio.com/roa';
 
+// Firebase Storage URL → 로컬 이미지 매핑 + PNG→JPG 변환
+const FB_IMG_MAP = {
+    'programs%2Foneday-silift': 'images/program-oneday-silift.jpg',
+    'programs%2F%EC%97%AC%EC%84%B1-%EC%A0%9C%EB%AA%A8_': 'images/program-jemo-women-face.jpg',
+    'programs%2F%EC%97%AC%EC%84%B1-%EB%B0%94%EB%94%94-%EC%A0%9C%EB%AA%A8_': 'images/program-jemo-women-body.jpg',
+    'programs%2F%EB%82%A8%EC%84%B1-%EC%A0%9C%EB%AA%A8_': 'images/program-jemo-men-face.jpg',
+    'programs%2F%EB%82%A8%EC%84%B1-%EB%B0%94%EB%94%94-%EC%A0%9C%EB%AA%A8_': 'images/program-jemo-men-body.jpg',
+    'programs%2F%ED%8C%94%EC%9E%90%EC%A3%BC%EB%A6%84-%ED%8C%A8%ED%82%A4%EC%A7%80_': 'images/program-nasolabial-pkg.jpg',
+};
+function fixImgUrl(url) {
+    if (!url) return url;
+    if (url.includes('firebasestorage.googleapis.com')) {
+        for (const [key, local] of Object.entries(FB_IMG_MAP)) {
+            if (url.includes(key)) return local;
+        }
+    }
+    return url.replace(/(images\/(?:program-|popup-event)[^"'\s]+)\.png/g, '$1.jpg');
+}
+
 function toDirectUrl(url) {
     const m = url && url.match(/\/file\/d\/([^/]+)/);
     return m ? `https://drive.google.com/thumbnail?id=${m[1]}&sz=w1000` : url;
@@ -2291,7 +2310,7 @@ async function render() {
                                 name: found.name || '',
                                 titleSeo: `부천 ${found.name || ''} | 로아한의원 부천`,
                                 desc: found.desc || '',
-                                img: found.img || '',
+                                img: fixImgUrl(found.img) || '',
                                 prices: [],
                                 pointsTitle: `${found.name || ''} 안내`,
                                 points: [],
@@ -2302,7 +2321,7 @@ async function render() {
                             };
                         }
                     }
-                    if (found.img)  p.img  = found.img;
+                    if (found.img)  p.img  = fixImgUrl(found.img);
                     if (found.name) p.name = found.name;
                     if (found.desc) p.desc = found.desc;
                     if (found.options && found.options.length) {
