@@ -15,8 +15,9 @@
 <meta property="og:type" content="website">
 <meta property="og:url" id="ogUrl" content="https://shylifting.com/부천-온쎄라">
 <meta name="keywords" id="pageKeywords" content="부천 온쎄라, 상동 온쎄라, 온쎄라 부천, 부천 복합리프팅, 온다 울쎄라 부천, 상동역 온쎄라, 부천시청역 온쎄라, 부천 피부과 복합리프팅">
-<script type="application/ld+json" id="ldJson"></script>
 <link rel="canonical" href="https://shylifting.com/부천-온쎄라">
+<script type="application/ld+json" id="ldJson"></script>
+<script type="text/javascript" src="https://dapi.kakao.com/v2/maps/sdk.js?appkey=c15a188b114a223c1757bb304d13d82e"></script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&family=Noto+Serif+KR:wght@400;600&display=swap" rel="stylesheet">
 <style>
@@ -99,29 +100,51 @@ nav {
 .hero-desc { color: var(--mid); font-size: 0.93rem; line-height: 1.7; margin-bottom: 1.8rem; }
 
 /* 가격 리스트 */
-.price-list { display: flex; flex-direction: column; gap: 0; margin-bottom: 1.8rem; }
+.price-list { display: flex; flex-direction: column; gap: 0; margin-bottom: 0.6rem; }
 .price-row {
     display: flex; align-items: center; justify-content: space-between;
-    padding: 1rem 0; border-bottom: 1px solid var(--border);
-    gap: 1rem;
+    padding: 0.9rem 0.7rem; border-bottom: 1px solid var(--border);
+    gap: 1rem; cursor: pointer; transition: background 0.15s; border-radius: 4px;
+    user-select: none;
 }
-.price-row:first-child { border-top: 2px solid var(--dark); }
+.price-row:first-of-type { border-top: 2px solid var(--dark); border-radius: 0; }
+.price-row:hover { background: var(--red-light); }
+.price-row.selected { background: var(--red-light); }
+.price-row-check {
+    width: 20px; height: 20px; border: 2px solid var(--border); border-radius: 4px;
+    flex-shrink: 0; display: flex; align-items: center; justify-content: center;
+    transition: all 0.15s;
+}
+.price-row.selected .price-row-check { background: var(--red); border-color: var(--red); }
+.price-row.selected .price-row-check::after { content: '✓'; color: #fff; font-size: 0.75rem; font-weight: 700; }
 .price-row-name { font-size: 0.95rem; color: var(--dark); font-weight: 500; flex: 1; }
 .price-row-note { font-size: 0.78rem; color: var(--muted); font-weight: 400; }
 .price-row-amount {
     font-family: 'Noto Serif KR', serif; font-size: 1.25rem;
-    font-weight: 700; color: var(--red); flex-shrink: 0;
+    font-weight: 700; color: var(--red); flex-shrink: 0; text-align: right;
 }
 .price-row-amount span { font-size: 0.8rem; color: var(--mid); font-family: 'Noto Sans KR'; font-weight: 400; }
-.price-note { font-size: 0.75rem; color: var(--muted); margin-top: -0.5rem; margin-bottom: 1.5rem; }
+.price-total-box {
+    display: flex; justify-content: space-between; align-items: baseline;
+    padding: 0.9rem 0.7rem; background: #fdf2f3; border-radius: 0 0 6px 6px;
+    margin-bottom: 0.4rem;
+}
+.price-total-label { font-size: 0.88rem; font-weight: 600; color: var(--dark); }
+.price-total-amount { font-family: 'Noto Serif KR', serif; font-size: 1.5rem; font-weight: 700; color: var(--red); }
+.price-note { font-size: 0.72rem; color: var(--muted); margin-bottom: 1.2rem; }
 
 .btn-booking {
-    display: flex; align-items: center; justify-content: center; gap: 0.5rem;
-    background: #03C75A; color: #fff; text-decoration: none;
-    padding: 1rem 2rem; border-radius: 8px; font-size: 1rem; font-weight: 700;
-    transition: opacity 0.2s; width: 100%;
+    display: flex; align-items: center; justify-content: center; gap: 0.6rem;
+    background: linear-gradient(135deg, #e8536a, #c94070);
+    color: #fff; border: none; text-decoration: none;
+    padding: 1.1rem 2rem; border-radius: 6px; font-size: 1rem; font-weight: 700;
+    letter-spacing: 0.06em; transition: all 0.25s; width: 100%;
+    font-family: 'Noto Serif KR', serif; cursor: pointer;
 }
-.btn-booking:hover { opacity: 0.88; }
+.btn-booking:hover {
+    background: linear-gradient(135deg, #d4405a, #b02f5e);
+    opacity: 1;
+}
 
 /* ─── 효과/대상 섹션 ─── */
 .section { max-width: 860px; margin: 0 auto; padding: 4rem 2rem; }
@@ -163,12 +186,24 @@ nav {
 .step-desc { font-size: 0.82rem; color: var(--mid); line-height: 1.6; }
 
 /* ─── 예약 CTA ─── */
+.location-section { background: #f9f7f4; padding: 3.5rem 2rem; }
+.location-inner { max-width: 860px; margin: 0 auto; }
+.location-map { width: 100%; height: 260px; border-radius: 8px; overflow: hidden; margin-bottom: 1rem; }
+.location-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; }
+.loc-card { background: #fff; border: 1px solid #e8e0d6; border-radius: 8px; padding: 1.2rem 1.4rem; }
+.loc-label { font-size: 0.72rem; letter-spacing: 0.1em; color: var(--gold); font-weight: 700; margin-bottom: 0.5rem; }
+.loc-main { font-family: 'Noto Serif KR', serif; font-size: 1rem; font-weight: 600; color: #111; margin-bottom: 0.4rem; line-height: 1.6; }
+.loc-sub { font-size: 0.78rem; color: #888; line-height: 1.6; margin-bottom: 0.8rem; }
+.loc-link { font-size: 0.8rem; color: var(--gold); text-decoration: none; font-weight: 600; }
+@media (max-width: 640px) { .location-grid { grid-template-columns: 1fr; } .location-map { height: 200px; } }
+
 .cta-band {
-    background: var(--dark); color: #fff;
-    text-align: center; padding: 4rem 2rem;
+    background: #fff; color: #111;
+    text-align: center; padding: 3rem 2rem;
+    border-top: 1px solid #eee; border-bottom: 1px solid #eee;
 }
-.cta-band h2 { font-family: 'Noto Serif KR', serif; font-size: 1.6rem; margin-bottom: 0.5rem; }
-.cta-band p { color: #aaa; font-size: 0.9rem; margin-bottom: 2rem; }
+.cta-band h2 { font-family: 'Noto Serif KR', serif; font-size: 1.4rem; margin-bottom: 0.4rem; color: #111; }
+.cta-band p { color: #888; font-size: 0.85rem; margin-bottom: 1.5rem; }
 .cta-btns { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; }
 .btn-naver {
     display: inline-flex; align-items: center; gap: 0.5rem;
@@ -305,14 +340,26 @@ nav {
         <button class="subnav-btn" data-cat="스킨부스터" onclick="goToEvents('스킨부스터')">스킨부스터</button>
         <button class="subnav-btn" data-cat="여드름/흉터" onclick="goToEvents('여드름/흉터')">여드름/흉터</button>
         <button class="subnav-btn" data-cat="다이어트" onclick="goToEvents('다이어트')">다이어트</button>
+        <button class="subnav-btn" data-cat="제모" onclick="location.href='hair-removal.html'">제모</button>
     </div>
 </div>
 
 <!-- 이벤트 전용 레이아웃 -->
 <div id="eventLayout">
     <div class="event-images" id="eventImages"></div>
-    <div class="event-cta">
-        <a href="https://booking.naver.com/booking/13/bizes/1064400953" target="_blank" class="btn-naver">📅 네이버 예약하기</a>
+    <div id="eventPriceBox" style="display:none;max-width:860px;margin:0 auto;padding:1.5rem 2rem 0;">
+        <div style="background:#fff;border:1px solid #e8e0d8;border-radius:10px;padding:1.4rem 1.6rem;">
+            <h3 style="font-family:'Noto Serif KR',serif;font-size:1rem;font-weight:700;margin:0 0 1rem;color:#222;">시술 선택</h3>
+            <div class="price-list" id="evItemList"></div>
+            <div class="price-total-box" id="evTotalBox" style="display:none;">
+                <span class="price-total-label">예상금액</span>
+                <span class="price-total-amount" id="evTotalAmt">0원</span>
+            </div>
+            <p class="price-note" id="evVatNote" style="margin-top:0.3rem;">* VAT 별도</p>
+        </div>
+    </div>
+    <div class="event-cta" style="margin:2rem 2rem 0;">
+        <button class="btn-booking" onclick="goToBooking()" style="font-size:1.15rem;padding:1.3rem 2rem;">바로 예약하기 →</button>
     </div>
     <div class="event-seo" id="eventSeo"></div>
 </div>
@@ -330,10 +377,12 @@ nav {
     <div class="hero-info">
         <p class="hero-desc" id="heroDesc"></p>
         <div class="price-list" id="priceList"></div>
-        <p class="price-note" id="heroPriceNote"></p>
-        <a href="https://booking.naver.com/booking/13/bizes/1064400953" target="_blank" class="btn-booking">
-            📅 네이버 예약하기
-        </a>
+        <div class="price-total-box" id="priceTotalBox" style="display:none;">
+            <span class="price-total-label">예상금액</span>
+            <span class="price-total-amount" id="priceTotalAmt">0원</span>
+        </div>
+        <p class="price-note" id="heroPriceNote">* VAT 별도 · 정확한 가격은 상담 후 확인</p>
+        <button class="btn-booking" id="btnBooking" onclick="goToBooking()">바로 예약하기 →</button>
     </div>
 </section>
 
@@ -371,51 +420,57 @@ nav {
     <div class="steps" id="stepsList"></div>
 </div>
 
+<!-- 오시는 길 & 진료시간 -->
+<div class="location-section">
+    <div class="location-inner">
+        <div style="text-align:center;margin-bottom:2rem;">
+            <div style="font-size:0.78rem;letter-spacing:0.12em;color:var(--gold);margin-bottom:0.4rem;">Location &amp; Hours</div>
+            <h2 style="font-family:'Noto Serif KR',serif;font-size:1.3rem;font-weight:600;color:#111;">오시는 길 &amp; 진료시간</h2>
+        </div>
+        <div class="location-map" id="kakaoMapProgram"></div>
+        <div style="margin-bottom:1.5rem;">
+            <a href="https://map.kakao.com/?itemId=1810541223" target="_blank" rel="noopener"
+               style="display:inline-flex;align-items:center;gap:0.5rem;background:#FAE100;color:#3A1D1D;padding:0.6rem 1.2rem;border-radius:6px;font-size:0.85rem;font-weight:700;text-decoration:none;">
+                🗺️ 카카오맵으로 보기
+            </a>
+        </div>
+        <div class="location-grid">
+            <div class="loc-card">
+                <div class="loc-label">주소</div>
+                <div class="loc-main">경기 부천시 원미구<br>상동로 83 8층</div>
+                <div class="loc-sub">지하철 7호선 상동역 도보 3분<br>부천시청역·신중동역·부천역 인근</div>
+                <a href="https://map.naver.com/p/entry/place/1064400953?" class="loc-link" target="_blank" rel="noopener">네이버 지도 →</a>
+            </div>
+            <div class="loc-card">
+                <div class="loc-label">전화 예약</div>
+                <div class="loc-main">032-324-1118</div>
+                <div class="loc-sub">전화 또는 온라인 예약으로<br>간편하게 예약하세요</div>
+                <a href="tel:032-324-1118" class="loc-link">전화하기 →</a>
+            </div>
+            <div class="loc-card">
+                <div class="loc-label">진료시간</div>
+                <div style="font-size:0.85rem;line-height:2;color:#333;">
+                    <div><span style="color:#555;min-width:90px;display:inline-block;">월·화·목·금</span> 11:00 — 21:00</div>
+                    <div style="font-size:0.75rem;color:#999;margin-bottom:0.3rem;padding-left:90px;">점심 13:00 — 14:00</div>
+                    <div><span style="color:#555;min-width:90px;display:inline-block;">토·공휴일</span> 10:00 — 15:00</div>
+                    <div><span style="color:#c00;min-width:90px;display:inline-block;">수·일요일</span> 휴진</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
 <!-- CTA -->
 <div class="cta-band">
     <h2 id="ctaTitle"></h2>
     <p>상동역 3번 출구 도보 1분 · 로아한의원</p>
     <div class="cta-btns">
-        <a href="https://booking.naver.com/booking/13/bizes/1064400953" target="_blank" class="btn-naver">📅 네이버 예약</a>
-        <a href="tel:032-000-0000" class="btn-call">📞 전화 상담</a>
+        <button class="btn-booking" onclick="goToBooking()" style="font-size:1.1rem;padding:1.2rem 3rem;width:auto;min-width:260px;max-width:360px;">바로 예약하기 →</button>
     </div>
 </div>
 
 <!-- SEO 줄글 -->
-<div class="seo-section" id="seoSection"><h2>부천 온쎄라란?</h2>
-<p>온쎄라는 <strong>온다리프팅(마이크로파) + 울쎄라피프라임(HIFU)</strong>을 결합한 복합 리프팅 시술입니다. 온다로 지방층을 공략하고 울쎄라로 SMAS 근막층을 리프팅해 <strong>전층 동시 개선</strong>이 가능합니다. 로아한의원 부천 <strong>상동역 3번 출구 도보 1분</strong>에서 받으실 수 있습니다.</p>
-<p><strong>부천 온쎄라</strong>는 온다(지방·윤곽)와 울쎄라(근막·탄력)의 장점을 한 번에 가져가는 복합 프로그램입니다. 신중동역·부천시청역·부평역 인근 분들도 편리하게 방문하실 수 있습니다.</p>
-
-<h2>자주 묻는 질문 (FAQ)</h2>
-<h3>Q. 부천 온쎄라 가격이 얼마인가요?</h3>
-<p>온다 6만줄 + 울쎄라피프라임 300샷 복합 시술 <strong>850,000원(VAT 별도)</strong>입니다.</p>
-
-<h3>Q. 온다와 울쎄라를 따로 받는 것과 차이가 있나요?</h3>
-<p>같은 날 두 시술을 연속으로 진행하면 각 에너지가 시너지를 일으켜 단독 시술 대비 더 뚜렷한 효과를 얻을 수 있습니다. 또한 개별 시술보다 가격이 합리적입니다.</p>
-
-<h3>Q. 온쎄라 시술 시간이 얼마나 걸리나요?</h3>
-<p>온다 + 울쎄라 순서로 진행하며 총 <strong>60~90분</strong> 내외 소요됩니다. 피부 상태와 시술 범위에 따라 달라질 수 있습니다.</p>
-
-<h3>Q. 온쎄라 효과가 얼마나 지속되나요?</h3>
-<p>개인 피부 상태에 따라 다르지만 보통 <strong>6개월~1년</strong> 지속됩니다. 온다와 울쎄라의 시너지로 단독 시술보다 더 오래 효과가 유지되는 편입니다.</p>
-
-<h3>Q. 온쎄라 시술 후 붓기가 심한가요?</h3>
-<p>온다와 울쎄라 각각의 반응이 나타날 수 있습니다. 약간의 붓기·붉음·열감이 있을 수 있으나 보통 <strong>2~3일</strong> 내에 가라앉습니다.</p>
-
-<h3>Q. 온쎄라가 볼쎄라(볼뉴머+울쎄라)와 다른 점은 뭔가요?</h3>
-<p>온쎄라는 <strong>온다(마이크로파)+울쎄라(HIFU)</strong>의 조합으로 지방층 공략에 강점이 있고, 볼쎄라는 <strong>볼뉴머(RF)+울쎄라(HIFU)</strong>의 조합으로 진피 탄력·리프팅을 동시에 개선합니다. 볼살이 많거나 윤곽 개선이 목표라면 온쎄라, 처짐과 탄력 개선이 목표라면 볼쎄라를 권장합니다.</p>
-
-<h3>Q. 처음 리프팅 시술을 받는데 온쎄라가 적합한가요?</h3>
-<p>복합 시술이라 처음에는 부담스러울 수 있습니다. 상담을 통해 피부 상태를 확인한 후, 단독 시술로 시작할지 복합 시술로 바로 진행할지 결정하는 것을 권장합니다.</p>
-
-<h3>Q. 온쎄라 울쎄라 샷 수는 어떻게 정하나요?</h3>
-<p>울쎄라 300샷은 얼굴 전체 기본 범위에 해당합니다. 시술 부위나 강도에 따라 샷 수 조정이 가능하며 상담 시 결정합니다.</p>
-
-<h3>Q. 당일 예약이 가능한가요?</h3>
-<p>당일 예약도 가능합니다. <strong>상동역 3번 출구 도보 1분</strong>에서 네이버 예약 또는 전화로 빈 시간을 확인 후 방문해 주세요.</p>
-
-<h3>Q. 부천시청역·신중동역 근처에서도 방문할 수 있나요?</h3>
-<p><strong>상동역 3번 출구 도보 1분</strong> 거리에 위치해 부천시청역·신중동역·부평역 어디서든 10분 내외로 오실 수 있습니다.</p></div>
+<div class="seo-section" id="seoSection"></div>
 
 <script>
 const NAVER_BOOKING = 'https://booking.naver.com/booking/13/bizes/1064400953';
@@ -423,15 +478,17 @@ const NAVER_BOOKING = 'https://booking.naver.com/booking/13/bizes/1064400953';
 /* 각 시술 ID → Firebase 사진의 시술명 필터 키워드 (복수 가능, OR 조건) */
 /* 시술 ID → Firebase 시술명 필터 키워드 */
 const REVIEW_KEYWORDS = {
-    ulthera:         ['울쎄라피 프라임'],
-    onda:            ['온다 리프팅'],
-    onsera:          ['온다 리프팅', '울쎄라피 프라임'],
-    volsera:         ['울쎄라피 프라임'],
-    'oneday-silift': ['원데이 실리프팅'],
-    'nose-silift':   ['코 실리프팅'],
-    nasolabial:      ['팔자주름'],
-    'slim-shot':     ['슬림샷'],
-    'volume-shot':   ['볼륨샷'],
+    ulthera:          ['울쎄라피 프라임'],
+    'ulthera-prime':  ['울쎄라피 프라임'],
+    onda:             ['온다 리프팅'],
+    onsera:           ['온다 리프팅', '울쎄라피 프라임'],
+    volsera:          ['울쎄라피 프라임'],
+    'oneday-silift':  ['원데이 실리프팅'],
+    'nose-silift':    ['코 실리프팅'],
+    nasolabial:       ['팔자주름'],
+    'nasolabial-pkg': ['팔자주름'],
+    'slim-shot':      ['슬림샷'],
+    'volume-shot':    ['볼륨샷'],
 };
 
 const FIREBASE_URL = 'https://roa-clinic-default-rtdb.firebaseio.com/roa';
@@ -452,10 +509,10 @@ async function loadReviewPhotos(id) {
 
     let photos = [];
     try {
-        const res = await fetch(FIREBASE_URL + '.json?t=' + Date.now());
+        const res = await fetch(FIREBASE_URL + '/photos.json?t=' + Date.now());
         const fb = await res.json();
         const toArr = v => Array.isArray(v) ? v : (v ? Object.values(v) : []);
-        photos = toArr(fb && fb.photos)
+        photos = toArr(fb)
             .filter(p => isPhotoOn(p['표시'] ?? p.show))
             .filter(p => keywords.some(k => (p['시술명'] || p.title || '').includes(k)));
     } catch(e) {
@@ -1062,18 +1119,18 @@ const PROGRAMS = {
         canonicalPath: '/부천-실리프팅',
         metaDesc: '상동역 로아한의원 실리프팅. 부천에서 V라인 실리프팅·원데이실리프팅을 합리적인 가격으로. 당일 예약 가능.',
         keywords: '부천 실리프팅, 부천 원데이실리프팅, 부천 V라인 실리프팅, 부천 V라인 리프팅, 상동 실리프팅, 상동역 실리프팅, 신중동역 실리프팅, 부천시청역 실리프팅, 부평 실리프팅, 부천 피부과 실리프팅, 상동 피부과 실리프팅, 실리프팅 부천, 부천 실 리프팅',
-        subtitle: '수술 없이 당기는 프리미엄 실 리프팅 (팔자 볼륨실 최대 4줄 포함)',
+        subtitle: '수술 없이 당기는 프리미엄 실 리프팅',
         desc: '특수 실을 피부 아래 삽입해 처진 피부를 물리적으로 끌어올리고, 콜라겐 생성을 자극해 탄력을 높이는 리프팅 시술입니다.',
         img: 'images/program-oneday-silift.png',
         prices: [
-            { name: '원데이실리프팅 16줄 (팔자 볼륨실 최대 4줄 포함)', amount: '720,000' },
+            { name: '원데이실리프팅 16줄', amount: '720,000' },
         ],
         priceNote: '* VAT 별도 · 정확한 가격은 상담 후 확정',
         pointsTitle: '원데이실리프팅의 특징',
         points: [
             { icon: '🧵', title: '즉각적인 리프팅', desc: '실 삽입 즉시 처진 피부가 올라가는 즉각적인 리프팅 효과' },
             { icon: '🌿', title: '콜라겐 재생 촉진', desc: '실 주변으로 콜라겐이 생성되어 시술 후에도 지속적으로 탄력 개선' },
-            { icon: '✅', title: '팔자주름 동시 개선', desc: '팔자 볼륨실 최대 4줄 포함으로 팔자주름까지 한 번에' },
+            { icon: '✅', title: '팔자주름 동시 개선', desc: '실리프팅으로 팔자주름까지 한 번에 개선' },
         ],
         targets: [
             '수술 없이 즉각적인 리프팅 효과를 원하시는 분',
@@ -1090,14 +1147,14 @@ const PROGRAMS = {
         seo: `
 <h2>부천 실리프팅이란?</h2>
 <p><strong>부천 실리프팅</strong>은 특수 실을 피부 아래 삽입해 처진 피부를 물리적으로 끌어올리는 리프팅 시술입니다. 시술 즉시 리프팅 효과가 나타나고, 이후 콜라겐 재생으로 탄력이 지속됩니다. 로아한의원 부천 <strong>상동역 3번 출구 도보 1분</strong>에서 받으실 수 있습니다.</p>
-<p><strong>부천 피부과 실리프팅</strong>과 동일한 수준의 시술을 합리적인 가격에 제공하며, 팔자 볼륨실 최대 4줄이 포함되어 팔자주름까지 한 번에 개선하는 <strong>V라인 실리프팅</strong>입니다.</p>
+<p><strong>부천 피부과 실리프팅</strong>과 동일한 수준의 시술을 합리적인 가격에 제공하며, 팔자주름까지 한 번에 개선하는 <strong>V라인 실리프팅</strong>입니다.</p>
 
 <h2>부천 실리프팅 효과 — V라인이 가능한가요?</h2>
 <p>실리프팅은 처진 볼살을 끌어올리고 턱선을 정돈해 <strong>V라인 윤곽</strong>을 만드는 데 효과적입니다. 팔자주름과 볼살 처짐이 동시에 개선되어 한층 젊어 보이는 얼굴 라인을 완성할 수 있습니다.</p>
 
 <h2>자주 묻는 질문 (FAQ)</h2>
 <h3>Q. 부천 실리프팅 가격이 얼마인가요?</h3>
-<p>원데이실리프팅 16줄(팔자 볼륨실 최대 4줄 포함) <strong>720,000원(VAT 별도)</strong>입니다.</p>
+<p>원데이실리프팅 16줄 <strong>720,000원(VAT 별도)</strong>입니다.</p>
 
 <h3>Q. 부천 실리프팅으로 V라인을 만들 수 있나요?</h3>
 <p>볼살 처짐을 끌어올리고 턱선을 정돈해 <strong>V라인 윤곽</strong>을 개선하는 데 효과적입니다. 개인 얼굴 구조에 따라 효과 차이가 있으며 상담 시 예상 결과를 설명해 드립니다.</p>
@@ -1260,13 +1317,66 @@ const PROGRAMS = {
 <p>당일 가벼운 일상생활은 가능합니다. 1주일 간 격렬한 운동·사우나·얼굴 마사지는 피하시는 것을 권장합니다.</p>
 
 <h3>Q. 팔자볼륨실과 원데이실리프팅을 같이 받을 수 있나요?</h3>
-<p>원데이실리프팅에 팔자 볼륨실 최대 4줄이 포함되어 있어 함께 받으실 수 있습니다. 볼살 처짐과 팔자주름을 동시에 개선하고 싶다면 원데이실리프팅을 추천합니다.</p>
+<p>원데이실리프팅으로 볼살 처짐과 팔자주름을 동시에 개선하고 싶다면 원데이실리프팅을 추천합니다.</p>
 
 <h3>Q. 팔자볼륨실이 아픈가요?</h3>
 <p>마취 크림을 도포한 후 진행하므로 통증이 크지 않습니다. 실 삽입 시 약간의 이물감이 있을 수 있습니다.</p>
 
 <h3>Q. 팔자볼륨실로 팔자주름이 완전히 없어지나요?</h3>
 <p>팔자주름을 완전히 제거하기보다 깊이와 선명도를 개선하는 효과입니다. 처음 시술 후 상태를 확인하며 줄 수를 조정할 수 있습니다.</p>
+
+<h3>Q. 당일 예약이 가능한가요?</h3>
+<p>당일 예약도 가능합니다. <strong>상동역 3번 출구 도보 1분</strong> 거리로 부천시청역·신중동·부평 어디서든 편리하게 오실 수 있습니다.</p>
+        `,
+    },
+
+    'nasolabial-pkg': {
+        category: '볼륨UP',
+        name: '팔자주름 패키지',
+        titleSeo: '부천 팔자주름 패키지 | 팔자볼륨실 + 진피재생약침',
+        canonicalPath: '/부천-팔자주름패키지',
+        metaDesc: '상동역 로아한의원 팔자주름 패키지. 팔자볼륨실 2줄 + 진피재생약침 2cc로 팔자주름을 효과적으로 개선. 당일 예약 가능.',
+        keywords: '부천 팔자주름 패키지, 부천 팔자볼륨실 패키지, 팔자주름 진피재생약침, 부천 팔자주름 가격, 상동역 팔자주름, 부천 팔자주름 한의원',
+        subtitle: '팔자볼륨실 2줄 + 진피재생약침 2cc',
+        desc: '팔자볼륨실로 주름을 채우고, 진피재생약침으로 피부 재생을 함께 촉진하는 팔자주름 복합 패키지입니다.',
+        img: 'images/program-nasolabial.png',
+        prices: [
+            { name: '팔자주름 패키지 (팔자볼륨실 2줄 + 진피재생약침 2cc)', amount: '180,000' },
+        ],
+        priceNote: '* VAT 별도',
+        pointsTitle: '팔자주름 패키지의 특징',
+        points: [
+            { icon: '✨', title: '팔자주름 즉각 개선', desc: '볼륨실로 팔자주름을 채우고 진피재생약침으로 피부 탄력까지 동시에 개선' },
+            { icon: '💉', title: '복합 케어', desc: '실리프팅과 약침의 시너지로 단독 시술보다 더 효과적인 팔자주름 개선' },
+            { icon: '⚡', title: '당일 시술·당일 복귀', desc: '시술 후 당일 일상생활 가능' },
+        ],
+        targets: [
+            '팔자주름이 깊어 고민인 분',
+            '볼살 처짐으로 입가 주름이 생긴 분',
+            '팔자주름과 피부 탄력을 한 번에 개선하고 싶은 분',
+            '합리적인 가격으로 복합 시술을 원하는 분',
+        ],
+        steps: [
+            { title: '상담 및 주름 분석', desc: '팔자주름 깊이와 범위를 확인해 시술 계획을 세웁니다.' },
+            { title: '마취 크림 도포', desc: '시술 부위에 마취 크림을 도포합니다.' },
+            { title: '팔자볼륨실 삽입', desc: '팔자주름 라인을 따라 볼륨실 2줄을 삽입합니다.' },
+            { title: '진피재생약침 시술', desc: '진피재생약침 2cc를 주입해 피부 재생 및 탄력을 촉진합니다.' },
+            { title: '마무리 후 일상 복귀', desc: '당일 일상생활이 가능합니다.' },
+        ],
+        ctaTitle: '부천 팔자주름 패키지 상담 예약하세요',
+        seo: `
+<h2>부천 팔자주름 패키지란?</h2>
+<p>팔자주름 패키지는 <strong>팔자볼륨실 2줄</strong>과 <strong>진피재생약침 2cc</strong>를 함께 받는 복합 시술입니다. 볼륨실로 팔자주름을 즉각 채우고, 진피재생약침으로 피부 재생과 탄력을 동시에 개선합니다. 로아한의원 부천 <strong>상동역 3번 출구 도보 1분</strong>에서 받으실 수 있습니다.</p>
+
+<h2>자주 묻는 질문 (FAQ)</h2>
+<h3>Q. 팔자주름 패키지 가격이 얼마인가요?</h3>
+<p><strong>팔자볼륨실 2줄 + 진피재생약침 2cc 180,000원(VAT 별도)</strong>입니다.</p>
+
+<h3>Q. 팔자볼륨실과 진피재생약침을 같이 받으면 뭐가 좋나요?</h3>
+<p>볼륨실은 팔자주름을 물리적으로 채우고, 진피재생약침은 피부 진피층의 콜라겐 생성을 촉진합니다. 두 시술을 함께 받으면 즉각적인 개선과 지속적인 피부 탄력 효과를 동시에 얻을 수 있습니다.</p>
+
+<h3>Q. 효과가 얼마나 지속되나요?</h3>
+<p>볼륨실은 보통 <strong>6개월~1년</strong> 지속됩니다. 실이 흡수된 후에도 콜라겐 생성 효과가 일부 남습니다.</p>
 
 <h3>Q. 당일 예약이 가능한가요?</h3>
 <p>당일 예약도 가능합니다. <strong>상동역 3번 출구 도보 1분</strong> 거리로 부천시청역·신중동·부평 어디서든 편리하게 오실 수 있습니다.</p>
@@ -2153,9 +2263,92 @@ const PROGRAMS = {
     },
 };
 
-function render() {
-     const id = 'onsera';
-    const p = PROGRAMS[id];
+async function render() {
+    const id = 'onsera';
+    let p = PROGRAMS[id];
+
+    // Firebase programs에서 관리자가 설정한 썸네일·가격옵션 오버라이드
+    // PROGRAMS에 없는 id면 Firebase에서 직접 빌드
+    try {
+        const res = await fetch(FIREBASE_URL + '/programs.json', { signal: AbortSignal.timeout(4000) });
+        const fb  = await res.json();
+        if (fb) {
+            const pgArr = Array.isArray(fb) ? fb : Object.values(fb);
+            for (const cat of pgArr) {
+                const found = (cat.items || []).find(i => i.id === id);
+                if (found) {
+                    if (!p) {
+                        // 이름으로 PROGRAMS 항목 찾기 (id 불일치시 이름 매칭)
+                        const nameMatchKey = Object.keys(PROGRAMS).find(k => PROGRAMS[k].name === found.name);
+                        const nameMatch = nameMatchKey ? PROGRAMS[nameMatchKey] : null;
+                        if (nameMatch) {
+                            p = Object.assign({}, nameMatch);
+                            p._reviewId = nameMatchKey; // 전후사진 키 저장
+                        } else {
+                            // PROGRAMS에 없는 경우 Firebase 데이터로 기본 구조 생성
+                            p = {
+                                category: cat.cat || '',
+                                name: found.name || '',
+                                titleSeo: `부천 ${found.name || ''} | 로아한의원 부천`,
+                                desc: found.desc || '',
+                                img: found.img || '',
+                                prices: [],
+                                pointsTitle: `${found.name || ''} 안내`,
+                                points: [],
+                                targets: [],
+                                steps: [],
+                                ctaTitle: `부천 ${found.name || ''} 상담 예약하세요`,
+                                seo: '',
+                            };
+                        }
+                    }
+                    if (found.img)  p.img  = found.img;
+                    if (found.name) p.name = found.name;
+                    if (found.desc) p.desc = found.desc;
+                    if (found.options && found.options.length) {
+                        p.prices = found.options.map(opt => ({
+                            name:       opt.name,
+                            amount:     opt.salePrice ? Number(opt.salePrice).toLocaleString('ko-KR') : '',
+                            origAmount: opt.origPrice  ? Number(opt.origPrice).toLocaleString('ko-KR')  : ''
+                        }));
+                    } else if (found.price) {
+                        p.prices = [{ name: found.name, amount: Number(String(found.price).replace(/[^0-9]/g,'')).toLocaleString('ko-KR') }];
+                    }
+                    break;
+                }
+            }
+        }
+    } catch(e) { /* 실패 시 기존 하드코딩 유지 */ }
+
+    // 이달의 이벤트 (ev0, ev1...) — Firebase events에서 로드
+    if (!p && id.startsWith('ev')) {
+        try {
+            const res = await fetch(FIREBASE_URL + '/events.json?t=' + Date.now(), { signal: AbortSignal.timeout(4000) });
+            const fb = await res.json();
+            if (fb) {
+                const arr = Array.isArray(fb) ? fb : Object.values(fb);
+                const visible = arr.filter(e => e.표시 !== '아니오' && e.이벤트명);
+                const idx = parseInt(id.replace('ev', ''), 10);
+                const ev = visible[idx];
+                if (ev) {
+                    const imgs = ev.imgs && ev.imgs.length ? ev.imgs : (ev.img ? [ev.img] : []);
+                    p = {
+                        type: 'event',
+                        name: ev.이벤트명,
+                        titleSeo: `부천 ${ev.이벤트명} | 로아한의원`,
+                        metaDesc: ev.소제목 || `로아한의원 부천 ${ev.이벤트명}`,
+                        canonicalPath: `/program.html?id=${id}`,
+                        imgs: imgs,
+                        img: imgs[0] || '',
+                        items: ev.items || [],
+                        VAT: ev.VAT || '별도',
+                        seo: ''
+                    };
+                }
+            }
+        } catch(e) { /* 실패 시 낙오 */ }
+    }
+
     if (!p) { document.body.innerHTML = '<p style="padding:4rem;text-align:center">페이지를 찾을 수 없습니다.</p>'; return; }
 
     // Meta
@@ -2212,11 +2405,53 @@ function render() {
         document.getElementById('hero').style.display = 'none';
         document.querySelectorAll('.section, .cta-band').forEach(el => el.style.display = 'none');
         document.getElementById('seoSection').style.display = 'none';
-        const imgs = p.imgs || [p.img];
+        const imgs = p.imgs || (p.img ? [p.img] : []);
         document.getElementById('eventImages').innerHTML = imgs.map(s =>
             `<img src="${s}" alt="${p.name} | 로아한의원 부천">`
         ).join('');
         document.getElementById('eventSeo').innerHTML = p.seo || '';
+
+        // goToBooking()이 읽는 공통 변수에 이벤트 데이터 세팅
+        window._pgId   = id;
+        window._pgName = p.name;
+        window._pgPrices = (p.items || []).map(it => ({
+            name:       it.name || '',
+            amount:     it.salePrice ? String(it.salePrice) : '',
+            origAmount: it.originalPrice ? String(it.originalPrice) : ''
+        }));
+        window._pgSelectedIdx = new Set();
+
+        // 시술 항목 선택 UI
+        const items = p.items || [];
+        if (items.length) {
+            const priceBox = document.getElementById('eventPriceBox');
+            const itemList = document.getElementById('evItemList');
+            const totalBox = document.getElementById('evTotalBox');
+            const totalAmt = document.getElementById('evTotalAmt');
+            const vatNote  = document.getElementById('evVatNote');
+            priceBox.style.display = 'block';
+            vatNote.textContent = '* VAT ' + (p.VAT === '포함' ? '포함' : '별도');
+            function calcEvTotal() {
+                let sum = 0;
+                window._pgSelectedIdx.forEach(idx => { sum += Number(items[idx].salePrice || 0); });
+                totalAmt.textContent = sum.toLocaleString() + '원';
+                totalBox.style.display = window._pgSelectedIdx.size ? 'flex' : 'none';
+            }
+            itemList.innerHTML = items.map((it, idx) => `
+                <div class="price-row" id="evpr-${idx}" onclick="(function(){
+                    const el=document.getElementById('evpr-${idx}');
+                    el.classList.toggle('selected');
+                    if(el.classList.contains('selected')) window._pgSelectedIdx.add(${idx}); else window._pgSelectedIdx.delete(${idx});
+                    calcEvTotal();
+                })()">
+                    <div class="price-row-check"></div>
+                    <span class="price-row-name">${it.name || ''}</span>
+                    <div class="price-row-amount">
+                        ${it.originalPrice ? `<del style="display:block;font-size:0.78rem;color:var(--muted);font-weight:400;font-family:'Noto Sans KR';">${Number(it.originalPrice).toLocaleString()}원</del>` : ''}
+                        ${it.salePrice ? Number(it.salePrice).toLocaleString() + '원' : '문의'}
+                    </div>
+                </div>`).join('');
+        }
         return;
     }
 
@@ -2227,16 +2462,15 @@ function render() {
     document.getElementById('heroName').textContent = p.name;
     document.getElementById('heroSubtitle').textContent = p.subtitle || '';
     document.getElementById('heroDesc').textContent = p.desc;
-    document.getElementById('priceList').innerHTML = (p.prices || []).map(r =>
-        `<div class="price-row">
-            <span class="price-row-name">${r.name}${r.note ? `<span class="price-row-note"> (${r.note})</span>` : ''}</span>
-            <span class="price-row-amount">${r.amount}<span>원~</span></span>
-        </div>`
-    ).join('');
-    document.getElementById('heroPriceNote').textContent = p.priceNote || '';
+    window._pgPrices = (p.prices || []);
+    window._pgName   = p.name;
+    window._pgId     = id;
+    window._pgSelectedIdx = new Set();
+    renderPriceList();
+    document.getElementById('heroPriceNote').textContent = p.priceNote || '* VAT 별도 · 정확한 가격은 상담 후 확인';
 
     // 시술 후기 사진 (Firebase에서 로드)
-    loadReviewPhotos(id);
+    loadReviewPhotos(p._reviewId || id);
 
     // Points
     document.getElementById('pointsTitle').textContent = p.pointsTitle;
@@ -2301,6 +2535,58 @@ function render() {
     }
 }
 
+function renderPriceList() {
+    const prices = window._pgPrices || [];
+    const sel    = window._pgSelectedIdx || new Set();
+    const hasPrices = prices.length > 0;
+    document.getElementById('priceList').innerHTML = prices.map((r, i) => {
+        const isSel = sel.has(i);
+        return `<div class="price-row${isSel?' selected':''}" onclick="togglePriceRow(${i})">
+            <div class="price-row-check"></div>
+            <span class="price-row-name">${r.name}${r.note?`<span class="price-row-note"> (${r.note})</span>`:''}</span>
+            <span class="price-row-amount">
+                ${r.origAmount?`<div style="font-size:0.78rem;color:#bbb;text-decoration:line-through;">${r.origAmount}원</div>`:''}
+                ${r.amount?`<div>${Number(r.amount.replace(/[^0-9]/g,'')).toLocaleString('ko-KR')}<span>원</span></div>`:'-'}
+            </span>
+        </div>`;
+    }).join('') || (hasPrices ? '' : '');
+    updatePriceTotal();
+}
+
+function togglePriceRow(i) {
+    const sel = window._pgSelectedIdx;
+    if (sel.has(i)) sel.delete(i); else sel.add(i);
+    renderPriceList();
+}
+
+function updatePriceTotal() {
+    const prices = window._pgPrices || [];
+    const sel    = window._pgSelectedIdx || new Set();
+    let total = 0;
+    sel.forEach(i => {
+        const r = prices[i];
+        if (r && r.amount) total += Number(r.amount.replace(/[^0-9]/g,'')) || 0;
+    });
+    const box = document.getElementById('priceTotalBox');
+    if (box) {
+        box.style.display = (prices.length > 0) ? 'flex' : 'none';
+        document.getElementById('priceTotalAmt').textContent = total.toLocaleString('ko-KR') + '원';
+    }
+}
+
+function goToBooking() {
+    const prices = window._pgPrices || [];
+    const sel    = window._pgSelectedIdx || new Set();
+    const selectedOptions = prices.filter((_, i) => sel.has(i));
+    sessionStorage.setItem('bookingData', JSON.stringify({
+        programId:   window._pgId || '',
+        programName: window._pgName || '',
+        options:     selectedOptions,
+        totalPrice:  selectedOptions.reduce((s, r) => s + (Number((r.amount||'').replace(/[^0-9]/g,''))||0), 0)
+    }));
+    location.href = 'booking.html';
+}
+
 function goToEvents(cat) {
     sessionStorage.setItem('eventsTab', cat);
     location.href = 'events.html';
@@ -2319,6 +2605,25 @@ function reviewGoTo(i) {
 function reviewMove(dir) { reviewGoTo(reviewIdx + dir); }
 
 render();
+
+window.addEventListener('load', function() {
+    const container = document.getElementById('kakaoMapProgram');
+    if (!container || typeof kakao === 'undefined') return;
+    const LAT = 37.5048028, LNG = 126.7525319;
+    const map = new kakao.maps.Map(container, {
+        center: new kakao.maps.LatLng(LAT, LNG), level: 3
+    });
+    const marker = new kakao.maps.Marker({
+        map: map, position: new kakao.maps.LatLng(LAT, LNG)
+    });
+    const info = new kakao.maps.InfoWindow({
+        content: '<div style="padding:8px 12px;font-size:13px;font-weight:700;">로아한의원 부천</div>'
+    });
+    info.open(map, marker);
+    kakao.maps.event.addListener(marker, 'click', function() {
+        window.open('https://map.kakao.com/?itemId=1810541223', '_blank');
+    });
+});
 </script>
 </body>
 </html>
