@@ -140,7 +140,35 @@ nav {
 }
 .done-icon { font-size: 3rem; margin-bottom: 1rem; }
 .done-title { font-family: 'Noto Serif KR', serif; font-size: 1.5rem; font-weight: 600; margin-bottom: 0.8rem; }
-.done-desc { font-size: 0.9rem; color: var(--mid); line-height: 1.8; margin-bottom: 2rem; }
+.done-desc { font-size: 0.9rem; color: var(--mid); line-height: 1.8; margin-bottom: 1.2rem; }
+.done-notice { text-align: left; background: #fafaf8; border: 1px solid var(--border); border-radius: 10px; padding: 1.2rem 1.4rem; margin-bottom: 2rem; }
+.done-notice ul { margin: 0; padding: 0 0 0 1.2rem; }
+.done-notice li { font-size: 0.82rem; color: var(--mid); line-height: 1.7; margin-bottom: 0.8rem; }
+.done-notice li:last-child { margin-bottom: 0; }
+.kakao-link { display: inline-block; color: #3A1D1D; background: #FAE100; padding: 0.25rem 0.8rem; border-radius: 6px; text-decoration: none; font-weight: 700; font-size: 0.82rem; }
+.call-link  { display: inline-block; color: #fff; background: #03C75A; padding: 0.25rem 0.8rem; border-radius: 6px; text-decoration: none; font-weight: 700; font-size: 0.82rem; }
+
+/* 예약 상태 표시 */
+.rv-status-box { background: #fff; border: 1.5px solid var(--border); border-radius: 12px; padding: 1.2rem 1.4rem 1rem; margin-bottom: 1.2rem; }
+.rv-status-label { font-weight: 700; font-size: 0.82rem; color: var(--mid); margin-bottom: 1rem; letter-spacing: 0.04em; }
+.rv-status-steps { display: flex; align-items: center; justify-content: center; gap: 0; }
+.rv-step { display: flex; flex-direction: column; align-items: center; gap: 0.4rem; flex: 0 0 auto; }
+.rv-step-dot { width: 22px; height: 22px; border-radius: 50%; border: 2px solid #ddd; background: #fff; transition: all 0.3s; }
+.rv-step-text { font-size: 0.72rem; color: #bbb; font-weight: 600; white-space: nowrap; transition: color 0.3s; }
+.rv-step-line { flex: 1; height: 2px; background: #eee; min-width: 24px; max-width: 40px; transition: background 0.3s; }
+.rv-step.active .rv-step-dot { border-color: var(--gold); background: var(--gold); }
+.rv-step.active .rv-step-text { color: var(--dark); }
+.rv-step.confirmed .rv-step-dot { border-color: #1a7a3f; background: #1a7a3f; }
+.rv-step.confirmed .rv-step-text { color: #1a7a3f; }
+.rv-step.cancelled .rv-step-dot { border-color: #c0392b; background: #c0392b; }
+.rv-step.cancelled .rv-step-text { color: #c0392b; }
+.rv-step-line.done { background: var(--gold); }
+.done-notice-wait { border-color: #e0a000; background: #fff8e0; }
+.done-notice-wait ul li { color: #7a5c00; }
+.done-notice-confirm { border-color: #1a7a3f; background: #eafaf1; }
+.done-notice-confirm p { margin: 0; font-size: 0.85rem; color: #1a7a3f; text-align: center; line-height: 1.7; }
+.done-notice-cancel { border-color: #c0392b; background: #fdf0ee; }
+.done-notice-cancel p { margin: 0; font-size: 0.85rem; color: #c0392b; text-align: center; line-height: 1.7; }
 .btn-done { display: inline-block; padding: 0.8rem 2rem; background: var(--dark); color: #fff; border-radius: 8px; text-decoration: none; font-weight: 700; font-size: 0.9rem; }
 
 @media (max-width: 900px) {
@@ -228,6 +256,58 @@ nav {
     <div class="done-icon">✅</div>
     <div class="done-title">예약이 접수됐습니다</div>
     <div class="done-desc" id="doneDesc"></div>
+
+    <!-- 현재 예약 상태 -->
+    <div class="rv-status-box" id="rvStatusBox" style="display:none;">
+        <div class="rv-status-label">현재 예약 상태</div>
+        <div class="rv-status-steps">
+            <div class="rv-step" id="rv-step-wait">
+                <div class="rv-step-dot"></div>
+                <div class="rv-step-text">예약 접수 대기</div>
+            </div>
+            <div class="rv-step-line"></div>
+            <div class="rv-step" id="rv-step-confirm">
+                <div class="rv-step-dot"></div>
+                <div class="rv-step-text">예약 확정</div>
+            </div>
+            <div class="rv-step-line"></div>
+            <div class="rv-step" id="rv-step-cancel">
+                <div class="rv-step-dot"></div>
+                <div class="rv-step-text">예약 취소</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 예약 접수 대기일 때 안내 -->
+    <div class="done-notice done-notice-wait" id="noticeWait" style="display:none;">
+        <ul>
+            <li>지금은 <strong>예약 접수 대기</strong> 상태입니다.<br>
+            실시간 진료 상황, 타 플랫폼 예약으로 인해 예약 마감이 된 경우가 생길 수 있습니다. 상황에 따른 예약시간은 변경될 수 있는 점 양해부탁드립니다.</li>
+            <li>휴무일엔 예약확정이 늦어질 수 있습니다.</li>
+        </ul>
+    </div>
+
+    <!-- 예약 확정일 때 안내 -->
+    <div class="done-notice done-notice-confirm" id="noticeConfirm" style="display:none;">
+        <p>지금은 <strong>예약 확정</strong> 상태입니다. 방문해 주셔도 좋습니다. 😊</p>
+    </div>
+
+    <!-- 예약 취소일 때 안내 -->
+    <div class="done-notice done-notice-cancel" id="noticeCancel" style="display:none;">
+        <p>예약이 <strong>취소</strong>됐습니다. 문의사항은 아래 카카오톡으로 연락해 주세요.</p>
+    </div>
+
+    <!-- 항상 표시: 카카오톡 + 시술비 안내 -->
+    <div class="done-notice" id="doneNotice" style="display:none;">
+        <ul>
+            <li>정확하고 빠른 안내를 희망하신다면, 카카오톡 플러스친구 채널 <strong>'로아한의원 부천점'</strong> 채팅창 메세지로 문의하시거나, 한의원으로 연락주세요.<br>
+            <div style="display:flex;gap:0.5rem;margin-top:0.5rem;flex-wrap:wrap;">
+                <a href="https://pf.kakao.com/_gxfGxexj" target="_blank" rel="noopener" class="kakao-link">▶ 카카오톡 플러스 채널 바로가기</a>
+                <a href="tel:0323241118" class="call-link">📞 전화하기</a>
+            </div></li>
+            <li>원장님이 직접 한 분 한 분 정성껏 진료하고 시술하기 위해 예약제로 운영됩니다. 시술 없이 상담만 진행하실 경우 별도의 비급여 진찰료(상담비)가 발생할 수 있는 점 양해부탁드립니다. (당일 시술 시 제외)</li>
+        </ul>
+    </div>
     <a class="btn-done" href="events.html">← 시술 메뉴로 돌아가기</a>
 </div>
 
@@ -365,19 +445,54 @@ async function submitBooking() {
     };
 
     try {
-        await db.ref('roa/reservations').push(reservation);
+        const ref = await db.ref('roa/reservations').push(reservation);
+        const rvKey = ref.key;
         sessionStorage.removeItem('bookingData');
         document.getElementById('mainScreen').style.display = 'none';
         document.getElementById('doneScreen').style.display = 'block';
         document.getElementById('doneDesc').innerHTML = `
             <strong>${name}</strong>님의 예약이 접수됐습니다.<br>
             <strong>${selectedDate} ${selectedTime}</strong><br>
-            ${optNames}<br><br>
-            로아한의원 부천 (032-324-1118)으로<br>예약 확인 연락을 드립니다.
+            ${optNames}
         `;
+        document.getElementById('doneNotice').style.display = 'block';
+        document.getElementById('rvStatusBox').style.display = 'block';
+        updateRvStatus('예약대기');
+
+        // 실시간 상태 구독
+        db.ref('roa/reservations/' + rvKey + '/status').on('value', snap => {
+            updateRvStatus(snap.exists() ? snap.val() : '예약대기');
+        });
     } catch(e) {
         alert('예약 저장 중 오류가 발생했습니다. 다시 시도해 주세요.');
         btn.disabled = false; btn.textContent = '로아한의원 부천점 시술 예약하기';
+    }
+}
+
+function updateRvStatus(status) {
+    const wait    = document.getElementById('rv-step-wait');
+    const confirm = document.getElementById('rv-step-confirm');
+    const cancel  = document.getElementById('rv-step-cancel');
+    const lines   = document.querySelectorAll('.rv-step-line');
+
+    [wait, confirm, cancel].forEach(el => el.className = 'rv-step');
+    lines.forEach(l => l.classList.remove('done'));
+
+    document.getElementById('noticeWait').style.display    = 'none';
+    document.getElementById('noticeConfirm').style.display = 'none';
+    document.getElementById('noticeCancel').style.display  = 'none';
+
+    if (status === '예약완료') {
+        wait.classList.add('active');
+        lines[0].classList.add('done');
+        confirm.classList.add('confirmed');
+        document.getElementById('noticeConfirm').style.display = 'block';
+    } else if (status === '취소') {
+        cancel.classList.add('cancelled');
+        document.getElementById('noticeCancel').style.display = 'block';
+    } else {
+        wait.classList.add('active');
+        document.getElementById('noticeWait').style.display = 'block';
     }
 }
 </script>
