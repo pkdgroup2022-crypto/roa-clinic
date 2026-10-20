@@ -266,9 +266,20 @@ nav {
 <script>
 const FIREBASE_URL = 'https://roa-clinic-default-rtdb.firebaseio.com/roa';
 
-// Firebase Storage URL은 그대로 사용 (관리자에서 업로드한 최신 이미지 반영) + PNG→JPG 변환
+// 제모 이미지: 로컬 JPEG로 빠르게 로드 (관리자 업로드 이미지 다운받아 최신화)
+const FB_IMG_MAP = {
+    'programs%2F%EC%97%AC%EC%84%B1-%EC%A0%9C%EB%AA%A8_':                    'images/program-jemo-women-face.jpg',
+    'programs%2F%EC%97%AC%EC%84%B1-%EB%B0%94%EB%94%94-%EC%A0%9C%EB%AA%A8_': 'images/program-jemo-women-body.jpg',
+    'programs%2F%EB%82%A8%EC%84%B1-%EC%A0%9C%EB%AA%A8_':                    'images/program-jemo-men-face.jpg',
+    'programs%2F%EB%82%A8%EC%84%B1-%EB%B0%94%EB%94%94-%EC%A0%9C%EB%AA%A8_': 'images/program-jemo-men-body.jpg',
+};
 function fixImgUrl(url) {
     if (!url) return url;
+    if (url.includes('firebasestorage.googleapis.com')) {
+        for (const [key, local] of Object.entries(FB_IMG_MAP)) {
+            if (url.includes(key)) return local;
+        }
+    }
     return url.replace(/(images\/(?:program-|popup-event)[^"'\s]+)\.png/g, '$1.jpg');
 }
 
@@ -454,7 +465,7 @@ function render() {
                         ${it.desc ? `<div class="card-desc">${it.desc}</div>` : ''}
                         <div class="card-price-wrap">
                             ${it.price
-                                ? `<span class="card-price-from">시작가</span><span class="card-price">${Number(String(it.price).replace(/[^0-9]/g,'')).toLocaleString('ko-KR')}</span><span class="card-price-unit">원~</span>`
+                                ? `<span class="card-price">${Number(String(it.price).replace(/[^0-9]/g,'')).toLocaleString('ko-KR')}</span><span class="card-price-unit">원~</span>`
                                 : `<span class="card-price-from">자세히 보기 →</span>`}
                         </div>
                     </div>
