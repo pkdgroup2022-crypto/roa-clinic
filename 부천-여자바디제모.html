@@ -227,11 +227,9 @@ nav { position: fixed; top: 0; left: 0; right: 0; z-index: 100; display: flex; a
 <script>
 const FIREBASE_URL = 'https://roa-clinic-default-rtdb.firebaseio.com/roa';
 
-// Firebase Storage URL은 그대로 사용 (관리자에서 업로드한 최신 이미지 반영) + PNG->JPG 변환
 function fixImgUrl(url) {
     if (!url) return url;
-    return url.replace(/(images\/(?:program-|popup-event)[^"'\s]+)\.png/g, '// Firebase Storage URL → 로컬 이미지 매핑 + PNG→JPG 변환
-.jpg');
+    return url.replace(/(images\/(?:program-|popup-event)[^"'\s]+)\.png/g, '$1.jpg');
 }
 const TARGET_ID = '여성-바디-제모_1792062779925';
 let pgData = null;
