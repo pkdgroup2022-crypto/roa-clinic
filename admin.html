@@ -962,14 +962,15 @@ function resetEvents() {
    탭 4: 전후 사진
 ════════════════════════════════ */
 let photosData = [];
-const PHOTO_FILTERS = ['전체', '원데이 실리프팅', '울쎄라피 프라임', '온다 리프팅', '볼륨샷', '슬림샷', '듀얼 팔자지우개', '비너스코'];
+const PHOTO_FILTERS = ['전체', '원데이 실리프팅', '울쎄라피 프라임', '온다 리프팅', '볼륨샷', '슬림샷', '팔자 실리프팅', '비너스코'];
 let activeFilter = '전체';
 
 async function loadPhotos() {
     try {
         const fb = await fbGet('/photos');
         if (fb) {
-            photosData = Object.values(fb);
+            // '팔자'가 들어간 시술명(팔자주름, 듀얼 팔자지우개 등) → '팔자 실리프팅' (저장하면 데이터에도 반영)
+            photosData = Object.values(fb).map(p => p && (p.시술명 || '').includes('팔자') ? { ...p, 시술명: '팔자 실리프팅' } : p);
             saveJSON('roa_photos', photosData);
         } else {
             photosData = loadJSON('roa_photos', []);

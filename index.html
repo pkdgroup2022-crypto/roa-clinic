@@ -3104,9 +3104,9 @@ function renderTreatmentSection(containerId, category, list) {
 const FILTER_CATS = {
     '레이저 리프팅': ['울쎄라피 프라임', '온다 리프팅'],
     '실리프팅':    ['원데이 실리프팅', '코 실리프팅'],
-    '윤곽시술':   ['듀얼 팔자지우개', '볼륨샷', '슬림샷']
+    '윤곽시술':   ['팔자 실리프팅', '볼륨샷', '슬림샷']
 };
-const FILTER_ORDER = ['듀얼 팔자지우개', '울쎄라피 프라임', '온다 리프팅', '원데이 실리프팅', '코 실리프팅', '볼륨샷', '슬림샷'];
+const FILTER_ORDER = ['팔자 실리프팅', '울쎄라피 프라임', '온다 리프팅', '원데이 실리프팅', '코 실리프팅', '볼륨샷', '슬림샷'];
 let _activeCat = null;
 let _allPhotos   = [];
 let _activeFilter = null;
@@ -3115,6 +3115,8 @@ function renderGallery(list) {
     // localStorage에 저장된 사진 우선 적용
     const stored = loadLocalPhotos();
     if (stored.length) list = stored.concat(list.slice(stored.length));
+    // '팔자'가 들어간 시술명(팔자주름, 듀얼 팔자지우개 등)은 '팔자 실리프팅'으로 표시
+    list = list.map(p => p && (p['시술명'] || '').includes('팔자') ? { ...p, '시술명': '팔자 실리프팅' } : p);
 
     // 표시 필터 + FILTER_ORDER 순서로 정렬
     _allPhotos = list

@@ -484,8 +484,8 @@ const REVIEW_KEYWORDS = {
     volsera:          ['울쎄라피 프라임'],
     'oneday-silift':  ['원데이 실리프팅'],
     'nose-silift':    ['코 실리프팅'],
-    nasolabial:       ['듀얼 팔자지우개', '팔자주름'],
-    'nasolabial-pkg': ['듀얼 팔자지우개', '팔자주름'],
+    nasolabial:       ['팔자'],
+    'nasolabial-pkg': ['팔자'],
     'slim-shot':      ['슬림샷'],
     'volume-shot':    ['볼륨샷'],
 };
@@ -529,7 +529,8 @@ async function loadReviewPhotos(id) {
     reviewSection.style.display = 'block';
     const track = document.getElementById('reviewTrack');
     track.innerHTML = photos.map(p => {
-        const title      = p['시술명'] || p.title || '';
+        const rawTitle   = p['시술명'] || p.title || '';
+        const title      = rawTitle.includes('팔자') ? '팔자 실리프팅' : rawTitle;
         const beforeUrl  = toDirectUrl(p['전사진URL'] || p.beforeUrl || '');
         const afterUrl   = toDirectUrl(p['후사진URL'] || p.afterUrl  || '');
         const beforeDate = p['시술전날짜'] || p.beforeDate || '';
