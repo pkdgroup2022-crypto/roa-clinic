@@ -2269,6 +2269,8 @@ const PROGRAMS = {
 // 관리자 id → PROGRAMS 키 (이름 규칙으로 연결되지 않는 항목만 등록)
 const ID_ALIAS = {
     '팔자주름-패키지_1791787939214': 'nasolabial-pkg',
+    '듀얼-팔자지우개_1793602306708': 'nasolabial-pkg',   // 시그니처
+    '원데이-실리프팅_1793602311456': 'oneday-silift',    // 시그니처
 };
 
 // 관리자에서 이름·가격을 바꾸면 소제목·예약문구·본문(FAQ)의 예전 이름·가격도 같이 바꿈
@@ -2297,8 +2299,10 @@ async function render() {
         const fb  = await res.json();
         if (fb) {
             const pgArr = Array.isArray(fb) ? fb : Object.values(fb);
+            // 정확한 id가 없으면(고정 페이지 등) 이 페이지로 연결된 관리자 항목을 사용
+            const hasExact = pgArr.some(cat => (cat.items || []).some(i => i.id === id));
             for (const cat of pgArr) {
-                const found = (cat.items || []).find(i => i.id === id);
+                const found = (cat.items || []).find(i => hasExact ? i.id === id : ID_ALIAS[i.id] === id);
                 if (found) {
                     if (!p) {
                         // 관리자에서 만든 항목(id = 처음 이름 슬러그_타임스탬프)은 id로 PROGRAMS 연결.
