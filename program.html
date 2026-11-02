@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="ko">
 <head>
 <meta charset="UTF-8">
@@ -2266,6 +2266,26 @@ const PROGRAMS = {
     },
 };
 
+// 관리자 id → PROGRAMS 키 (이름 규칙으로 연결되지 않는 항목만 등록)
+const ID_ALIAS = {
+    '팔자주름-패키지_1791787939214': 'nasolabial-pkg',
+};
+
+// 관리자에서 이름·가격을 바꾸면 소제목·예약문구·본문(FAQ)의 예전 이름·가격도 같이 바꿈
+function syncNameAndPrice(p, oldName, oldAmounts) {
+    const swaps = [];
+    if (oldName && p.name && oldName !== p.name) swaps.push([oldName, p.name]);
+    (p.prices || []).forEach((pr, i) => {
+        const old = oldAmounts[i];
+        if (old && pr.amount && old !== pr.amount) swaps.push([old + '원', pr.amount + '원']);
+    });
+    if (!swaps.length) return;
+    const fix = s => typeof s === 'string' ? swaps.reduce((t, [a, b]) => t.split(a).join(b), s) : s;
+    p.pointsTitle = fix(p.pointsTitle);
+    p.ctaTitle    = fix(p.ctaTitle);
+    p.seo         = fix(p.seo);
+}
+
 async function render() {
     const id = new URLSearchParams(location.search).get('id') || 'ulthera';
     let p = PROGRAMS[id];
@@ -2281,8 +2301,12 @@ async function render() {
                 const found = (cat.items || []).find(i => i.id === id);
                 if (found) {
                     if (!p) {
-                        // 이름으로 PROGRAMS 항목 찾기 (id 불일치시 이름 매칭)
-                        const nameMatchKey = Object.keys(PROGRAMS).find(k => PROGRAMS[k].name === found.name);
+                        // 관리자에서 만든 항목(id = 처음 이름 슬러그_타임스탬프)은 id로 PROGRAMS 연결.
+                        // 이름·가격을 바꿔도 id는 그대로라 상세페이지가 유지됨. 마지막 수단으로 현재 이름 매칭.
+                        const origName = id.replace(/_\d+$/, '').replace(/-/g, ' ');
+                        const nameMatchKey = ID_ALIAS[id]
+                            || Object.keys(PROGRAMS).find(k => PROGRAMS[k].name === origName)
+                            || Object.keys(PROGRAMS).find(k => PROGRAMS[k].name === found.name);
                         const nameMatch = nameMatchKey ? PROGRAMS[nameMatchKey] : null;
                         if (nameMatch) {
                             p = Object.assign({}, nameMatch);
@@ -2305,6 +2329,7 @@ async function render() {
                             };
                         }
                     }
+                    const baseName = p.name, baseAmounts = (p.prices || []).map(x => x.amount);
                     if (found.img)  p.img  = fixImgUrl(found.img);
                     if (found.name) p.name = found.name;
                     if (found.desc) p.desc = found.desc;
@@ -2317,6 +2342,7 @@ async function render() {
                     } else if (found.price) {
                         p.prices = [{ name: found.name, amount: Number(String(found.price).replace(/[^0-9]/g,'')).toLocaleString('ko-KR') }];
                     }
+                    syncNameAndPrice(p, baseName, baseAmounts);
                     break;
                 }
             }

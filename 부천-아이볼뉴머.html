@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="ko">
 <head>
 <meta charset="UTF-8">
@@ -2268,6 +2268,21 @@ const PROGRAMS = {
     },
 };
 
+// 관리자에서 이름·가격을 바꾸면 소제목·예약문구·본문(FAQ)의 예전 이름·가격도 같이 바꿈
+function syncNameAndPrice(p, oldName, oldAmounts) {
+    const swaps = [];
+    if (oldName && p.name && oldName !== p.name) swaps.push([oldName, p.name]);
+    (p.prices || []).forEach((pr, i) => {
+        const old = oldAmounts[i];
+        if (old && pr.amount && old !== pr.amount) swaps.push([old + '원', pr.amount + '원']);
+    });
+    if (!swaps.length) return;
+    const fix = s => typeof s === 'string' ? swaps.reduce((t, [a, b]) => t.split(a).join(b), s) : s;
+    p.pointsTitle = fix(p.pointsTitle);
+    p.ctaTitle    = fix(p.ctaTitle);
+    p.seo         = fix(p.seo);
+}
+
 async function render() {
     const id = 'eye-volnumer';
     let p = PROGRAMS[id];
@@ -2307,6 +2322,7 @@ async function render() {
                             };
                         }
                     }
+                    const baseName = p.name, baseAmounts = (p.prices || []).map(x => x.amount);
                     if (found.img)  p.img  = fixImgUrl(found.img);
                     if (found.name) p.name = found.name;
                     if (found.desc) p.desc = found.desc;
@@ -2319,6 +2335,7 @@ async function render() {
                     } else if (found.price) {
                         p.prices = [{ name: found.name, amount: Number(String(found.price).replace(/[^0-9]/g,'')).toLocaleString('ko-KR') }];
                     }
+                    syncNameAndPrice(p, baseName, baseAmounts);
                     break;
                 }
             }
