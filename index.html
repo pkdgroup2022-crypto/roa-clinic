@@ -2824,9 +2824,12 @@ async function loadData() {
     render(DEMO);
 
     try {
-        const res = await fetch(FIREBASE_URL + '.json?t=' + Date.now());
-        const fb = await res.json();
-        if (!fb) return;
+        // 루트(/roa) 전체 읽기는 권한 없음(401) → 공개된 경로만 따로 읽음
+        const get = path => fetch(FIREBASE_URL + path + '.json?t=' + Date.now())
+            .then(r => r.ok ? r.json() : null).catch(() => null);
+        const [events, photos] = await Promise.all([get('/events'), get('/photos')]);
+        if (!events && !photos) return;
+        const fb = { events, photos };
 
         const toArr = v => Array.isArray(v) ? v : (v ? Object.values(v) : []);
 
