@@ -1935,14 +1935,19 @@
     <!-- 히어로 배경 동영상 (images/hero.mp4 파일 넣으면 자동 표시) -->
     <div class="hero-gif-bg">
         <!-- PC 영상 (600px 초과) -->
-        <video class="hero-vid hero-vid-pc" autoplay loop muted playsinline>
-            <source src="images/imageshero.mp4" type="video/mp4">
-        </video>
+        <video class="hero-vid hero-vid-pc" autoplay loop muted playsinline preload="none" data-src="images/hero-pc.mp4"></video>
         <!-- 모바일 영상 (600px 이하) -->
-        <video class="hero-vid hero-vid-mobile" autoplay loop muted playsinline>
-            <source src="images/imageshero-mobile.mp4" type="video/mp4">
-        </video>
+        <video class="hero-vid hero-vid-mobile" autoplay loop muted playsinline preload="none" data-src="images/hero-mobile.mp4"></video>
     </div>
+    <script>
+    /* 화면 크기에 맞는 영상 하나만 다운로드 */
+    (function () {
+        var v = document.querySelector(window.innerWidth <= 600 ? '.hero-vid-mobile' : '.hero-vid-pc');
+        v.src = v.dataset.src;
+        var pr = v.play && v.play();
+        if (pr && pr.catch) pr.catch(function () {});
+    })();
+    </script>
     <div class="hero-overlay"></div>
     <div class="hero-content">
         <h1 id="heroTitle">공장형 리프팅을 원하시나요?<br>그렇다면 나가주셔도 좋습니다.</h1>
@@ -2036,7 +2041,7 @@
                     <p class="wk-item-desc">수천 년을 이어온 정교함에 현대한의학과 의학의 해부학적 지식을 더했습니다.</p>
                 </div>
                 <div class="wk-item-image">
-                    <img src="images/wk-01.gif" alt="실리프팅 시술" style="width:100%;height:100%;object-fit:cover;border-radius:12px;">
+                    <video src="images/wk-01.mp4" autoplay loop muted playsinline preload="metadata" aria-label="실리프팅 시술" style="width:100%;height:100%;object-fit:cover;border-radius:12px;display:block;"></video>
                 </div>
             </div>
 
@@ -2048,15 +2053,15 @@
                 </div>
                 <div class="wk-gallery">
                     <div class="wk-gallery-item">
-                        <img src="images/wk-02a.jpg" alt="임상약침회 수료" class="wk-gallery-img">
+                        <img src="images/wk-02a.jpg" alt="임상약침회 수료" class="wk-gallery-img" loading="lazy" decoding="async">
                         <p class="wk-gallery-caption">임상약침회<br>스킨부스터 전문가과정 수료</p>
                     </div>
                     <div class="wk-gallery-item">
-                        <img src="images/wk-02b.png" alt="대한통합레이저학회" class="wk-gallery-img">
+                        <img src="images/wk-02b.jpg" alt="대한통합레이저학회" class="wk-gallery-img" loading="lazy" decoding="async">
                         <p class="wk-gallery-caption">대한통합레이저학회<br>회원</p>
                     </div>
                     <div class="wk-gallery-item">
-                        <img src="images/wk-02c.png" alt="서울시한의사회 인증" class="wk-gallery-img">
+                        <img src="images/wk-02c.jpg" alt="서울시한의사회 인증" class="wk-gallery-img" loading="lazy" decoding="async">
                         <p class="wk-gallery-caption">서울특별시한의사회 인증<br>미용 시술 한의사</p>
                     </div>
                 </div>
@@ -2069,7 +2074,7 @@
                     <p class="wk-item-desc">공장형 병원에서 가장 많이 느끼는 불만이<br class="mo-br"> 상담 따로, 시술 따로입니다.<br>저희는 의료진이 직접 상담하고 시술합니다.</p>
                 </div>
                 <div class="wk-item-image">
-                    <img src="images/wk-03.gif" alt="1:1 전담 시술" style="width:100%;height:100%;object-fit:cover;border-radius:12px;">
+                    <video src="images/wk-03.mp4" autoplay loop muted playsinline preload="metadata" aria-label="1:1 전담 시술" style="width:100%;height:100%;object-fit:cover;border-radius:12px;display:block;"></video>
                 </div>
             </div>
         </div>
@@ -2155,7 +2160,7 @@
             <!-- 이창희 원장 카드 -->
             <div class="doctor-card" onclick="openDoctorModal('doctor1')">
                 <div class="doctor-photo-wrap">
-                    <img src="images/doctor1.png" alt="이창희 원장" style="width:100%;height:100%;object-fit:cover;object-position:center;display:block;">
+                    <img src="images/doctor1.jpg" loading="lazy" decoding="async" alt="이창희 원장" style="width:100%;height:100%;object-fit:cover;object-position:center;display:block;">
                     <div class="doctor-view-more">VIEW MORE →</div>
                 </div>
                 <div class="doctor-card-body">
@@ -2167,7 +2172,7 @@
             <!-- 진윤희 원장 카드 -->
             <div class="doctor-card" onclick="openDoctorModal('doctor2')">
                 <div class="doctor-photo-wrap">
-                    <img src="images/doctor2.png" alt="진윤희 원장" style="width:100%;height:100%;object-fit:cover;object-position:center;display:block;">
+                    <img src="images/doctor2.jpg" loading="lazy" decoding="async" alt="진윤희 원장" style="width:100%;height:100%;object-fit:cover;object-position:center;display:block;">
                     <div class="doctor-view-more">VIEW MORE →</div>
                 </div>
                 <div class="doctor-card-body">
@@ -2200,7 +2205,7 @@ const DOCTORS = {
     doctor1: {
         name: '이창희',
         role: '원장',
-        photo: 'images/doctor1.png',
+        photo: 'images/doctor1.jpg',
         edu: [
             '상지대학교 한의학과 졸업',
             '대한통합레이저학회 회원',
@@ -2224,7 +2229,7 @@ const DOCTORS = {
     doctor2: {
         name: '진윤희',
         role: '원장',
-        photo: 'images/doctor2.png',
+        photo: 'images/doctor2.jpg',
         edu: [
             '가천대학교 한의학과 졸업',
             '대한통합레이저학회 회원',
@@ -2696,9 +2701,9 @@ const ICONS = {
    시그니처 섹션 이미지 (SVG 대신 실제 이미지 사용 시)
 ================================================================ */
 const SIG_IMAGES = {
-    '원데이 실리프팅': 'images/sig-lifting.png',
-    '볼륨샷':       'images/sig-volume.png',
-    '슬림샷':       'images/sig-slim.png'
+    '원데이 실리프팅': 'images/sig-lifting.jpg',
+    '볼륨샷':       'images/sig-volume.jpg',
+    '슬림샷':       'images/sig-slim.jpg'
 };
 
 /* ================================================================
