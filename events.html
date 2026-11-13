@@ -243,10 +243,12 @@ nav {
 <div class="cat-wrap" id="catWrap">
     <div class="cat-tabs">
         <button class="cat-tab active" data-cat="이달의 이벤트" onclick="selectCat(this)">이달의 이벤트</button>
+        <button class="cat-tab" data-cat="시그니처" onclick="selectCat(this)">시그니처</button>
         <button class="cat-tab" data-cat="리프팅/탄력" onclick="selectCat(this)">리프팅/탄력</button>
         <button class="cat-tab" data-cat="실리프팅" onclick="selectCat(this)">실리프팅</button>
-        <button class="cat-tab" data-cat="윤곽/지방제거" onclick="selectCat(this)">윤곽/지방제거</button>
         <button class="cat-tab" data-cat="볼륨UP" onclick="selectCat(this)">볼륨UP</button>
+        <button class="cat-tab" data-cat="제모" onclick="selectCat(this)">제모</button>
+        <button class="cat-tab" data-cat="윤곽/지방제거" onclick="selectCat(this)">윤곽/지방제거</button>
         <button class="cat-tab" data-cat="스킨부스터" onclick="selectCat(this)">스킨부스터</button>
         <button class="cat-tab" data-cat="여드름/흉터" onclick="selectCat(this)">여드름/흉터</button>
         <button class="cat-tab" data-cat="다이어트" onclick="selectCat(this)">다이어트</button>
@@ -385,7 +387,7 @@ function renderCatTabs(pgArr) {
 function selectCat(btn) {
     document.querySelectorAll('.cat-tab').forEach(t => t.classList.remove('active'));
     btn.classList.add('active');
-    currentCat = btn.dataset.cat;
+    currentCat = wantedCat = btn.dataset.cat;
     sessionStorage.setItem('eventsTab', currentCat);
     setTabTitle(currentCat);
     render();
@@ -514,17 +516,11 @@ function render() {
             </a>`).join('') + '</div>';
 }
 
-async function loadData() {
-    // DEMO 데이터 즉시 렌더링 (이미지 바로 표시)
-    render();
+const DATA_CACHE_KEY = 'roa_events_data_v1';
+let wantedCat = null;   // URL ?cat= 또는 뒤로가기로 복원할 탭
 
-    try {
-        const [evRes, pgRes] = await Promise.all([
-            fetch(FIREBASE_URL + '/events.json', { signal: AbortSignal.timeout(6000) }),
-            fetch(FIREBASE_URL + '/programs.json', { signal: AbortSignal.timeout(6000) })
-        ]);
-        const evData = await evRes.json();
-        const pgData = await pgRes.json();
+/* 관리자 데이터 반영. 반영된 게 있으면 true */
+function applyData(evData, pgData) {
         let updated = false;
         if (evData) {
             const arr = Array.isArray(evData) ? evData : Object.values(evData);
@@ -567,12 +563,42 @@ async function loadData() {
             }
             if (Object.keys(rebuilt).length) {
                 PROGRAMS = rebuilt;
+                if (wantedCat && PROGRAMS[wantedCat]) currentCat = wantedCat;
+                if (currentCat !== '이달의 이벤트' && !PROGRAMS[currentCat]) currentCat = '이달의 이벤트';
+                setTabTitle(currentCat);
                 renderCatTabs(pgArr);
                 updated = true;
             }
         }
-        if (updated) render();
-    } catch(e) {}
+        return updated;
+}
+
+async function loadData() {
+    // 1) 지난번 관리자 데이터(캐시)로 바로 표시 → 예전 기본 데이터가 잠깐 보였다 바뀌는 현상 방지
+    let cached = null;
+    try { cached = JSON.parse(localStorage.getItem(DATA_CACHE_KEY) || 'null'); } catch(e) {}
+    const shown = !!(cached && applyData(cached.ev, cached.pg));
+    if (shown) render();
+    else document.getElementById('contentArea').innerHTML =
+        '<div class="program-grid"><div class="empty-grid"><p>불러오는 중입니다.</p></div></div>';
+
+    // 2) 최신 데이터로 갱신
+    try {
+        const [evRes, pgRes] = await Promise.all([
+            fetch(FIREBASE_URL + '/events.json', { signal: AbortSignal.timeout(6000) }),
+            fetch(FIREBASE_URL + '/programs.json', { signal: AbortSignal.timeout(6000) })
+        ]);
+        const evData = await evRes.json();
+        const pgData = await pgRes.json();
+        const fresh = JSON.stringify({ ev: evData, pg: pgData });
+        if (!cached || fresh !== JSON.stringify(cached)) {
+            applyData(evData, pgData);
+            render();
+        }
+        try { localStorage.setItem(DATA_CACHE_KEY, fresh); } catch(e) {}
+    } catch(e) {
+        if (!shown) render();   // 연결 실패 시에만 기본 데이터 표시
+    }
 }
 
 function toggleMenu() { document.getElementById('mobileMenu').classList.toggle('open'); }
@@ -582,6 +608,7 @@ function closeMenu()   { document.getElementById('mobileMenu').classList.remove(
 (function initFromUrl() {
     const params = new URLSearchParams(location.search);
     const cat = params.get('cat');
+    wantedCat = cat || sessionStorage.getItem('eventsTab');
     if (cat && (PROGRAMS[cat] || cat === '이달의 이벤트')) {
         currentCat = cat;
         const btn = document.querySelector(`.cat-tab[data-cat="${cat}"]`);
