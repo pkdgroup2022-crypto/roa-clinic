@@ -266,6 +266,7 @@
         .pg-btn { padding:0.32rem 0.7rem; border-radius:4px; font-size:0.72rem; font-weight:700; border:none; cursor:pointer; font-family:inherit; white-space:nowrap; }
         .pg-btn-gray { background:#555; color:#fff; } .pg-btn-gray:hover { background:#333; }
         .pg-btn-hide { background:#888; color:#fff; } .pg-btn-hide:hover { background:#666; }
+        .pg-move-sel { padding:0.3rem 0.4rem; border-radius:4px; font-size:0.72rem; font-weight:700; border:1px solid #555; background:#fff; color:#333; cursor:pointer; font-family:inherit; max-width:7.5rem; }
         .pg-btn-red  { background:var(--red); color:#fff; } .pg-btn-red:hover { background:#a93226; }
         .pg-sub-add  { display:flex; gap:0.5rem; margin-top:0.6rem; }
         .pg-sub-add input { flex:1; padding:0.38rem 0.7rem; border:1px solid var(--border); border-radius:4px; font-family:inherit; font-size:0.82rem; outline:none; }
@@ -1409,6 +1410,10 @@ function renderPgCatList() {
                     <button class="pg-item-name-btn" onclick="pgOpenEdit(${ci},${ii})">${esc(item.name)||'(이름 없음)'}</button>
                     <button class="pg-btn pg-btn-gray" onclick="pgMoveItem(${ci},${ii},-1)">▲</button>
                     <button class="pg-btn pg-btn-gray" onclick="pgMoveItem(${ci},${ii},1)">▼</button>
+                    <select class="pg-move-sel" title="다른 대분류로 이동" onchange="pgMoveItemToCat(${ci},${ii},this.value)">
+                        <option value="">분류 이동</option>
+                        ${programsData.map((c, cj) => cj === ci ? '' : `<option value="${cj}">→ ${esc(c.cat)}</option>`).join('')}
+                    </select>
                     <button class="pg-btn pg-btn-hide" onclick="pgToggleItemHide(${ci},${ii})">${item.hidden ? '보이기' : '숨김'}</button>
                     <button class="pg-btn pg-btn-red" onclick="pgRemoveItem(${ci},${ii})">삭제</button>
                 </div>`).join('')}
@@ -1461,6 +1466,21 @@ function pgMoveItem(ci, ii, dir) {
     if (j < 0 || j >= items.length) return;
     [items[ii], items[j]] = [items[j], items[ii]];
     renderPgCatList();
+}
+/* 다른 대분류로 이동 — id·가격·이미지·상세페이지 연결은 그대로 유지 */
+async function pgMoveItemToCat(ci, ii, target) {
+    if (target === '') return;
+    const cj = Number(target);
+    const item = programsData[ci].items[ii];
+    if (!confirm(`"${item.name}"을(를) "${programsData[cj].cat}" 분류로 옮길까요?\n가격·이미지·상세페이지는 그대로 유지됩니다.`)) {
+        renderPgCatList(); return;
+    }
+    programsData[ci].items.splice(ii, 1);
+    if (!programsData[cj].items) programsData[cj].items = [];
+    programsData[cj].items.push(item);
+    programsData[cj].collapsed = false;
+    renderPgCatList();
+    await savePrograms();
 }
 function pgToggleItemHide(ci, ii) { programsData[ci].items[ii].hidden = !programsData[ci].items[ii].hidden; renderPgCatList(); }
 function pgRemoveItem(ci, ii) {
