@@ -1681,15 +1681,63 @@ async function accDelete(uid) {
 /* ═══ 팝업 관리 ═══ */
 let popupData = [];
 
+let popupLinkEvents = [];    // 링크 선택용: 표시 중인 이벤트 (상세페이지 program.html?id=evN 순서와 동일)
+let popupLinkPrograms = [];  // 링크 선택용: [{cat, items:[{id,name}]}]
+
 async function loadPopup() {
     try {
-        const snap = await db.ref('roa/popup').once('value');
+        const [snap, evSnap, pgSnap] = await Promise.all([
+            db.ref('roa/popup').once('value'),
+            db.ref('roa/events').once('value'),
+            db.ref('roa/programs').once('value'),
+        ]);
         const val = snap.val();
         popupData = val ? (Array.isArray(val) ? val : Object.values(val)) : [];
+        const toArr = v => v ? (Array.isArray(v) ? v : Object.values(v)) : [];
+        popupLinkEvents = toArr(evSnap.val()).filter(e => e && e.표시 !== '아니오' && e.이벤트명);
+        // 제모는 시술 메뉴에서 숨겨도 이벤트 페이지 제모 탭에 나오므로 포함
+        popupLinkPrograms = toArr(pgSnap.val()).filter(c => c && (!c.hidden || c.cat === '제모'))
+            .map(c => ({ cat: c.cat, items: toArr(c.items).filter(i => i && !i.hidden) }));
     } catch(e) {
         popupData = [];
     }
     renderPopup();
+}
+
+/* 팝업 이미지 클릭 시 이동할 상세페이지 */
+function popupLinkOptions(p) {
+    const cur = p.link || '';
+    const opt = (val, label) => `<option value="${esc(val)}" ${val === cur ? 'selected' : ''}>${esc(label)}</option>`;
+    let html = opt('', '연결 안 함 (이미지 클릭 안 됨)');
+    let found = !cur;
+    const evOpts = popupLinkEvents.map((e, n) => {
+        const url = `program.html?id=ev${n}&ev=${encodeURIComponent(e.이벤트명)}`;
+        if (url === cur) found = true;
+        return opt(url, e.이벤트명);
+    }).join('');
+    if (evOpts) html += `<optgroup label="이달의 이벤트">${evOpts}</optgroup>`;
+    popupLinkPrograms.forEach(c => {
+        const items = c.items.map(i => {
+            const url = popupProgramUrl(i.id);
+            if (url === cur) found = true;
+            return opt(url, i.name);
+        }).join('');
+        if (items) html += `<optgroup label="${esc(c.cat)}">${items}</optgroup>`;
+    });
+    // 저장된 링크가 목록에 없으면(이벤트 이름 변경 등) 그대로 유지해서 보여줌
+    if (!found) html += opt(cur, `현재 연결: ${p.linkLabel || cur}`);
+    return html;
+}
+// 이벤트 페이지 카드와 같은 주소 (제모는 전용 페이지)
+function popupProgramUrl(id) {
+    if (id.startsWith('여성-제모')) return '부천-여자얼굴제모.html';
+    if (id.startsWith('여성-바디')) return '부천-여자바디제모.html';
+    if (/제모/.test(id)) return 'hair-removal.html?id=' + encodeURIComponent(id);
+    return 'program.html?id=' + encodeURIComponent(id);
+}
+function setPopupLink(i, sel) {
+    popupData[i].link = sel.value;
+    popupData[i].linkLabel = sel.value ? sel.options[sel.selectedIndex].text : '';
 }
 
 function movePopup(i, dir) {
@@ -1729,6 +1777,13 @@ function renderPopup() {
                 <span style="font-size:1.5rem;">＋</span>이미지 추가
                 <input type="file" accept="image/*" style="display:none;" onchange="uploadPopupImg(${i},this)">
             </label>
+        </div>
+        <div style="display:flex;align-items:center;gap:0.6rem;margin-top:1rem;flex-wrap:wrap;">
+            <span style="font-size:0.82rem;font-weight:700;color:#555;">🔗 이미지 클릭 시 이동</span>
+            <select onchange="setPopupLink(${i},this)"
+                style="flex:1;min-width:220px;padding:0.45rem 0.6rem;border:1px solid #ddd;border-radius:6px;font-size:0.85rem;font-family:inherit;">
+                ${popupLinkOptions(p)}
+            </select>
         </div>
     </div>`).join('');
 }

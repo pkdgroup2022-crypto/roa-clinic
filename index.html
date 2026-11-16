@@ -2196,6 +2196,9 @@ function renderEvImage() {
     const img = document.getElementById('evPopupImg');
     img.src = ev.imgs[_evImgIdx];
     img.alt = ev.name;
+    // 관리자에서 연결한 상세페이지가 있을 때만 클릭 가능
+    img.style.cursor = ev.link ? 'pointer' : '';
+    img.onclick = ev.link ? () => { location.href = ev.link; } : null;
     const nav = document.getElementById('evImgNav');
     if (ev.imgs.length > 1) {
         nav.style.display = 'flex';
