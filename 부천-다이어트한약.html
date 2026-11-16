@@ -18,7 +18,7 @@
 <script type="application/ld+json" id="ldJson"></script>
 <script type="text/javascript" src="https://dapi.kakao.com/v2/maps/sdk.js?appkey=c15a188b114a223c1757bb304d13d82e"></script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&family=Noto+Serif+KR:wght@400;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&family=Noto+Serif+KR:wght@400;600;700&display=swap" rel="stylesheet">
 <style>
 * { margin: 0; padding: 0; box-sizing: border-box; }
 :root {
@@ -239,6 +239,11 @@ nav {
 .review-section-title { font-family: 'Noto Serif KR', serif; font-size: 1.3rem; font-weight: 600; margin: 0 0 0.5rem; }
 .review-section-title span { color: var(--gold); }
 .review-guide { font-size: 0.82rem; color: var(--muted); margin: 0 0 1.2rem; }
+.review-filters { display:flex; flex-wrap:wrap; gap:0.5rem; margin:0 0 1.2rem; }
+.review-filters:empty { display:none; }
+.review-filter-btn { padding:0.5rem 1.3rem; border:1.5px solid var(--silver); background:transparent; color:var(--mid); font-size:0.88rem; font-weight:500; cursor:pointer; border-radius:50px; transition:all 0.2s; font-family:'Noto Sans KR',sans-serif; }
+.review-filter-btn:hover { border-color:var(--gold); color:var(--gold); }
+.review-filter-btn.active { background:var(--gold); border-color:var(--gold); color:#fff; font-weight:700; }
 .review-carousel { position: relative; overflow: hidden; }
 .review-track { display: flex; width: 100%; transition: transform 0.4s cubic-bezier(.4,0,.2,1); }
 .review-slide { flex: 0 0 100%; width: 100%; min-width: 0; }
@@ -312,7 +317,6 @@ nav {
     <ul class="nav-center">
         <li><a href="events.html" class="active">시술메뉴/이벤트</a></li>
         <li><a href="index.html#reviews">시술 후기</a></li>
-        <li><a href="index.html#impactStats">로아한의원 부천</a></li>
         <li><a href="index.html#doctors">의료진 소개</a></li>
         <li><a href="index.html#contact">오시는 길</a></li>
     </ul>
@@ -322,7 +326,6 @@ nav {
     <div class="mobile-menu">
         <a href="events.html">시술메뉴/이벤트</a>
         <a href="index.html#reviews">시술 후기</a>
-        <a href="index.html#impactStats">로아한의원 부천</a>
         <a href="index.html#doctors">의료진 소개</a>
         <a href="index.html#contact">오시는 길</a>
     </div>
@@ -332,6 +335,7 @@ nav {
 <div class="subnav">
     <div class="subnav-inner">
         <button class="subnav-btn" data-cat="이달의 이벤트" onclick="goToEvents('이달의 이벤트')">이달의 이벤트</button>
+        <button class="subnav-btn" data-cat="시그니처" onclick="goToEvents('시그니처')">시그니처</button>
         <button class="subnav-btn" data-cat="리프팅/탄력" onclick="goToEvents('리프팅/탄력')">리프팅/탄력</button>
         <button class="subnav-btn" data-cat="실리프팅" onclick="goToEvents('실리프팅')">실리프팅</button>
         <button class="subnav-btn" data-cat="윤곽/지방제거" onclick="goToEvents('윤곽/지방제거')">윤곽/지방제거</button>
@@ -389,6 +393,7 @@ nav {
 <div id="reviewSection" class="review-section" style="display:none">
     <div class="review-section-title">리얼 후기 <span>결과로 증명합니다.</span></div>
     <p class="review-guide">좌우로 넘기면 더 많은 결과를 보실 수 있습니다.</p>
+    <div class="review-filters" id="reviewFilters"></div>
     <div class="review-carousel" id="reviewCarousel">
         <div class="review-track" id="reviewTrack"></div>
         <button class="review-nav prev" onclick="reviewMove(-1)">&#8249;</button>
@@ -400,6 +405,9 @@ nav {
         ※ 시술 후 일시적으로 붓기, 멍, 통증, 염증 등의 부작용이 발생할 수 있습니다.<br>
         ※ 시술 여부 및 방법은 의료진과의 충분한 상담을 통해 결정되어야 하며, 부작용 가능성에 대해 사전에 설명을 받으시기 바랍니다.</p>
 </div>
+
+<!-- 리프팅 노하우 ~ 한의원에서 리프팅? (실리프팅 계열만, lifting-story.js) -->
+<div id="liftingStory" style="display:none"></div>
 
 <!-- 효과 -->
 <div class="section">
@@ -482,13 +490,31 @@ const REVIEW_KEYWORDS = {
     onda:             ['온다 리프팅'],
     onsera:           ['온다 리프팅', '울쎄라피 프라임'],
     volsera:          ['울쎄라피 프라임'],
-    'oneday-silift':  ['원데이 실리프팅'],
+    'oneday-silift':  ['팔자', '원데이 실리프팅'],
     'nose-silift':    ['코 실리프팅'],
     nasolabial:       ['팔자'],
-    'nasolabial-pkg': ['팔자'],
+    'nasolabial-pkg': ['팔자', '원데이 실리프팅'],
     'slim-shot':      ['슬림샷'],
     'volume-shot':    ['볼륨샷'],
 };
+
+/* 후기 필터 버튼 (전체에서는 이 순서대로 정렬) */
+const REVIEW_FILTERS = {
+    'oneday-silift':  [{ label: '팔자 실리프팅', kw: '팔자' }, { label: '원데이 실리프팅', kw: '원데이 실리프팅' }],
+    'nasolabial-pkg': [{ label: '팔자 실리프팅', kw: '팔자' }, { label: '원데이 실리프팅', kw: '원데이 실리프팅' }],
+};
+const REVIEW_FILTER_BTN_ORDER = ['원데이 실리프팅', '팔자 실리프팅'];
+
+/* 리프팅 노하우 섹션을 보여줄 시술 */
+const LIFTING_STORY_IDS = ['oneday-silift', 'nasolabial-pkg'];
+function showLiftingStory() {
+    const host = document.getElementById('liftingStory');
+    if (window.mountLiftingStory) return window.mountLiftingStory(host);
+    const s = document.createElement('script');
+    s.src = 'lifting-story.js';
+    s.onload = () => window.mountLiftingStory(host);
+    document.head.appendChild(s);
+}
 
 const FIREBASE_URL = 'https://roa-clinic-default-rtdb.firebaseio.com/roa';
 
@@ -526,7 +552,34 @@ async function loadReviewPhotos(id) {
 
     if (!photos.length) { reviewSection.style.display = 'none'; return; }
 
+    const filters = REVIEW_FILTERS[id];
+    if (filters) {
+        const rank = p => { const i = filters.findIndex(f => (p['시술명'] || p.title || '').includes(f.kw)); return i < 0 ? filters.length : i; };
+        photos = photos.map((p, i) => ({ p, i })).sort((a, b) => rank(a.p) - rank(b.p) || a.i - b.i).map(x => x.p);
+        const btns = [{ label: '전체', kw: '' }, ...REVIEW_FILTER_BTN_ORDER.map(l => filters.find(f => f.label === l))];
+        const box = document.getElementById('reviewFilters');
+        box.innerHTML = btns.map((f, i) => `<button class="review-filter-btn${i === 0 ? ' active' : ''}" data-kw="${f.kw}">${f.label}</button>`).join('');
+        box.querySelectorAll('.review-filter-btn').forEach(btn => btn.addEventListener('click', () => {
+            box.querySelectorAll('.review-filter-btn').forEach(b => b.classList.toggle('active', b === btn));
+            const kw = btn.dataset.kw;
+            renderReviewSlides(kw ? photos.filter(p => (p['시술명'] || p.title || '').includes(kw)) : photos);
+        }));
+    }
+
     reviewSection.style.display = 'block';
+    renderReviewSlides(photos);
+
+    // 터치 스와이프
+    const wrap = document.getElementById('reviewCarousel');
+    let tx = 0;
+    wrap.addEventListener('touchstart', e => { tx = e.touches[0].clientX; }, {passive:true});
+    wrap.addEventListener('touchend', e => {
+        const diff = tx - e.changedTouches[0].clientX;
+        if (Math.abs(diff) > 45) reviewMove(diff > 0 ? 1 : -1);
+    });
+}
+
+function renderReviewSlides(photos) {
     const track = document.getElementById('reviewTrack');
     track.innerHTML = photos.map(p => {
         const rawTitle   = p['시술명'] || p.title || '';
@@ -570,15 +623,6 @@ async function loadReviewPhotos(id) {
         `<button class="review-dot${i === 0 ? ' active' : ''}" onclick="reviewGoTo(${i})"></button>`
     ).join('');
     reviewGoTo(0);
-
-    // 터치 스와이프
-    const wrap = document.getElementById('reviewCarousel');
-    let tx = 0;
-    wrap.addEventListener('touchstart', e => { tx = e.touches[0].clientX; }, {passive:true});
-    wrap.addEventListener('touchend', e => {
-        const diff = tx - e.changedTouches[0].clientX;
-        if (Math.abs(diff) > 45) reviewMove(diff > 0 ? 1 : -1);
-    });
 }
 
 
@@ -2223,7 +2267,9 @@ async function render() {
             const pgArr = Array.isArray(fb) ? fb : Object.values(fb);
             // 정확한 id가 없으면(고정 페이지 등) 이 페이지로 연결된 관리자 항목을 사용
             const hasExact = pgArr.some(cat => (cat.items || []).some(i => i.id === id));
-            for (const cat of pgArr) {
+            // 연결된 항목을 찾을 땐 시그니처보다 원래 분류 항목을 우선
+            const catOrder = hasExact ? pgArr : [...pgArr].sort((a, b) => (a.cat === '시그니처') - (b.cat === '시그니처'));
+            for (const cat of catOrder) {
                 const found = (cat.items || []).find(i => hasExact ? i.id === id : ID_ALIAS[i.id] === id);
                 if (found) {
                     if (!p) {
@@ -2252,6 +2298,7 @@ async function render() {
                         }
                     }
                     const baseName = p.name, baseAmounts = (p.prices || []).map(x => x.amount);
+                    if (cat.cat)    p.category = cat.cat;   // 관리자에서 분류를 옮기면 그대로 반영
                     if (found.img)  p.img  = fixImgUrl(found.img);
                     if (found.name) p.name = found.name;
                     if (found.desc) p.desc = found.desc;
@@ -2422,6 +2469,7 @@ async function render() {
 
     // 시술 후기 사진 (Firebase에서 로드)
     loadReviewPhotos(p._reviewId || id);
+    if (LIFTING_STORY_IDS.includes(p._reviewId || id)) showLiftingStory();
 
     // Points
     document.getElementById('pointsTitle').textContent = p.pointsTitle;
