@@ -3,7 +3,7 @@
    사용: mountLiftingStory(document.getElementById('liftingStory')) */
 (function () {
     const CSS = `
-.ls-wrap { --ls-dark:#0E0E0E; --ls-gold:#B09060; --ls-mid:#666; --ls-muted:#999; width:100%; }
+.ls-wrap { --ls-dark:#1a1a1a; --ls-gold:#8B1A2A; --ls-mid:#3C3C3C; --ls-muted:#888888; width:100%; }   /* 메인 페이지 색상 그대로 (--gold가 메인에선 버건디 핑크) */
 .ls-wrap .ls-pc { display:inline; } .ls-wrap .ls-mo { display:none; } .ls-wrap .ls-mo-br { display:none; }
 
 /* 임팩트 통계 */
