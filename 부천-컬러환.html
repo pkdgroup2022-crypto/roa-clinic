@@ -512,7 +512,7 @@ const REVIEW_FILTERS = {
 };
 const REVIEW_FILTER_BTN_ORDER = ['원데이 실리프팅', '팔자 실리프팅'];
 
-/* 가격표를 오시는 길 아래로 내리고, 특징 섹션을 빼는 시술 (관리자 항목 id) — 5060 실리프팅 */
+/* 가격표를 오시는 길 아래로 내리고, FAQ를 빼는 시술 (관리자 항목 id) — 5060 실리프팅 */
 const PRICE_BOTTOM_IDS = ['팔자주름-패키지_1791787939214'];
 function applyPriceBottomLayout() {
     const box = document.createElement('div');
@@ -526,7 +526,6 @@ function applyPriceBottomLayout() {
     box.appendChild(contact);
     box.appendChild(document.getElementById('btnBooking'));
     document.querySelector('.location-section').after(box);
-    document.getElementById('pointsTitle').closest('.section').style.display = 'none';
     document.querySelector('.cta-band').style.display = 'none';   // 바로 위에 예약 버튼이 있어 중복
 }
 
@@ -2493,7 +2492,10 @@ async function render() {
     // 시술 후기 사진 (Firebase에서 로드)
     loadReviewPhotos(p._reviewId || id);
     if (LIFTING_STORY_IDS.includes(p._reviewId || id)) showLiftingStory();
-    if (PRICE_BOTTOM_IDS.includes(p._fbId)) applyPriceBottomLayout();
+    if (PRICE_BOTTOM_IDS.includes(p._fbId)) {
+        applyPriceBottomLayout();
+        p.seo = (p.seo || '').replace(/<h2>자주 묻는 질문[\s\S]*/, '');   // FAQ 제외 (소개글만)
+    }
 
     // Points
     document.getElementById('pointsTitle').textContent = p.pointsTitle;
