@@ -195,6 +195,17 @@ nav {
 .contact-btn-tel { background: #fff; color: #222; border: 1.5px solid #222; }
 .contact-btn-kakao { background: #FAE100; color: #3A1D1D; border: 1.5px solid #FAE100; }
 @media (max-width: 600px) { .bottom-price { padding: 2rem 1.2rem 2.5rem; } }
+.sticky-cta { position: fixed; left: 0; right: 0; bottom: 0; z-index: 98; background: #fff; box-shadow: 0 -4px 16px rgba(0,0,0,0.08); padding: 0.8rem 2rem calc(0.8rem + env(safe-area-inset-bottom)); }
+.sticky-cta-inner { max-width: 860px; margin: 0 auto; }
+.sticky-cta .contact-btns { margin: 0 0 0.6rem; }
+body.has-sticky-cta { padding-bottom: 150px; }
+@media (max-width: 600px) {
+    .sticky-cta { padding: 0.6rem 0.8rem calc(0.6rem + env(safe-area-inset-bottom)); }
+    .sticky-cta .contact-btns { gap: 0.5rem; margin-bottom: 0.5rem; }
+    .sticky-cta .contact-btn { padding: 0.75rem 0.4rem; font-size: 0.9rem; }
+    .sticky-cta .btn-booking { padding: 0.9rem 1rem; }
+    body.has-sticky-cta { padding-bottom: 130px; }
+}
 .location-map { width: 100%; height: 260px; border-radius: 8px; overflow: hidden; margin-bottom: 1rem; }
 .location-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; }
 .loc-card { background: #fff; border: 1px solid #e8e0d6; border-radius: 8px; padding: 1.2rem 1.4rem; }
@@ -524,8 +535,16 @@ function applyPriceBottomLayout() {
     contact.innerHTML =
         '<a href="tel:032-324-1118" class="contact-btn contact-btn-tel">📞 전화문의</a>' +
         '<a href="https://pf.kakao.com/_gxfGxexj" target="_blank" rel="noopener" class="contact-btn contact-btn-kakao">💬 카카오톡 문의</a>';
-    box.appendChild(contact);
-    box.appendChild(document.getElementById('btnBooking'));
+    // 전화·카톡·예약 버튼은 화면 아래에 고정 (스크롤해도 계속 보임)
+    const sticky = document.createElement('div');
+    sticky.className = 'sticky-cta';
+    const inner = document.createElement('div');
+    inner.className = 'sticky-cta-inner';
+    inner.appendChild(contact);
+    inner.appendChild(document.getElementById('btnBooking'));
+    sticky.appendChild(inner);
+    document.body.appendChild(sticky);
+    document.body.classList.add('has-sticky-cta');
     document.querySelector('.location-section').after(box);
     document.querySelector('.cta-band').style.display = 'none';   // 바로 위에 예약 버튼이 있어 중복
 }
