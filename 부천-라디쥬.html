@@ -187,6 +187,13 @@ nav {
 /* ─── 예약 CTA ─── */
 .location-section { background: #f9f7f4; padding: 3.5rem 2rem; }
 .location-inner { max-width: 860px; margin: 0 auto; }
+/* 하단 가격·예약 블록 (PRICE_BOTTOM_IDS 시술만, 오시는 길 아래로 이동) */
+.bottom-price { max-width: 860px; margin: 0 auto; padding: 2.5rem 2rem 3rem; background: #fff; }
+.contact-btns { display: flex; gap: 0.7rem; margin: 1.4rem 0 0.7rem; }
+.contact-btn { flex: 1; display: flex; align-items: center; justify-content: center; gap: 0.45rem; padding: 1rem 0.5rem; border-radius: 6px; font-size: 0.98rem; font-weight: 700; text-decoration: none; font-family: 'Noto Sans KR', sans-serif; }
+.contact-btn-tel { background: #fff; color: #222; border: 1.5px solid #222; }
+.contact-btn-kakao { background: #FAE100; color: #3A1D1D; border: 1.5px solid #FAE100; }
+@media (max-width: 600px) { .bottom-price { padding: 2rem 1.2rem 2.5rem; } }
 .location-map { width: 100%; height: 260px; border-radius: 8px; overflow: hidden; margin-bottom: 1rem; }
 .location-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; }
 .loc-card { background: #fff; border: 1px solid #e8e0d6; border-radius: 8px; padding: 1.2rem 1.4rem; }
@@ -504,6 +511,24 @@ const REVIEW_FILTERS = {
     'nasolabial-pkg': [{ label: '팔자 실리프팅', kw: '팔자' }, { label: '원데이 실리프팅', kw: '원데이 실리프팅' }],
 };
 const REVIEW_FILTER_BTN_ORDER = ['원데이 실리프팅', '팔자 실리프팅'];
+
+/* 가격표를 오시는 길 아래로 내리고, 특징 섹션을 빼는 시술 (관리자 항목 id) — 5060 실리프팅 */
+const PRICE_BOTTOM_IDS = ['팔자주름-패키지_1791787939214'];
+function applyPriceBottomLayout() {
+    const box = document.createElement('div');
+    box.className = 'bottom-price';
+    ['priceList', 'priceTotalBox', 'heroPriceNote'].forEach(id => box.appendChild(document.getElementById(id)));
+    const contact = document.createElement('div');
+    contact.className = 'contact-btns';
+    contact.innerHTML =
+        '<a href="tel:032-324-1118" class="contact-btn contact-btn-tel">📞 전화문의</a>' +
+        '<a href="https://pf.kakao.com/_gxfGxexj" target="_blank" rel="noopener" class="contact-btn contact-btn-kakao">💬 카카오톡 문의</a>';
+    box.appendChild(contact);
+    box.appendChild(document.getElementById('btnBooking'));
+    document.querySelector('.location-section').after(box);
+    document.getElementById('pointsTitle').closest('.section').style.display = 'none';
+    document.querySelector('.cta-band').style.display = 'none';   // 바로 위에 예약 버튼이 있어 중복
+}
 
 /* 리프팅 노하우 섹션을 보여줄 시술 */
 const LIFTING_STORY_IDS = ['oneday-silift', 'nasolabial-pkg'];
@@ -2293,6 +2318,7 @@ async function render() {
                     }
                     const baseName = p.name, baseAmounts = (p.prices || []).map(x => x.amount);
                     if (cat.cat)    p.category = cat.cat;   // 관리자에서 분류를 옮기면 그대로 반영
+                    p._fbId = found.id;
                     if (found.img)  p.img  = fixImgUrl(found.img);
                     if (found.name) p.name = found.name;
                     if (found.desc) p.desc = found.desc;
@@ -2467,6 +2493,7 @@ async function render() {
     // 시술 후기 사진 (Firebase에서 로드)
     loadReviewPhotos(p._reviewId || id);
     if (LIFTING_STORY_IDS.includes(p._reviewId || id)) showLiftingStory();
+    if (PRICE_BOTTOM_IDS.includes(p._fbId)) applyPriceBottomLayout();
 
     // Points
     document.getElementById('pointsTitle').textContent = p.pointsTitle;
