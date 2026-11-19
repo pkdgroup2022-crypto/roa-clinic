@@ -1224,15 +1224,42 @@ function clearAllPhotos() {
 let allReservations = [];
 let rvCurrentFilter = '전체';
 
-async function loadReservations() {
-    try {
-        const snap = await db.ref('roa/reservations').get();
-        if (snap.exists()) {
-            const raw = snap.val();
-            allReservations = Object.entries(raw).map(([k, v]) => ({ _key: k, ...v }));
-            allReservations.sort((a, b) => (b.createdAt || 0) - (a.createdAt || 0));
-        } else { allReservations = []; }
-    } catch(e) { allReservations = []; }
+/* 실시간 구독: 새 예약·상태 변경이 새로고침 없이 바로 반영됨 */
+let rvListening = false;
+let rvRenderPending = false;
+function loadReservations() {
+    if (rvListening) return;
+    rvListening = true;
+    let firstLoad = true;
+    db.ref('roa/reservations').on('value', snap => {
+        const raw = snap.val() || {};
+        const prevKeys = new Set(allReservations.map(r => r._key));
+        allReservations = Object.entries(raw).map(([k, v]) => ({ _key: k, ...v }));
+        allReservations.sort((a, b) => (b.createdAt || 0) - (a.createdAt || 0));
+        if (!firstLoad) {
+            const added = allReservations.filter(r => !prevKeys.has(r._key)).length;
+            if (added) {
+                showToast(`🔔 새 예약 ${added}건이 들어왔습니다`);
+                if (document.hidden) document.title = `(새 예약 ${added}) ` + document.title.replace(/^\(새 예약 \d+\) /, '');
+            }
+        }
+        firstLoad = false;
+        rvRenderSafe();
+    }, () => { rvListening = false; allReservations = []; renderReservations(); });   // 로그아웃 등으로 끊기면 재로그인 시 다시 구독
+    document.addEventListener('visibilitychange', () => {
+        if (!document.hidden) document.title = document.title.replace(/^\(새 예약 \d+\) /, '');
+    });
+}
+// 상태 변경 드롭다운을 고르는 중이면 다 고른 뒤에 다시 그림 (선택 중 목록이 닫히지 않게)
+function rvRenderSafe() {
+    const active = document.activeElement;
+    if (active && active.tagName === 'SELECT' && document.getElementById('rv-tbody').contains(active)) {
+        if (!rvRenderPending) {
+            rvRenderPending = true;
+            active.addEventListener('blur', () => { rvRenderPending = false; renderReservations(); }, { once: true });
+        }
+        return;
+    }
     renderReservations();
 }
 
@@ -1603,6 +1630,8 @@ function doLogin() {
         });
 }
 function doLogout() {
+    db.ref('roa/reservations').off();
+    rvListening = false;
     auth.signOut();
 }
 // Enter 키로 로그인
