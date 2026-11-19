@@ -522,7 +522,7 @@ const REVIEW_FILTERS = {
 };
 const REVIEW_FILTER_BTN_ORDER = ['원데이 실리프팅', '팔자 실리프팅'];
 
-/* 가격표를 오시는 길 아래로 내리고, FAQ를 빼는 시술 (관리자 항목 id) — 5060 실리프팅 */
+/* 가격표를 오시는 길 아래로 내리고, 맨 아래 소개글·FAQ를 빼는 시술 (관리자 항목 id) — 5060 실리프팅 */
 const PRICE_BOTTOM_IDS = ['팔자주름-패키지_1791787939214'];
 function applyPriceBottomLayout() {
     const box = document.createElement('div');
@@ -2516,7 +2516,8 @@ async function render() {
     if (LIFTING_STORY_IDS.includes(p._reviewId || id)) showLiftingStory();
     if (PRICE_BOTTOM_IDS.includes(p._fbId)) {
         applyPriceBottomLayout();
-        p.seo = (p.seo || '').replace(/<h2>자주 묻는 질문[\s\S]*/, '');   // FAQ 제외 (소개글만)
+        p.seo = '';   // 맨 아래 소개글·FAQ 없음
+        document.getElementById('seoSection').style.display = 'none';
     }
 
     // Points
