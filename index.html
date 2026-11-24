@@ -1899,6 +1899,7 @@
             .doctor-section { padding: 70px 24px; }
         }
     </style>
+<script src="img-map.js"></script>
 </head>
 <body>
 
@@ -2225,7 +2226,8 @@ function closeEvPopup() {
     function parsePopup(data) {
         if (!data) return null;
         const arr = Array.isArray(data) ? data : Object.values(data);
-        return arr.filter(p => p.visible !== false && p.imgs && p.imgs.length);
+        return arr.filter(p => p.visible !== false && p.imgs && p.imgs.length)
+            .map(p => ({ ...p, imgs: p.imgs.map(u => (window.IMG_MAP && IMG_MAP[u]) || u) }));   // 압축본 사용
     }
     // Firebase에서 최신 데이터 로드 후 팝업 초기화 (캐시는 fallback)
     document.addEventListener('DOMContentLoaded', () => {
@@ -2593,6 +2595,7 @@ const NAVER_PLACE  = 'https://booking.naver.com/booking/13/bizes/865921/';
 
 function fixImgUrl(url) {
     if (!url) return url;
+    if (window.IMG_MAP && IMG_MAP[url]) return IMG_MAP[url];   // 큰 업로드 이미지는 압축본 사용 (img-map.js)
     return url.replace(/(images\/(?:program-|popup-event)[^"'\s]+)\.png/g, '$1.jpg');
 }
 const NAVER_MAP    = 'https://map.naver.com/p/entry/place/1064400953?';

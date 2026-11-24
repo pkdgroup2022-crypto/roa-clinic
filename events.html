@@ -263,6 +263,7 @@ nav {
     <p class="no-data">로딩 중…</p>
 </div>
 
+<script src="img-map.js"></script>
 <script>
 const FIREBASE_URL = 'https://roa-clinic-default-rtdb.firebaseio.com/roa';
 
@@ -275,6 +276,7 @@ const FB_IMG_MAP = {
 };
 function fixImgUrl(url) {
     if (!url) return url;
+    if (window.IMG_MAP && IMG_MAP[url]) return IMG_MAP[url];   // 큰 업로드 이미지는 압축본 사용 (img-map.js)
     if (url.includes('firebasestorage.googleapis.com')) {
         for (const [key, local] of Object.entries(FB_IMG_MAP)) {
             if (url.includes(key)) return local;

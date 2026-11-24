@@ -635,6 +635,21 @@ function showToast(msg, isErr) {
     t.classList.add('show');
     setTimeout(() => t.classList.remove('show'), 3000);
 }
+/* 업로드 전 이미지 자동 압축: 가로 최대 1200px, WebP. GIF(움짤)는 그대로. 더 커지면 원본 사용 */
+async function compressImage(file, maxW = 1200) {
+    if (!/^image\/(png|jpe?g|webp)$/.test(file.type)) return file;
+    try {
+        const bmp = await createImageBitmap(file);
+        const scale = Math.min(1, maxW / bmp.width);
+        const c = document.createElement('canvas');
+        c.width = Math.round(bmp.width * scale);
+        c.height = Math.round(bmp.height * scale);
+        c.getContext('2d').drawImage(bmp, 0, 0, c.width, c.height);
+        const blob = await new Promise(r => c.toBlob(r, 'image/webp', 0.85));
+        if (!blob || blob.type !== 'image/webp' || blob.size >= file.size) return file;
+        return new File([blob], file.name.replace(/\.[^.]+$/, '') + '.webp', { type: 'image/webp' });
+    } catch (e) { return file; }
+}
 function loadJSON(key, fallback) {
     try { const s = localStorage.getItem(key); return s ? JSON.parse(s) : fallback; }
     catch(e) { return fallback; }
@@ -906,9 +921,10 @@ async function uploadEvImg(i, input) {
     if (!file) return;
     showToast('이미지 업로드 중...');
     try {
-        const ext = file.name.split('.').pop();
+        const up = await compressImage(file);
+        const ext = up.name.split('.').pop();
         const ref = storage.ref(`events/${Date.now()}.${ext}`);
-        await ref.put(file);
+        await ref.put(up);
         const url = await ref.getDownloadURL();
         if (!eventsData[i].imgs) eventsData[i].imgs = [];
         eventsData[i].imgs.push(url);
@@ -1175,10 +1191,11 @@ async function uploadPhotoFile(idx, side, input) {
     const previewId = side === 'before' ? `prev-bef-${idx}` : `prev-aft-${idx}`;
     showToast('이미지 업로드 중...');
     try {
-        const ext = file.name.split('.').pop();
+        const up = await compressImage(file);
+        const ext = up.name.split('.').pop();
         const path = `photos/${Date.now()}_${side}.${ext}`;
         const ref = storage.ref(path);
-        await ref.put(file);
+        await ref.put(up);
         const url = await ref.getDownloadURL();
         photosData[idx][field] = url;
         const previewEl = document.getElementById(previewId);
@@ -1595,9 +1612,10 @@ async function pgSaveItem() {
     if (pgThumbFile) {
         showToast('이미지 업로드 중...');
         try {
-            const ext = pgThumbFile.name.split('.').pop();
+            const up = await compressImage(pgThumbFile);
+            const ext = up.name.split('.').pop();
             const ref = storage.ref('programs/' + (item.id || 'item_' + Date.now()) + '/thumb.' + ext);
-            await ref.put(pgThumbFile);
+            await ref.put(up);
             item.img = await ref.getDownloadURL();
             pgThumbFile = null;
         } catch(e) { showToast('업로드 실패: ' + e.message, true); return; }
@@ -1838,9 +1856,10 @@ async function uploadPopupImg(pi, input) {
     if (!file) return;
     showToast('이미지 업로드 중...');
     try {
-        const ext = file.name.split('.').pop();
+        const up = await compressImage(file);
+        const ext = up.name.split('.').pop();
         const ref = storage.ref(`popup/${Date.now()}.${ext}`);
-        await ref.put(file);
+        await ref.put(up);
         const url = await ref.getDownloadURL();
         if (!popupData[pi].imgs) popupData[pi].imgs = [];
         popupData[pi].imgs.push(url);
@@ -1986,9 +2005,10 @@ async function uploadHrCatImg(catId, input) {
     if (!file) return;
     showToast('이미지 업로드 중...');
     try {
-        const ext = file.name.split('.').pop();
+        const up = await compressImage(file);
+        const ext = up.name.split('.').pop();
         const ref = storage.ref(`hair-removal/cat-${catId}-${Date.now()}.${ext}`);
-        await ref.put(file);
+        await ref.put(up);
         const url = await ref.getDownloadURL();
         hrData.catImages[catId] = url;
         renderHairRemoval();
