@@ -10,7 +10,7 @@
     <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-database-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-storage-compat.js"></script>
-    <script src="schedule.js?v=2"></script>
+    <script src="schedule.js?v=3"></script>
     <script>
         // Firebase 초기화
         firebase.initializeApp({
@@ -98,6 +98,20 @@
 
         .container { max-width: 820px; margin: 0 auto; padding: 2.5rem 1.5rem 4rem; }
 
+        .hr-label { font-size:0.85rem; font-weight:700; margin-bottom:0.5rem; }
+        .hr-table { width:100%; border-collapse:collapse; font-size:0.82rem; background:#fff; border:1px solid var(--border); border-radius:8px; overflow:hidden; }
+        .hr-table th { background:#f5f5f5; padding:0.6rem; font-weight:700; text-align:center; border-bottom:1px solid var(--border); white-space:nowrap; }
+        .hr-table td { padding:0.5rem 0.6rem; text-align:center; border-bottom:1px solid var(--border); white-space:nowrap; }
+        .hr-table tr.off td { background:#f4f4f4; color:#bbb; }
+        .hr-input { padding:0.35rem 0.45rem; border:1px solid var(--border); border-radius:6px; font-size:0.8rem; font-family:inherit; }
+        .hr-input:disabled { opacity:0.45; }
+        .hr-off { display:inline-flex; align-items:center; gap:0.25rem; border:1px solid var(--border); border-radius:20px; padding:0.2rem 0.6rem; font-size:0.75rem; cursor:pointer; background:#fff; }
+        .hr-off.on { border-color:var(--red); color:var(--red); background:#fdf2f2; }
+        .hr-note { background:#eef4fb; color:#556; font-size:0.74rem; padding:0.6rem 0.8rem; border-radius:6px; margin:0.8rem 0; }
+        .hr-btn { padding:0.5rem 0.8rem; border:1px solid #2c5aa0; color:#2c5aa0; background:#fff; border-radius:6px; font-size:0.8rem; cursor:pointer; font-family:inherit; }
+        .hr-btn-main { background:#2c5aa0; color:#fff; }
+        .hr-del { background:var(--red); color:#fff; border:none; border-radius:5px; padding:0.3rem 0.7rem; font-size:0.75rem; cursor:pointer; }
+        .hr-edit { background:#fff; border:1px solid var(--border); border-radius:5px; padding:0.3rem 0.6rem; font-size:0.75rem; cursor:pointer; margin-right:0.2rem; }
         .section-title { font-size: 1.2rem; font-weight: 700; margin-bottom: 0.4rem; }
         .section-desc { font-size: 0.82rem; color: var(--muted); margin-bottom: 2rem; line-height: 1.7; }
 
@@ -342,6 +356,7 @@
     <button class="tab-btn" onclick="switchTab('popup')">📢 팝업 관리</button>
     <button class="tab-btn" onclick="switchTab('programs')">📋 시술 메뉴</button>
     <button class="tab-btn" onclick="switchTab('reservations')">📅 예약일정</button>
+    <button class="tab-btn" onclick="switchTab('hours')">🕒 진료시간 설정</button>
     <button class="tab-btn owner-only" onclick="switchTab('accounts')">👥 직원 계정</button>
 </div>
 
@@ -445,36 +460,65 @@
     </div>
 </div>
 
+<!-- ═══ 탭: 진료시간 설정 ═══ -->
+<div id="tab-hours" class="tab-panel">
+    <div class="container">
+        <div class="section-title" style="margin-bottom:0.3rem;">진료시간 설정 <span style="font-size:0.8rem;color:var(--muted);font-weight:400;">(부천점)</span></div>
+        <p class="section-desc">여기서 정한 진료시간대로 홈페이지 예약 시간이 자동으로 열립니다. 저장하면 바로 반영됩니다.<br>
+        마지막 예약: 일반 시술 = 점심·마감 1시간 전 / 울쎄라·온쎄라·볼쎄라·실리프팅(코 제외) = 1시간 30분 전</p>
+
+        <div class="hr-label">영업시간 · 정기 휴무 (매주)</div>
+        <div class="card" style="padding:1rem;">
+            <div style="overflow-x:auto;">
+                <table class="hr-table">
+                    <thead><tr><th style="width:60px;">요일</th><th style="width:90px;">휴무</th><th>영업시간</th><th>점심 · 휴게시간</th></tr></thead>
+                    <tbody id="hr-weekly"></tbody>
+                </table>
+            </div>
+            <div class="hr-note">점심 · 휴게시간이 없으면 비워 두세요. 휴무로 체크한 요일은 시간이 적용되지 않습니다.</div>
+            <div style="display:flex;gap:0.5rem;flex-wrap:wrap;">
+                <button class="hr-btn" onclick="hrCopyFirst()">첫 영업일 시간을 전체 요일에 적용</button>
+                <button class="hr-btn hr-btn-main" onclick="hrSaveWeekly()">영업시간 · 정기 휴무 저장</button>
+            </div>
+        </div>
+
+        <div class="hr-label" style="margin-top:1.6rem;">특정 날짜 휴무 · 단축 영업 · 특별 근무</div>
+        <div class="card" style="padding:1rem;">
+            <div style="display:flex;gap:0.5rem;flex-wrap:wrap;align-items:center;">
+                <input type="date" id="hd-date" class="hr-input" onchange="hdLoad()">
+                <select id="hd-type" class="hr-input" onchange="hdTypeChange()">
+                    <option value="off">종일 휴무</option>
+                    <option value="short">단축 영업</option>
+                    <option value="special">특별 근무 (휴무일 영업)</option>
+                    <option value="change">시간 변경</option>
+                </select>
+                <input type="text" id="hd-memo" class="hr-input" placeholder="메모 (예: 설날 연휴)" style="flex:1;min-width:180px;">
+                <button class="hr-btn hr-btn-main" onclick="hdSave()">날짜 추가</button>
+            </div>
+            <div id="hd-hours" style="display:none;margin-top:0.8rem;font-size:0.82rem;">
+                <div style="display:flex;gap:0.8rem;flex-wrap:wrap;align-items:center;">
+                    <label>영업 <input type="time" step="1800" id="hd-open" class="hr-input" onchange="hdRenderSlots()"> ~ <input type="time" step="1800" id="hd-close" class="hr-input" onchange="hdRenderSlots()"></label>
+                    <label>점심 <input type="time" step="1800" id="hd-ls" class="hr-input" onchange="hdRenderSlots()"> ~ <input type="time" step="1800" id="hd-le" class="hr-input" onchange="hdRenderSlots()"></label>
+                </div>
+                <div style="font-size:0.75rem;color:var(--muted);margin:0.7rem 0 0.4rem;">예약 시간을 눌러 열기/막기 · <span style="color:#1a7a3f;">■ 예약 가능</span> · <span style="color:#bbb;">■ 막힘</span> · <span style="color:#1F5CFF;">■ 추가로 연 시간</span></div>
+                <div id="hd-slots" style="display:flex;flex-wrap:wrap;gap:0.35rem;"></div>
+            </div>
+            <div class="hr-note" style="margin-top:0.8rem;">단축 영업은 종료 시간만 바꿔도 됩니다. 특별 근무를 고르면 원래 휴무인 날도 예약이 열립니다. 이미 등록된 날짜를 다시 추가하면 내용이 수정됩니다.</div>
+            <div style="overflow-x:auto;">
+                <table class="hr-table">
+                    <thead><tr><th style="width:130px;">날짜</th><th style="width:220px;">영업</th><th>메모</th><th style="width:110px;">관리</th></tr></thead>
+                    <tbody id="hd-list"></tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
 <!-- ═══ 탭 6: 예약일정 ═══ -->
 <div id="tab-reservations" class="tab-panel">
     <div class="container">
         <div class="section-title" style="margin-bottom:0.3rem;">예약일정</div>
         <p class="section-desc">홈페이지를 통해 접수된 예약 목록입니다.</p>
-        <!-- 특정 날짜 진료시간 변경 -->
-        <div class="card" style="padding:1.2rem 1.3rem;">
-            <div style="font-weight:700;font-size:0.95rem;margin-bottom:0.3rem;">🗓 특정 날짜 진료시간 · 예약시간 변경</div>
-            <p style="font-size:0.75rem;color:var(--muted);line-height:1.6;margin-bottom:0.9rem;">
-                기본: 월·화·목·금 11:00~21:00(점심 13~14시) · 토 10:00~15:00 · 수·일 휴진<br>
-                마지막 예약: 일반 시술 = 점심·마감 1시간 전 / 울쎄라·온쎄라·볼쎄라·실리프팅(코 제외) = 1시간 30분 전 (자동 적용)
-            </p>
-            <div style="display:flex;gap:0.6rem;flex-wrap:wrap;align-items:center;font-size:0.82rem;">
-                <label>날짜 <input type="date" id="sc-date" onchange="scLoadDate()" style="padding:0.35rem;border:1px solid var(--border);border-radius:6px;"></label>
-                <label style="display:flex;align-items:center;gap:0.3rem;"><input type="checkbox" id="sc-closed" onchange="scRenderSlots()"> 휴진</label>
-            </div>
-            <div id="sc-hours" style="display:flex;gap:0.6rem;flex-wrap:wrap;align-items:center;font-size:0.82rem;margin-top:0.7rem;">
-                <label>진료 <input type="time" step="1800" id="sc-open" onchange="scRenderSlots()"> ~ <input type="time" step="1800" id="sc-close" onchange="scRenderSlots()"></label>
-                <label>점심 <input type="time" step="1800" id="sc-ls" onchange="scRenderSlots()"> ~ <input type="time" step="1800" id="sc-le" onchange="scRenderSlots()"> <span style="color:var(--muted);font-size:0.72rem;">(없으면 비우기)</span></label>
-            </div>
-            <div id="sc-slot-wrap" style="margin-top:0.8rem;">
-                <div style="font-size:0.75rem;color:var(--muted);margin-bottom:0.4rem;">시간을 눌러 열기/막기 · <span style="color:#1a7a3f;">■ 예약 가능</span> · <span style="color:#bbb;">■ 막힘</span> · <span style="color:#1F5CFF;">■ 추가로 연 시간</span></div>
-                <div id="sc-slots" style="display:flex;flex-wrap:wrap;gap:0.35rem;"></div>
-            </div>
-            <div style="display:flex;gap:0.5rem;margin-top:0.9rem;flex-wrap:wrap;">
-                <button class="btn-save" onclick="scSave()">💾 이 날짜 저장</button>
-                <button class="btn-secondary" onclick="scReset()">기본 시간으로 되돌리기</button>
-            </div>
-            <div id="sc-list" style="margin-top:1rem;font-size:0.8rem;"></div>
-        </div>
         <!-- 상태 필터 -->
         <div style="display:flex;gap:0.5rem;margin-bottom:1.2rem;flex-wrap:wrap;">
             <button class="filter-chip active" onclick="rvFilter('전체',this)">전체</button>
@@ -1294,116 +1338,173 @@ function loadReservations() {
     });
 }
 /* ════════════════════════════════
-   특정 날짜 진료시간 · 예약시간 변경 (roa/schedule)
+   진료시간 설정 (roa/schedule: weekly · dates)
 ════════════════════════════════ */
-let scOverrides = {};
-let scBlocked = [], scExtra = [];
+let schedData = { weekly: null, dates: {} };
+let hdBlocked = [], hdExtra = [];
 let scListening = false;
+const HR_DAYS = ['일','월','화','수','목','금','토'];
+const HD_TYPE_LABEL = { off: '종일 휴무', short: '단축 영업', special: '특별 근무', change: '시간 변경' };
 function loadSchedule() {
     if (scListening) return;
     scListening = true;
+    renderWeekly();
     db.ref('roa/schedule').on('value', snap => {
-        scOverrides = snap.val() || {};
-        scRenderList();
+        const v = snap.val() || {};
+        schedData = { weekly: v.weekly || null, dates: v.dates || {} };
+        renderWeekly();
+        hdRenderList();
     }, () => { scListening = false; });
 }
-function scVal(id) { return document.getElementById(id).value; }
-function scLoadDate() {
-    const d = scVal('sc-date'); if (!d) return;
-    const S = ROA_SCHEDULE, ov = scOverrides[d] || {};
-    const base = S.DEFAULT_HOURS[S.dowOf(d)];
-    const h = (ov.open && ov.close) ? ov : (base || { open: '11:00', close: '21:00', lunchStart: '13:00', lunchEnd: '14:00' });
-    document.getElementById('sc-closed').checked = ov.closed != null ? !!ov.closed : !base;
-    document.getElementById('sc-open').value  = h.open || '';
-    document.getElementById('sc-close').value = h.close || '';
-    document.getElementById('sc-ls').value    = h.lunchStart || '';
-    document.getElementById('sc-le').value    = h.lunchEnd || '';
-    scBlocked = (ov.blocked || []).slice();
-    scExtra   = (ov.extra || []).slice();
-    scRenderSlots();
+function hrWeek(dow) { return ROA_SCHEDULE.weeklyFor(dow, schedData); }
+function renderWeekly() {
+    const tb = document.getElementById('hr-weekly'); if (!tb) return;
+    const order = [0,1,2,3,4,5,6];
+    tb.innerHTML = order.map(d => {
+        const w = hrWeek(d) || {};
+        const off = !!w.closed, dis = off ? 'disabled' : '';
+        const col = d === 0 ? 'color:var(--red);' : d === 6 ? 'color:#2c5aa0;' : '';
+        return `<tr id="hr-row-${d}" class="${off ? 'off' : ''}">
+            <td style="font-weight:700;${col}">${HR_DAYS[d]}</td>
+            <td><label class="hr-off${off ? ' on' : ''}"><input type="checkbox" id="hr-off-${d}" ${off ? 'checked' : ''} onchange="hrToggleOff(${d})"> 휴무</label></td>
+            <td><input type="time" step="1800" class="hr-input" id="hr-open-${d}" value="${w.open || ''}" ${dis}> ~ <input type="time" step="1800" class="hr-input" id="hr-close-${d}" value="${w.close || ''}" ${dis}></td>
+            <td><input type="time" step="1800" class="hr-input" id="hr-ls-${d}" value="${w.lunchStart || ''}" ${dis}> ~ <input type="time" step="1800" class="hr-input" id="hr-le-${d}" value="${w.lunchEnd || ''}" ${dis}></td>
+        </tr>`;
+    }).join('');
 }
-function scCurHours() {
-    return { open: scVal('sc-open'), close: scVal('sc-close'), lunchStart: scVal('sc-ls'), lunchEnd: scVal('sc-le') };
+function hrToggleOff(d) {
+    const off = document.getElementById('hr-off-' + d).checked;
+    document.getElementById('hr-row-' + d).classList.toggle('off', off);
+    document.getElementById('hr-off-' + d).parentElement.classList.toggle('on', off);
+    ['open','close','ls','le'].forEach(k => document.getElementById(`hr-${k}-${d}`).disabled = off);
 }
-function scRenderSlots() {
-    const box = document.getElementById('sc-slots');
-    const closed = document.getElementById('sc-closed').checked;
-    document.getElementById('sc-hours').style.display = closed ? 'none' : 'flex';
-    document.getElementById('sc-slot-wrap').style.display = closed ? 'none' : 'block';
-    if (closed || !scVal('sc-date')) { box.innerHTML = ''; return; }
-    const h = scCurHours();
+function hrCopyFirst() {
+    const first = [1,2,3,4,5,6,0].find(d => !document.getElementById('hr-off-' + d).checked);
+    if (first == null) { showToast('영업일이 없습니다', true); return; }
+    const v = k => document.getElementById(`hr-${k}-${first}`).value;
+    [0,1,2,3,4,5,6].forEach(d => {
+        if (d === first || document.getElementById('hr-off-' + d).checked) return;
+        ['open','close','ls','le'].forEach(k => document.getElementById(`hr-${k}-${d}`).value = v(k));
+    });
+    showToast(HR_DAYS[first] + '요일 시간을 영업 요일 전체에 적용했습니다 (저장을 눌러야 반영)');
+}
+async function hrSaveWeekly() {
+    const weekly = {};
+    for (let d = 0; d < 7; d++) {
+        const g = k => document.getElementById(`hr-${k}-${d}`).value;
+        const closed = document.getElementById('hr-off-' + d).checked;
+        if (!closed && (!g('open') || !g('close'))) { showToast(HR_DAYS[d] + '요일 영업시간을 입력하세요', true); return; }
+        if (!closed && (!!g('ls') !== !!g('le'))) { showToast(HR_DAYS[d] + '요일 점심시간은 시작·끝 둘 다 입력하거나 비우세요', true); return; }
+        weekly[d] = { closed, open: g('open'), close: g('close'), lunchStart: g('ls'), lunchEnd: g('le') };
+    }
+    try {
+        await db.ref('roa/schedule/weekly').set(weekly);
+        showToast('영업시간 · 정기 휴무 저장됨 (홈페이지 바로 반영)');
+    } catch (e) { showToast('저장 실패: ' + (e.code || e.message), true); }
+}
+
+/* ── 특정 날짜 ── */
+function hdVal(id) { return document.getElementById(id).value; }
+function hdBaseFor(d) {
+    // 그 요일 영업시간, 휴무 요일이면 첫 영업 요일 시간
+    const S = ROA_SCHEDULE, w = hrWeek(S.dowOf(d));
+    if (w && !w.closed) return w;
+    const first = [1,2,4,5,6,3,0].map(hrWeek).find(x => x && !x.closed);
+    return first || { open: '11:00', close: '21:00', lunchStart: '13:00', lunchEnd: '14:00' };
+}
+function hdLoad() {
+    const d = hdVal('hd-date'); if (!d) return;
+    const ov = schedData.dates[d];
+    const w = hrWeek(ROA_SCHEDULE.dowOf(d));
+    const base = hdBaseFor(d);
+    let type = ov ? (ov.type || (ov.closed ? 'off' : 'change')) : (w && w.closed ? 'special' : 'off');
+    document.getElementById('hd-type').value = type;
+    document.getElementById('hd-memo').value = (ov && ov.memo) || '';
+    const h = ov && !ov.closed ? ov : base;
+    document.getElementById('hd-open').value  = h.open || base.open || '';
+    document.getElementById('hd-close').value = h.close || base.close || '';
+    document.getElementById('hd-ls').value    = h.lunchStart !== undefined ? (h.lunchStart || '') : (base.lunchStart || '');
+    document.getElementById('hd-le').value    = h.lunchEnd !== undefined ? (h.lunchEnd || '') : (base.lunchEnd || '');
+    hdBlocked = ((ov && ov.blocked) || []).slice();
+    hdExtra   = ((ov && ov.extra) || []).slice();
+    hdTypeChange();
+}
+function hdTypeChange() {
+    const off = hdVal('hd-type') === 'off';
+    document.getElementById('hd-hours').style.display = off ? 'none' : 'block';
+    hdRenderSlots();
+}
+function hdCurHours() { return { open: hdVal('hd-open'), close: hdVal('hd-close'), lunchStart: hdVal('hd-ls'), lunchEnd: hdVal('hd-le') }; }
+function hdRenderSlots() {
+    const box = document.getElementById('hd-slots');
+    if (hdVal('hd-type') === 'off' || !hdVal('hd-date')) { box.innerHTML = ''; return; }
+    const S = ROA_SCHEDULE, h = hdCurHours();
     if (!h.open || !h.close) { box.innerHTML = ''; return; }
-    const S = ROA_SCHEDULE;
-    const normal = S.slotsByHours(h, S.LEAD_NORMAL);
-    const longSet = S.slotsByHours(h, S.LEAD_LONG);
+    const normal = S.slotsByHours(h, S.LEAD_NORMAL), longSet = S.slotsByHours(h, S.LEAD_LONG);
     const all = S.slotsByHours(h, 30);
-    scExtra.forEach(t => { if (!all.includes(t)) all.push(t); });
+    hdExtra.forEach(t => { if (!all.includes(t)) all.push(t); });
     all.sort((a, b) => S.toMin(a) - S.toMin(b));
     box.innerHTML = all.map(t => {
         let on, color;
-        if (scBlocked.includes(t)) { on = false; color = '#bbb'; }
-        else if (scExtra.includes(t)) { on = true; color = '#1F5CFF'; }
+        if (hdBlocked.includes(t)) { on = false; color = '#bbb'; }
+        else if (hdExtra.includes(t)) { on = true; color = '#1F5CFF'; }
         else if (normal.includes(t)) { on = true; color = '#1a7a3f'; }
         else { on = false; color = '#bbb'; }
-        const sub = (on && !scExtra.includes(t) && !longSet.includes(t)) ? '<span style="display:block;font-size:0.6rem;">쎄라·실 제외</span>' : '';
-        return `<button type="button" onclick="scToggle('${t}')" style="min-width:58px;padding:0.35rem 0.4rem;border-radius:6px;font-size:0.78rem;cursor:pointer;border:1px solid ${color};background:${on ? color : '#fff'};color:${on ? '#fff' : color};${on ? '' : 'text-decoration:line-through;'}">${t}${sub}</button>`;
+        const sub = (on && !hdExtra.includes(t) && !longSet.includes(t)) ? '<span style="display:block;font-size:0.6rem;">쎄라·실 제외</span>' : '';
+        return `<button type="button" onclick="hdToggle('${t}')" style="min-width:58px;padding:0.35rem 0.4rem;border-radius:6px;font-size:0.78rem;cursor:pointer;border:1px solid ${color};background:${on ? color : '#fff'};color:${on ? '#fff' : color};${on ? '' : 'text-decoration:line-through;'}">${t}${sub}</button>`;
     }).join('');
 }
-function scToggle(t) {
-    const S = ROA_SCHEDULE;
-    const normal = S.slotsByHours(scCurHours(), S.LEAD_NORMAL);
-    if (scBlocked.includes(t)) scBlocked = scBlocked.filter(x => x !== t);
-    else if (scExtra.includes(t)) scExtra = scExtra.filter(x => x !== t);
-    else if (normal.includes(t)) scBlocked.push(t);
-    else scExtra.push(t);
-    scRenderSlots();
+function hdToggle(t) {
+    const S = ROA_SCHEDULE, normal = S.slotsByHours(hdCurHours(), S.LEAD_NORMAL);
+    if (hdBlocked.includes(t)) hdBlocked = hdBlocked.filter(x => x !== t);
+    else if (hdExtra.includes(t)) hdExtra = hdExtra.filter(x => x !== t);
+    else if (normal.includes(t)) hdBlocked.push(t);
+    else hdExtra.push(t);
+    hdRenderSlots();
 }
-async function scSave() {
-    const d = scVal('sc-date');
+async function hdSave() {
+    const d = hdVal('hd-date');
     if (!d) { showToast('날짜를 먼저 선택하세요', true); return; }
-    const closed = document.getElementById('sc-closed').checked;
-    const h = scCurHours();
-    if (!closed && (!h.open || !h.close)) { showToast('진료 시작·마감 시간을 입력하세요', true); return; }
-    if (!closed && (!!h.lunchStart !== !!h.lunchEnd)) { showToast('점심시간은 시작·끝 둘 다 입력하거나 둘 다 비우세요', true); return; }
-    const data = closed ? { closed: true } : {
-        closed: false, open: h.open, close: h.close,
-        lunchStart: h.lunchStart || '', lunchEnd: h.lunchEnd || '',
-        blocked: scBlocked, extra: scExtra
-    };
+    const type = hdVal('hd-type'), memo = hdVal('hd-memo').trim(), h = hdCurHours();
+    let data;
+    if (type === 'off') data = { closed: true, type, memo };
+    else {
+        if (!h.open || !h.close) { showToast('영업 시작·종료 시간을 입력하세요', true); return; }
+        if (!!h.lunchStart !== !!h.lunchEnd) { showToast('점심시간은 시작·끝 둘 다 입력하거나 비우세요', true); return; }
+        data = { closed: false, type, memo, open: h.open, close: h.close,
+                 lunchStart: h.lunchStart || '', lunchEnd: h.lunchEnd || '', blocked: hdBlocked, extra: hdExtra };
+    }
     try {
-        await db.ref('roa/schedule/' + d).set(data);
-        showToast(d + ' 진료시간 저장됨 (홈페이지 바로 반영)');
+        await db.ref('roa/schedule/dates/' + d).set(data);
+        showToast(d + ' ' + HD_TYPE_LABEL[type] + ' 저장됨 (홈페이지 바로 반영)');
     } catch (e) { showToast('저장 실패: ' + (e.code || e.message), true); }
 }
-async function scReset(dArg) {
-    const d = dArg || scVal('sc-date');
-    if (!d) return;
-    if (!confirm(d + ' 을(를) 기본 진료시간으로 되돌릴까요?')) return;
-    try {
-        await db.ref('roa/schedule/' + d).remove();
-        showToast(d + ' 기본 시간으로 되돌림');
-        if (d === scVal('sc-date')) setTimeout(scLoadDate, 50);
-    } catch (e) { showToast('실패: ' + (e.code || e.message), true); }
+async function hdDelete(d) {
+    if (!confirm(d + ' 설정을 삭제하고 평소 진료시간으로 되돌릴까요?')) return;
+    try { await db.ref('roa/schedule/dates/' + d).remove(); showToast(d + ' 삭제됨'); }
+    catch (e) { showToast('삭제 실패: ' + (e.code || e.message), true); }
 }
-function scPick(d) { document.getElementById('sc-date').value = d; scLoadDate(); }
-function scRenderList() {
-    const el = document.getElementById('sc-list'); if (!el) return;
+function hdEdit(d) { document.getElementById('hd-date').value = d; hdLoad(); document.getElementById('hd-date').scrollIntoView({ behavior: 'smooth', block: 'center' }); }
+function hdRenderList() {
+    const el = document.getElementById('hd-list'); if (!el) return;
     const now = new Date();
     const ts = `${now.getFullYear()}-${String(now.getMonth()+1).padStart(2,'0')}-${String(now.getDate()).padStart(2,'0')}`;
-    const days = Object.keys(scOverrides).filter(d => d >= ts).sort();
-    if (!days.length) { el.innerHTML = '<span style="color:var(--muted);">변경된 날짜 없음 (모두 기본 진료시간)</span>'; return; }
-    const W = ['일','월','화','수','목','금','토'];
-    el.innerHTML = '<div style="font-weight:700;margin-bottom:0.4rem;">변경된 날짜</div>' + days.map(d => {
-        const o = scOverrides[d];
-        const desc = o.closed ? '<b style="color:var(--red);">휴진</b>'
-            : `${o.open}~${o.close}${o.lunchStart ? ` (점심 ${o.lunchStart}~${o.lunchEnd})` : ''}`
-              + ((o.blocked || []).length ? ` · 막음 ${o.blocked.join(', ')}` : '')
-              + ((o.extra || []).length ? ` · 추가 ${o.extra.join(', ')}` : '');
-        return `<div style="display:flex;gap:0.5rem;align-items:center;padding:0.35rem 0;border-top:1px solid var(--border);flex-wrap:wrap;">
-            <a href="javascript:void(0)" onclick="scPick('${d}')" style="font-weight:700;color:var(--dark);">${d} (${W[ROA_SCHEDULE.dowOf(d)]})</a>
-            <span>${desc}</span>
-            <button type="button" onclick="scReset('${d}')" style="margin-left:auto;font-size:0.72rem;border:1px solid var(--border);background:#fff;border-radius:4px;padding:0.15rem 0.5rem;cursor:pointer;">되돌리기</button>
-        </div>`;
+    const days = Object.keys(schedData.dates || {}).filter(d => d >= ts).sort();
+    if (!days.length) { el.innerHTML = '<tr><td colspan="4" style="color:var(--muted);padding:1rem;">등록된 날짜가 없습니다 (모두 평소 진료시간)</td></tr>'; return; }
+    el.innerHTML = days.map(d => {
+        const o = schedData.dates[d];
+        const type = o.type || (o.closed ? 'off' : 'change');
+        let desc = HD_TYPE_LABEL[type];
+        if (!o.closed) desc += ` ${o.open}~${o.close}` + (o.lunchStart ? ` (점심 ${o.lunchStart}~${o.lunchEnd})` : '')
+            + ((o.blocked || []).length ? `<br><span style="font-size:0.72rem;color:#999;">막음 ${o.blocked.join(', ')}</span>` : '')
+            + ((o.extra || []).length ? `<br><span style="font-size:0.72rem;color:#1F5CFF;">추가 ${o.extra.join(', ')}</span>` : '');
+        const col = o.closed ? 'color:var(--red);' : type === 'special' ? 'color:#1a7a3f;' : '';
+        return `<tr>
+            <td>${d} (${HR_DAYS[ROA_SCHEDULE.dowOf(d)]})</td>
+            <td style="white-space:normal;${col}">${desc}</td>
+            <td style="text-align:left;white-space:normal;">${esc(o.memo || '')}</td>
+            <td><button class="hr-edit" onclick="hdEdit('${d}')">수정</button><button class="hr-del" onclick="hdDelete('${d}')">삭제</button></td>
+        </tr>`;
     }).join('');
 }
 // 상태 변경 드롭다운을 고르는 중이면 다 고른 뒤에 다시 그림 (선택 중 목록이 닫히지 않게)

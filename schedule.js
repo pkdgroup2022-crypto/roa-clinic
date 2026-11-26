@@ -1,19 +1,20 @@
 /* ── 예약 가능 시간 규칙 (booking.html · admin.html 공용) ──
-   기본 진료시간
-     월·화·목·금 11:00~21:00 (점심 13:00~14:00) / 토 10:00~15:00 / 수·일 휴진
+   Firebase roa/schedule
+     weekly: { 0~6: { closed, open, close, lunchStart, lunchEnd } }   ← 관리자 '진료시간 설정' 탭 (없으면 아래 기본값)
+     dates : { 'YYYY-MM-DD': { closed, type, open, close, lunchStart, lunchEnd, blocked:[], extra:[], memo } }
+       type: 'off'(종일 휴무) · 'short'(단축 영업) · 'special'(특별 근무: 휴무일 영업) · 'change'(시간 변경)
    마지막 예약
      일반 시술: 점심·마감 1시간 전 (평일 12:00 · 20:00)
      울쎄라·온쎄라·볼쎄라 · 실리프팅(코 제외): 1시간 30분 전 (평일 11:30 · 19:30)
-   특정 날짜 변경: Firebase roa/schedule/YYYY-MM-DD
-     { closed, open, close, lunchStart, lunchEnd, blocked:[시간], extra:[시간], memo }
 */
 (function (w) {
-    const DEFAULT_HOURS = {
-        1: { open: '11:00', close: '21:00', lunchStart: '13:00', lunchEnd: '14:00' },
-        2: { open: '11:00', close: '21:00', lunchStart: '13:00', lunchEnd: '14:00' },
-        4: { open: '11:00', close: '21:00', lunchStart: '13:00', lunchEnd: '14:00' },
-        5: { open: '11:00', close: '21:00', lunchStart: '13:00', lunchEnd: '14:00' },
-        6: { open: '10:00', close: '15:00', lunchStart: '',      lunchEnd: ''      }
+    const WEEKDAY = { closed: false, open: '11:00', close: '21:00', lunchStart: '13:00', lunchEnd: '14:00' };
+    const DEFAULT_WEEKLY = {
+        0: { closed: true },
+        1: WEEKDAY, 2: WEEKDAY,
+        3: { closed: true, open: '11:00', close: '21:00', lunchStart: '13:00', lunchEnd: '14:00' },
+        4: WEEKDAY, 5: WEEKDAY,
+        6: { closed: false, open: '10:00', close: '15:00', lunchStart: '', lunchEnd: '' }
     };
     const LEAD_NORMAL = 60, LEAD_LONG = 90, STEP = 30;
 
@@ -35,22 +36,36 @@
         });
     }
 
-    /* 그날의 진료시간 (특정 날짜 변경 반영). 휴진이면 null */
-    function hoursFor(dateStr, overrides) {
-        const ov = (overrides || {})[dateStr] || null;
-        if (ov && ov.closed) return null;
-        const base = DEFAULT_HOURS[dowOf(dateStr)] || null;
-        if (ov && ov.open && ov.close) {
-            return { open: ov.open, close: ov.close, lunchStart: ov.lunchStart || '', lunchEnd: ov.lunchEnd || '' };
-        }
-        return base;
+    /* 요일별 진료시간 (관리자 설정 → 없으면 기본값) */
+    function weeklyFor(dow, sched) {
+        const wk = sched && sched.weekly;
+        const v = wk && wk[dow];
+        return (v && (v.closed || (v.open && v.close))) ? v : DEFAULT_WEEKLY[dow];
     }
 
-    function isClosed(dateStr, overrides) { return !hoursFor(dateStr, overrides); }
+    /* 그날의 진료시간. 휴진이면 null */
+    function hoursFor(dateStr, sched) {
+        const ov = (sched && sched.dates && sched.dates[dateStr]) || null;
+        if (ov) {
+            if (ov.closed) return null;
+            const base = weeklyFor(dowOf(dateStr), sched);
+            const open = ov.open || (base && base.open), close = ov.close || (base && base.close);
+            if (open && close) {
+                const hasLunch = ov.lunchStart !== undefined;
+                return { open, close,
+                         lunchStart: hasLunch ? (ov.lunchStart || '') : (base.lunchStart || ''),
+                         lunchEnd:   hasLunch ? (ov.lunchEnd   || '') : (base.lunchEnd   || '') };
+            }
+        }
+        const b = weeklyFor(dowOf(dateStr), sched);
+        return (!b || b.closed) ? null : b;
+    }
 
-    /* 진료시간 안의 30분 단위 시간 전부 (lead 분 전까지) */
+    function isClosed(dateStr, sched) { return !hoursFor(dateStr, sched); }
+
+    /* 진료시간 안의 30분 단위 시간 (구간 끝 lead 분 전까지) */
     function slotsByHours(h, lead) {
-        if (!h) return [];
+        if (!h || !h.open || !h.close) return [];
         const out = [];
         const open = toMin(h.open), close = toMin(h.close);
         const ls = toMin(h.lunchStart), le = toMin(h.lunchEnd);
@@ -60,15 +75,15 @@
     }
 
     /* 예약 가능한 시간 목록 */
-    function availableSlots(dateStr, overrides, long) {
-        const ov = (overrides || {})[dateStr] || {};
-        const h = hoursFor(dateStr, overrides);
+    function availableSlots(dateStr, sched, long) {
+        const ov = (sched && sched.dates && sched.dates[dateStr]) || {};
+        const h = hoursFor(dateStr, sched);
         if (!h) return [];
         const blocked = ov.blocked || [], extra = ov.extra || [];
-        let list = slotsByHours(h, long ? LEAD_LONG : LEAD_NORMAL).filter(t => !blocked.includes(t));
+        const list = slotsByHours(h, long ? LEAD_LONG : LEAD_NORMAL).filter(t => !blocked.includes(t));
         extra.forEach(t => { if (!list.includes(t) && !blocked.includes(t)) list.push(t); });
         return list.sort((a, b) => toMin(a) - toMin(b));
     }
 
-    w.ROA_SCHEDULE = { DEFAULT_HOURS, LEAD_NORMAL, LEAD_LONG, isLongProcedure, hoursFor, isClosed, slotsByHours, availableSlots, dowOf, toMin, toStr };
+    w.ROA_SCHEDULE = { DEFAULT_WEEKLY, LEAD_NORMAL, LEAD_LONG, isLongProcedure, weeklyFor, hoursFor, isClosed, slotsByHours, availableSlots, dowOf, toMin, toStr };
 })(window);
