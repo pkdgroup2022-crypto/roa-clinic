@@ -10,6 +10,7 @@
     <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-database-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-storage-compat.js"></script>
+    <script src="schedule.js?v=2"></script>
     <script>
         // Firebase 초기화
         firebase.initializeApp({
@@ -449,6 +450,31 @@
     <div class="container">
         <div class="section-title" style="margin-bottom:0.3rem;">예약일정</div>
         <p class="section-desc">홈페이지를 통해 접수된 예약 목록입니다.</p>
+        <!-- 특정 날짜 진료시간 변경 -->
+        <div class="card" style="padding:1.2rem 1.3rem;">
+            <div style="font-weight:700;font-size:0.95rem;margin-bottom:0.3rem;">🗓 특정 날짜 진료시간 · 예약시간 변경</div>
+            <p style="font-size:0.75rem;color:var(--muted);line-height:1.6;margin-bottom:0.9rem;">
+                기본: 월·화·목·금 11:00~21:00(점심 13~14시) · 토 10:00~15:00 · 수·일 휴진<br>
+                마지막 예약: 일반 시술 = 점심·마감 1시간 전 / 울쎄라·온쎄라·볼쎄라·실리프팅(코 제외) = 1시간 30분 전 (자동 적용)
+            </p>
+            <div style="display:flex;gap:0.6rem;flex-wrap:wrap;align-items:center;font-size:0.82rem;">
+                <label>날짜 <input type="date" id="sc-date" onchange="scLoadDate()" style="padding:0.35rem;border:1px solid var(--border);border-radius:6px;"></label>
+                <label style="display:flex;align-items:center;gap:0.3rem;"><input type="checkbox" id="sc-closed" onchange="scRenderSlots()"> 휴진</label>
+            </div>
+            <div id="sc-hours" style="display:flex;gap:0.6rem;flex-wrap:wrap;align-items:center;font-size:0.82rem;margin-top:0.7rem;">
+                <label>진료 <input type="time" step="1800" id="sc-open" onchange="scRenderSlots()"> ~ <input type="time" step="1800" id="sc-close" onchange="scRenderSlots()"></label>
+                <label>점심 <input type="time" step="1800" id="sc-ls" onchange="scRenderSlots()"> ~ <input type="time" step="1800" id="sc-le" onchange="scRenderSlots()"> <span style="color:var(--muted);font-size:0.72rem;">(없으면 비우기)</span></label>
+            </div>
+            <div id="sc-slot-wrap" style="margin-top:0.8rem;">
+                <div style="font-size:0.75rem;color:var(--muted);margin-bottom:0.4rem;">시간을 눌러 열기/막기 · <span style="color:#1a7a3f;">■ 예약 가능</span> · <span style="color:#bbb;">■ 막힘</span> · <span style="color:#1F5CFF;">■ 추가로 연 시간</span></div>
+                <div id="sc-slots" style="display:flex;flex-wrap:wrap;gap:0.35rem;"></div>
+            </div>
+            <div style="display:flex;gap:0.5rem;margin-top:0.9rem;flex-wrap:wrap;">
+                <button class="btn-save" onclick="scSave()">💾 이 날짜 저장</button>
+                <button class="btn-secondary" onclick="scReset()">기본 시간으로 되돌리기</button>
+            </div>
+            <div id="sc-list" style="margin-top:1rem;font-size:0.8rem;"></div>
+        </div>
         <!-- 상태 필터 -->
         <div style="display:flex;gap:0.5rem;margin-bottom:1.2rem;flex-wrap:wrap;">
             <button class="filter-chip active" onclick="rvFilter('전체',this)">전체</button>
@@ -1267,6 +1293,119 @@ function loadReservations() {
         if (!document.hidden) document.title = document.title.replace(/^\(새 예약 \d+\) /, '');
     });
 }
+/* ════════════════════════════════
+   특정 날짜 진료시간 · 예약시간 변경 (roa/schedule)
+════════════════════════════════ */
+let scOverrides = {};
+let scBlocked = [], scExtra = [];
+let scListening = false;
+function loadSchedule() {
+    if (scListening) return;
+    scListening = true;
+    db.ref('roa/schedule').on('value', snap => {
+        scOverrides = snap.val() || {};
+        scRenderList();
+    }, () => { scListening = false; });
+}
+function scVal(id) { return document.getElementById(id).value; }
+function scLoadDate() {
+    const d = scVal('sc-date'); if (!d) return;
+    const S = ROA_SCHEDULE, ov = scOverrides[d] || {};
+    const base = S.DEFAULT_HOURS[S.dowOf(d)];
+    const h = (ov.open && ov.close) ? ov : (base || { open: '11:00', close: '21:00', lunchStart: '13:00', lunchEnd: '14:00' });
+    document.getElementById('sc-closed').checked = ov.closed != null ? !!ov.closed : !base;
+    document.getElementById('sc-open').value  = h.open || '';
+    document.getElementById('sc-close').value = h.close || '';
+    document.getElementById('sc-ls').value    = h.lunchStart || '';
+    document.getElementById('sc-le').value    = h.lunchEnd || '';
+    scBlocked = (ov.blocked || []).slice();
+    scExtra   = (ov.extra || []).slice();
+    scRenderSlots();
+}
+function scCurHours() {
+    return { open: scVal('sc-open'), close: scVal('sc-close'), lunchStart: scVal('sc-ls'), lunchEnd: scVal('sc-le') };
+}
+function scRenderSlots() {
+    const box = document.getElementById('sc-slots');
+    const closed = document.getElementById('sc-closed').checked;
+    document.getElementById('sc-hours').style.display = closed ? 'none' : 'flex';
+    document.getElementById('sc-slot-wrap').style.display = closed ? 'none' : 'block';
+    if (closed || !scVal('sc-date')) { box.innerHTML = ''; return; }
+    const h = scCurHours();
+    if (!h.open || !h.close) { box.innerHTML = ''; return; }
+    const S = ROA_SCHEDULE;
+    const normal = S.slotsByHours(h, S.LEAD_NORMAL);
+    const longSet = S.slotsByHours(h, S.LEAD_LONG);
+    const all = S.slotsByHours(h, 30);
+    scExtra.forEach(t => { if (!all.includes(t)) all.push(t); });
+    all.sort((a, b) => S.toMin(a) - S.toMin(b));
+    box.innerHTML = all.map(t => {
+        let on, color;
+        if (scBlocked.includes(t)) { on = false; color = '#bbb'; }
+        else if (scExtra.includes(t)) { on = true; color = '#1F5CFF'; }
+        else if (normal.includes(t)) { on = true; color = '#1a7a3f'; }
+        else { on = false; color = '#bbb'; }
+        const sub = (on && !scExtra.includes(t) && !longSet.includes(t)) ? '<span style="display:block;font-size:0.6rem;">쎄라·실 제외</span>' : '';
+        return `<button type="button" onclick="scToggle('${t}')" style="min-width:58px;padding:0.35rem 0.4rem;border-radius:6px;font-size:0.78rem;cursor:pointer;border:1px solid ${color};background:${on ? color : '#fff'};color:${on ? '#fff' : color};${on ? '' : 'text-decoration:line-through;'}">${t}${sub}</button>`;
+    }).join('');
+}
+function scToggle(t) {
+    const S = ROA_SCHEDULE;
+    const normal = S.slotsByHours(scCurHours(), S.LEAD_NORMAL);
+    if (scBlocked.includes(t)) scBlocked = scBlocked.filter(x => x !== t);
+    else if (scExtra.includes(t)) scExtra = scExtra.filter(x => x !== t);
+    else if (normal.includes(t)) scBlocked.push(t);
+    else scExtra.push(t);
+    scRenderSlots();
+}
+async function scSave() {
+    const d = scVal('sc-date');
+    if (!d) { showToast('날짜를 먼저 선택하세요', true); return; }
+    const closed = document.getElementById('sc-closed').checked;
+    const h = scCurHours();
+    if (!closed && (!h.open || !h.close)) { showToast('진료 시작·마감 시간을 입력하세요', true); return; }
+    if (!closed && (!!h.lunchStart !== !!h.lunchEnd)) { showToast('점심시간은 시작·끝 둘 다 입력하거나 둘 다 비우세요', true); return; }
+    const data = closed ? { closed: true } : {
+        closed: false, open: h.open, close: h.close,
+        lunchStart: h.lunchStart || '', lunchEnd: h.lunchEnd || '',
+        blocked: scBlocked, extra: scExtra
+    };
+    try {
+        await db.ref('roa/schedule/' + d).set(data);
+        showToast(d + ' 진료시간 저장됨 (홈페이지 바로 반영)');
+    } catch (e) { showToast('저장 실패: ' + (e.code || e.message), true); }
+}
+async function scReset(dArg) {
+    const d = dArg || scVal('sc-date');
+    if (!d) return;
+    if (!confirm(d + ' 을(를) 기본 진료시간으로 되돌릴까요?')) return;
+    try {
+        await db.ref('roa/schedule/' + d).remove();
+        showToast(d + ' 기본 시간으로 되돌림');
+        if (d === scVal('sc-date')) setTimeout(scLoadDate, 50);
+    } catch (e) { showToast('실패: ' + (e.code || e.message), true); }
+}
+function scPick(d) { document.getElementById('sc-date').value = d; scLoadDate(); }
+function scRenderList() {
+    const el = document.getElementById('sc-list'); if (!el) return;
+    const now = new Date();
+    const ts = `${now.getFullYear()}-${String(now.getMonth()+1).padStart(2,'0')}-${String(now.getDate()).padStart(2,'0')}`;
+    const days = Object.keys(scOverrides).filter(d => d >= ts).sort();
+    if (!days.length) { el.innerHTML = '<span style="color:var(--muted);">변경된 날짜 없음 (모두 기본 진료시간)</span>'; return; }
+    const W = ['일','월','화','수','목','금','토'];
+    el.innerHTML = '<div style="font-weight:700;margin-bottom:0.4rem;">변경된 날짜</div>' + days.map(d => {
+        const o = scOverrides[d];
+        const desc = o.closed ? '<b style="color:var(--red);">휴진</b>'
+            : `${o.open}~${o.close}${o.lunchStart ? ` (점심 ${o.lunchStart}~${o.lunchEnd})` : ''}`
+              + ((o.blocked || []).length ? ` · 막음 ${o.blocked.join(', ')}` : '')
+              + ((o.extra || []).length ? ` · 추가 ${o.extra.join(', ')}` : '');
+        return `<div style="display:flex;gap:0.5rem;align-items:center;padding:0.35rem 0;border-top:1px solid var(--border);flex-wrap:wrap;">
+            <a href="javascript:void(0)" onclick="scPick('${d}')" style="font-weight:700;color:var(--dark);">${d} (${W[ROA_SCHEDULE.dowOf(d)]})</a>
+            <span>${desc}</span>
+            <button type="button" onclick="scReset('${d}')" style="margin-left:auto;font-size:0.72rem;border:1px solid var(--border);background:#fff;border-radius:4px;padding:0.15rem 0.5rem;cursor:pointer;">되돌리기</button>
+        </div>`;
+    }).join('');
+}
 // 상태 변경 드롭다운을 고르는 중이면 다 고른 뒤에 다시 그림 (선택 중 목록이 닫히지 않게)
 function rvRenderSafe() {
     const active = document.activeElement;
@@ -1650,6 +1789,8 @@ function doLogin() {
 function doLogout() {
     db.ref('roa/reservations').off();
     rvListening = false;
+    db.ref('roa/schedule').off();
+    scListening = false;
     auth.signOut();
 }
 // Enter 키로 로그인
@@ -2034,6 +2175,7 @@ auth.onAuthStateChanged(async function(user) {
         loadEvents();
         loadPrograms();
         loadReservations();
+        loadSchedule();
         loadPopup();
         loadHairRemoval();
         if (currentRole === 'owner') {

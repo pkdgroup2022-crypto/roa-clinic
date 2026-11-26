@@ -20,6 +20,7 @@ firebase.initializeApp({
 });
 const db = firebase.database();
 </script>
+<script src="schedule.js?v=2"></script>
 <style>
 * { margin: 0; padding: 0; box-sizing: border-box; }
 :root {
@@ -347,11 +348,18 @@ function renderSelected() {
 renderSelected();
 
 /* ── 캘린더 ── */
-const CLOSED_DOW = [0, 3]; // 일(0) 수(3) 휴진
+/* 예약 가능 시간 규칙은 schedule.js (기본 진료시간 + 관리자 특정 날짜 변경) */
 let calYear, calMonth, selectedDate = null, selectedTime = null;
-
-const TIMES_WEEKDAY = ['11:00','11:30','12:00','12:30','14:00','14:30','15:00','15:30','16:00','16:30','17:00','17:30','18:00','18:30','19:00','19:30','20:00','20:30'];
-const TIMES_SAT     = ['10:00','10:30','11:00','11:30','12:00','12:30','13:00','13:30','14:00','14:30'];
+let scheduleOverrides = {};
+const IS_LONG = ROA_SCHEDULE.isLongProcedure(bookingData.programId,
+    [bookingData.programName].concat((bookingData.options || []).map(o => o.name)));
+// 관리자가 바꾼 특정 날짜 진료시간 (실시간 반영)
+db.ref('roa/schedule').on('value', snap => {
+    scheduleOverrides = snap.val() || {};
+    if (selectedDate && ROA_SCHEDULE.isClosed(selectedDate, scheduleOverrides)) { selectedDate = null; selectedTime = null; }
+    if (selectedTime && selectedDate && !ROA_SCHEDULE.availableSlots(selectedDate, scheduleOverrides, IS_LONG).includes(selectedTime)) selectedTime = null;
+    if (calYear != null) renderCal();
+}, () => {});
 
 function initCal() {
     const now = new Date();
@@ -373,8 +381,8 @@ function renderCal() {
         const date = new Date(calYear, calMonth, d);
         const dow  = date.getDay();
         const isPast   = date < today;
-        const isClosed = CLOSED_DOW.includes(dow);
         const dateStr  = `${calYear}-${String(calMonth+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
+        const isClosed = ROA_SCHEDULE.isClosed(dateStr, scheduleOverrides);
         const isSel    = selectedDate === dateStr;
         const isToday  = date.getTime() === today.getTime();
         let cls = 'cal-day';
@@ -395,8 +403,8 @@ function selectDate(dateStr, dow) {
 
 function renderTimes() {
     if (!selectedDate) { document.getElementById('timeGrid').innerHTML = '<div style="font-size:0.8rem;color:var(--muted);grid-column:1/-1;text-align:center;padding:0.5rem;">날짜를 먼저 선택하세요.</div>'; return; }
-    const dow = new Date(selectedDate).getDay();
-    const times = dow === 6 ? TIMES_SAT : TIMES_WEEKDAY;
+    const times = ROA_SCHEDULE.availableSlots(selectedDate, scheduleOverrides, IS_LONG);
+    if (!times.length) { document.getElementById('timeGrid').innerHTML = '<div style="font-size:0.8rem;color:var(--muted);grid-column:1/-1;text-align:center;padding:0.5rem;">이 날은 예약 가능한 시간이 없습니다.</div>'; return; }
     document.getElementById('timeGrid').innerHTML = times.map(t =>
         `<button class="time-btn${selectedTime===t?' selected':''}" onclick="selectTime('${t}')">${t}</button>`
     ).join('');
